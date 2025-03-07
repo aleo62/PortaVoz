@@ -3,6 +3,10 @@
 @import "tailwindcss";
 @plugin 'tailwind-scrollbar';
 
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* RESETING */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
 @theme {
     /* 
     ** FONTS **
@@ -28,10 +32,42 @@
 }
 
 html {
-    @apply text-[10px]; 
     scroll-behavior: scroll-smooth;
 }
 
 body {
-    @apply bg-body-background font-(family-name:--font-common) text-2xl;
+    background-color: var(--gradient-main);
+    @apply bg-body-background font-(family-name:--font-common);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* COMPONENTS */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* BUTTON */
+.button {
+    @apply w-10 h-10 grid place-items-center text-body-background rounded-xl bg-primary/90 hover:bg-primary backdrop-blur-2xl transition-[transform,background-color] active:scale-95;
+    
+}
+
+.button.edge {
+    @apply ring-inset ring-1 ring-secondary/50;
+}
+
+.button.mobile {
+    @apply md:hidden;
+}
+
+/* NAVBAR */
+
+.navbar {
+    @apply absolute grid gap-2 top-full right-0 invisible opacity-0 isolate min-w-40 scale-90 pointer-events-none ring-1 ring-zinc-500/70 backdrop-blur-2xl p-2 bg-primary text-body-background mt-2 rounded-2xl transition-[opacity,transform,filter] md:bg-transparent md:text-subtitle md:ring-0 md:static md:opacity-100 md:visible md:flex;
+}
+
+.navbar.active {
+    @apply visible pointer-events-auto opacity-100 scale-100 transition-[opacity,transform,filter];
+}
+
+.nav-link {
+    @apply grid items-center px-4 h-10 active:bg-body-background rounded-xl active:text-title hover:bg-body-background/20 text-xl;
 }
