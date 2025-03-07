@@ -3,4 +3,35 @@
 @import "tailwindcss";
 @plugin 'tailwind-scrollbar';
 
+@theme {
+    /* 
+    ** FONTS **
+    */
+    --font-common: "Sora", sans-serif;
+    --font-title: "Outfit", sans-serif;
 
+    /* 
+    ** COLORS **
+    */
+    --color-primary: #005CA2;
+    --color-secondary: #D0E9FF;
+    --color-accent: #3D69D8;
+    --color-body-background: #F8FBFF;
+
+    --color-title: #292A2F;
+    --color-subtitle: #4C4B4F
+    
+    /* 
+    ** GRADIENTS **
+    */
+    --gradient-main: linear-gradient(to right, var(--color-accent), var(--color-primary));
+}
+
+html {
+    @apply text-[10px]; 
+    scroll-behavior: scroll-smooth;
+}
+
+body {
+    @apply bg-body-background font-(family-name:--font-common) text-2xl;
+}
