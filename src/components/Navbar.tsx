@@ -8,12 +8,13 @@ export const Navbar = ({ navOpen }: NavbarProps) => {
         { label: "Denúncias" },
         { label: "Sobre" },
         { label: "FAQ" },
+        { label: "Entrar", className: "menu-btn" },
     ];
 
     return (
         <nav className={'navbar' + (navOpen ? ' active' : '')}>
-            {items.map(({ label }, key) => (
-                <a className="nav-link" href="" key={key}>
+            {items.map(({ label, className }, key) => (
+                <a className={"nav-link " + className} href="" key={key}>
                     {label}
                 </a>
             ))}

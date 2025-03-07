@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Sora:wght@100..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@100..900&display=swap');
 
 @import "tailwindcss";
 @plugin 'tailwind-scrollbar';
@@ -11,7 +11,16 @@
     /* 
     ** FONTS **
     */
-    --font-common: "Sora", sans-serif;
+    --font-common: "Inter", sans-serif;
+    --font-title: "Outfit", sans-serif;
+
+    /* 
+    ** TEXT-SIZE **
+    */
+    --size-label-sml: 0.830rem;
+    --size-label-sm: 0.930rem;
+    --size-label-md: 0.906rem;
+    --size-label-lg: 0.938rem;
     --font-title: "Outfit", sans-serif;
 
     /* 
@@ -22,13 +31,16 @@
     --color-accent: #3D69D8;
     --color-body-background: #F8FBFF;
 
-    --color-title: #292A2F;
-    --color-subtitle: #4C4B4F
+    --color-title: #171719;
+    --color-subtitle: #4C4B4F;
     
     /* 
     ** GRADIENTS **
     */
-    --gradient-main: linear-gradient(to right, var(--color-accent), var(--color-primary));
+
+    /* 
+    ** SHADOWS **
+    */
 }
 
 html {
@@ -36,8 +48,11 @@ html {
 }
 
 body {
-    background-color: var(--gradient-main);
     @apply bg-body-background font-(family-name:--font-common);
+}
+
+button {
+    @apply cursor-pointer;
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -46,22 +61,30 @@ body {
 
 /* BUTTON */
 .button {
-    @apply w-10 h-10 grid place-items-center text-body-background rounded-xl bg-primary/90 hover:bg-primary backdrop-blur-2xl transition-[transform,background-color] active:scale-95;
-    
+    @apply px-[1.400rem] py-[.900rem] font-semibold grid place-items-center 
+    text-body-background rounded-[.5rem] transition-[transform,background] 
+    active:scale-95 items-center gap-2;
 }
 
-.button.edge {
-    @apply ring-inset ring-1 ring-secondary/50;
+.btn-primary {
+    @apply bg-gradient-to-r from-accent/95 to-primary/95 
+    hover:from-accent hover:to-primary 
+    shadow-primary/30 shadow-sm;
 }
 
-.button.mobile {
-    @apply md:hidden;
+.btn-secondary {
+    @apply bg-secondary text-primary 
+    hover:bg-[#B5D9F5];
+}
+
+.button.small {
+    @apply text-(length:--size-label-sml);
 }
 
 /* NAVBAR */
 
 .navbar {
-    @apply absolute grid gap-2 top-full right-0 invisible opacity-0 isolate min-w-40 scale-90 pointer-events-none ring-1 ring-zinc-500/70 backdrop-blur-2xl p-2 bg-primary text-body-background mt-2 rounded-2xl transition-[opacity,transform,filter] md:bg-transparent md:text-subtitle md:ring-0 md:static md:opacity-100 md:visible md:flex;
+    @apply absolute grid gap-2 md:gap-4 max-md:mt-2 top-full right-0 invisible opacity-0 isolate min-w-40 scale-90 pointer-events-none ring-1 ring-zinc-500/70 backdrop-blur-2xl p-2 bg-primary text-body-background rounded-2xl transition-[opacity,transform,filter] md:bg-transparent md:text-subtitle md:ring-0 md:static md:opacity-100 md:visible md:flex md:backdrop-blur-none md:pointer-events-auto;
 }
 
 .navbar.active {
@@ -69,5 +92,17 @@ body {
 }
 
 .nav-link {
-    @apply grid items-center px-4 h-10 active:bg-body-background rounded-xl active:text-title hover:bg-body-background/20 text-xl;
+    @apply grid items-center px-4 h-10 font-semibold md:hover:text-title  max-md:active:bg-body-background rounded-[.5rem] max-md:active:text-title max-md:hover:bg-body-background/20 text-(length:--size-label-lg);
+}
+
+.nav-link.menu-btn {
+    @apply mt-5 md:hidden bg-secondary/95 hover:bg-secondary font-bold text-primary relative text-center before:w-[95%] before:h-[.5px] before:justify-self-center before:content-[''] before:absolute before:bg-body-background/50 before:top-[-50%] ; 
+}
+
+
+/* NAVBAR BUTTON */
+
+.nav-button {
+    @apply w-10 h-10 grid items-center justify-center bg-primary/90 text-body-background rounded-xl md:hidden
+    hover:bg-primary active:scale-95 ring-2 ring-zinc-50/70 backdrop-blur-2xl;
 }

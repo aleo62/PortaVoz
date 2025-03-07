@@ -1,12 +1,12 @@
 import logo from "../assets/images/logo/logo-light.png";
 import { IconMenu2 as Menu } from "@tabler/icons-react";
 import { IconX } from "@tabler/icons-react";
-import { Button } from "../components/Button";
+import { ButtonPrimary, ButtonSecondary } from "../components/Button";
 import { Navbar } from "../components/Navbar";
 import { useState } from "react";
 
 export const Header = () => {
-    const [navOpen, setNavOpen] = useState(true);
+    const [navOpen, setNavOpen] = useState(false);
 
     return (
         <header className="h-20 w-full flex items-center fixed left-0 top-0">
@@ -30,13 +30,9 @@ export const Header = () => {
                  */}
                 <div className="relative md:justify-self-center">
                     {/* TOOGLE MENU */}
-                    <Button
-                        edge={true}
-                        onClick={() => setNavOpen((prev) => !prev)}
-                        mobile={true}
-                    >
+                    <button className="nav-button" onClick={ () => setNavOpen(prev => !prev) }>
                         {navOpen ? <IconX /> : <Menu />}
-                    </Button>
+                    </button>
 
                     <Navbar navOpen={navOpen} />
                 </div>
@@ -45,7 +41,14 @@ export const Header = () => {
                  ** BUTTONS **
                  */}
 
-                <div className="max-md:hidden md:justify-self-end">Entrar</div>
+                <div className="max-md:hidden md:justify-self-end flex items-center gap-2">
+                    <ButtonSecondary small={true}>
+                        Cadastrar-se
+                    </ButtonSecondary>
+                    <ButtonPrimary small={true}>
+                        Entrar
+                    </ButtonPrimary>
+                </div>
             </div>
         </header>
     );

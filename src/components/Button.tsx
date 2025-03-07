@@ -2,20 +2,32 @@ import React from "react";
 
 type ButtonProps = {
     children: React.ReactNode;
-    edge?: boolean;
-    onClick: () => void;
-    mobile?: boolean;
+    small?: boolean;
+    onClick?: () => void;
 };
 
-export const Button = ({ children, edge, onClick, mobile }: ButtonProps) => {
+export const ButtonPrimary = ({ children, onClick, small }: ButtonProps) => {
     return (
         <button
             className={
-                "button" +
-                (edge ? " edge" : "") +
-                (mobile ? " mobile" : "")
+                "button btn-primary" +
+                (small ? " small" : "")
             }
-            onClick={() => onClick()}
+            onClick={() => onClick?.()}
+        >
+            {children}
+        </button>
+    );
+};
+
+export const ButtonSecondary = ({ children, onClick, small }: ButtonProps) => {
+    return (
+        <button
+            className={
+                "button btn-secondary" +
+                (small ? " small" : "")
+            }
+            onClick={() => onClick?.()}
         >
             {children}
         </button>
