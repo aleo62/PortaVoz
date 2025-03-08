@@ -9,8 +9,8 @@ export const Header = () => {
     const [navOpen, setNavOpen] = useState(false);
 
     return (
-        <header className="h-20 w-full flex items-center fixed left-0 top-0">
-            <div className="max-w-screen-2xl w-full mx-auto px-6 flex justify-between items-center md:px-8 md:grid md:grid-cols-3">
+        <header className="h-20 w-full flex items-center fixed left-0 top-0 z-40">
+            <div className="lg:grid lg:grid-cols-[1fr_3fr_1fr] lg:gap-4 w-full flex justify-between px-4 lg:px-8">
                 {/*
                  ** LOGO **
                  */}
@@ -28,7 +28,7 @@ export const Header = () => {
                 {/*
                  ** NAVBAR **
                  */}
-                <div className="relative md:justify-self-center">
+                <div className="relative lg:justify-self-center">
                     {/* TOOGLE MENU */}
                     <button className="nav-button" onClick={ () => setNavOpen(prev => !prev) }>
                         {navOpen ? <IconX /> : <Menu />}
@@ -41,9 +41,9 @@ export const Header = () => {
                  ** BUTTONS **
                  */}
 
-                <div className="max-md:hidden md:justify-self-end flex items-center gap-2">
+                <div className="max-lg:hidden md:justify-self-end flex items-center gap-2">
                     <ButtonSecondary small={true}>
-                        Cadastrar-se
+                        Cadastro
                     </ButtonSecondary>
                     <ButtonPrimary small={true}>
                         Entrar

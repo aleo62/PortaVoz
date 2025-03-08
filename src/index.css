@@ -21,11 +21,21 @@
     --size-label-sm: 0.930rem;
     --size-label-md: 0.906rem;
     --size-label-lg: 0.938rem;
+    --size-title-sm: 2.7rem;
+    --size-title-md: 3.5rem;
+    --size-title-lg: 3.8rem;
+    --size-title-xl: 3.2rem;
+    --size-headline-sml: 2.4rem;
+    --size-headline-sm: 3rem;
+    --size-headline-md: 3.6rem;
+    --size-headline-lg: 3.8rem;
+    --size-headline-xl: 4.1rem;
     --font-title: "Outfit", sans-serif;
 
     /* 
     ** COLORS **
     */
+
     --color-primary: #005CA2;
     --color-secondary: #D0E9FF;
     --color-accent: #3D69D8;
@@ -41,14 +51,20 @@
     /* 
     ** SHADOWS **
     */
+    
+    /* 
+    ** BREAKING POINTS **
+    */
+    --breakpoint-sml: 24rem;
 }
 
 html {
     scroll-behavior: scroll-smooth;
+    height: 200vh;
 }
 
 body {
-    @apply bg-body-background font-(family-name:--font-common);
+    @apply bg-body-background font-(family-name:--font-common) ;
 }
 
 button {
@@ -61,8 +77,8 @@ button {
 
 /* BUTTON */
 .button {
-    @apply px-[1.400rem] py-[.900rem] font-semibold grid place-items-center 
-    text-body-background rounded-[.5rem] transition-[transform,background] 
+    @apply px-[3rem] lg:px-[1.400rem] py-[.900rem] text-[12px] md:text-[14px] lg:text-[15px] font-semibold grid place-items-center 
+    text-body-background rounded-[.5rem] transition-[transform,translate,background] duration-200
     active:scale-95 items-center gap-2;
 }
 
@@ -84,7 +100,7 @@ button {
 /* NAVBAR */
 
 .navbar {
-    @apply absolute grid gap-2 md:gap-4 max-md:mt-2 top-full right-0 invisible opacity-0 isolate min-w-40 scale-90 pointer-events-none ring-1 ring-zinc-500/70 backdrop-blur-2xl p-2 bg-primary text-body-background rounded-2xl transition-[opacity,transform,filter] md:bg-transparent md:text-subtitle md:ring-0 md:static md:opacity-100 md:visible md:flex md:backdrop-blur-none md:pointer-events-auto;
+    @apply absolute grid gap-2 lg:gap-4 max-lg:mt-2 top-full right-0 invisible opacity-0 isolate min-w-40 scale-90 pointer-events-none ring-1 ring-zinc-500/70 backdrop-blur-2xl p-2 bg-primary text-body-background rounded-2xl transition-[opacity,transform,filter] lg:bg-transparent lg:text-subtitle lg:ring-0 lg:static lg:opacity-100 lg:visible lg:flex lg:backdrop-blur-none lg:pointer-events-auto;
 }
 
 .navbar.active {
@@ -103,6 +119,38 @@ button {
 /* NAVBAR BUTTON */
 
 .nav-button {
-    @apply w-10 h-10 grid items-center justify-center bg-primary/90 text-body-background rounded-xl md:hidden
+    @apply w-10 h-10 grid items-center justify-center bg-primary/90 text-body-background rounded-xl lg:hidden
     hover:bg-primary active:scale-95 ring-2 ring-zinc-50/70 backdrop-blur-2xl;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* UTILITIES */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+.container {
+    @apply px-4 lg:px-8 mx-auto max-sm:max-w-3xl;
+}
+
+.headline {
+    @apply leading-15 tracking-tight max-w-150 text-(length:--size-headline-sml) sml:text-(length:--size-headline-sm) md:text-(length:--size-headline-md) lg:text-(length:--size-headline-lg) xl:text-(length:--size-headline-xl) lg:leading-20 text-title font-bold font-(family-name:--font-title);
+}
+
+.title {
+    @apply leading-12 tracking-tight max-w-125 text-(length:--size-title-sml) sml:text-(length:--size-title-sm) md:text-(length:--size-title-md) lg:text-(length:--size-title-lg) xl:text-(length:--size-title-xl) lg:leading-15 text-title font-semibold font-(family-name:--font-title);
+}
+
+.subtitle {
+    @apply max-w-130 text-[13px] md:text-[14.5px] text-subtitle;
+}
+
+.headline span, .title span {
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-accent to-primary tracking-[-2.5px];
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* SECTION */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+section.gradient-section {
+    @apply bg-gradient-to-t from-secondary to-body-background rounded-b-[50px] lg:rounded-b-[90px];
 }

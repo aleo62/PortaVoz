@@ -10,7 +10,7 @@ export const ButtonPrimary = ({ children, onClick, small }: ButtonProps) => {
     return (
         <button
             className={
-                "button btn-primary" +
+                "button btn-primary " +
                 (small ? " small" : "")
             }
             onClick={() => onClick?.()}
