@@ -4,10 +4,10 @@ import { IconPlayerPlayFilled as Play } from "@tabler/icons-react";
 
 export const Hero = () => {
     return (
-        <section className="lg:pt-44.5 pt-28 relative pb-30 gradient-section ">
-            <div className="container grid lg:grid-cols-2 lg:gap-7.5 items-center justify-center">
+        <section className="lg:pt-44.5 pt-28 pb-30 relative gradient-section ">
+            <div className="container grid lg:grid-cols-2 lg:relative lg:gap-7.5 items-center justify-center">
                 <div className="w-fit">
-                    <h2 className="headline mb-[15px]">Transformando Piracicaba em seu <span>Ponto Seguro.</span></h2>
+                    <h2 className="headline mb-[15px]">Transformando Piracicaba em seu <span>Ponto Seguro<b>.</b></span></h2>
 
                     <div className="subtitle">
                         Uma plataforma segura e acessível para que cidadãos
@@ -36,7 +36,7 @@ export const Hero = () => {
 
                 <div className="h-65 sm:h-80 lg:h-full">
                     <figure className="h-80 lg:h-full flex justify-center">    
-                        <img className="absolute lg:right-[5%] w-[90vw] sm:w-[45vw] max-w-[650px] bottom-0" src={woman} alt="Woman" width={600} />
+                        <img className="absolute bottom-0 lg:right-0 lg:bottom-[-28%] w-[90vw] sm:w-[45vw] max-w-[650px]" src={woman} alt="Woman" width={600} />
                     </figure>
                 </div>
             </div>

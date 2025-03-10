@@ -3,7 +3,7 @@ type NavbarProps = {
 }
 
 export const Navbar = ({ navOpen }: NavbarProps) => {
-    const items = [
+    const NavItems = [
         { label: "Início" },
         { label: "Denúncias" },
         { label: "Sobre" },
@@ -13,7 +13,7 @@ export const Navbar = ({ navOpen }: NavbarProps) => {
 
     return (
         <nav className={'navbar' + (navOpen ? ' active' : '')}>
-            {items.map(({ label, className }, key) => (
+            {NavItems.map(({ label, className }, key) => (
                 <a className={"nav-link " + className} href="" key={key}>
                     {label}
                 </a>
