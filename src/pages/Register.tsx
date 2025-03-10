@@ -6,7 +6,6 @@ import { auth } from "../database/firebase";
 export const Register = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [name, setName] = useState("");
 
     const handleRegister = async (e: React.FormEvent) => {
 
@@ -29,13 +28,6 @@ export const Register = () => {
                 <h2 className="text-2xl font-bold text-center mb-6">Registro</h2>
 
                 <form onSubmit={handleRegister}>
-                    <div className="mb-4">
-                        <label className="block text-gray-700 font-medium">
-                            Nome
-                        </label>
-                        <Input type="text" placeholder="Digite seu e-mail" onChange={(e) => setName(e.target.value)}/>
-                    </div>
-
                     <div className="mb-4">
                         <label className="block text-gray-700 font-medium">
                             E-mail
