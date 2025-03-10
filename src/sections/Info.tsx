@@ -48,7 +48,7 @@ export const Info = () => {
                     </div>
                 </div>
 
-                <div className="h-full flex flex-col md:grid gap-4 mt-30 md:grid-cols-[266px_266px] lg:mt-0 grid-rows-[200px_200px]">
+                <div className="h-full flex flex-col md:grid gap-4 mt-30 md:grid-cols-[270px_270px] lg:mt-0 grid-rows-[200px_200px]">
                     {Cards.map(({ title, desc, icon }, key) => (
                         <Card
                             key={key}

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sora:wght@100..800&display=swap');
 
 @import "tailwindcss";
 @plugin 'tailwind-scrollbar';
@@ -11,8 +11,8 @@
     /* 
     ** FONTS **
     */
-    --font-common: "Inter", sans-serif;
-    --font-title: "Outfit", sans-serif;
+    --font-common: "Sora", sans-serif;
+    --font-title: "Poppins", sans-serif;
 
     /* 
     ** TEXT-SIZE **
@@ -22,26 +22,25 @@
     --size-label-sm: 0.930rem;
     --size-label-md: 0.906rem;
     --size-label-lg: 0.938rem;
-    --size-title-sml: 2rem;
-    --size-title-sm: 2.3rem;
-    --size-title-md: 2.6rem;
-    --size-title-lg: 3rem;
-    --size-title-xl: 3.125rem;
+    --size-title-sml: 1.9rem;
+    --size-title-sm: 2rem;
+    --size-title-md: 2.5rem;
+    --size-title-lg: 2.6rem;
+    --size-title-xl: 2.7rem;
     --size-headline-sml: 2.4rem;
     --size-headline-sm: 2.9rem;
     --size-headline-md: 3.8rem;
     --size-headline-lg: 3.9rem;
-    --size-headline-xl: 4.1rem;
-    --font-title: "Outfit", sans-serif;
+    --size-headline-xl: 3.8rem;
 
     /* 
     ** COLORS **
     */
 
     --color-primary: #005CA2;
-    --color-secondary: #D0E9FF;
+    --color-secondary: #B7D4FF;
     --color-accent: #3D69D8;
-    --color-body-background: #F8FBFF;
+    --color-body-background: #FAFAFA;
 
     --color-title: #1b1b1b;
     --color-subtitle: #4C4B4F;
@@ -134,7 +133,7 @@ button {
 }
 
 .headline {
-    @apply leading-14 md:leading-18 tracking-tighter max-w-150 text-(length:--size-headline-sml) sml:text-(length:--size-headline-sm) md:text-(length:--size-headline-md) lg:text-(length:--size-headline-lg) xl:text-(length:--size-headline-xl) lg:leading-19 text-title font-bold font-(family-name:--font-title) ;
+    @apply leading-13 md:leading-18 tracking-tighter lg:tracking-tight max-w-150 text-(length:--size-headline-sml) sml:text-(length:--size-headline-sm) md:text-(length:--size-headline-md) lg:text-(length:--size-headline-lg) xl:text-(length:--size-headline-xl) lg:leading-19 text-title font-bold font-(family-name:--font-title) ;
 }
 
 .title {
