@@ -27,9 +27,9 @@ const Cards = [
 
 export const Info = () => {
     return (
-        <section className="lg:pt-33 pt-30 relative pb-30">
-            <div className="container grid lg:grid-cols-2 lg:gap-5 items-center justify-center">
-                <div className="w-fit">
+        <section className="pt-33 relative pb-33">
+            <div className="container grid xl:grid-cols-2 lg:gap-5 items-center justify-center">
+                <div className="">
                     <h2 className="title mb-[50px]">
                         Crie sua <span>conta</span> por conta própria e receba
                         essas <span>possibilidades</span>.
@@ -48,7 +48,7 @@ export const Info = () => {
                     </div>
                 </div>
 
-                <div className="h-full flex flex-col md:grid gap-4 mt-30 md:grid-cols-[270px_270px] lg:mt-0 grid-rows-[200px_200px]">
+                <div className=" flex flex-col mt-20 gap-4 xl:grid xl:mt-0 grid-cols-[270px_270px] grid-rows-[210px_210px]">
                     {Cards.map(({ title, desc, icon }, key) => (
                         <Card
                             key={key}
@@ -56,8 +56,8 @@ export const Info = () => {
                             desc={desc}
                             Icon={icon}
                             className={`
-                                ${key % 2 === 0 ? 'md:transform md:translate-y-[-30px]' : ''}
-                                ${key % 2 !== 0 ? 'md:transform md:translate-y-[30px]' : ''}
+                                ${key % 2 === 0 ? 'xl:transform xl:translate-y-[-30px]' : ''}
+                                ${key % 2 !== 0 ? 'xl:transform xl:translate-y-[30px]' : ''}
                             `}
                         />
                     ))}

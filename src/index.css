@@ -22,16 +22,16 @@
     --size-label-sm: 0.930rem;
     --size-label-md: 0.906rem;
     --size-label-lg: 0.938rem;
-    --size-title-sml: 1.9rem;
+    --size-title-sml: 1.8rem;
     --size-title-sm: 2rem;
     --size-title-md: 2.5rem;
     --size-title-lg: 2.6rem;
     --size-title-xl: 2.7rem;
-    --size-headline-sml: 2.4rem;
-    --size-headline-sm: 2.9rem;
-    --size-headline-md: 3.8rem;
-    --size-headline-lg: 3.9rem;
-    --size-headline-xl: 3.8rem;
+    --size-headline-sml: 2.44rem;
+    --size-headline-sm: 2.65rem;
+    --size-headline-md: 3.3rem;
+    --size-headline-lg: 3.5rem;
+    --size-headline-xl: 3.7rem;
 
     /* 
     ** COLORS **
@@ -61,7 +61,7 @@
 
 html {
     scroll-behavior: scroll-smooth;
-    height: 200vh;
+    height: 300vh;
 }
 
 body {
@@ -157,5 +157,5 @@ button {
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
 section.gradient-section {
-    @apply bg-gradient-to-t from-secondary to-body-background rounded-b-[50px] lg:rounded-b-[70px];
+    @apply bg-gradient-to-t from-secondary to-body-background rounded-b-[30px] md:rounded-b-[50px] lg:rounded-b-[70px];
 }

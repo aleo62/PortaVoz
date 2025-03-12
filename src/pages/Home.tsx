@@ -1,6 +1,7 @@
 import { Header } from "../sections/Header"
 import { Hero } from "../sections/Hero"
 import { Info } from "../sections/Info"
+import { Objective } from "../sections/Objective"
 
 export const Home = () => {
   return (
@@ -8,6 +9,7 @@ export const Home = () => {
         <Header/>
         <Hero/>
         <Info/>
+        <Objective/>
     </>
   )
 }
