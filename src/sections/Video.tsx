@@ -1,5 +1,4 @@
 import ReactPlayer from "react-player";
-import video from "../assets/videos/Portavoz_Video.mp4";
 
 export const Video = () => {
     return (
@@ -23,19 +22,23 @@ export const Video = () => {
                     </div>
                 </div>
 
-                <div className="grid justify-center items-center">
-                    <div className="w-full max-w-[898px] max-h-[504] p-2 rounded-2xl md:p-3 lg:p-4 md:rounded-3xl bg-transparent shadow-[0px_0px_80px_0px_rgba(59,_130,_246,_0.5)]">
-                        <div className="pb-2 md:pb-3 pr-2 w-full flex gap-2 items-center justify-end">
-                            <div className="h-2 w-2 md:h-3 md:w-3 rounded-full bg-red-500"></div>
-                            <div className="h-2 w-2 md:h-3 md:w-3 rounded-full bg-yellow-500"></div>
-                            <div className="h-2 w-2 md:h-3 md:w-3 rounded-full bg-green-500"></div>
-                        </div>
+                <div className="grid justify-center items-center w-full">
+                    <div className="relative w-[90vw] h-[53.2vw] max-w-[898px] max-h-[510px] shadow-[0px_0px_72px_-22px_rgba(51,_65,_85,_0.5)]">
                         <ReactPlayer
                             controls={true}
-                            url={video}
+                            url={
+                                "https://youtu.be/g2ZNU6z1oUc?si=iBvO5BevhCKnY0Sd"
+                            }
                             width={"100%"}
                             height={"100%"}
-                            style={{ borderRadius: "1rem", overflow: "hidden" }}
+                            style={{
+                                position: "absolute",
+                                left: "50%",
+                                top: "50%",
+                                transform: "translate(-50%, -50%)",
+                                borderRadius: "1rem",
+                                overflow: "hidden"
+                            }}
                         />
                     </div>
                 </div>
