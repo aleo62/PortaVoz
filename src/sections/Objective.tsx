@@ -19,8 +19,9 @@ export const Objective = () => {
                 </div>
 
                 <div className="">
+                    <p className="caption">Principal Objetivo</p>
                     <h2 className="title mb-[50px]">
-                        Sua <span>segurança</span> se torna nossa prioridade.
+                        Sua <span>segurança</span> se torna nossa <span>prioridade</span>.
                     </h2>
 
                     <div className="subtitle">

@@ -30,6 +30,7 @@ export const Info = () => {
         <section className="pt-33 relative pb-33">
             <div className="container grid xl:grid-cols-2 lg:gap-5 items-center justify-center">
                 <div className="">
+                    <p className="caption">Beneficios de se Cadastrar</p>
                     <h2 className="title mb-[50px]">
                         Crie sua <span>conta</span> por conta própria e receba
                         essas <span>possibilidades</span>.

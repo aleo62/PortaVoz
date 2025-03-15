@@ -22,23 +22,25 @@
     --size-label-sm: 0.930rem;
     --size-label-md: 0.906rem;
     --size-label-lg: 0.938rem;
-    --size-title-sml: 1.8rem;
+    --size-title-sml: 1.6rem;
     --size-title-sm: 2rem;
     --size-title-md: 2.5rem;
     --size-title-lg: 2.6rem;
     --size-title-xl: 2.7rem;
-    --size-headline-sml: 2.44rem;
-    --size-headline-sm: 2.65rem;
+    --size-headline-ssml: 2rem;
+    --size-headline-sml: 2.4rem;
+    --size-headline-sm: 2.55rem;
     --size-headline-md: 3.3rem;
     --size-headline-lg: 3.5rem;
-    --size-headline-xl: 3.7rem;
+    --size-headline-xl: 3.6rem;
 
     /* 
     ** COLORS **
     */
 
     --color-primary: #005CA2;
-    --color-secondary: #B7D4FF;
+    --color-secondary: #C2DBFF;
+    --color-secondary-lighter: #dae9ff;
     --color-accent: #3D69D8;
     --color-body-background: #FAFAFA;
 
@@ -57,6 +59,7 @@
     ** BREAKING POINTS **
     */
     --breakpoint-sml: 23rem;
+    --breakpoint-ssml: 20.5rem;
 }
 
 html {
@@ -124,6 +127,12 @@ button {
     hover:bg-primary active:scale-95 ring-2 ring-zinc-50/70 backdrop-blur-2xl;
 }
 
+/* PLAYER */
+
+.player {
+    @apply absolute
+}
+
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 /* UTILITIES */
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -133,11 +142,15 @@ button {
 }
 
 .headline {
-    @apply leading-13 md:leading-18 tracking-tighter lg:tracking-tight max-w-150 text-(length:--size-headline-sml) sml:text-(length:--size-headline-sm) md:text-(length:--size-headline-md) lg:text-(length:--size-headline-lg) xl:text-(length:--size-headline-xl) lg:leading-19 text-title font-bold font-(family-name:--font-title) ;
+    @apply leading-12 md:leading-18 lg:leading-18 tracking-tighter lg:tracking-tight max-w-150 text-(length:--size-headline-ssml) ssml:text-(length:--size-headline-sml) sml:text-(length:--size-headline-sm) md:text-(length:--size-headline-md) lg:text-(length:--size-headline-lg) xl:text-(length:--size-headline-xl)  text-title font-bold font-(family-name:--font-title) ;
 }
 
 .title {
-    @apply leading-9 sml:leading-11 md:leading-14 tracking-tight max-w-125 text-(length:--size-title-sml) sml:text-(length:--size-title-sm) md:text-(length:--size-title-md) lg:text-(length:--size-title-lg) xl:text-(length:--size-title-xl) lg:leading-15 text-title font-semibold font-(family-name:--font-title);
+    @apply leading-9 sml:leading-11 md:leading-14 tracking-tighter max-w-125 text-(length:--size-title-sml) sml:text-(length:--size-title-sm) md:text-(length:--size-title-md) lg:text-(length:--size-title-lg) xl:text-(length:--size-title-xl) lg:leading-15 text-title font-semibold font-(family-name:--font-title);
+}
+
+.caption {
+    @apply relative text-accent font-medium ml-8 before:content-[''] before:absolute before:h-[2px] before:left-[-30px] before:top-[50%] before:translate-y-[-50%] before:w-5 before:bg-accent
 }
 
 .subtitle {
@@ -157,5 +170,5 @@ button {
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
 section.gradient-section {
-    @apply bg-gradient-to-t from-secondary to-body-background rounded-b-[30px] md:rounded-b-[50px] lg:rounded-b-[70px];
+    @apply bg-gradient-to-t from-secondary from-0% via-secondary-lighter via-25% to-body-background to-100% rounded-b-[30px] md:rounded-b-[50px] lg:rounded-b-[70px];
 }

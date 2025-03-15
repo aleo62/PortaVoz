@@ -13,11 +13,17 @@ export const Header = () => {
 
     useEffect(() => {
         const handleScroll = () => {
-            setHidden(window.scrollY > lastScrollY);
+            if (window.scrollY > lastScrollY) {
+                setHidden(true);
+            } else {
+                setHidden(false);
+            }
+
             setLastScrollY(window.scrollY);
         };
 
         window.addEventListener("scroll", handleScroll);
+
         return () => window.removeEventListener("scroll", handleScroll);
     }, [lastScrollY]);
 
