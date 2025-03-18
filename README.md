@@ -11,7 +11,7 @@
 Este projeto foi produzido com diversas tecnologias, como **TailwindCSS** para sua estilização, **React + Vite + TypeScript** para a estutura e inteligência, **Firebase da Google** para seu armazenamento e gerenciamento de dados, etc.
 Enfim, essas tecnologias forem selecionadas com a finalidade de aumentar a produção e reduzir o tempo, fazendo assim que o projeto possa ser efetuado com **qualidade** e **presteza**.
 
-Para sua Versão Mobile usuaremos o **Android Studio** com **Java**, e novamente o Firebase para
+Para sua Versão Mobile usuaremos o **Android Studio** com **Java**, e novamente o Firebase para sua revisão e manipulamento de dados
 
 ### Desafios e implementações futuras
 
