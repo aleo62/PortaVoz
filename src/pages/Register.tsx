@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
-import { Input } from '../components/Input';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../database/firebase';
+// import React, { useState } from 'react';
+// // import { Input } from '../components/Input';
+// import { createUserWithEmailAndPassword } from 'firebase/auth';
+// import { auth } from '../database/firebase';
 
 export const Register = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    // const [email, setEmail] = useState('');
+    // const [password, setPassword] = useState('');
 
-    const handleRegister = async (e: React.FormEvent) => {
-        e.preventDefault();
+    // const handleRegister = async (e: React.FormEvent) => {
+    //     e.preventDefault();
 
-        try {
-            await createUserWithEmailAndPassword(auth, email, password);
-            const user = auth.currentUser;
-            console.log(user, ' User registered with success!');
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    //     try {
+    //         await createUserWithEmailAndPassword(auth, email, password);
+    //         const user = auth.currentUser;
+    //         console.log(user, ' User registered with success!');
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
 
     return (
         <div>
