@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 type ButtonProps = {
     children: React.ReactNode;
@@ -11,10 +11,7 @@ export const ButtonPrimary = ({ children, onClick, small, path }: ButtonProps) =
     return (
         <a href={path}>
             <button
-                className={
-                    "button btn-primary " +
-                    (small ? " small" : "")
-                }
+                className={'button btn-primary ' + (small ? ' small' : '')}
                 onClick={() => onClick?.()}
             >
                 {children}
@@ -27,10 +24,7 @@ export const ButtonSecondary = ({ children, onClick, small, path }: ButtonProps)
     return (
         <a href={path}>
             <button
-                className={
-                    "button btn-secondary" +
-                    (small ? " small" : "")
-                }
+                className={'button btn-secondary' + (small ? ' small' : '')}
                 onClick={() => onClick?.()}
             >
                 {children}
