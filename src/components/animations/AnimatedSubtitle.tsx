@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion';
-import { AnimationProps } from '../../utils/types/animationType';
+import { motion } from "framer-motion";
+import { AnimationProps } from "@utils/types/animationType";
 
 export const AnimatedSubtitle = ({ children, className, delay }: AnimationProps) => {
     return (

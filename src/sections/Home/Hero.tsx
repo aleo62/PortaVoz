@@ -1,8 +1,8 @@
-import { motion } from 'framer-motion';
-import woman from '../../assets/images/illustrations/landing-page/woman.png';
-import { ButtonPrimary } from '../../components/Button';
-import { AnimatedSubtitle } from '../../components/animations/AnimatedSubtitle';
-import { AnimatedButton } from '../../components/animations/AnimatedButton';
+import { motion } from "framer-motion";
+import woman from "@assets/images/illustrations/landing-page/woman.png";
+import { ButtonPrimary } from "@components/Button";
+import { AnimatedSubtitle } from "@components/animations/AnimatedSubtitle";
+import { AnimatedButton } from "@components/animations/AnimatedButton";
 
 export const Hero = () => {
     const title = {
@@ -20,12 +20,12 @@ export const Hero = () => {
         show: {
             opacity: 1,
             y: 0,
-            transition: { duration: 0.7, ease: 'easeOut' },
+            transition: { duration: 0.7, ease: "easeOut" },
         },
     };
 
     return (
-        <section className="gradient-section relative pt-33 pb-33 xl:pt-48">
+        <section className="gradient-section relative pt-33 pb-33 xl:pt-50 overflow-hidden">
             <div className="container grid items-center justify-center xl:relative xl:grid-cols-2 xl:gap-7.5">
                 <div className="w-fit">
                     <motion.h2
@@ -64,12 +64,12 @@ export const Hero = () => {
                 <div className="h-65 sm:h-80 xl:h-full">
                     <figure className="flex h-80 justify-center lg:h-full">
                         <motion.img
-                            className="woman-image absolute bottom-0 w-[85vw] max-w-[380px] md:w-[45vw] xl:right-[32px] xl:bottom-[-31.5%] xl:max-w-[600px]"
+                            className="woman-image xxl:right-[220px] absolute bottom-0 w-[85vw] max-w-[380px] md:w-[45vw] xl:bottom-[-30.5%] xl:max-w-[600px]"
                             src={woman}
                             alt="Woman"
                             initial={{ opacity: 0, x: 70 }}
                             whileInView={{ opacity: 1, x: 0 }}
-                            transition={{ ease: 'easeOut', duration: 1 }}
+                            transition={{ ease: "easeOut", duration: 1 }}
                             viewport={{ once: true }}
                         />
                     </figure>

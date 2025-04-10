@@ -1,12 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sora:wght@100..800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
-@import 'tailwindcss';
+@import "tailwindcss";
 @plugin 'tailwind-scrollbar';
 
-@import 'swiper/css/pagination';
-@import 'swiper/css/scrollbar';
-@import 'swiper/css';
-@import 'swiper/css/effect-coverflow';
+@import "swiper/css/pagination";
+@import "swiper/css/scrollbar";
+@import "swiper/css";
+@import "swiper/css/effect-coverflow";
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 /** RESETING */
@@ -16,8 +16,8 @@
     /* 
     /* ? FONTS 
     */
-    --font-common: 'Sora', sans-serif;
-    --font-title: 'Poppins', sans-serif;
+    --font-common: "Poppins", sans-serif;
+    --font-title: "Poppins", sans-serif;
 
     /* 
     /* ? TEXT-SIZE 
@@ -27,23 +27,24 @@
     --size-links: 1rem;
 
     /* label */
-    --size-label-ssml: 0.75rem;
-    --size-label-sml: 0.79rem;
-    --size-label-sm: 0.8rem;
-    --size-label-md: 0.85rem;
-    --size-label-lg: 0.87rem;
-    --size-label-xl: 0.89rem;
+    --size-label-ssml: 0.9rem;
+    --size-label-sml: 0.92rem;
+    --size-label-sm: 0.95rem;
+    --size-label-md: .98rem;
+    --size-label-lg: 1rem;
+    --size-label-xl: 1.05rem;
 
     /* caption */
     --size-caption-ssml: 0.8rem;
     --size-caption-sml: 0.85rem;
-    --size-caption-sm: 0.9rem;
-    --size-caption-md: 0.95rem;
-    --size-caption-lg: 0.99rem;
-    --size-caption-xl: 1.1rem;
+    --size-caption-sm: 0.88rem;
+    --size-caption-md: 0.9rem;
+    --size-caption-lg: .92rem;
+    --size-caption-xl: .95rem;
 
     /* title */
-    --size-title-sml: 1.6rem;
+    --size-title-ssml: 1.6rem;
+    --size-title-sml: 1.9rem;
     --size-title-sm: 2rem;
     --size-title-md: 2.5rem;
     --size-title-lg: 2.6rem;
@@ -67,19 +68,19 @@
     --color-accent: #3d69d8;
     --color-body-background: #fafafa;
 
-    --color-title: #1b1b1b;
-    --color-subtitle: #444444;
+    --color-title: #212121;
+    --color-subtitle: #5c5c5c;
 
     /* 
     /* ? BREAKING POINTS
     */
+    --breakpoint-xxl: 92rem;
     --breakpoint-sml: 25rem;
     --breakpoint-ssml: 21.43rem;
 }
 
 html {
     scroll-behavior: scroll-smooth;
-    height: 300vh;
 }
 
 body {
@@ -114,7 +115,7 @@ button {
 /* ? NAVBAR */
 
 .navbar {
-    @apply bg-primary text-body-background lg:text-subtitle pointer-events-none invisible absolute top-full right-0 isolate grid min-w-40 scale-90 gap-2 rounded-2xl p-2 opacity-0 ring-1 ring-zinc-500/70 backdrop-blur-2xl transition-[opacity,transform,filter] max-lg:mt-2 lg:pointer-events-auto lg:visible lg:static lg:flex lg:gap-4 lg:bg-transparent lg:opacity-100 lg:ring-0 lg:backdrop-blur-none;
+    @apply bg-primary text-body-background lg:text-subtitle pointer-events-none invisible absolute top-full right-0 isolate grid min-w-40 scale-90 gap-2 rounded-2xl p-2 opacity-0 ring-1 ring-zinc-500/70 backdrop-blur-2xl transition-[opacity,transform,filter] max-lg:mt-2 lg:pointer-events-auto lg:visible lg:static lg:flex lg:items-center lg:gap-6 lg:bg-transparent lg:opacity-100 lg:ring-0 lg:backdrop-blur-none;
 }
 
 .navbar.active {
@@ -122,7 +123,7 @@ button {
 }
 
 .nav-link {
-    @apply md:hover:text-title max-md:active:bg-body-background max-md:active:text-title max-md:hover:bg-body-background/20 grid h-10 items-center rounded-[.5rem] px-4 text-(length:--size-links) font-semibold;
+    @apply md:hover:text-title max-md:active:bg-body-background max-md:active:text-title max-md:hover:bg-body-background/20 grid h-10 items-center rounded-[.5rem] px-4 text-(length:--size-links) font-medium max-md:font-semibold;
 }
 
 .nav-link.menu-btn {
@@ -135,11 +136,6 @@ button {
     @apply bg-primary/90 text-body-background hover:bg-primary grid h-10 w-10 items-center justify-center rounded-xl ring-2 ring-zinc-50/70 backdrop-blur-2xl active:scale-95 lg:hidden;
 }
 
-/* ? PLAYER */
-
-.player {
-    @apply h-100;
-}
 
 /* ? SWIPER */
 
@@ -164,15 +160,15 @@ button {
 }
 
 .title {
-    @apply sml:leading-11 sml:text-(length:--size-title-sm) text-title max-w-125 font-(family-name:--font-title) text-(length:--size-title-sml) leading-9 font-semibold tracking-tighter md:text-(length:--size-title-md) md:leading-14 lg:text-(length:--size-title-lg) lg:leading-15 xl:text-(length:--size-title-xl);
+    @apply text-(length:--size-title-ssml) ssml:text-(length:--size-title-sml) sml:leading-11 sml:text-(length:--size-title-sm) text-title max-w-125 font-(family-name:--font-title)  leading-9 font-semibold tracking-tighter md:text-(length:--size-title-md) md:leading-14 lg:text-(length:--size-title-lg) lg:leading-15 xl:text-(length:--size-title-xl);
 }
 
 .caption {
-    @apply text-accent before:bg-accent ssml:text-(length:--size-caption-sml) sml:text-(length:--size-caption-sm) relative ml-8 text-(length:--size-caption-ssml) font-medium tracking-tight before:absolute before:top-[50%] before:left-[-30px] before:h-[1.5px] before:w-5 before:translate-y-[-150%] before:content-[''] md:text-(length:--size-caption-md) lg:text-(length:--size-caption-lg) xl:text-(length:--size-caption-xl);
+    @apply text-accent/90 ssml:text-(length:--size-caption-sml) sml:text-(length:--size-caption-sm) relative text-(length:--size-caption-ssml) px-4 font-bold py-1 rounded-2xl mb-2 bg-secondary/50 w-fit uppercase tracking-normal md:text-(length:--size-caption-md) lg:text-(length:--size-caption-lg) xl:text-(length:--size-caption-xl);
 }
 
 .subtitle {
-    @apply ssml:text-(length:--size-label-sml) sml:text-(length:--size-label-sm) text-subtitle max-w-130 text-(length:--size-label-ssml) tracking-tight md:text-(length:--size-label-md) lg:text-(length:--size-label-lg) xl:text-(length:--size-label-xl);
+    @apply ssml:text-(length:--size-label-sml) sml:text-(length:--size-label-sm) text-subtitle max-w-130 text-(length:--size-label-ssml) leading-relaxed font-medium tracking-tight md:text-(length:--size-label-md) lg:text-(length:--size-label-lg) xl:text-(length:--size-label-xl);
 }
 
 .headline b,
@@ -184,9 +180,6 @@ button {
     @apply font-semibold;
 }
 
-.clip-triangle {
-    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-}
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 /** SECTION */

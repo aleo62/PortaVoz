@@ -1,10 +1,12 @@
-import { ButtonPrimary } from "../../components/Button";
-import man from "../../assets/images/illustrations/landing-page/man.png";
-import { AnimatedTitle } from "../../components/animations/AnimatedTitle";
+import { ButtonPrimary } from "@components/Button";
+
+import man from "@assets/images/illustrations/landing-page/man.png";
+
 import { motion } from "framer-motion";
-import { AnimatedSubtitle } from "../../components/animations/AnimatedSubtitle";
-import { AnimatedButton } from "../../components/animations/AnimatedButton";
-import { AnimatedCaption } from "../../components/animations/AnimatedCaption";
+import { AnimatedTitle } from "@components/animations/AnimatedTitle";
+import { AnimatedSubtitle } from "@components/animations/AnimatedSubtitle";
+import { AnimatedButton } from "@components/animations/AnimatedButton";
+import { AnimatedCaption } from "@components/animations/AnimatedCaption";
 
 export const Objective = () => {
     return (

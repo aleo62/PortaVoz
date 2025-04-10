@@ -1,13 +1,7 @@
-import React from 'react';
 import { motion } from 'framer-motion';
+import { AnimationProps } from '@/utils/types/animationType';
 
-type ButtonProps = {
-    children: React.ReactNode;
-    delay?: number;
-    className?: string;
-};
-
-export const AnimatedButton = ({ children, delay, className }: ButtonProps) => {
+export const AnimatedButton = ({ children, delay, className }: AnimationProps) => {
     return (
         <motion.div
             initial={{ opacity: 0, y: 30 }}

@@ -1,13 +1,15 @@
-import { AnimatedButton } from "../../components/animations/AnimatedButton";
-import { AnimatedSubtitle } from "../../components/animations/AnimatedSubtitle";
-import { AnimatedTitle } from "../../components/animations/AnimatedTitle";
-import { ButtonPrimary } from "../../components/Button";
-import { Card } from "../../components/Card";
+import { AnimatedButton } from "@components/animations/AnimatedButton";
+import { AnimatedSubtitle } from "@components/animations/AnimatedSubtitle";
+import { AnimatedTitle } from "@components/animations/AnimatedTitle";
+import { AnimatedCaption } from "@components/animations/AnimatedCaption";
+
+import { ButtonPrimary } from "@components/Button";
+import { Card } from "@components/Card";
 import { IconMessageUp, IconEarScan, IconReport, IconListSearch } from "@tabler/icons-react";
 import { motion } from "framer-motion";
-import { Ret } from "../../components/deco/Ret";
-import { Border } from "../../components/deco/Border";
-import { AnimatedCaption } from "../../components/animations/AnimatedCaption";
+
+import { Ret } from "@components/deco/Ret";
+import { Border } from "@components/deco/Border";
 
 const Cards = [
     {
@@ -51,7 +53,7 @@ export const Info = () => {
             <div className="relative z-10 container grid items-center justify-center lg:gap-5 xl:grid-cols-2">
                 <div className="">
                     <AnimatedCaption>
-                        <p className="caption">Beneficios de se Cadastrar</p>
+                        <p className="caption">Beneficios de cadastrar-se</p>
                     </AnimatedCaption>
                     <AnimatedTitle>
                         <h2 className="title mb-[50px]">

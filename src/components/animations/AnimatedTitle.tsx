@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
-import { AnimationProps } from '../../utils/types/animationType';
-
+import { AnimationProps } from '@utils/types/animationType';
 
 export const AnimatedTitle = ({ children, className, delay }: AnimationProps) => {
     return (
