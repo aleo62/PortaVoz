@@ -1,0 +1,225 @@
+@import url("https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+@import "tailwindcss";
+@plugin 'tailwind-scrollbar';
+
+@import "swiper/css/pagination";
+@import "swiper/css/scrollbar";
+@import "swiper/css";
+@import "swiper/css/effect-coverflow";
+@import "swiper/css/navigation";
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/** RESETING */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+@theme {
+    /* 
+    /* ? FONTS 
+    */
+    --font-common: "Poppins", sans-serif;
+    --font-title: "Lexend Deca", sans-serif;
+
+    /* 
+    /* ? TEXT-SIZE 
+    */
+
+    /* links */
+    --size-links: 1.1rem;
+
+    /* label */
+    --size-label-ssml: 0.88rem;
+    --size-label-sml: 0.9rem;
+    --size-label-sm: 0.93rem;
+    --size-label-md: 0.95rem;
+    --size-label-lg: 1rem;
+    --size-label-xl: 1.05rem;
+
+    /* caption */
+    --size-caption-ssml: 0.8rem;
+    --size-caption-sml: 0.85rem;
+    --size-caption-sm: 0.88rem;
+    --size-caption-md: 0.9rem;
+    --size-caption-lg: 0.92rem;
+    --size-caption-xl: 0.95rem;
+
+    /* title */
+    --size-title-ssml: 1.6rem;
+    --size-title-sml: 2rem;
+    --size-title-sm: 2.3rem;
+    --size-title-md: 2.5rem;
+    --size-title-lg: 2.6rem;
+    --size-title-xl: 2.7rem;
+
+    /* headline */
+    --size-headline-ssml: 2.2rem;
+    --size-headline-sml: 2.5rem;
+    --size-headline-sm: 2.9rem;
+    --size-headline-md: 3.5rem;
+    --size-headline-lg: 3.8rem;
+    --size-headline-xl: 4rem;
+
+    /* 
+    /* ? COLORS 
+    */
+
+    --color-primary: #005ca2;
+    --color-secondary: #cfe3ff;
+    --color-secondary-lighter: #dae9ff;
+    --color-accent: #3d69d8;
+    --color-body-background: #fafafa;
+
+    --color-title: #343434;
+    --color-subtitle: #5e5f61;
+
+    /* 
+    /* ? BREAKING POINTS
+    */
+    --breakpoint-xxl: 92rem;
+    --breakpoint-sml: 25rem;
+    --breakpoint-ssml: 21.43rem;
+
+    --toastify-font-family: "Poppins", sans-serif;
+}
+
+html {
+    scroll-behavior: scroll-smooth;
+    @apply overflow-x-hidden ;
+    
+}
+
+body {
+    @apply bg-body-background overflow-x-hidden  font-(family-name:--font-common);
+}
+
+button {
+    @apply cursor-pointer border-0 outline-0;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/** COMPONENTS */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* ? BUTTON */
+.button {
+    @apply text-body-background relative flex items-center justify-center gap-2 overflow-hidden rounded-[.6rem] px-[2rem] py-[.800rem] text-[13px] font-medium tracking-wider transition-[transform,translate] duration-200 active:scale-95 disabled:before:absolute disabled:before:inset-0 disabled:before:bg-black disabled:before:opacity-10 disabled:before:content-[''] disabled:hover:translate-y-[0px] md:text-[14px] lg:px-[1.4rem] lg:text-[15.5px];
+}
+
+.btn-primary {
+    @apply from-accent/95 to-primary/95 hover:from-accent hover:to-primary bg-gradient-to-r shadow-[0px_4px_54px_0px_rgba(0,_0,_0,_0.2)] transition-all duration-200 hover:translate-y-[-3px];
+}
+
+.btn-secondary {
+    @apply bg-secondary text-primary hover:bg-[#B5D9F5];
+}
+
+.btn-outlined {
+    @apply bg-transparent text-accent ring-1 ring-accent hover:bg-accent/10;
+}
+
+.button.small {
+    @apply text-(length:--size-label-sml);
+}
+
+/* ? NAVBAR */
+
+.navbar {
+    @apply bg-primary text-body-background lg:text-subtitle pointer-events-none invisible absolute top-full right-0 isolate grid min-w-40 scale-90 gap-2 rounded-2xl p-2 opacity-0 ring-1 ring-zinc-500/70 backdrop-blur-2xl transition-[opacity,transform,filter] max-lg:mt-2 lg:pointer-events-auto lg:visible lg:static lg:flex lg:items-center lg:gap-6 lg:bg-transparent lg:opacity-100 lg:ring-0 lg:backdrop-blur-none;
+}
+
+.navbar.active {
+    @apply pointer-events-auto visible scale-100 opacity-100 transition-[opacity,transform,filter];
+}
+
+.nav-link {
+    @apply md:text-title max-md:active:bg-body-background max-md:active:text-title max-md:hover:bg-body-background/20 grid h-10 items-center rounded-[.5rem] px-4 text-(length:--size-links) font-medium md:hover:text-zinc-900;
+}
+
+.nav-link.menu-btn {
+    @apply hover:bg-secondary text-primary before:bg-body-background/65 relative mt-5 bg-white/85 text-center font-bold before:absolute before:top-[-50%] before:h-[.5px] before:w-[95%] before:justify-self-center before:content-[''] lg:hidden;
+}
+
+/* ? NAVBAR BUTTON */
+
+.nav-button {
+    @apply bg-primary/90 text-body-background hover:bg-primary grid h-10 w-10 items-center justify-center rounded-xl ring-2 ring-zinc-50/70 backdrop-blur-2xl active:scale-95 lg:hidden;
+}
+
+/* ? SWIPER */
+
+.swiper {
+    touch-action: pan-y;
+    overscroll-behavior: contain;
+}
+
+.swiper-pagination-bullet {
+    transition: all 0.3s ease;
+}
+
+.swiper-pagination-bullet-active {
+    @apply w-4 rounded-2xl bg-blue-500 opacity-100;
+}
+.custom-prev,
+.custom-next {
+    @apply text-accent z-10 grid h-15 w-15 items-center justify-center rounded-full bg-white shadow-[0px_4px_57px_1px_rgba(0,_0,_0,_0.1)] ring-2 ring-zinc-100;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/** UTILITIES */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+.container {
+    @apply mx-auto px-4 max-sm:max-w-3xl lg:px-8;
+}
+
+.headline {
+    @apply ssml:text-(length:--size-headline-sml) sml:text-(length:--size-headline-sm) text-title font-title max-w-150 text-(length:--size-headline-ssml) leading-12 font-bold tracking-tighter md:text-(length:--size-headline-md) md:leading-18 lg:text-(length:--size-headline-lg) lg:leading-18 lg:tracking-tight xl:text-(length:--size-headline-xl);
+}
+
+.title {
+    @apply ssml:text-(length:--size-title-sml) sml:leading-11 sml:text-(length:--size-title-sm) text-title font-title max-w-125 text-(length:--size-title-ssml) leading-9 font-semibold tracking-tighter md:text-(length:--size-title-md) md:leading-14 lg:text-(length:--size-title-lg) lg:leading-15 xl:text-(length:--size-title-xl);
+}
+
+.caption {
+    @apply text-accent/90 ssml:text-(length:--size-caption-sml) sml:text-(length:--size-caption-sm) relative w-fit rounded-2xl text-(length:--size-caption-ssml) font-semibold tracking-widest uppercase md:text-(length:--size-caption-md) lg:text-(length:--size-caption-lg) xl:text-(length:--size-caption-xl);
+}
+
+.subtitle {
+    @apply ssml:text-(length:--size-label-sml) sml:text-(length:--size-label-sm) text-subtitle max-w-130 text-(length:--size-label-ssml) leading-relaxed tracking-tight md:text-(length:--size-label-md) lg:text-(length:--size-label-lg) xl:text-(length:--size-label-xl);
+}
+
+.headline b,
+.title b {
+    @apply from-accent to-primary w-fit bg-gradient-to-r bg-clip-text pr-0.5 font-bold text-transparent;
+}
+
+.title b {
+    @apply font-semibold;
+}
+
+.label {
+    @apply text-zinc-500 text-[13px] font-semibold;
+}
+
+.link {
+    @apply text-accent cursor-pointer font-medium hover:text-blue-700;
+}
+
+.topic {
+    @apply text-title flex items-center justify-center gap-2 rounded-3xl bg-gradient-to-br from-zinc-300/10 to-zinc-300/50 px-3 py-2 font-medium inset-ring-2 inset-ring-zinc-300/20 backdrop-blur-3xl;
+}
+
+.toastSuccess {
+    @apply from-body-background font-title text-title bg-gradient-to-r to-green-100 to-95%;
+}
+.toastError {
+    @apply from-body-background font-title text-title bg-gradient-to-r to-red-100 to-95%;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/** SECTION */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+section.gradient-section {
+    @apply from-secondary via-secondary-lighter to-body-background rounded-b-[30px] bg-gradient-to-t from-0% via-10% to-100% md:rounded-b-[50px] lg:rounded-b-[70px];
+}
