@@ -1,9 +1,9 @@
 import { Button } from "@/components/general/Button";
 import { useToast } from "@/contexts/ToastContext";
-import { ReportContent } from "@/sections/CreateProfile/ReportContent";
-import { ReportImages } from "@/sections/CreateProfile/ReportImages";
-import { ReportLocation } from "@/sections/CreateProfile/ReportLocation";
-import { ReportTags } from "@/sections/CreateProfile/ReportTags";
+import { ReportContent } from "@/sections/CreateReport/ReportContent";
+import { ReportImages } from "@/sections/CreateReport/ReportImages";
+import { ReportLocation } from "@/sections/CreateReport/ReportLocation";
+import { ReportTags } from "@/sections/CreateReport/ReportTags";
 import { PostData } from "@/utils/types/postDataType";
 import { IconArrowRight, IconHome2 } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "framer-motion";

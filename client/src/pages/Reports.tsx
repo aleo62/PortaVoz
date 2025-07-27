@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 export const Reports = () => {
     const navigate = useNavigate();
     const deletePost = useDeletePost();
-    const { data, isLoading, error } = usePosts();
+    const { data, isLoading } = usePosts();
 
     const hadleDeletePost = async (id: string) => {
         await deletePost.mutate(id);

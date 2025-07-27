@@ -1,5 +1,4 @@
 import { FormInput } from "@/components/general/FormInput";
-import { useToast } from "@/contexts/ToastContext";
 import { PostData } from "@/utils/types/postDataType";
 import React, { useEffect } from "react";
 
@@ -12,7 +11,6 @@ export const ReportContent = ({
     reportForm: PostData;
     setReportForm: React.Dispatch<React.SetStateAction<PostData>>;
 }) => {
-    const { errorToast } = useToast();
 
     useEffect(() => {
         if (!reportForm) return;

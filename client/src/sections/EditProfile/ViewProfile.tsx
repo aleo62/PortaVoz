@@ -147,7 +147,6 @@ export const ViewProfile = () => {
         setPreviewAbout(userData?.about || undefined);
     };
 
-    const { userDecoded } = useUser();
     return (
         <>
             {loading && (

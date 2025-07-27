@@ -1,7 +1,6 @@
 import { Button } from "@/components/general/Button";
 import { Navbar } from "@/components/general/Navbar";
 import { SearchOverlay } from "@/components/general/SearchOverlay";
-import { UserContainer } from "@/components/general/UserContainer";
 import logo from "@assets/images/logo/logo-light.png";
 import {
     IconChevronDown,
@@ -155,7 +154,6 @@ export const Header = ({ search = true }: { search?: boolean }) => {
                                         />
 
                                         <div className="relative flex items-center justify-center">
-                                            <UserContainer isContainerOpen={isUserContainerOpen} />
                                             <button
                                                 onClick={() =>
                                                     setIsUserContainerOpen(!isUserContainerOpen)

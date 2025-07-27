@@ -1,7 +1,6 @@
 import { IconAlertTriangle, IconLink, IconPencilCog, IconTrash } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 
 type PostContainerProps = {
     isContainerOpen: boolean;
@@ -20,7 +19,6 @@ export const PostContainer = ({
     isOwner,
     onDeletePost
 }: PostContainerProps) => {
-    const navigate = useNavigate();
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {

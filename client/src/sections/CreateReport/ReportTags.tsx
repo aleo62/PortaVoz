@@ -1,6 +1,6 @@
-import { Button } from "@/components/general/Button";
+
 import { Input } from "@/components/general/Input";
-import { useToast } from "@/contexts/ToastContext";
+
 import { PostData } from "@/utils/types/postDataType";
 import { IconPlus, IconX } from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
@@ -14,7 +14,6 @@ export const ReportTags = ({
     reportForm: PostData;
     setReportForm: React.Dispatch<React.SetStateAction<PostData>>;
 }) => {
-    const { errorToast } = useToast();
     const [tag, setTag] = useState<string>();
 
     useEffect(() => {

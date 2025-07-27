@@ -18,7 +18,7 @@ type SearchOverlayProps = {
 
 export const PostOverlay = ({ isOpen, onClose, report }: SearchOverlayProps) => {
     const { userData } = useUser();
-    const { data, isLoading, error } = usePostById(report._id, isOpen);
+    const { data } = usePostById(report._id, isOpen);
 
     const [commentInput, setCommentInput] = useState("");
     const [comments, setComments] = useState<CommentData[]>([]);
