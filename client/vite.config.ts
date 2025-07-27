@@ -5,7 +5,7 @@ import path from "path";
 
 // https://vite.dev/config/
 export default defineConfig({
-    plugins: [react(), tailwindcss()],
+    plugins: [react(), , tailwindcss()],
     resolve: {
         alias: {
             "@tabler/icons-react": "@tabler/icons-react/dist/esm/icons/index.mjs",
@@ -15,6 +15,8 @@ export default defineConfig({
             "@assets": path.resolve(__dirname, "./src/assets"),
             "@pages": path.resolve(__dirname, "./src/pages"),
             "@contexts": path.resolve(__dirname, "./src/contexts"),
+            "@api": path.resolve(__dirname, "./src/api"),
+            "@hooks": path.resolve(__dirname, "./src/hooks"),
         },
     },
 });

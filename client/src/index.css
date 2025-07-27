@@ -3,6 +3,8 @@
 @import "tailwindcss";
 @plugin 'tailwind-scrollbar';
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @import "swiper/css/pagination";
 @import "swiper/css/scrollbar";
 @import "swiper/css";
@@ -82,14 +84,24 @@
     --toastify-font-family: "Poppins", sans-serif;
 }
 
+/* Modo dark: sobrescreva as variáveis */
+.dark {
+    --color-secondary: #334155;
+    --color-secondary-lighter: #2f3a4a;
+    --color-accent: #2075f5;
+    --color-body-background: #212121;
+
+    --color-title: #f1f5f9;
+    --color-subtitle: #cbd5e1;
+}
+
 html {
     scroll-behavior: scroll-smooth;
-    @apply overflow-x-hidden ;
-    
+    @apply overflow-x-hidden;
 }
 
 body {
-    @apply bg-body-background overflow-x-hidden  font-(family-name:--font-common);
+    @apply bg-body-background overflow-x-hidden font-(family-name:--font-common);
 }
 
 button {
@@ -99,27 +111,6 @@ button {
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 /** COMPONENTS */
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-
-/* ? BUTTON */
-.button {
-    @apply text-body-background relative flex items-center justify-center gap-2 overflow-hidden rounded-[.6rem] px-[2rem] py-[.800rem] text-[13px] font-medium tracking-wider transition-[transform,translate] duration-200 active:scale-95 disabled:before:absolute disabled:before:inset-0 disabled:before:bg-black disabled:before:opacity-10 disabled:before:content-[''] disabled:hover:translate-y-[0px] md:text-[14px] lg:px-[1.4rem] lg:text-[15.5px];
-}
-
-.btn-primary {
-    @apply from-accent/95 to-primary/95 hover:from-accent hover:to-primary bg-gradient-to-r shadow-[0px_4px_54px_0px_rgba(0,_0,_0,_0.2)] transition-all duration-200 hover:translate-y-[-3px];
-}
-
-.btn-secondary {
-    @apply bg-secondary text-primary hover:bg-[#B5D9F5];
-}
-
-.btn-outlined {
-    @apply bg-transparent text-accent ring-1 ring-accent hover:bg-accent/10;
-}
-
-.button.small {
-    @apply text-(length:--size-label-sml);
-}
 
 /* ? NAVBAR */
 
@@ -132,7 +123,7 @@ button {
 }
 
 .nav-link {
-    @apply md:text-title max-md:active:bg-body-background max-md:active:text-title max-md:hover:bg-body-background/20 grid h-10 items-center rounded-[.5rem] px-4 text-(length:--size-links) font-medium md:hover:text-zinc-900;
+    @apply md:text-title max-md:active:bg-body-background max-md:active:text-title max-md:hover:bg-body-background/20 grid h-10 items-center rounded-[.5rem] px-4 text-(length:--size-links) font-medium md:hover:text-zinc-900 dark:md:hover:text-stone-300;
 }
 
 .nav-link.menu-btn {
@@ -159,9 +150,10 @@ button {
 .swiper-pagination-bullet-active {
     @apply w-4 rounded-2xl bg-blue-500 opacity-100;
 }
+
 .custom-prev,
 .custom-next {
-    @apply text-accent z-10 grid h-15 w-15 items-center justify-center rounded-full bg-white shadow-[0px_4px_57px_1px_rgba(0,_0,_0,_0.1)] ring-2 ring-zinc-100;
+    @apply text-accent z-10 grid h-15 w-15 items-center justify-center rounded-full bg-white dark:bg-zinc-900 shadow-[0px_4px_57px_1px_rgba(0,_0,_0,_0.1)] ring-2 ring-zinc-700;
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -198,7 +190,7 @@ button {
 }
 
 .label {
-    @apply text-zinc-500 text-[13px] font-semibold;
+    @apply text-[13px] font-semibold text-zinc-500;
 }
 
 .link {
@@ -212,6 +204,7 @@ button {
 .toastSuccess {
     @apply from-body-background font-title text-title bg-gradient-to-r to-green-100 to-95%;
 }
+
 .toastError {
     @apply from-body-background font-title text-title bg-gradient-to-r to-red-100 to-95%;
 }

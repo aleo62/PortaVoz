@@ -1,9 +1,9 @@
-import { motion } from "framer-motion";
+import { Button } from "@/components/general/Button";
 import woman from "@assets/images/illustrations/landing-page/woman.png";
-import { ButtonPrimary } from "@components/Button";
-import { AnimatedSubtitle } from "@components/animations/AnimatedSubtitle";
 import { AnimatedButton } from "@components/animations/AnimatedButton";
+import { AnimatedSubtitle } from "@components/animations/AnimatedSubtitle";
 import { IconArrowNarrowRight } from "@tabler/icons-react";
+import { motion } from "framer-motion";
 
 export const Hero = () => {
     const headline = {
@@ -57,7 +57,11 @@ export const Hero = () => {
 
                     <div className="mt-16.5 flex items-center gap-4 max-md:flex-col max-md:items-start">
                         <AnimatedButton delay={1}>
-                            <ButtonPrimary text="Quero ajudar" Icon={IconArrowNarrowRight} />
+                            <Button
+                                text="Quero ajudar"
+                                Icon={IconArrowNarrowRight}
+                                styleType="primary"
+                            />
                         </AnimatedButton>
                     </div>
                 </div>

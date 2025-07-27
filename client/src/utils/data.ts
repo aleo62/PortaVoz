@@ -1,19 +1,20 @@
 import {
+    IconAlertTriangle,
     IconBadgesFilled,
+    IconBell,
     IconChecklist,
     IconCloudLock,
     IconCodeCircleFilled,
     IconEarScan,
     IconListSearch,
-    IconLogout,
+    IconLock,
     IconMessage2,
     IconMessageUp,
     IconMeteorFilled,
     IconReport,
     IconReportSearch,
-    IconSettings,
     IconSparkles,
-    IconUserCircle,
+    IconUser,
 } from "@tabler/icons-react";
 
 export const NavItems = [
@@ -26,12 +27,17 @@ export const NavItems = [
 export const SidebarItems = [
     { label: "Denúncias", icon: IconReportSearch, href: "/reports" },
     { label: "Chat", icon: IconMessage2, href: "/chat" },
-    { label: "Perfil", icon: IconUserCircle, href: "/profile" },
+    { label: "Ajuda", icon: IconEarScan, href: "/help" },
 ];
 
-export const SidebarOptions = [
-    { label: "Configurações", icon: IconSettings, href: "/reports" },
-    { label: "Logout", icon: IconLogout, href: "/logout" },
+export const SidebarConfig = [
+    { label: "Notificações", icon: IconBell, href: "/notifications" },
+];
+
+export const SidebarProfileItems = [
+    { label: "Visão Geral", icon: IconUser },
+    { label: "Privacidade", icon: IconLock },
+    { label: "Área de Perigo", icon: IconAlertTriangle },
 ];
 
 export const InfoFooterItems = [

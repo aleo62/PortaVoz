@@ -3,8 +3,8 @@ import { AnimatedCaption } from "@components/animations/AnimatedCaption";
 import { AnimatedSubtitle } from "@components/animations/AnimatedSubtitle";
 import { AnimatedTitle } from "@components/animations/AnimatedTitle";
 
-import { ButtonPrimary } from "@components/Button";
-import { Card } from "@components/Card";
+import { Button } from "@/components/general/Button";
+import { Card } from "@/components/otros/Card";
 import { Cards } from "@utils/data";
 import { motion } from "framer-motion";
 
@@ -50,7 +50,7 @@ export const Info = () => {
 
                     <div className="mt-16.5 flex items-center gap-4 max-md:flex-col max-md:items-start">
                         <AnimatedButton>
-                            <ButtonPrimary text="Criar conta" Icon={IconUserFilled} />
+                            <Button text="Criar conta" Icon={IconUserFilled} styleType="primary" />
                         </AnimatedButton>
                     </div>
                 </div>

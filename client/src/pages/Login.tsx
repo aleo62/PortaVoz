@@ -1,12 +1,12 @@
 // src/pages/Login.tsx
-import { ButtonPrimary } from "@/components/Button";
 import { Border } from "@/components/deco/Border";
 import { Circle } from "@/components/deco/Circle";
 import { Ret } from "@/components/deco/Ret";
-import { FormInput } from "@/components/FormInput";
-import { InfoFooter } from "@/components/InfoFooter";
-import { Loader } from "@/components/Loader";
-import { Widgets } from "@/components/Widgets";
+import { Button } from "@/components/general/Button";
+import { FormInput } from "@/components/general/FormInput";
+import { Loader } from "@/components/general/Loader";
+import { InfoFooter } from "@/components/otros/InfoFooter";
+import { Widgets } from "@/components/otros/Widgets";
 import { useToast } from "@/contexts/ToastContext";
 import { auth } from "@/firebase";
 import { useIsMobile } from "@/utils/isMobile";
@@ -30,13 +30,16 @@ export const Login = () => {
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
+        let errorMessage = "";
+
         setIsLoading(true);
 
         try {
             await signInWithEmailAndPassword(auth, email, password);
             successToast("Usuário logado com sucesso!");
         } catch (error: any) {
-            errorToast("Erro ao logar: " + error.message);
+            if (error.code == "auth/invalid-email" || "auth/missing-password" || "auth/invalid-credential") errorMessage = "E-mail ou Senha Inválidos";
+            errorToast("Erro ao logar: " + errorMessage);
         } finally {
             setIsLoading(false);
         }
@@ -99,9 +102,10 @@ export const Login = () => {
                                         </a>
                                     </div>
 
-                                    <ButtonPrimary
+                                    <Button
+                                        styleType="primary"
                                         text="Entrar"
-                                        className="mt-15 ml-auto w-2/3"
+                                        className="mt-15 ml-auto w-1/2"
                                         Icon={IconArrowUpRight}
                                         onClick={() => handleLogin}
                                     />
@@ -134,7 +138,8 @@ export const Login = () => {
                     ) : (
                         <>
                             <div className="grid w-full gap-3 px-2 md:px-0">
-                                <ButtonPrimary
+                                <Button
+                                    styleType="primary"
                                     text="Entrar com E-mail"
                                     Icon={IconArrowUpRight}
                                     className="w-full"

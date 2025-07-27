@@ -1,16 +1,16 @@
-import { ButtonPrimary } from "@components/Button";
+import { Button } from "@/components/general/Button";
 
 import man from "@assets/images/illustrations/landing-page/man.png";
 
 import { motion } from "framer-motion";
 
-import { AnimatedTitle } from "@components/animations/AnimatedTitle";
-import { AnimatedSubtitle } from "@components/animations/AnimatedSubtitle";
 import { AnimatedButton } from "@components/animations/AnimatedButton";
 import { AnimatedCaption } from "@components/animations/AnimatedCaption";
+import { AnimatedSubtitle } from "@components/animations/AnimatedSubtitle";
+import { AnimatedTitle } from "@components/animations/AnimatedTitle";
 
+import { Topic } from "@/components/otros/Topic";
 import { topics } from "@/utils/data";
-import { Topic } from "@/components/Topic";
 import { IconArrowNarrowRight } from "@tabler/icons-react";
 
 export const Objective = () => {
@@ -78,7 +78,11 @@ export const Objective = () => {
 
                     <div className="mt-16.5 flex items-center gap-4 max-md:flex-col max-md:items-start">
                         <AnimatedButton>
-                            <ButtonPrimary text="Denunciar Aqui" Icon={IconArrowNarrowRight} />
+                            <Button
+                                text="Denunciar Aqui"
+                                Icon={IconArrowNarrowRight}
+                                styleType="primary"
+                            />
                         </AnimatedButton>
                     </div>
                 </div>

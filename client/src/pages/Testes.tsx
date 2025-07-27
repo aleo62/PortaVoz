@@ -1,5 +1,3 @@
-import { Sidebar } from "@/components/Sidebar";
-
 export const Testes = () => {
     return (
         <>

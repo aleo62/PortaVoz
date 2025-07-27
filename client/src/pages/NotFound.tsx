@@ -1,4 +1,4 @@
-import { ButtonPrimary } from "@/components/Button";
+import { Button } from "@/components/general/Button";
 import error from "@assets/images/illustrations/notfound/404.png";
 import { IconArrowRight } from "@tabler/icons-react";
 
@@ -13,7 +13,8 @@ export const NotFound = () => {
                 <p className="text-subtitle text-md mt-2">
                     A página que vocês procurava pode ter sido movida ou removida.
                 </p>
-                <ButtonPrimary
+                <Button
+                    styleType="primary"
                     text="Voltar para o Início"
                     path="/"
                     className="mt-5"

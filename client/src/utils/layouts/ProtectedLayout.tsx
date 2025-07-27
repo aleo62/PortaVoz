@@ -1,29 +1,31 @@
-import { Loader } from "@/components/Loader";
+import { Loader } from "@/components/general/Loader";
 import { useUser } from "@/contexts/UserContext";
+import { AnimatePresence } from "framer-motion";
 import { Navigate } from "react-router-dom";
 
 type ProtectedLayoutProps = {
     children: React.ReactNode;
     onlyGuest?: boolean;
-    isLoading?: boolean;
+    onlyAdmin?: boolean;
 };
 
+export const ProtectedLayout = ({ children, onlyGuest, onlyAdmin }: ProtectedLayoutProps) => {
+    const { user, userDecoded, isFetching } = useUser();
 
-export const ProtectedLayout = ({
-    children,
-    onlyGuest,
-    isLoading = false,
-}: ProtectedLayoutProps) => {
-    const { user } = useUser();
-    if (isLoading) {
-        return <Loader />;
+    if (onlyGuest && user) {
+        return <Navigate to="/editprofile" />;
+    }
+    if (!onlyGuest && !user && !isFetching) {
+        return <Navigate to="/login" />;
+    }
+    if (onlyAdmin && !(userDecoded?.claims.admin) && !isFetching) {
+        return <Navigate to="/" />;
     }
 
-    if (onlyGuest) {
-        // Se for rota apenas para convidados, redireciona para /profile se estiver logado
-        return user ? <Navigate to="/profile" /> : children;
-    } else {
-        // Se for rota protegida, redireciona para /login se não estiver logado
-        return user ? children : <Navigate to="/login" />;
-    }
+    return (
+        <>
+            {children}
+            <AnimatePresence>{isFetching && <Loader />}</AnimatePresence>
+        </>
+    );
 };

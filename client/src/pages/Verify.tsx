@@ -1,5 +1,5 @@
-import { ButtonPrimary } from "@/components/Button";
-import { CodeInput } from "@/components/CodeInput";
+import { CodeInput } from "@/components/general/CodeInput";
+import { Button } from "@/components/general/Button";
 import { useToast } from "@/contexts/ToastContext";
 import { db } from "@/firebase";
 import logo from "@assets/images/logo/logo-light.png";
@@ -77,7 +77,7 @@ export const Verify = () => {
                 return;
             }
 
-            if (Date.now() > userData.expiresAt) {
+            if (Date.now() > userData.codeExpiresAt) {
                 errorToast("Código expirado. Solicite um novo.");
                 return;
             }
@@ -144,7 +144,8 @@ export const Verify = () => {
                         ))}
                     </div>
                     <div className="grid w-full justify-end">
-                        <ButtonPrimary
+                        <Button
+                            styleType="primary"
                             text="Confirmar"
                             Icon={IconCheck}
                             disabled={isDisabled}

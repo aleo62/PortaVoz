@@ -1,5 +1,5 @@
-import { HeaderSidebar } from "@/components/HeaderSidebar";
-import { Sidebar } from "@/components/Sidebar";
+import { HeaderSidebar } from "@/components/sidebar/HeaderSidebar";
+import { Sidebar } from "@/components/sidebar/Sidebar";
 import { useState } from "react";
 import { useIsMobile } from "../isMobile";
 export const SidebarLayout = ({
@@ -23,10 +23,8 @@ export const SidebarLayout = ({
                     onClick={() => setIsOpen(!isOpen)}
                 />
 
-                <div className="flex-1 overflow-y-auto p-3">
-                    <div className="flex lg:flex-row justify-center gap-3 flex-col">
-                        {children}
-                    </div>
+                <div className="scrollbar-thumb-zinc-500 scrollbar-corner-zinc-950 scrollbar-thin flex-1 overflow-y-auto p-3 px-2">
+                    <div className="flex flex-col justify-center gap-3 lg:flex-row">{children}</div>
                 </div>
             </div>
         </div>

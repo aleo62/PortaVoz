@@ -3,20 +3,20 @@ import React, { useEffect, useState } from "react";
 import { auth, db } from "@/firebase";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, Timestamp } from "firebase/firestore";
 
 import facebook from "@assets/images/icons/facebook.png";
 import google from "@assets/images/icons/google.png";
 import { IconArrowRight } from "@tabler/icons-react";
 
-import { ButtonPrimary } from "@/components/Button";
-import { Widgets } from "@/components/Widgets";
+import { Button } from "@/components/general/Button";
+import { Widgets } from "@/components/otros/Widgets";
 
 import blob from "@assets/images/illustrations/register/blob-scene-haikei.png";
 import workspace from "@assets/images/illustrations/register/workspace.png";
 
-import { FormInput } from "@/components/FormInput";
-import { Loader } from "@/components/Loader";
+import { FormInput } from "@/components/general/FormInput";
+import { Loader } from "@/components/general/Loader";
 import { generateVerificationCode } from "@/utils/generateCode";
 import { useIsMobile } from "@/utils/isMobile";
 import { sendVerificationEmail } from "@/utils/sendEmail";
@@ -25,6 +25,7 @@ import { AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
 import { useToast } from "@/contexts/ToastContext";
+import { UserData } from "@/utils/types/userDataType";
 import { FirebaseError } from "firebase/app";
 
 export const Register = () => {
@@ -61,19 +62,27 @@ export const Register = () => {
 
             if (user) {
                 const verificationCode = generateVerificationCode();
-                const expiresAt = Date.now() + 5 * 60 * 1000;
+                const codeExpiresAt = Date.now() + 5 * 60 * 1000;
 
                 await setDoc(doc(db, "Users", user.uid), {
                     email: user.email,
-                    image: "https://res.cloudinary.com/di5bma0gm/image/upload/v1748032813/default_image_wroapp.png",
                     fName: fName,
                     lName: lName,
+                    image: "https://res.cloudinary.com/di5bma0gm/image/upload/v1748032813/default_image_wroapp.png",
+                    about: "",
+                    banner: "",
+                    followers: 0,
+                    following: 0,
+                    phone: "",
+                    remainingReports: 2,
+                    reportsResetAt: new Timestamp(10000, 10000),
+                    totalReports: 0,
                     verified: false,
                     verificationCode: verificationCode,
-                    expiresAt,
-                });
+                    codeExpiresAt,
+                } as UserData);
 
-                const expirationText = new Date(expiresAt).toLocaleTimeString("pt-BR", {
+                const expirationText = new Date(codeExpiresAt).toLocaleTimeString("pt-BR", {
                     hour: "2-digit",
                     minute: "2-digit",
                 });
@@ -123,10 +132,10 @@ export const Register = () => {
 
             <div className="flex h-full md:h-screen">
                 <div className="from-accent to-primary relative hidden h-full w-4/9 overflow-y-clip bg-gradient-to-r lg:block xl:w-6/16">
-                    <div className="text-body-background relative px-18 pt-40">
+                    <div className="relative px-18 pt-40 text-white">
                         <div className="absolute top-43 left-12 flex flex-col items-center justify-center">
-                            <div className="bg-body-background h-3 w-3 rounded-full"></div>
-                            <div className="from-body-background mt-[-5px] h-50 w-1 bg-gradient-to-b to-transparent"></div>
+                            <div className="h-3 w-3 rounded-full bg-white"></div>
+                            <div className="mt-[-5px] h-50 w-1 bg-gradient-to-b from-white to-transparent"></div>
                         </div>
                         <div className="relative z-10">
                             <h2 className="font-title mb-6 text-4xl font-semibold">
@@ -152,9 +161,9 @@ export const Register = () => {
                                 alt=""
                                 className="absolute top-0 left-0 h-full w-full opacity-[0.05]"
                             />
-                            <div className="absolute bottom-[190px] left-[-20px] h-50 w-50 rounded-full bg-white/35 blur-[100px]" />
-                            <div className="absolute right-[20px] bottom-[50px] h-64 w-64 rounded-full bg-white/32 blur-[100px]" />
-                            <div className="absolute top-[-55px] right-[20px] h-64 w-64 rounded-full bg-white/30 blur-[100px]" />
+                            <div className="absolute bottom-[190px] left-[-20px] h-50 w-50 rounded-full bg-white/35 blur-[100px] dark:bg-zinc-950/35" />
+                            <div className="absolute right-[20px] bottom-[50px] h-64 w-64 rounded-full bg-white/32 blur-[100px] dark:bg-zinc-950/32" />
+                            <div className="absolute top-[-55px] right-[20px] h-64 w-64 rounded-full bg-white/30 blur-[100px] dark:bg-zinc-950/30" />
                         </div>
                     </div>
                 </div>
@@ -210,7 +219,8 @@ export const Register = () => {
                                 label="Senha"
                             />
                         </div>
-                        <ButtonPrimary
+                        <Button
+                            styleType="primary"
                             text="Cadastre-se"
                             Icon={IconArrowRight}
                             className="w-full"

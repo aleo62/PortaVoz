@@ -1,8 +1,8 @@
-import { SearchOverlay } from "@/components/SearchOverlay";
-import { UserContainer } from "@/components/UserContainer";
+import { Button } from "@/components/general/Button";
+import { Navbar } from "@/components/general/Navbar";
+import { SearchOverlay } from "@/components/general/SearchOverlay";
+import { UserContainer } from "@/components/general/UserContainer";
 import logo from "@assets/images/logo/logo-light.png";
-import { ButtonPrimary, ButtonSecondary } from "@components/Button";
-import { Navbar } from "@components/Navbar";
 import {
     IconChevronDown,
     IconLanguage,
@@ -103,7 +103,7 @@ export const Header = ({ search = true }: { search?: boolean }) => {
 
                         {/* BUTTONS AND SEARCH/LANGUAGE */}
                         <div className="flex items-center justify-end">
-                            <div className="relative flex items-center gap-4 border-r-2 border-zinc-200 pr-4">
+                            <div className="relative flex items-center gap-4 border-r-2 border-zinc-200 pr-4 dark:border-zinc-700">
                                 {search && (
                                     <>
                                         <button
@@ -146,7 +146,8 @@ export const Header = ({ search = true }: { search?: boolean }) => {
                             <div className="flex items-center gap-2 pl-4 max-lg:hidden md:justify-self-end">
                                 {isLoggedIn ? (
                                     <>
-                                        <ButtonPrimary
+                                        <Button
+                                            styleType="primary"
                                             small={true}
                                             text="Começar"
                                             Icon={IconTrendingUp}
@@ -172,12 +173,14 @@ export const Header = ({ search = true }: { search?: boolean }) => {
                                     </>
                                 ) : (
                                     <>
-                                        <ButtonSecondary
+                                        <Button
+                                            styleType="secondary"
                                             small={true}
                                             text="Cadastrar"
                                             path="/register"
                                         />
-                                        <ButtonPrimary
+                                        <Button
+                                            styleType="primary"
                                             small={true}
                                             text="Entrar"
                                             Icon={IconLogin}

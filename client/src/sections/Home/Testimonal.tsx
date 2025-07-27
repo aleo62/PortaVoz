@@ -1,13 +1,13 @@
+import { A11y, Navigation, Pagination, Scrollbar } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
 
 import { AnimatedTitle } from "@/components/animations/AnimatedTitle";
 import { AnimatedButton } from "@components/animations/AnimatedButton";
 import { AnimatedCaption } from "@components/animations/AnimatedCaption";
 
+import { Button } from "@/components/general/Button";
+import { Witnes } from "@/components/otros/Witnes";
 import { TestimonalItems } from "@utils/data";
-import { Witnes } from "@components/Witnes";
-import { ButtonPrimary } from "@components/Button";
 
 import { Circle } from "@components/deco/Circle";
 import { Ret } from "@components/deco/Ret";
@@ -40,7 +40,7 @@ export const Testimonal = () => {
                     </div>
 
                     <AnimatedButton delay={0.8}>
-                        <ButtonPrimary text="Participar da Equipe" Icon={IconWorld} />
+                        <Button text="Participar da Equipe" Icon={IconWorld} styleType="primary" />
                     </AnimatedButton>
                 </div>
 
