@@ -2,7 +2,7 @@ import axios from "axios";
 
 export class Server {
     // BASE URL
-    private static baseUrl = "http://localhost:4000/api/v1/";
+    private static baseUrl = String(import.meta.env.VITE_API_BASEURL);
 
     /* POSTS ENDPOINTS -----------> */
 
