@@ -113,7 +113,7 @@ export const Report = ({
                         </Swiper>
                     </div>
 
-                    <div className="divide-y-1 divide-zinc-300 p-3 lg:p-5 dark:divide-zinc-600">
+                    <div className="divide-y-1 divide-zinc-300 p-3 lg:p-5 dark:divide-zinc-700">
                         <div className="">
                             <h2 className="text-title font-title mt-2 mb-4 text-xl font-semibold">
                                 {report.title}
@@ -121,11 +121,11 @@ export const Report = ({
 
                             <div>
                                 {/* <h4 className="text-title mb-1 text-sm font-medium">Descrição</h4> */}
-                                <p className="text-subtitle mb-5 text-sm">{reportDescription}</p>
+                                <p className="text-subtitle text-sm">{reportDescription}</p>
                             </div>
 
                             <p
-                                className="text-accent mb-3 ml-auto flex w-fit cursor-pointer items-center gap-1 text-sm font-semibold"
+                                className="text-accent my-5 ml-auto flex w-fit cursor-pointer items-center gap-1 text-sm font-semibold"
                                 onClick={() => setIsOverlayOpen(true)}
                             >
                                 Ver toda Denúncia
