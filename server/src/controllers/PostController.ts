@@ -3,7 +3,7 @@ import { editUser } from "@/firebase/editUser";
 import { fetchUid } from "@/firebase/fetchUid";
 import { CommentData } from "@/models/Comment";
 import Post, { PostData } from "@/models/Post";
-import Vote, { VoteData } from "@/models/Vote";
+import Vote from "@/models/Vote";
 import { deleteByParentId } from "@/services/CommentService";
 import {
     createImageService,
@@ -21,13 +21,40 @@ import { Timestamp } from "firebase/firestore";
  */
 export const getAllPosts = async (req: Request, res: Response) => {
     try {
+        // Verifying if user is authenticated
         if (!req.user) throw new Error("No User provided");
+        const { date, vote, tags, status } = req.query;
 
-        const postsData = await Post.find();
+        // Verifying if page is provided
+        const page = Number(req.query.page) === 0 ? 1 : Number(req.query.page),
+            limit = config.SYSTEM_POSTS_PER_PAGE;
 
+        // Verifying if has filters
+        let sortFilter: Record<string, 1 | -1> = {};
+        if (vote) sortFilter.upvotesCount = vote === "asc" ? 1 : -1; // vote filter
+        if (date) sortFilter.createdAt = date === "asc" ? 1 : -1; // date filter
+
+        let findFilter: Record<string, any> = {};
+        if (tags) findFilter.tags = tags; // tags filter
+        if (status) {
+            findFilter.status = (status as string).toLowerCase();
+            if (!req.user.isAdmin && status === "oculto")
+                findFilter.status = "ativo";
+        } // status filter
+
+        // Fetching posts
+        const postsData = await Post.find(findFilter)
+            .sort(sortFilter)
+            .skip((page - 1) * limit)
+            .limit(limit);
+
+        const count = await Post.countDocuments(findFilter);
+
+        // Verifying if user exists
         const userData = (await fetchUid(req.user.uid)) as UserData;
         if (!userData) throw new Error("User not found");
 
+        // Adding isUpvoted to each post
         const postsResponse = await Promise.all(
             postsData.map(async (post) => {
                 const isUpvoted = await Vote.findOne({
@@ -43,7 +70,11 @@ export const getAllPosts = async (req: Request, res: Response) => {
             })
         );
 
-        res.status(200).json({ posts: postsResponse });
+        // Sending response
+        res.status(200).json({
+            posts: postsResponse,
+            hasMore: count > page * limit,
+        });
     } catch (err) {
         if (!(err instanceof Error)) throw err;
 
@@ -217,7 +248,8 @@ export const createPost = async (
             userPhoto = userData.image,
             userName = userData.fName,
             userId = userData._publicId,
-            severity = "pequena";
+            severity = "pequena",
+            tagsFormatted = tags.map((tag: string) => tag.toLowerCase());
 
         // Cria o novo post no banco de dados
         const newPost = await Post.create({
@@ -228,7 +260,7 @@ export const createPost = async (
             title,
             desc,
             images: uploadedImages,
-            tags,
+            tags: tagsFormatted,
             location,
             address,
             status,

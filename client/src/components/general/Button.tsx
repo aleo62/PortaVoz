@@ -10,7 +10,7 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const baseClass =
-    "button flex items-center justify-center gap-2 overflow-hidden rounded-[.7rem] px-[2rem] py-[.700rem] font-medium tracking-wider transition-transform duration-200 active:scale-95 disabled:opacity-60  lg:px-[1.4rem] ";
+    "button flex items-center justify-center gap-2 overflow-hidden rounded-[.7rem] px-[2rem] py-[.700rem] font-medium tracking-wider transition-transform duration-200 active:scale-95 disabled:opacity-60 lg:px-[1.4rem] ";
 
 const styleTypeClass = {
     primary:
@@ -32,7 +32,7 @@ export const Button = ({
     const finalClass = [
         baseClass,
         styleTypeClass[styleType],
-        small ? "text-[0.9rem] px-3 py-1" : "text-[13px] lg:text-[15px] md:text-[14px]",
+        small ? "text-[0.9rem] px-3 py-1" : "text-[14px] lg:text-[15px] md:text-[14px]",
         className,
     ]
         .filter(Boolean)

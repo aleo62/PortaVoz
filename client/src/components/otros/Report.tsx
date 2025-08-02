@@ -1,18 +1,13 @@
 import { useUser } from "@/contexts/UserContext";
 import { useCreateVote } from "@/hooks/vote/useCreateVote";
 import { useDeleteVote } from "@/hooks/vote/useDeleteVote";
+import { useIsMobile } from "@/utils/isMobile";
 import { PostData } from "@/utils/types/postDataType";
-import {
-    IconArrowBigUpLines,
-    IconArrowRight,
-    IconDotsVertical,
-    IconMessageDots,
-} from "@tabler/icons-react";
+import { IconArrowBigUpLines, IconDotsVertical, IconMessageDots } from "@tabler/icons-react";
 import { RefObject, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { PostContainer } from "../general/PostContainer";
 import { PostOverlay } from "../general/PostOverlay";
-import { useIsMobile } from "@/utils/isMobile";
 
 export const Report = ({
     report,
@@ -79,7 +74,7 @@ export const Report = ({
                         <p className="text-subtitle text-[.8rem]">{report.userId}</p>
                     </div>
 
-                    <div className="relative ml-auto w-fit">
+                    <div className="relative ml-auto w-fit cursor-pointer">
                         <IconDotsVertical
                             className="text-subtitle size-4"
                             onClick={() => setOptionsContainerOpen(true)}
@@ -90,7 +85,8 @@ export const Report = ({
                             onClose={() => setOptionsContainerOpen(false)}
                             toggleRef={toggleRef as RefObject<HTMLDivElement>}
                             isOwner={
-                                report.userId == userData?._publicId || !userDecoded?.claims.isAdmin
+                                report.userId == userData?._publicId ||
+                                !!userDecoded?.claims.isAdmin
                             }
                             onDeletePost={onDeletePost}
                         />
@@ -115,25 +111,19 @@ export const Report = ({
 
                     <div className="divide-y-1 divide-zinc-300 p-3 lg:p-5 dark:divide-zinc-700">
                         <div className="">
-                            <h2 className="text-title font-title mt-2 mb-4 text-xl font-semibold">
+                            <h2 className="text-title font-title mt-2 mb-2 text-lg font-semibold lg:mb-4 lg:text-xl">
                                 {report.title}
                             </h2>
 
                             <div>
                                 {/* <h4 className="text-title mb-1 text-sm font-medium">Descrição</h4> */}
-                                <p className="text-subtitle text-sm">{reportDescription}</p>
+                                <p className="text-subtitle mb-7 text-sm font-medium">
+                                    {reportDescription}
+                                </p>
                             </div>
-
-                            <p
-                                className="text-accent my-5 ml-auto flex w-fit cursor-pointer items-center gap-1 text-sm font-semibold"
-                                onClick={() => setIsOverlayOpen(true)}
-                            >
-                                Ver toda Denúncia
-                                <IconArrowRight className="size-4" />
-                            </p>
                         </div>
 
-                        <div className="mt-5 flex items-center justify-between">
+                        <div className="mt-7 flex items-center justify-between">
                             <div className="flex w-35 items-center divide-x-1 divide-zinc-300 rounded-full font-bold ring-1 ring-zinc-300 dark:divide-zinc-500 dark:ring-zinc-500">
                                 <div
                                     className={`${isUpvoted ? "text-orange-500 dark:text-orange-300" : "text-subtitle"} flex w-1/2 cursor-pointer items-center justify-center gap-1 rounded-l-full p-2 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800`}

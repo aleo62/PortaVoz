@@ -1,3 +1,4 @@
+import { FiltersType } from "@/utils/types/filtersType";
 import axios from "axios";
 
 export class Server {
@@ -7,8 +8,9 @@ export class Server {
     /* POSTS ENDPOINTS -----------> */
 
     // GET all Posts
-    static async getAllPosts(token: string) {
+    static async getAllPosts(token: string, pageParam: number, filters: FiltersType) {
         const res = await axios.get(`${this.baseUrl}posts`, {
+            params: { page: pageParam, ...filters },
             headers: { authorization: `Bearer ${token}` },
         });
         return res.data;

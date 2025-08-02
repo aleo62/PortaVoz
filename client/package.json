@@ -28,6 +28,7 @@
         "path": "^0.12.7",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
+        "react-intersection-observer": "^9.16.0",
         "react-konva": "^19.0.3",
         "react-native-webview": "^13.13.4",
         "react-native-youtube-iframe": "^2.3.0",

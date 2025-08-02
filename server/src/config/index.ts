@@ -25,6 +25,9 @@ const config = {
     FIREBASE_CLIENT_EMAIL: process.env.FIREBASE_CLIENT_EMAIL,
     SYSTEM_ID_SIZE: parseInt(process.env.SYSTEM_ID_SIZE || "20"),
     SYSTEM_MAXIMUM_REPORTS: parseInt(process.env.SYSTEM_MAXIMUM_REPORTS || "2"),
+    SYSTEM_POSTS_PER_PAGE: parseInt(
+        process.env.SYSTEM_POSTS_PER_PAGE || "5"
+    )
 };
 
 export default config;

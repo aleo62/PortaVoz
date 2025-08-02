@@ -9,6 +9,7 @@ import { IconX } from "@tabler/icons-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Comment } from "./Comment";
 import { useCreateComment } from "@/hooks/comments/useCreateComment";
+import { useIsMobile } from "@/utils/isMobile";
 
 type SearchOverlayProps = {
     isOpen: boolean;
@@ -24,6 +25,8 @@ export const PostOverlay = ({ isOpen, onClose, report }: SearchOverlayProps) => 
     const [comments, setComments] = useState<CommentData[]>([]);
 
     const createComment = useCreateComment();
+
+    const isMobile = useIsMobile()
 
     useEffect(() => {
         if (data) {
@@ -47,10 +50,12 @@ export const PostOverlay = ({ isOpen, onClose, report }: SearchOverlayProps) => 
     const handleCreateComment = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        
-        const response = await createComment.mutate({ content: commentInput, parentId: report._id });
+        const response = await createComment.mutate({
+            content: commentInput,
+            parentId: report._id,
+        });
         console.log(response);
-        
+
         setComments([
             ...comments,
             {
@@ -88,11 +93,11 @@ export const PostOverlay = ({ isOpen, onClose, report }: SearchOverlayProps) => 
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.1 }}
-                    className="fixed top-0 left-0 z-50 flex h-full w-full items-center justify-center gap-2 bg-black/50 px-3 py-10 backdrop-blur-xl"
+                    className="fixed top-0 left-0 z-50 flex h-full w-full items-center justify-center gap-2 bg-black/50 pt-20 backdrop-blur-xl lg:px-3 lg:py-10"
                 >
                     <IconX
                         onClick={onClose}
-                        className="absolute top-3 right-3 cursor-pointer text-zinc-500 dark:text-white"
+                        className="absolute top-3 right-3 cursor-pointer text-white"
                         style={{ zIndex: "100" }}
                     />
 
@@ -102,13 +107,13 @@ export const PostOverlay = ({ isOpen, onClose, report }: SearchOverlayProps) => 
                         animate={{ scale: 1 }}
                         exit={{ scale: 0.95 }}
                         transition={{ duration: 0.1 }}
-                        className="bg-body-background h-full w-full max-w-2xl rounded-xl"
+                        className="bg-body-background h-full w-full max-w-xl rounded-xl max-lg:hidden"
                     >
                         <Swiper className="h-full">
                             {report.images.map((image) => (
                                 <SwiperSlide>
                                     <img
-                                        className={`h-full w-full object-cover transition-all duration-300 ease-in-out`}
+                                        className={`max-h-xl h-full w-full max-w-xl object-cover transition-all duration-300 ease-in-out`}
                                         src={image as string}
                                         alt="Representação da Cena"
                                     />
@@ -118,7 +123,14 @@ export const PostOverlay = ({ isOpen, onClose, report }: SearchOverlayProps) => 
                     </motion.div>
 
                     {/* RIGHT SIDE ---------------> */}
-                    <div className="bg-body-background text-title flex h-full w-full max-w-md flex-col rounded-xl p-4 py-7">
+                    <motion.div
+                        
+                        initial={isMobile && { transform: "translateY(100px)"}}
+                        animate={isMobile && { transform: "translateY(0px)" }}
+                        exit={isMobile ? { transform: "translateY(20px)" } : {}}
+                        transition={{ duration: 0.1 }}
+                        className="bg-body-background text-title relative flex h-full w-full flex-col rounded-t-xl p-4 py-7 lg:max-w-md lg:rounded-b-xl"
+                    >
                         {/* HEADER */}
                         <header className="flex items-center gap-2">
                             <img src={report.userPhoto} className="h-11 w-11 rounded-full" alt="" />
@@ -131,28 +143,27 @@ export const PostOverlay = ({ isOpen, onClose, report }: SearchOverlayProps) => 
                         </header>
 
                         {/* CONTENT */}
-                        <main className="mt-5">
+                        <main className="mt-7">
                             <h1 className="font-title text-xl font-semibold">{report.title}</h1>
-                            <p className="text-subtitle mt-2 mb-5 text-sm">{report.desc}</p>
+                            <p className="text-subtitle mt-3 mb-7 text-sm">{report.desc}</p>
                         </main>
 
                         {/* COMMENTS */}
-                        <div>
+                        <div className="flex flex-1 flex-col overflow-hidden">
                             <h2 className="flex items-center gap-2 text-xs text-zinc-700 dark:text-zinc-500">
                                 <p>Comentários</p>
                                 <span className="h-[1px] flex-1 rounded-full bg-zinc-400 dark:bg-zinc-500"></span>
                             </h2>
 
-                            <div className="mt-3">
+                            <div className="scrollbar-thin scrollbar-track-[#fafafa] dark:scrollbar-track-[#212121] scrollbar-thumb-zinc-200 dark:scrollbar-thumb-zinc-700 mt-3 flex-1 overflow-y-auto">
                                 {comments.map((comment: CommentData) => (
                                     <Comment comment={comment} key={comment._id} />
                                 ))}
                             </div>
                         </div>
-
                         {/* INPUT */}
                         <form
-                            className="mt-auto flex items-center gap-3 border-t border-zinc-200 p-2 pt-4 dark:border-zinc-700"
+                            className="mt-2 flex items-center gap-3 border-t border-zinc-200 pt-2 dark:border-zinc-700"
                             onSubmit={(e) => handleCreateComment(e)}
                         >
                             <img src={userData?.image} alt="" className="h-10 w-10 rounded-full" />
@@ -163,7 +174,7 @@ export const PostOverlay = ({ isOpen, onClose, report }: SearchOverlayProps) => 
                                 onChange={(e) => setCommentInput(e.target.value)}
                             />
                         </form>
-                    </div>
+                    </motion.div>
                 </motion.div>
             )}
         </AnimatePresence>
