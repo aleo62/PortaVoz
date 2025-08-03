@@ -5,15 +5,11 @@ import { useTheme } from "@/hooks/useTheme";
 import { useAutoLogout } from "@utils/useLogoutTime";
 import { Providers } from "./app/Providers";
 import { AppRoutes } from "./app/Routes";
-import { useUser } from "./contexts/UserContext";
 function App() {
-    
     const { verifyTheme } = useTheme();
 
     useAutoLogout();
     verifyTheme();
-
-    
 
     useEffect(() => {
         const message = () => {
