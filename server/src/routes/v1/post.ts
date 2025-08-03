@@ -34,7 +34,7 @@ router.get("/", authenticateUser, validationError, getAllPosts);
 router.get("/user/:userId", authenticateUser, validationError, getPostByUser);
 
 // GET - Rota para ver todos o post pelo ID
-router.get("/:postId", authenticateUser, validationError,getPostById);
+router.get("/:postId", authenticateUser, validationError, getPostById);
 
 // POST - Rota para criar um novo post
 router.post(

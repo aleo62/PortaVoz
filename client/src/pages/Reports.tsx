@@ -65,7 +65,7 @@ export const Reports = () => {
             </aside>
 
             <button
-                className="bg-accent absolute right-10 bottom-10 flex h-12 w-12 items-center justify-center rounded-full text-white"
+                className="bg-accent absolute right-10 bottom-10 flex h-12 w-12 z-100 items-center justify-center rounded-full text-white"
                 onClick={() => navigate("/createreport")}
             >
                 <IconPlus size={25} />

@@ -1,4 +1,5 @@
 import { Loader } from "@/components/general/Loader";
+import { AlertCPF } from "@/components/otros/AlertCPF";
 import { useUser } from "@/contexts/UserContext";
 import { AnimatePresence } from "framer-motion";
 import { Navigate } from "react-router-dom";
@@ -18,7 +19,7 @@ export const ProtectedLayout = ({ children, onlyGuest, onlyAdmin }: ProtectedLay
     if (!onlyGuest && !user && !isFetching) {
         return <Navigate to="/login" />;
     }
-    if (onlyAdmin && !(userDecoded?.claims.admin) && !isFetching) {
+    if (onlyAdmin && !userDecoded?.claims.admin && !isFetching) {
         return <Navigate to="/" />;
     }
 
@@ -26,6 +27,7 @@ export const ProtectedLayout = ({ children, onlyGuest, onlyAdmin }: ProtectedLay
         <>
             {children}
             <AnimatePresence>{isFetching && <Loader />}</AnimatePresence>
+            {user && <AlertCPF />}
         </>
     );
 };

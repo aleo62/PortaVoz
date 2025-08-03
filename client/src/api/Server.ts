@@ -63,4 +63,29 @@ export class Server {
             })
         ).data;
     }
+
+    /* IMAGES ENDPOINTS -----------> */
+
+    // PUT Image
+    static async changeImage(newImage: File, token: string) {
+        const formData = new FormData();
+        formData.append("image", newImage);
+
+        return axios.put(`${this.baseUrl}images`, formData, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
+
+    /* USER ENDPOINTS -----------> */
+
+    // PUT User
+    static async reloadUser(token: string) {
+        return axios.put(
+            `${this.baseUrl}users/update`,
+            {},
+            {
+                headers: { Authorization: `Bearer ${token}` },
+            },
+        );
+    }
 }

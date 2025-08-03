@@ -8,6 +8,7 @@ import { RefObject, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { PostContainer } from "../general/PostContainer";
 import { PostOverlay } from "../general/PostOverlay";
+import { Severity } from "./Severity";
 
 export const Report = ({
     report,
@@ -111,8 +112,9 @@ export const Report = ({
 
                     <div className="divide-y-1 divide-zinc-300 p-3 lg:p-5 dark:divide-zinc-700">
                         <div className="">
-                            <h2 className="text-title font-title mt-2 mb-2 text-lg font-semibold lg:mb-4 lg:text-xl">
+                            <h2 className="text-title font-title mt-2 flex items-center justify-between mb-2 text-lg font-semibold lg:mb-4 lg:text-xl">
                                 {report.title}
+                                <Severity severity={report.severity} />
                             </h2>
 
                             <div>

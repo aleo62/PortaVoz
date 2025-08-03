@@ -23,7 +23,7 @@ export const EditProfile = () => {
     return (
         <>
             <SidebarProfile activeItem={activeItem} setActiveItem={setActiveItem} />
-            <section className="flex w-fit max-w-4xl items-start justify-center">
+            <section className="flex w-full max-w-4xl items-start justify-center">
                 {ShowView}
             </section>
         </>

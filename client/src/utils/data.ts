@@ -24,15 +24,18 @@ export const NavItems = [
     { label: "Contato", href: "/contact" },
 ];
 
+export const portaVozLogo =
+    localStorage.theme === "dark"
+        ? "https://res.cloudinary.com/di5bma0gm/image/upload/v1754165191/Title_white_Grad._qiwt67.png"
+        : "https://res.cloudinary.com/di5bma0gm/image/upload/v1754164869/Title_black_Grad._bd392t.png";
+
 export const SidebarItems = [
     { label: "Denúncias", icon: IconReportSearch, href: "/reports" },
     { label: "Chat", icon: IconMessage2, href: "/chat" },
     { label: "Ajuda", icon: IconEarScan, href: "/help" },
 ];
 
-export const SidebarConfig = [
-    { label: "Notificações", icon: IconBell, href: "/notifications" },
-];
+export const SidebarConfig = [{ label: "Notificações", icon: IconBell, href: "/notifications" }];
 
 export const SidebarProfileItems = [
     { label: "Visão Geral", icon: IconUser },
@@ -63,6 +66,13 @@ export const Tags = [
         className: "bg-yellow-100 text-yellow-700",
     },
 ];
+
+export const SeverityClassNames: { [key: string]: string } = {
+    "pequena": "bg-green-100 text-green-700",
+    "media": "bg-yellow-100 text-yellow-700",
+    "grave": "bg-red-100 text-red-700",
+    "super grave": "bg-red-100 text-red-700",
+}
 
 export const TestimonalItems = [
     {

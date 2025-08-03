@@ -6,7 +6,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc, Timestamp } from "firebase/firestore";
 
 import facebook from "@assets/images/icons/facebook.png";
-import google from "@assets/images/icons/google.png";
+
 import { IconArrowRight } from "@tabler/icons-react";
 
 import { Button } from "@/components/general/Button";
@@ -27,6 +27,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/contexts/ToastContext";
 import { UserData } from "@/utils/types/userDataType";
 import { FirebaseError } from "firebase/app";
+import { GoogleButton } from "@/components/otros/GoogleButton";
 
 export const Register = () => {
     const [email, setEmail] = useState("");
@@ -234,10 +235,7 @@ export const Register = () => {
 
                         <div className="space-y-3">
                             <div className="flex flex-col gap-3 md:grid md:grid-cols-2">
-                                <Widgets>
-                                    <img src={google} alt="" width={isMobile ? 20 : 25} />
-                                    <p className="text-sm">Entrar com Google</p>
-                                </Widgets>
+                                <GoogleButton />
                                 <Widgets>
                                     <img src={facebook} alt="" width={isMobile ? 20 : 25} />
                                     <p className="text-sm">Entrar com FaceBook</p>

@@ -6,6 +6,8 @@ import { Textarea } from "@/components/general/Textarea";
 import { UnsaveContainer } from "@/components/general/UnsaveContainer";
 import { InfoField } from "@/components/otros/InfoField";
 import { useUser } from "@/contexts/UserContext";
+import { useChangeImage } from "@/hooks/images/useChangeImage";
+import { useReload } from "@/hooks/user/useUpdate";
 import { UserData } from "@/utils/types/userDataType";
 
 import { IconArrowRight, IconEdit, IconPencil, IconUserCog } from "@tabler/icons-react";
@@ -19,6 +21,8 @@ export const ViewProfile = () => {
 
     // USER DATAS
     const { userData, userTags, updateUser } = useUser();
+    const changeImage = useChangeImage();
+    const reloadUser = useReload();
 
     // EDIT MODAL
     const [editInfo, setEditInfo] = useState(false);
@@ -74,24 +78,19 @@ export const ViewProfile = () => {
             };
 
             if (previewImageFile) {
-                const formData = new FormData();
-                formData.append("image", previewImageFile);
-                // Adapte a URL e método conforme sua API
-                const response = await fetch("http://localhost:4000/api/v1/images", {
-                    method: "POST",
-                    body: formData,
-                });
-                const data = await response.json();
-                newUserData.image = data.image_url;
+                const response = await changeImage.mutateAsync({ newImage: previewImageFile });
+                newUserData.image = response.data.image_url;
             }
 
             console.log(newUserData);
 
-            updateUser(newUserData);
-            setUnsave(false);
-            setEditAbout(true);
+            await updateUser(newUserData);
+            await reloadUser.mutateAsync();
         } catch (error) {
             console.log(error);
+        } finally{
+            setUnsave(false);
+            setEditAbout(true);
         }
     };
 

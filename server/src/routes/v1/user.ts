@@ -7,7 +7,7 @@ const router = Router();
 
 // PUT - Rota para atualizar todos os cometarios e posts de um user
 router.put(
-    "/update/:userId",
+    "/update",
     authenticateUser,
     validationError,
     updateUserContent

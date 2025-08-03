@@ -5,14 +5,14 @@ import { Ret } from "@/components/deco/Ret";
 import { Button } from "@/components/general/Button";
 import { FormInput } from "@/components/general/FormInput";
 import { Loader } from "@/components/general/Loader";
+import { GoogleButton } from "@/components/otros/GoogleButton";
 import { InfoFooter } from "@/components/otros/InfoFooter";
 import { Widgets } from "@/components/otros/Widgets";
 import { useToast } from "@/contexts/ToastContext";
 import { auth } from "@/firebase";
+import { portaVozLogo } from "@/utils/data";
 import { useIsMobile } from "@/utils/isMobile";
 import facebook from "@assets/images/icons/facebook.png";
-import google from "@assets/images/icons/google.png";
-import portavoz from "@assets/images/logo/logo-light.png";
 import { IconArrowLeft, IconArrowUpRight } from "@tabler/icons-react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { AnimatePresence } from "framer-motion";
@@ -38,7 +38,12 @@ export const Login = () => {
             await signInWithEmailAndPassword(auth, email, password);
             successToast("Usuário logado com sucesso!");
         } catch (error: any) {
-            if (error.code == "auth/invalid-email" || "auth/missing-password" || "auth/invalid-credential") errorMessage = "E-mail ou Senha Inválidos";
+            if (
+                error.code == "auth/invalid-email" ||
+                "auth/missing-password" ||
+                "auth/invalid-credential"
+            )
+                errorMessage = "E-mail ou Senha Inválidos";
             errorToast("Erro ao logar: " + errorMessage);
         } finally {
             setIsLoading(false);
@@ -56,7 +61,7 @@ export const Login = () => {
 
     return (
         <>
-            <Ret className="top-[20px] left-[40px] z-[-1] h-50 w-50 rotate-[125deg] max-md:hidden lg:h-70 lg:w-70" />
+            <Ret className="top-[-10px] left-[90px] z-[-1] h-50 w-50 rotate-[125deg] max-md:hidden lg:h-70 lg:w-70" />
             <Border className="top-[230px] right-[70px] z-[-1] h-45 w-45 max-md:hidden lg:h-60 lg:w-60" />
             <Circle className="top-[430px] left-[5px] h-35 w-35 rotate-[-105deg] max-md:hidden lg:left-[160px] lg:h-50 lg:w-50" />
 
@@ -64,7 +69,7 @@ export const Login = () => {
             <div className="min-h-screen space-y-60 pt-5">
                 <div className="mx-auto grid w-full max-w-sm items-center gap-5">
                     <div className="flex flex-col items-center justify-center">
-                        <img src={portavoz} alt="PortaVoz" width={114} />
+                        <img src={portaVozLogo} alt="PortaVoz" width={150} />
                         <h2 className="font-title text-title mt-3 mb-12 text-center text-xl font-normal md:text-2xl">
                             Acesse sua <span className="font-semibold">Voz</span> pelo{" "}
                             <span className="font-semibold">Portavoz</span>
@@ -146,10 +151,7 @@ export const Login = () => {
                                     onClick={handleChange}
                                 />
 
-                                <Widgets>
-                                    <img src={google} alt="" width={isMobile ? 20 : 25} />
-                                    <p className="text-sm">Entrar com a Google</p>
-                                </Widgets>
+                                <GoogleButton />
 
                                 <Widgets>
                                     <img src={facebook} alt="" width={isMobile ? 20 : 25} />

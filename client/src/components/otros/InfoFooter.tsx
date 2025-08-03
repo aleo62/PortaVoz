@@ -3,12 +3,12 @@ import { IconChevronUp } from "@tabler/icons-react";
 
 export const InfoFooter = () => {
     return (
-        <footer className="mx-auto flex w-full max-w-screen-2xl flex-col items-center justify-center divide-y divide-zinc-300 px-4">
-            <ul className="flex w-full flex-wrap items-center justify-center divide-x divide-zinc-300 pb-3 text-sm font-medium">
+        <footer className="mx-auto flex w-full max-w-screen-2xl flex-col items-center justify-center divide-y divide-zinc-300 dark:divide-zinc-700 px-4">
+            <ul className="flex w-full flex-wrap items-center justify-center divide-x divide-zinc-300 dark:divide-zinc-700 pb-3 text-sm font-medium">
                 {InfoFooterItems.map(({ label, href }, key) => (
                     <li key={key} className="px-3 first:pl-0 last:pr-0">
                         <a
-                            className="text-zinc-600 transition-colors duration-200 hover:text-zinc-900"
+                            className="text-zinc-600 dark:text-zinc-300 transition-colors duration-200 hover:text-zinc-900 hover:dark:text-white"
                             href={href}
                             key={key}
                         >

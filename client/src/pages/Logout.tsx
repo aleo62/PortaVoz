@@ -1,5 +1,4 @@
-import { signOut } from "firebase/auth";
-import { getAuth } from "firebase/auth";
+import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
 export const Logout = () => {
@@ -8,6 +7,7 @@ export const Logout = () => {
     const auth = getAuth();
 
     signOut(auth).then(() => {
+        localStorage.setItem("cpfWarning", "false");
         navigate("/login");
     });
 

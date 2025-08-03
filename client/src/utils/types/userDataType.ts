@@ -13,8 +13,8 @@ export type UserData = {
     reportsResetAt: Timestamp | Date;
     totalReports: number;
     verified: boolean;
-    verificationCode: string;
-    codeExpiresAt: number;
+    verificationCode: string | null;
+    codeExpiresAt: number | null;
     followers: number;
     following: number;
 };

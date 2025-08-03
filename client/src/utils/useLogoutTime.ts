@@ -1,8 +1,8 @@
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "@/firebase";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useEffect } from "react";
 
-const auth = getAuth();
-const SESSION_DURATION = 30 * 60 * 1000; 
+const SESSION_DURATION = 30 * 60 * 1000;
 
 export const useAutoLogout = () => {
     useEffect(() => {
@@ -17,10 +17,10 @@ export const useAutoLogout = () => {
                         clearInterval(logoutTimer);
                         alert("Sua sessão expirou. Faça login novamente.");
                     }
-                }, 60 * 1000); 
+                }, 60 * 1000);
             }
         });
 
         return () => unsubscribe();
     }, []);
-}
+};
