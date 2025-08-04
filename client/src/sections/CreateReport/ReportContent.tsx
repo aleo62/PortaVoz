@@ -33,6 +33,7 @@ export const ReportContent = ({
                     placeholder: "Título",
                     required: true,
                     onChange: (e) => setReportForm({ ...reportForm, title: e.target.value }),
+                    maxLength: 50
                 }}
             />
             <FormInput
@@ -44,6 +45,7 @@ export const ReportContent = ({
                     required: true,
                     rows: 7,
                     onChange: (e) => setReportForm({ ...reportForm, desc: e.target.value }),
+                    maxLength: 500
                 }}
             />
         </div>

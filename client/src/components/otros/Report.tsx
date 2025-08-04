@@ -112,7 +112,7 @@ export const Report = ({
 
                     <div className="divide-y-1 divide-zinc-300 p-3 lg:p-5 dark:divide-zinc-700">
                         <div className="">
-                            <h2 className="text-title font-title mt-2 flex items-center justify-between mb-2 text-lg font-semibold lg:mb-4 lg:text-xl">
+                            <h2 className="text-title font-title mt-2 mb-2 flex items-center justify-between text-lg font-semibold lg:mb-4 lg:text-xl">
                                 {report.title}
                                 <Severity severity={report.severity} />
                             </h2>
@@ -146,14 +146,21 @@ export const Report = ({
                             </div>
 
                             <div>
-                                {report.tags.map((tag, key) => (
-                                    <span
-                                        key={key}
-                                        className="text-title mr-2 inline-block rounded-sm bg-zinc-200 p-2 px-4 text-xs font-semibold ring-1 ring-zinc-300 dark:bg-zinc-800 dark:text-zinc-300 dark:ring-zinc-700"
-                                    >
-                                        {tag}
+                                {isMobile ? (
+                                    report.tags.map((tag, key) => (
+                                        <span
+                                            key={key}
+                                            className="text-title mr-2 inline-block rounded-sm bg-zinc-200 p-2 px-4 text-xs font-semibold ring-1 ring-zinc-300 dark:bg-zinc-800 dark:text-zinc-300 dark:ring-zinc-700"
+                                        >
+                                            {tag}
+                                        </span>
+                                    ))
+                                ) : (
+                                    <span className="text-title mr-2 inline-block rounded-sm bg-zinc-200 p-2 px-4 text-xs font-semibold ring-1 ring-zinc-300 dark:bg-zinc-800 dark:text-zinc-300 dark:ring-zinc-700">
+                                        {report.tags[0]}
                                     </span>
-                                ))}
+                                    
+                                )}
                             </div>
                         </div>
                     </div>
