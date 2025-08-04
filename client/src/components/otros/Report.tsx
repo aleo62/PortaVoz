@@ -62,7 +62,7 @@ export const Report = ({
                 report={report}
             />
 
-            <article className="mx-auto w-full max-w-xl rounded-xl bg-white shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] dark:bg-zinc-900">
+            <article className="w-full max-w-xl rounded-xl bg-white shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] dark:bg-zinc-900">
                 <header className="flex items-center gap-3 p-3 py-5 lg:p-5 lg:py-6">
                     <img
                         src={report.userPhoto}

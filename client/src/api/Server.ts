@@ -1,4 +1,5 @@
 import { FiltersType } from "@/utils/types/filtersType";
+import { PostData } from "@/utils/types/postDataType";
 import axios from "axios";
 
 export class Server {
@@ -23,6 +24,33 @@ export class Server {
                 headers: { authorization: `Bearer ${token}` },
             })
         ).data;
+    }
+
+    // POST Post
+    static async createPost(reportForm: Partial<PostData>, token: string) {
+        const formData = new FormData();
+        formData.append("title", reportForm.title || "");
+        formData.append("desc", reportForm.desc || "");
+        formData.append("address", "Sabidi");
+        formData.append("location[longitude]", JSON.stringify(20));
+        formData.append("location[latitude]", JSON.stringify(20));
+
+        if (reportForm.images && reportForm.images.length > 0) {
+            reportForm.images.forEach((file) => {
+                formData.append(`images`, file);
+            });
+        }
+        if (reportForm.tags && reportForm.tags.length > 0) {
+            reportForm.tags.forEach((tag) => {
+                formData.append(`tags`, tag);
+            });
+        }
+
+        return axios.post(
+            `${this.baseUrl}posts`,
+            formData,
+            { headers: { Authorization: `Bearer ${token}` } },
+        );
     }
 
     // DELETE Post by ID

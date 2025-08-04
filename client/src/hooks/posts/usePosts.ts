@@ -8,7 +8,7 @@ export function usePosts(filters: FiltersType) {
     const token = userDecoded?.token;
 
     return useInfiniteQuery({
-        queryKey: ["posts"],
+        queryKey: ["posts", filters],
         queryFn: ({ pageParam }) => Server.getAllPosts(token!, pageParam, filters),
         getNextPageParam: (lastPage, allPages) =>
             lastPage.hasMore ? allPages.length + 1 : undefined,

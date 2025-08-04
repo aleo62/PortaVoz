@@ -1,19 +1,19 @@
 import { Button } from "@/components/general/Button";
 import { useToast } from "@/contexts/ToastContext";
+import { useCreatePost } from "@/hooks/posts/useCreatePost";
 import { ReportContent } from "@/sections/CreateReport/ReportContent";
 import { ReportImages } from "@/sections/CreateReport/ReportImages";
 import { ReportLocation } from "@/sections/CreateReport/ReportLocation";
 import { ReportTags } from "@/sections/CreateReport/ReportTags";
 import { PostData } from "@/utils/types/postDataType";
+import loading from "@assets/images/loading.gif";
 import { IconArrowRight, IconHome2 } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import loading from "@assets/images/loading.gif";
-import { useUser } from "@/contexts/UserContext";
 
 export const CreateReport = () => {
     const { errorToast } = useToast();
-    const { userDecoded } = useUser();
+    const createReport = useCreatePost();
 
     // Declare report form
     const [reportForm, setReportForm] = useState<Partial<PostData>>({
@@ -51,47 +51,9 @@ export const CreateReport = () => {
 
     useEffect(() => {
         const registerPost = async () => {
-            if (reportPage === reportSections.length) {
-                const auth = "Bearer " + userDecoded?.token;
-
-                const formData = new FormData();
-                formData.append("title", reportForm.title || "");
-                formData.append("desc", reportForm.desc || "");
-                formData.append("address", "Sabidi");
-                formData.append("location[longitude]", JSON.stringify(20));
-                formData.append("location[latitude]", JSON.stringify(20));
-
-                if(reportForm.images && reportForm.images.length > 0) {
-                    reportForm.images.forEach((file) => {
-                        formData.append(`images`, file);
-                    });
-                }
-                if(reportForm.tags && reportForm.tags.length > 0) {
-                    reportForm.tags.forEach((tag) => {
-                        formData.append(`tags`, tag);
-                    });
-                }
-
-                try {
-                    console.log(reportForm.images);
-                    const response = await fetch("http://localhost:4000/api/v1/posts", {
-                        method: "POST",
-                        headers: {
-                            authorization: auth,
-                        },
-                        body: formData,
-                    });
-
-                    const result = await response.json();
-                    if (!response.ok) {
-                        console.log(result.errors)
-                    } else {
-                        console.log("Post registrado com sucesso!", result);
-                    }
-                } catch (err) {
-                    console.log(err);
-                }
-            }
+            if (reportPage !== reportSections.length) return;
+            const response = await createReport.mutate({ formData: reportForm });
+            console.log(response);
         };
 
         registerPost();

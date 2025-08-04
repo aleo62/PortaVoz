@@ -50,11 +50,10 @@ export const PostOverlay = ({ isOpen, onClose, report }: SearchOverlayProps) => 
     const handleCreateComment = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const response = await createComment.mutate({
+        await createComment.mutate({
             content: commentInput,
             parentId: report._id,
         });
-        console.log(response);
 
         setComments([
             ...comments,
@@ -73,6 +72,8 @@ export const PostOverlay = ({ isOpen, onClose, report }: SearchOverlayProps) => 
                 isUpvoted: false,
             },
         ]);
+
+        setCommentInput("");
     };
 
     const resetScrollLock = () => {
@@ -170,7 +171,8 @@ export const PostOverlay = ({ isOpen, onClose, report }: SearchOverlayProps) => 
                             <input
                                 type="text"
                                 placeholder="Adicione um comentário"
-                                className="focus:ring-accent h-10 w-full rounded-lg px-3 text-sm ring-1 ring-zinc-200 transition-all duration-300 outline-none focus:ring-2 dark:ring-zinc-700"
+                                className="focus:ring-accent h-10 w-full rounded-lg text-title font-medium px-3 text-sm ring-1 ring-zinc-200 transition-all duration-300 outline-none focus:ring-2 dark:ring-zinc-700"
+                                value={commentInput}
                                 onChange={(e) => setCommentInput(e.target.value)}
                             />
                         </form>

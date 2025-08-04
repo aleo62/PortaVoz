@@ -7,8 +7,6 @@ export const AlertCPF = () => {
         localStorage.getItem("cpfWarning") === "true" ? true : false,
     );
 
-    console.log("aaa",localStorage.getItem("cpfWarning"));
-
     return (
         <motion.div
             exit={{ opacity: 0 }}

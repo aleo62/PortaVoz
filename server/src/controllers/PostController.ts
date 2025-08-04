@@ -23,7 +23,7 @@ export const getAllPosts = async (req: Request, res: Response) => {
     try {
         // Verifying if user is authenticated
         if (!req.user) throw new Error("No User provided");
-        const { date, vote, tags, status } = req.query;
+        const { date, vote, tags, status, search } = req.query;
 
         // Verifying if page is provided
         const page = Number(req.query.page) === 0 ? 1 : Number(req.query.page),
@@ -41,6 +41,9 @@ export const getAllPosts = async (req: Request, res: Response) => {
             if (!req.user.isAdmin && status === "oculto")
                 findFilter.status = "ativo";
         } // status filter
+        if (search) {
+            findFilter.title = { $regex: search, $options: "i" };
+        } // search filter
 
         // Fetching posts
         const postsData = await Post.find(findFilter)
