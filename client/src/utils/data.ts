@@ -68,7 +68,7 @@ export const Tags = [
 ];
 
 export const SeverityClassNames: { [key: string]: string } = {
-    "pequena": "bg-green-100 text-green-700",
+    "pequena": "bg-green-100 text-green-700 ring-green-200",
     "media": "bg-yellow-100 text-yellow-700",
     "grave": "bg-red-100 text-red-700",
     "super grave": "bg-red-100 text-red-700",
