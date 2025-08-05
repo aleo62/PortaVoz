@@ -26,7 +26,7 @@ export const Reports = () => {
     const { data, isLoading, fetchNextPage, hasNextPage } = usePosts(filters);
 
     const { ref, inView } = useInView({});
-    const posts: PostData[] = (data?.pages.flatMap((page) => page.posts) as PostData[]) || [];
+    let posts: PostData[] = (data?.pages.flatMap((page) => page.posts) as PostData[]) || [];
 
     useEffect(() => {
         if (inView && !isLoading && hasNextPage) {
@@ -36,9 +36,9 @@ export const Reports = () => {
     }, [inView]);
 
     const hadleDeletePost = async (id: string) => {
-        await deletePost.mutate(id);
         // @ts-ignore
-        posts.filter((post: PostData) => post._id !== id);
+        posts = posts.filter((post: PostData) => post._id !== id);
+        await deletePost.mutate(id);
     };
 
     return (

@@ -26,7 +26,6 @@ export const Header = ({ search = true }: { search?: boolean }) => {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [isLanguageOpen, setIsLanguageOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [isUserContainerOpen, setIsUserContainerOpen] = useState(false);
 
     useEffect(() => {
         /**
@@ -152,22 +151,6 @@ export const Header = ({ search = true }: { search?: boolean }) => {
                                             Icon={IconTrendingUp}
                                             path="/login"
                                         />
-
-                                        <div className="relative flex items-center justify-center">
-                                            <button
-                                                onClick={() =>
-                                                    setIsUserContainerOpen(!isUserContainerOpen)
-                                                }
-                                            >
-                                                <figure className="tansiton-[box-shadow, scale] w-10 cursor-pointer overflow-clip rounded-xl shadow-md duration-200 hover:scale-103 hover:shadow-lg">
-                                                    <img
-                                                        src="https://wallpapers.com/images/hd/killua-pictures-d9v8r3mh97mwszcy.jpg"
-                                                        width={150}
-                                                        alt=""
-                                                    />
-                                                </figure>
-                                            </button>
-                                        </div>
                                     </>
                                 ) : (
                                     <>
