@@ -1,4 +1,5 @@
 import { NotFound } from "@/pages/NotFound";
+import { Profile } from "@/pages/Profile";
 import { Dashboard } from "@pages/admin/Dashboard";
 import { CreateReport } from "@pages/CreateReport";
 import { EditProfile } from "@pages/EditProfile";
@@ -61,6 +62,26 @@ export const AppRoutes = () => {
                     element={
                         <ProtectedLayout>
                             <CreateReport />
+                        </ProtectedLayout>
+                    }
+                />
+                <Route
+                    path="/profile"
+                    element={
+                        <ProtectedLayout>
+                            <SidebarLayout title="Perfil">
+                                <Profile />
+                            </SidebarLayout>
+                        </ProtectedLayout>
+                    }
+                />
+                <Route
+                    path="/profile/:publicId"
+                    element={
+                        <ProtectedLayout>
+                            <SidebarLayout title="Perfil">
+                                <Profile />
+                            </SidebarLayout>
                         </ProtectedLayout>
                     }
                 />

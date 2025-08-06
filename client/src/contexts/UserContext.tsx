@@ -35,18 +35,19 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         const auth = getAuth();
         setIsFetching(true);
-        const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            setUser(user);
-            setUserDecoded((await user?.getIdTokenResult()) as IdTokenResult);
-            if (user) {
+        const unsubscribe = onAuthStateChanged(auth, async (userAuth) => {
+            setUser(userAuth);
+            if (userAuth) {
+                const tokenResult = await userAuth.getIdTokenResult(true);
+                setUserDecoded(tokenResult);
                 try {
-                    const docSnap = await getDoc(doc(db, "Users", user.uid));
+                    const docSnap = await getDoc(doc(db, "Users", userAuth.uid));
                     if (docSnap.exists()) setUserData(docSnap.data());
                     if (userData?.phone === undefined)
                         setUserData((prev) => ({ ...prev, phone: "" }));
 
                     const tagsRef = collection(db, "Tags");
-                    const q = query(tagsRef, where("User", "==", user.uid));
+                    const q = query(tagsRef, where("User", "==", userAuth.uid));
                     const querySnapshot = await getDocs(q);
                     const tagsData = querySnapshot.docs.map((doc) => doc.data());
                     setUserTags(tagsData);

@@ -2,15 +2,14 @@ import { Server } from "@api/Server";
 import { useUser } from "@contexts/UserContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export function useCreateComment() {
+export function useDeleteComment() {
     const { userDecoded } = useUser();
     const token = userDecoded?.token;
 
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ({ content, parentId }: { content: string; parentId: string }) =>
-            Server.createComment(content, parentId, token!),
+        mutationFn: (id: string) => Server.deleteCommentById(id, token!),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["comments"] });
         },

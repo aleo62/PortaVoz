@@ -104,10 +104,7 @@ export const getPostById = async (req: Request, res: Response) => {
         const postId = req.params.postId;
 
         // Fetching post data and verifying if post exists
-        const postData = await Post.findById(postId).populate({
-            path: "comments",
-            populate: { path: "replies" },
-        });
+        const postData = await Post.findById(postId)
         if (!postData) throw new Error("Post not found");
 
         // Verifying if user exists
@@ -124,37 +121,6 @@ export const getPostById = async (req: Request, res: Response) => {
         // Transoform post data in an object
         const post = postData.toObject() as PostData;
 
-        // Verifying if user has upvoted comment
-        await Promise.all(
-            post.comments.map(async (comment) => {
-                const commentUpvoted = await Vote.findOne({
-                    // @ts-ignore
-                    parentId: comment._id,
-                    userId: userData._publicId,
-                    parentType: "Comment",
-                });
-                // @ts-ignore
-                comment.isUpvoted = !!commentUpvoted;
-
-                // Verifying if user has upvoted replies
-                // @ts-ignore
-                if (comment.replies && comment.replies.length > 0) {
-                    await Promise.all(
-                        // @ts-ignore
-                        comment.replies.map(async (reply: CommentData) => {
-                            const replyUpvoted = await Vote.findOne({
-                                // @ts-ignore
-                                parentId: comment._id,
-                                userId: userData._publicId,
-                                parentType: "Comment",
-                            });
-                            // @ts-ignore
-                            reply.isUpvoted = !!replyVote;
-                        })
-                    );
-                }
-            })
-        );
         // Creating response
         const postResponse = {
             ...post,

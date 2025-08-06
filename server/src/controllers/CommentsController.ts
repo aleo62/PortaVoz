@@ -2,11 +2,74 @@ import config from "@/config";
 import { fetchUid } from "@/firebase/fetchUid";
 import Comment from "@/models/Comment";
 import Post from "@/models/Post";
+import Vote from "@/models/Vote";
 import { deleteByParentId } from "@/services/CommentService";
 import { formatError } from "@/utils/formatError";
 import { generateId } from "@/utils/generateId";
 import { UserData } from "@/utils/types/userDataType";
 import { Request, Response } from "express";
+
+/**
+ * GET - Controller responsável por pegar os comentarios/replies de um Post/Comment.
+ */
+
+export const getCommentsById = async (
+    req: Request,
+    res: Response
+): Promise<void> => {
+    try {
+        // Verifying if user is authenticated
+        if (!req.user) throw new Error("No User provided");
+        const { parentId } = req.params;
+
+        // Verifying if page is provided
+        const page = Number(req.query.page) === 0 ? 1 : Number(req.query.page),
+            limit = config.SYSTEM_COMMENTS_PER_PAGE;
+
+        // Fetching posts
+        const commentsData = await Comment.find({ parentId })
+            .skip((page - 1) * limit)
+            .limit(limit);
+
+        const count = await Comment.countDocuments({ parentId });
+
+        // Verifying if user exists
+        const userData = (await fetchUid(req.user.uid)) as UserData;
+        if (!userData) throw new Error("User not found");
+
+        // Adding isUpvoted to each post
+        const commentsResponse = await Promise.all(
+            commentsData.map(async (comment) => {
+                const isUpvoted = await Vote.findOne({
+                    parentId: comment._id,
+                    userId: userData._publicId,
+                    parentType: "Comment",
+                });
+
+                return {
+                    ...comment.toObject(),
+                    isUpvoted: !!isUpvoted,
+                };
+            })
+        );
+
+        // Sending response
+        res.status(200).json({
+            posts: commentsResponse,
+            hasMore: count > page * limit,
+        });
+    } catch (err) {
+        if (!(err instanceof Error)) throw err;
+
+        const errors = formatError(err.message);
+
+        res.status(500).json({
+            code: "ServerError",
+            message: "Internal Server Error",
+            errors: errors,
+        });
+    }
+};
 
 /**
  * POST - Controller responsável por criar um novo comentario.

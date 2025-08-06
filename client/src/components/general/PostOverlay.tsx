@@ -2,14 +2,16 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 import { useUser } from "@/contexts/UserContext";
-import { usePostById } from "@/hooks/posts/usePostById";
+import { useComments } from "@/hooks/comments/useComments";
+import { useCreateComment } from "@/hooks/comments/useCreateComment";
+import { useDeleteComment } from "@/hooks/comments/useDeleteComment";
+import { useIsMobile } from "@/utils/isMobile";
 import { CommentData } from "@/utils/types/commentDataType";
 import { PostData } from "@/utils/types/postDataType";
 import { IconX } from "@tabler/icons-react";
+import { useInView } from "react-intersection-observer";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Comment } from "./Comment";
-import { useCreateComment } from "@/hooks/comments/useCreateComment";
-import { useIsMobile } from "@/utils/isMobile";
 
 type SearchOverlayProps = {
     isOpen: boolean;
@@ -18,21 +20,16 @@ type SearchOverlayProps = {
 };
 
 export const PostOverlay = ({ isOpen, onClose, report }: SearchOverlayProps) => {
+    const isMobile = useIsMobile();
+
     const { userData } = useUser();
-    const { data } = usePostById(report._id, isOpen);
-
-    const [commentInput, setCommentInput] = useState("");
-    const [comments, setComments] = useState<CommentData[]>([]);
-
     const createComment = useCreateComment();
 
-    const isMobile = useIsMobile()
+    const { data, isLoading, fetchNextPage, hasNextPage } = useComments(report._id);
+    const [commentInput, setCommentInput] = useState("");
 
-    useEffect(() => {
-        if (data) {
-            setComments(data.post.comments);
-        }
-    }, [data?.post.comments]);
+    let comments: CommentData[] = data?.pages.flatMap((page) => page.posts) ?? [];
+    
 
     useEffect(() => {
         if (isOpen) {
@@ -47,6 +44,16 @@ export const PostOverlay = ({ isOpen, onClose, report }: SearchOverlayProps) => 
         }
     }, [isOpen]);
 
+    const resetScrollLock = () => {
+        document.documentElement.style.overflow = "";
+        document.documentElement.style.paddingRight = "";
+
+        const header = document.querySelector("header") as HTMLElement;
+        if (header) {
+            header.style.paddingRight = "";
+        }
+    };
+
     const handleCreateComment = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -55,7 +62,7 @@ export const PostOverlay = ({ isOpen, onClose, report }: SearchOverlayProps) => 
             parentId: report._id,
         });
 
-        setComments([
+        comments = [
             ...comments,
             {
                 _id: "sdfsdfsdf",
@@ -71,20 +78,25 @@ export const PostOverlay = ({ isOpen, onClose, report }: SearchOverlayProps) => 
                 createdAt: new Date(),
                 isUpvoted: false,
             },
-        ]);
+        ];
 
         setCommentInput("");
     };
+    // COMMENT MANAGEMENT
+    const deleteComment = useDeleteComment();
 
-    const resetScrollLock = () => {
-        document.documentElement.style.overflow = "";
-        document.documentElement.style.paddingRight = "";
-
-        const header = document.querySelector("header") as HTMLElement;
-        if (header) {
-            header.style.paddingRight = "";
-        }
+    const handleDeleteComment = async (id: string) => {
+        comments = comments.filter((comment) => comment._id !== id);
+        await deleteComment.mutate(id);
     };
+
+    const { ref, inView } = useInView({});
+
+    useEffect(() => {
+        if (inView && !isLoading && hasNextPage) {
+            fetchNextPage();
+        }
+    }, [inView]);
 
     return (
         <AnimatePresence onExitComplete={resetScrollLock}>
@@ -125,8 +137,7 @@ export const PostOverlay = ({ isOpen, onClose, report }: SearchOverlayProps) => 
 
                     {/* RIGHT SIDE ---------------> */}
                     <motion.div
-                        
-                        initial={isMobile && { transform: "translateY(100px)"}}
+                        initial={isMobile && { transform: "translateY(100px)" }}
                         animate={isMobile && { transform: "translateY(0px)" }}
                         exit={isMobile ? { transform: "translateY(20px)" } : {}}
                         transition={{ duration: 0.1 }}
@@ -157,9 +168,14 @@ export const PostOverlay = ({ isOpen, onClose, report }: SearchOverlayProps) => 
                             </h2>
 
                             <div className="scrollbar-thin scrollbar-track-[#fafafa] dark:scrollbar-track-[#212121] scrollbar-thumb-zinc-200 dark:scrollbar-thumb-zinc-700 mt-3 flex-1 overflow-y-auto">
-                                {comments.map((comment: CommentData) => (
-                                    <Comment comment={comment} key={comment._id} />
+                                {comments.map((comment) => (
+                                    <Comment
+                                        key={comment._id}
+                                        comment={comment}
+                                        onDeleteComment={() => handleDeleteComment(comment._id)}
+                                    />
                                 ))}
+                                {hasNextPage && <div ref={ref}>carregando...</div>}
                             </div>
                         </div>
                         {/* INPUT */}
@@ -171,7 +187,7 @@ export const PostOverlay = ({ isOpen, onClose, report }: SearchOverlayProps) => 
                             <input
                                 type="text"
                                 placeholder="Adicione um comentário"
-                                className="focus:ring-accent h-10 w-full rounded-lg text-title font-medium px-3 text-sm ring-1 ring-zinc-200 transition-all duration-300 outline-none focus:ring-2 dark:ring-zinc-700"
+                                className="focus:ring-accent text-title h-10 w-full rounded-lg px-3 text-sm font-medium ring-1 ring-zinc-200 transition-all duration-300 outline-none focus:ring-2 dark:ring-zinc-700"
                                 value={commentInput}
                                 onChange={(e) => setCommentInput(e.target.value)}
                             />

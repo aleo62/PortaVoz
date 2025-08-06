@@ -17,6 +17,8 @@ export const authenticateOwnerOrAdmin = (
             if (!userId) throw new Error("No User ID provided");
 
             const ownerData = (await fetchUid(req.user.uid)) as UserData;
+            console.log(ownerData._publicId)
+            console.log(req.user.isAdmin)
             if (userId !== ownerData._publicId && !req.user.isAdmin)
                 throw new Error("User not allowed");
 

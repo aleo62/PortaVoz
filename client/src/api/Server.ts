@@ -64,6 +64,15 @@ export class Server {
 
     /* COMMENT ENDPOINTS -----------> */
 
+    // GET all Posts
+    static async getCommentsByParentId(token: string, pageParam: number, parentId: string) {
+        const res = await axios.get(`${this.baseUrl}posts/${parentId}/comments`, {
+            params: { page: pageParam },
+            headers: { authorization: `Bearer ${token}` },
+        });
+        return res.data;
+    }
+
     // POST Comment
     static async createComment(content: string, parentId: string, token: string) {
         return axios.post(
@@ -71,6 +80,15 @@ export class Server {
             { content, parentId },
             { headers: { Authorization: `Bearer ${token}` } },
         );
+    }
+
+    // DELETE Comment by ID
+    static async deleteCommentById(id: string, token: string) {
+        return (
+            await axios.delete(`${this.baseUrl}posts/comments/${id}`, {
+                headers: { authorization: `Bearer ${token}` },
+            })
+        ).data;
     }
 
     /* VOTES ENDPOINTS -----------> */

@@ -3,8 +3,9 @@ import { useCreateVote } from "@/hooks/vote/useCreateVote";
 import { useDeleteVote } from "@/hooks/vote/useDeleteVote";
 import { useIsMobile } from "@/utils/isMobile";
 import { PostData } from "@/utils/types/postDataType";
-import { IconArrowBigUpLines, IconDotsVertical, IconMessageDots } from "@tabler/icons-react";
-import { RefObject, useRef, useState } from "react";
+import { IconArrowBigUp, IconDotsVertical, IconMessageDots } from "@tabler/icons-react";
+import { InvalidateQueryFilters, QueryClient } from "@tanstack/react-query";
+import { RefObject, useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { PostContainer } from "../general/PostContainer";
 import { PostOverlay } from "../general/PostOverlay";
@@ -19,6 +20,7 @@ export const Report = ({
 }) => {
     const { userData, userDecoded } = useUser();
     const isMobile = useIsMobile();
+    const queryClient = new QueryClient();
 
     const [imageContain, setImageContain] = useState(false);
     const [isUpvoted, setIsUpvoted] = useState(report.isUpvoted);
@@ -26,6 +28,13 @@ export const Report = ({
     const [isOverlayOpen, setIsOverlayOpen] = useState(false);
 
     const toggleRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (isOverlayOpen) {
+            console.log("aaaa");
+            queryClient.invalidateQueries(["comments", report._id] as InvalidateQueryFilters);
+        }
+    }, [isOverlayOpen, report._id]);
 
     const limitDescription = isMobile ? 30 : 45;
     const reportDescription =
@@ -83,11 +92,12 @@ export const Report = ({
                         <PostContainer
                             isContainerOpen={optionsContainerOpen}
                             orientation="top"
-                            onClose={() => setOptionsContainerOpen(false)}
+                            onClose={() => {
+                                setOptionsContainerOpen(false);
+                            }}
                             toggleRef={toggleRef as RefObject<HTMLDivElement>}
                             isOwner={
-                                report.userId == userData?._publicId ||
-                                !!userDecoded?.claims.isAdmin
+                                report.userId == userData?._publicId || !!userDecoded?.claims.admin
                             }
                             onDeletePost={onDeletePost}
                         />
@@ -127,22 +137,22 @@ export const Report = ({
                         </div>
 
                         <div className="mt-7 flex items-center justify-between">
-                            <div className="flex w-35 items-center divide-x-1 divide-zinc-300 rounded-full font-bold ring-1 ring-zinc-300 dark:divide-zinc-500 dark:ring-zinc-500">
+                            <div className="flex items-center space-x-1.5 font-semibold">
                                 <div
-                                    className={`${isUpvoted ? "text-orange-500 dark:text-orange-300" : "text-subtitle"} flex w-1/2 cursor-pointer items-center justify-center gap-1 rounded-l-full p-2 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800`}
+                                    className={`${isUpvoted ? "text-orange-500 dark:text-orange-300" : "text-subtitle"} flex cursor-pointer items-center justify-center gap-1 rounded-full rounded-l-full p-2 px-4 text-sm ring-1 ring-zinc-300 hover:bg-zinc-100 dark:ring-zinc-700 dark:hover:bg-zinc-800`}
                                     onClick={() => (isUpvoted ? deleteUpvote() : addUpvote())}
                                 >
-                                    <IconArrowBigUpLines
+                                    <IconArrowBigUp
                                         className={`${isUpvoted && "fill-orange-500 dark:fill-orange-300"} size-5`}
                                     />
-                                    {report.upvotesCount}
+                                    <p className="w-4 text-center">{report.upvotesCount}</p>
                                 </div>
                                 <div
-                                    className="text-subtitle flex w-1/2 cursor-pointer items-center justify-center gap-1 rounded-r-full p-2 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                                    className="text-subtitle flex cursor-pointer items-center justify-center gap-1 rounded-full rounded-r-full p-2 px-4 text-sm ring-1 ring-zinc-300 hover:bg-zinc-100 dark:ring-zinc-700 dark:hover:bg-zinc-800"
                                     onClick={() => setIsOverlayOpen(true)}
                                 >
                                     <IconMessageDots className="size-5" />
-                                    {report.commentsCount}
+                                    <p className="w-4 text-center">{report.commentsCount}</p>
                                 </div>
                             </div>
 

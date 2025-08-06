@@ -27,6 +27,9 @@ const config = {
     SYSTEM_MAXIMUM_REPORTS: parseInt(process.env.SYSTEM_MAXIMUM_REPORTS || "2"),
     SYSTEM_POSTS_PER_PAGE: parseInt(
         process.env.SYSTEM_POSTS_PER_PAGE || "5"
+    ),
+    SYSTEM_COMMENTS_PER_PAGE: parseInt(
+        process.env.SYSTEM_COMMENTS_PER_PAGE || "15"
     )
 };
 

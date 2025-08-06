@@ -4,6 +4,7 @@ import {
     createComment,
     deleteComment,
     deleteCommentByParentId,
+    getCommentsById,
     updateComment,
 } from "@/controllers/CommentsController";
 import {
@@ -113,6 +114,9 @@ router.put(
 
 // * COMMENTS ROUTES -----------------------------------------------------------------------------------
 
+// GET - Rota para ver todos os comentarios de um post
+router.get("/:parentId/comments", authenticateUser, validationError, getCommentsById);
+
 // POST - Rota para adicionar comentario
 router.post(
     "/comments",
@@ -135,7 +139,7 @@ router.delete(
     "/comments/:commentId",
     authenticateUser,
     authenticateOwnerOrAdmin(async (req) => {
-        const comment = await Comment.findById(req.params.postId);
+        const comment = await Comment.findById(req.params.commentId);
         if (!comment) throw new Error("Comment does not exist");
         return comment?.userId;
     }),
