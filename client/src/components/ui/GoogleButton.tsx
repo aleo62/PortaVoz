@@ -4,7 +4,7 @@ import { useIsMobile } from "@/utils/isMobile";
 import { UserData } from "@/utils/types/userDataType";
 import google from "@assets/images/icons/google.png";
 import { signInWithPopup } from "firebase/auth";
-import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { Widgets } from "./Widgets";
 
 export const GoogleButton = () => {
@@ -18,8 +18,6 @@ export const GoogleButton = () => {
         // Verify if the user exists
         const userRef = doc(db, "Users", user.uid);
         const userSnap = await getDoc(userRef);
-
-        const date = new Date();
 
         if (!userSnap.exists()) {
             await setDoc(doc(db, "Users", user.uid), {
@@ -41,7 +39,7 @@ export const GoogleButton = () => {
                 verified: true,
                 verificationCode: null,
                 codeExpiresAt: null,
-                createdAt: Date.now()
+                createdAt: Date.now(),
             } as UserData);
         }
     };
