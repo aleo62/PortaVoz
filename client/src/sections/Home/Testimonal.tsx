@@ -5,8 +5,8 @@ import { AnimatedTitle } from "@/components/animations/AnimatedTitle";
 import { AnimatedButton } from "@components/animations/AnimatedButton";
 import { AnimatedCaption } from "@components/animations/AnimatedCaption";
 
-import { Button } from "@/components/general/Button";
-import { Witnes } from "@/components/otros/Witnes";
+import { Witnes } from "@/components/ui/Witnes";
+import { Button } from "@/components/ui/Button";
 import { TestimonalItems } from "@utils/data";
 
 import { Circle } from "@components/deco/Circle";

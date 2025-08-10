@@ -1,13 +1,13 @@
+import { CreatePost } from "@/pages/CreatePost";
 import { NotFound } from "@/pages/NotFound";
+import { Posts } from "@/pages/Posts";
 import { Profile } from "@/pages/Profile";
 import { Dashboard } from "@pages/admin/Dashboard";
-import { CreateReport } from "@pages/CreateReport";
 import { EditProfile } from "@pages/EditProfile";
 import { Home } from "@pages/Home";
 import { Login } from "@pages/Login";
 import { Logout } from "@pages/Logout";
 import { Register } from "@pages/Register";
-import { Reports } from "@pages/Reports";
 import { Verify } from "@pages/Verify";
 import { ProtectedLayout } from "@utils/layouts/ProtectedLayout";
 import { SidebarLayout } from "@utils/layouts/SidebarLayout";
@@ -41,27 +41,37 @@ export const AppRoutes = () => {
                     path="/editprofile"
                     element={
                         <ProtectedLayout>
-                            <SidebarLayout title="Editar Perfil">
+                            <SidebarLayout>
                                 <EditProfile />
                             </SidebarLayout>
                         </ProtectedLayout>
                     }
                 />
                 <Route
-                    path="/reports"
+                    path="/feed"
                     element={
                         <ProtectedLayout>
-                            <SidebarLayout title="Denúncias">
-                                <Reports />
+                            <SidebarLayout>
+                                <Posts />
                             </SidebarLayout>
                         </ProtectedLayout>
                     }
                 />
                 <Route
-                    path="/createreport"
+                    path="/post/:postId"
                     element={
                         <ProtectedLayout>
-                            <CreateReport />
+                            <SidebarLayout>
+                                <Posts />
+                            </SidebarLayout>
+                        </ProtectedLayout>
+                    }
+                />
+                <Route
+                    path="/createpost"
+                    element={
+                        <ProtectedLayout>
+                            <CreatePost />
                         </ProtectedLayout>
                     }
                 />
@@ -69,7 +79,7 @@ export const AppRoutes = () => {
                     path="/profile"
                     element={
                         <ProtectedLayout>
-                            <SidebarLayout title="Perfil">
+                            <SidebarLayout>
                                 <Profile />
                             </SidebarLayout>
                         </ProtectedLayout>
@@ -79,7 +89,7 @@ export const AppRoutes = () => {
                     path="/profile/:publicId"
                     element={
                         <ProtectedLayout>
-                            <SidebarLayout title="Perfil">
+                            <SidebarLayout>
                                 <Profile />
                             </SidebarLayout>
                         </ProtectedLayout>
@@ -89,7 +99,7 @@ export const AppRoutes = () => {
                     path="/admin"
                     element={
                         <ProtectedLayout onlyAdmin={true}>
-                            <SidebarLayout title="Dashboard">
+                            <SidebarLayout>
                                 <Dashboard />
                             </SidebarLayout>
                         </ProtectedLayout>

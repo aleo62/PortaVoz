@@ -25,24 +25,23 @@ export class Server {
             })
         ).data;
     }
-
     // POST Post
     static async createPost(reportForm: Partial<PostData>, token: string) {
         const formData = new FormData();
-        formData.append("title", reportForm.title || "");
-        formData.append("desc", reportForm.desc || "");
-        formData.append("address", "Sabidi");
-        formData.append("location[longitude]", JSON.stringify(20));
-        formData.append("location[latitude]", JSON.stringify(20));
+        formData.append("title", reportForm.title!);
+        formData.append("desc", reportForm.desc!);
+        formData.append("address", reportForm.address!);
+        formData.append("location[longitude]", String(reportForm.location?.longitude));
+        formData.append("location[latitude]", String(reportForm.location?.latitude));
 
         if (reportForm.images && reportForm.images.length > 0) {
             reportForm.images.forEach((file) => {
                 formData.append(`images`, file);
             });
         }
-        if (reportForm.tags && reportForm.tags.length > 0) {
-            reportForm.tags.forEach((tag) => {
-                formData.append(`tags`, tag);
+        if (reportForm.hashtags && reportForm.hashtags.length > 0) {
+            reportForm.hashtags.forEach((hashtags) => {
+                formData.append(`hashtags`, hashtags);
             });
         }
 

@@ -21,6 +21,7 @@ type UserContextType = {
     setUserData: React.Dispatch<React.SetStateAction<UserData | DocumentData | null>>;
     updateUser: (data: Partial<UserData>) => void;
     isFetching?: boolean;
+    fetchUser: (publicId: string) => void;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -32,34 +33,49 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const [userTags, setUserTags] = useState<DocumentData[]>([]);
     const [isFetching, setIsFetching] = useState(true);
 
+    const fetchUserData = async (userAuth: User) => {
+        try {
+            const userDoc = await getDoc(doc(db, "Users", userAuth?.uid));
+            return userDoc.data();
+        } catch (err) {
+            console.log("Erro em capturar user data: ", err);
+        }
+    };
+
+    const fetchUserTags = async (userAuth: User) => {
+        try {
+            const tagsRef = collection(db, "Tags");
+
+            const q = query(tagsRef, where("User", "==", userAuth.uid));
+            const tagsDoc = await getDocs(q);
+
+            const tagsData = tagsDoc.docs.map((doc) => doc.data());
+            return tagsData;
+        } catch (err) {
+            console.log("Erro em capturar as tags: ", err);
+        }
+    };
+
+    const fetchUserDecoded = async (userAuth: User) => {
+        try {
+            const userDecoded = await userAuth.getIdTokenResult(true);
+            return userDecoded;
+        } catch (err) {
+            console.log("Erro em capturar o user decoded: ", err);
+        }
+    };
+
     useEffect(() => {
-        const auth = getAuth();
         setIsFetching(true);
+
+        const auth = getAuth();
         const unsubscribe = onAuthStateChanged(auth, async (userAuth) => {
             setUser(userAuth);
-            if (userAuth) {
-                const tokenResult = await userAuth.getIdTokenResult(true);
-                setUserDecoded(tokenResult);
-                try {
-                    const docSnap = await getDoc(doc(db, "Users", userAuth.uid));
-                    if (docSnap.exists()) setUserData(docSnap.data());
-                    if (userData?.phone === undefined)
-                        setUserData((prev) => ({ ...prev, phone: "" }));
 
-                    const tagsRef = collection(db, "Tags");
-                    const q = query(tagsRef, where("User", "==", userAuth.uid));
-                    const querySnapshot = await getDocs(q);
-                    const tagsData = querySnapshot.docs.map((doc) => doc.data());
-                    setUserTags(tagsData);
-                } catch (error) {
-                    console.error("Erro ao buscar dados do usuário ou tags:", error);
-                    setUserData(null);
-                    setUserTags([]);
-                    setUserDecoded(null);
-                }
-            } else {
-                setUserData(null);
-                setUserTags([]);
+            if (userAuth) {
+                setUserData((await fetchUserData(userAuth))!);
+                setUserTags((await fetchUserTags(userAuth))!);
+                setUserDecoded((await fetchUserDecoded(userAuth))!);
             }
             setIsFetching(false);
         });
@@ -75,9 +91,28 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         setUserData((prev) => ({ ...prev, ...(data as Record<string, unknown>) }));
     };
 
+    const fetchUser = async (publicId: string) => {
+        const q = await query(collection(db, "Users"), where("_publicId", "==", publicId));
+        const querySnapshot = await getDocs(q);
+
+        if (querySnapshot.empty) return null;
+
+        const userDoc = querySnapshot.docs[0];
+        return userDoc.data() as UserData;
+    };
+
     return (
         <UserContext.Provider
-            value={{ user, userData, userDecoded, setUserData, updateUser, userTags, isFetching }}
+            value={{
+                user,
+                userData,
+                userDecoded,
+                setUserData,
+                updateUser,
+                userTags,
+                fetchUser,
+                isFetching,
+            }}
         >
             {children}
         </UserContext.Provider>

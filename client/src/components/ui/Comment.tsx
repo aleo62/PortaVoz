@@ -4,21 +4,20 @@ import { useDeleteVote } from "@/hooks/vote/useDeleteVote";
 import { formatDate } from "@/utils/formatHour";
 import { CommentData } from "@/utils/types/commentDataType";
 import { IconDotsVertical, IconThumbUp } from "@tabler/icons-react";
-import { RefObject, useRef, useState } from "react";
-import { CommentContainer } from "./CommentContainer";
+import { useState } from "react";
+import { CommentDrop } from "../drop/CommentDrop";
 
 export const Comment = ({
     comment,
-    onDeleteComment
+    onDeleteComment,
 }: {
     comment: CommentData;
-    onDeleteComment: () => void
+    onDeleteComment: () => void;
 }) => {
     const { userData, userDecoded } = useUser();
     const date = formatDate(new Date(comment.createdAt));
     const [isUpvoted, setIsUpvoted] = useState(comment.isUpvoted);
     const [optionsContainerOpen, setOptionsContainerOpen] = useState(false);
-    const toggleRef = useRef<HTMLDivElement>(null);
 
     // VOTE MANAGEMENT
     const createVote = useCreateVote();
@@ -34,7 +33,7 @@ export const Comment = ({
 
     const addUpvote = async () => {
         setIsUpvoted(true);
-        comment.isUpvoted = false;
+        comment.isUpvoted = true;
         comment.upvotesCount = comment.upvotesCount + 1;
 
         await createVote.mutate(comment._id);
@@ -54,11 +53,10 @@ export const Comment = ({
                         className="text-subtitle ml-auto size-3.5"
                         onClick={() => setOptionsContainerOpen(true)}
                     />
-                    <CommentContainer
-                        isContainerOpen={optionsContainerOpen}
+                    <CommentDrop
+                        isOpen={optionsContainerOpen}
                         orientation="top"
                         onClose={() => setOptionsContainerOpen(false)}
-                        toggleRef={toggleRef as RefObject<HTMLDivElement>}
                         isOwner={
                             comment.userId == userData?._publicId || !!userDecoded?.claims.admin
                         }

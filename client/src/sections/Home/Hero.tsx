@@ -1,4 +1,4 @@
-import { Button } from "@/components/general/Button";
+import { Button } from "@/components/ui/Button";
 import woman from "@assets/images/illustrations/landing-page/woman.png";
 import { AnimatedButton } from "@components/animations/AnimatedButton";
 import { AnimatedSubtitle } from "@components/animations/AnimatedSubtitle";

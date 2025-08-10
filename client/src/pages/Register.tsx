@@ -9,14 +9,14 @@ import facebook from "@assets/images/icons/facebook.png";
 
 import { IconArrowRight } from "@tabler/icons-react";
 
-import { Button } from "@/components/general/Button";
-import { Widgets } from "@/components/otros/Widgets";
+import { Button } from "@/components/ui/Button";
+import { Widgets } from "@/components/ui/Widgets";
 
 import blob from "@assets/images/illustrations/register/blob-scene-haikei.png";
 import workspace from "@assets/images/illustrations/register/workspace.png";
 
-import { FormInput } from "@/components/general/FormInput";
-import { Loader } from "@/components/general/Loader";
+import { FormInput } from "@/components/ui/FormInput";
+import { Loader } from "@/components/ui/Loader";
 import { generateVerificationCode } from "@/utils/generateCode";
 import { useIsMobile } from "@/utils/isMobile";
 import { sendVerificationEmail } from "@/utils/sendEmail";
@@ -24,10 +24,11 @@ import { validateEmail, validateName, validatePassword } from "@/utils/validatio
 import { AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
+import { GoogleButton } from "@/components/ui/GoogleButton";
 import { useToast } from "@/contexts/ToastContext";
+import { generateId } from "@/utils/generateId";
 import { UserData } from "@/utils/types/userDataType";
 import { FirebaseError } from "firebase/app";
-import { GoogleButton } from "@/components/otros/GoogleButton";
 
 export const Register = () => {
     const [email, setEmail] = useState("");
@@ -66,6 +67,7 @@ export const Register = () => {
                 const codeExpiresAt = Date.now() + 5 * 60 * 1000;
 
                 await setDoc(doc(db, "Users", user.uid), {
+                    _publicId: generateId(20, "@_"),
                     email: user.email,
                     fName: fName,
                     lName: lName,
@@ -81,6 +83,7 @@ export const Register = () => {
                     verified: false,
                     verificationCode: verificationCode,
                     codeExpiresAt,
+                    createdAt: Date.now(),
                 } as UserData);
 
                 const expirationText = new Date(codeExpiresAt).toLocaleTimeString("pt-BR", {

@@ -1,5 +1,5 @@
-import { Loader } from "@/components/general/Loader";
-import { AlertCPF } from "@/components/otros/AlertCPF";
+import { AlertCPF } from "@/components/overlay/AlertCPF";
+import { Loader } from "@/components/ui/Loader";
 import { useUser } from "@/contexts/UserContext";
 import { AnimatePresence } from "framer-motion";
 import { Navigate } from "react-router-dom";

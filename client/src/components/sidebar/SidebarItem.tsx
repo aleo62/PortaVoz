@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 type SidebarItemProps = {
     label: string;
@@ -11,10 +12,11 @@ type SidebarItemProps = {
 
 export const SidebarItem = ({ label, Icon, active, href, isOpen, isMobile }: SidebarItemProps) => {
     const [isOver, setIsOver] = useState(false);
+    const navigate = useNavigate();
 
     return (
         <a
-            href={href}
+            onClick={() => navigate(href)}
             className={`transition-[color, background-color] before:text-accent before:bg-secondary/30 before:transition-[transform, opacity] items-centerrounded-lg relative flex rounded-xl p-[.9rem] px-4 font-medium duration-200 before:absolute before:z-50 before:overflow-hidden before:rounded-sm before:p-2 before:px-3 before:text-sm before:font-semibold before:text-ellipsis before:whitespace-nowrap before:backdrop-blur-lg before:duration-300 before:content-[attr(data-label)] 
                 ${active ? "ring-2 ring-accent text-accent font-medium" : "hover:text-title text-zinc-600 hover:bg-stone-100 dark:text-zinc-300 dark:hover:bg-zinc-800"} 
                 ${isOver ? "before:left-[70px] before:opacity-100" : "before:left-[-50px] before:opacity-0"} 

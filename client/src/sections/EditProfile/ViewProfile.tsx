@@ -1,10 +1,10 @@
-import { Button } from "@/components/general/Button";
-import { EditModal } from "@/components/general/EditModal";
-import { FormInput } from "@/components/general/FormInput";
-import { Loader } from "@/components/general/Loader";
-import { Textarea } from "@/components/general/Textarea";
-import { UnsaveContainer } from "@/components/general/UnsaveContainer";
-import { InfoField } from "@/components/otros/InfoField";
+import { InfoField } from "@/components/ui/InfoField";
+import { Button } from "@/components/ui/Button";
+import { EditModal } from "@/components/ui/EditModal";
+import { FormInput } from "@/components/ui/FormInput";
+import { Loader } from "@/components/ui/Loader";
+import { Textarea } from "@/components/ui/Textarea";
+import { UnsaveContainer } from "@/components/drop/UnsaveContainer";
 import { useUser } from "@/contexts/UserContext";
 import { useChangeImage } from "@/hooks/images/useChangeImage";
 import { useReload } from "@/hooks/user/useUpdate";
@@ -88,7 +88,7 @@ export const ViewProfile = () => {
             await reloadUser.mutateAsync();
         } catch (error) {
             console.log(error);
-        } finally{
+        } finally {
             setUnsave(false);
             setEditAbout(true);
         }
@@ -212,7 +212,7 @@ export const ViewProfile = () => {
             )}
 
             <div
-                className={`relative w-full overflow-hidden rounded-2xl bg-white p-1 pb-10 shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] lg:mx-0 dark:bg-zinc-900`}
+                className={`relative w-full overflow-hidden rounded-2xl max-w-4xl bg-white p-1 pb-10 shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] lg:mx-0 dark:bg-zinc-900`}
             >
                 {/* PFP AND USER BANNER */}
                 <div className="relative">

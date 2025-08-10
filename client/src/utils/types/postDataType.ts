@@ -6,7 +6,7 @@ export interface PostData {
     title: string;
     desc: string;
     images: string[] | File[];
-    tags: string[];
+    hashtags: string[];
     location: LocationData;
     address: string;
     upvotesCount: number;

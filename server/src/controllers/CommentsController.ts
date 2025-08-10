@@ -55,7 +55,7 @@ export const getCommentsById = async (
 
         // Sending response
         res.status(200).json({
-            posts: commentsResponse,
+            comments: commentsResponse,
             hasMore: count > page * limit,
         });
     } catch (err) {

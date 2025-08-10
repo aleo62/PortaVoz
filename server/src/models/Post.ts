@@ -17,7 +17,7 @@ export interface PostData extends Document {
     title: string;
     desc: string;
     images: string[];
-    tags: string[];
+    hashtags: string[];
     location: LocationData;
     address: string;
     upvotesCount: number;
@@ -106,7 +106,7 @@ const PostSchema: Schema = new Schema(
                 "Images must have between 1 and 3 items",
             ],
         },
-        tags: {
+        hashtags: {
             type: [String],
             required: true,
             validate: [

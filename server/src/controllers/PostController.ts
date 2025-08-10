@@ -179,7 +179,7 @@ export const createPost = async (
         if (!req.user) throw new Error("No user provided");
 
         const { uid, isAdmin } = req.user;
-        const { title, desc, tags, location, address, status } =
+        const { title, desc, hashtags, location, address, status } =
             req.body as PostData;
 
         // Verifying if images exists and making it an url
@@ -213,12 +213,14 @@ export const createPost = async (
             throw new Error("User has no remaining reports");
         }
 
+        
+
         const _id = generateId(config.SYSTEM_ID_SIZE, "P_"),
             userPhoto = userData.image,
             userName = userData.fName,
             userId = userData._publicId,
             severity = "pequena",
-            tagsFormatted = tags.map((tag: string) => tag.toLowerCase());
+            hashtagsFormatted = hashtags.map((tag: string) => tag.toLowerCase());
 
         // Cria o novo post no banco de dados
         const newPost = await Post.create({
@@ -229,7 +231,7 @@ export const createPost = async (
             title,
             desc,
             images: uploadedImages,
-            tags: tagsFormatted,
+            hashtags: hashtagsFormatted,
             location,
             address,
             status,

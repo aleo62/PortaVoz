@@ -44,7 +44,7 @@ router.post(
     upload.array("images", 3),
     body("title").trim().notEmpty().withMessage("title is required"),
     body("desc").trim().notEmpty().withMessage("desc is required"),
-    body("tags").notEmpty().withMessage("tags are required"),
+    body("hashtags").notEmpty().withMessage("hashtags are required"),
     body("location").isObject().withMessage("location is required"),
     body("location[longitude]")
         .notEmpty()
@@ -84,7 +84,7 @@ router.put(
     upload.array("newImages", 3),
     body("title").optional().trim().notEmpty().withMessage("title is required"),
     body("desc").optional().trim().notEmpty().withMessage("desc is required"),
-    body("tags").optional().notEmpty().withMessage("tags are required"),
+    body("hashtags").optional().notEmpty().withMessage("hashtags are required"),
     body("location").optional().isObject().withMessage("location is required"),
     body("location[longitude]")
         .optional()

@@ -1,11 +1,10 @@
-
-import { Input } from "@/components/general/Input";
+import { Input } from "@/components/ui/Input";
 
 import { PostData } from "@/utils/types/postDataType";
 import { IconPlus, IconX } from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
 
-export const ReportTags = ({
+export const PostTags = ({
     validate,
     reportForm,
     setReportForm,
@@ -28,7 +27,7 @@ export const ReportTags = ({
         e.preventDefault();
 
         if (!tag) return;
-        setReportForm({ ...reportForm, tags: [...reportForm.tags, tag] });
+        setReportForm({ ...reportForm, hashtags: [...reportForm.hashtags, tag] });
         setTag("");
     };
 
@@ -36,13 +35,13 @@ export const ReportTags = ({
         <>
             <h1 className="font-title text-title mb-7 text-2xl font-semibold">Tags da Denuncia</h1>
             <div className="flex h-30 w-full flex-wrap items-center gap-2 rounded-lg bg-zinc-100 p-5 dark:bg-zinc-800">
-                {reportForm.tags.map((tag) => (
+                {reportForm.hashtags.map((tag) => (
                     <span
                         className="text-title flex items-center gap-2 rounded-lg bg-zinc-200 px-3 py-2 dark:bg-zinc-700"
                         onClick={() =>
                             setReportForm({
                                 ...reportForm,
-                                tags: reportForm.tags.filter((t) => t !== tag),
+                                hashtags: reportForm.hashtags.filter((t) => t !== tag),
                             })
                         }
                     >

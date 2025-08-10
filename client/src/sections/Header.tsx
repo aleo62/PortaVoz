@@ -1,6 +1,6 @@
-import { Button } from "@/components/general/Button";
-import { Navbar } from "@/components/general/Navbar";
-import { SearchOverlay } from "@/components/general/SearchOverlay";
+import { Button } from "@/components/ui/Button";
+import { Navbar } from "@/components/ui/Navbar";
+import { SearchOverlay } from "@/components/overlay/SearchOverlay";
 import logo from "@assets/images/logo/logo-light.png";
 import {
     IconChevronDown,

@@ -1,5 +1,5 @@
-import { CodeInput } from "@/components/general/CodeInput";
-import { Button } from "@/components/general/Button";
+import { Button } from "@/components/ui/Button";
+import { CodeInput } from "@/components/ui/CodeInput";
 import { useToast } from "@/contexts/ToastContext";
 import { db } from "@/firebase";
 import logo from "@assets/images/logo/logo-light.png";

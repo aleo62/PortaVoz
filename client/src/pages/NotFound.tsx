@@ -1,4 +1,4 @@
-import { Button } from "@/components/general/Button";
+import { Button } from "@/components/ui/Button";
 import error from "@assets/images/illustrations/notfound/404.png";
 import { IconArrowRight } from "@tabler/icons-react";
 

@@ -1,33 +1,34 @@
-import { Button } from "@/components/general/Button";
+import { Button } from "@/components/ui/Button";
 import { useToast } from "@/contexts/ToastContext";
 import { useCreatePost } from "@/hooks/posts/useCreatePost";
-import { ReportContent } from "@/sections/CreateReport/ReportContent";
-import { ReportImages } from "@/sections/CreateReport/ReportImages";
-import { ReportLocation } from "@/sections/CreateReport/ReportLocation";
-import { ReportTags } from "@/sections/CreateReport/ReportTags";
+import { PostContent } from "@/sections/CreatePost/PostContent";
+import { PostImages } from "@/sections/CreatePost/PostImages";
+import { PostLocation } from "@/sections/CreatePost/PostLocation";
+import { PostTags } from "@/sections/CreatePost/PostTags";
 import { PostData } from "@/utils/types/postDataType";
 import loading from "@assets/images/loading.gif";
 import { IconArrowRight, IconHome2 } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
-export const CreateReport = () => {
+export const CreatePost = () => {
     const { errorToast } = useToast();
-    const createReport = useCreatePost();
+    const createPost = useCreatePost();
 
     // Declare report form
     const [reportForm, setReportForm] = useState<Partial<PostData>>({
         title: "",
         desc: "",
         images: [],
-        tags: [],
+        hashtags: [],
     });
 
     // Declare report page
     const [reportPage, setReportPage] = useState(0);
+    const barPosition = ["w-1/4", "w-2/4", "w-3/4", "w-4/4"];
 
     // Declare report sections
-    const reportSections = [ReportContent, ReportImages, ReportTags, ReportLocation];
+    const reportSections = [PostContent, PostImages, PostTags, PostLocation];
     const ReportSection = reportSections[reportPage];
 
     // Declare sections validation
@@ -52,7 +53,8 @@ export const CreateReport = () => {
     useEffect(() => {
         const registerPost = async () => {
             if (reportPage !== reportSections.length) return;
-            const response = await createReport.mutate({ formData: reportForm });
+
+            const response = await createPost.mutate({ formData: reportForm });
             console.log(response);
         };
 
@@ -98,8 +100,12 @@ export const CreateReport = () => {
                             small
                         />
                         <div
-                            className={`before:w-${reportPage + 1}/4 before:bg-accent relative mx-auto mt-5 h-3 w-full max-w-3xl rounded-full bg-zinc-200 before:absolute before:h-full before:rounded-full before:transition-[width] before:content-[''] lg:mt-10 dark:bg-zinc-700`}
-                        ></div>
+                            className={`relative mx-auto mt-5 h-3 w-full max-w-3xl rounded-full bg-zinc-200 lg:mt-10 dark:bg-zinc-700`}
+                        >
+                            <div
+                                className={`h-full ${barPosition[reportPage]} bg-accent rounded-full transition-[width]`}
+                            ></div>
+                        </div>
                         <div className="relative mx-auto mt-17 mb-10 h-50 min-h-95 w-full max-w-xl rounded-xl">
                             <AnimatePresence mode="wait">
                                 <motion.div

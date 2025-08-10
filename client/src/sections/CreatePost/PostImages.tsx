@@ -2,7 +2,7 @@ import { PostData } from "@/utils/types/postDataType";
 import { IconCloudUpload } from "@tabler/icons-react";
 import React, { useEffect, useRef, useState } from "react";
 
-export const ReportImages = ({
+export const PostImages = ({
     validate,
     reportForm,
     setReportForm,

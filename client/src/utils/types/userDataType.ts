@@ -10,11 +10,12 @@ export type UserData = {
     phone: string;
     about: string;
     remainingReports: number;
-    reportsResetAt: Timestamp | Date;
+    reportsResetAt: Timestamp | Date | null;
     totalReports: number;
     verified: boolean;
     verificationCode: string | null;
     codeExpiresAt: number | null;
     followers: number;
     following: number;
+    createdAt: number;
 };

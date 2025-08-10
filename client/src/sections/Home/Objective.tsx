@@ -1,4 +1,4 @@
-import { Button } from "@/components/general/Button";
+import { Button } from "@/components/ui/Button";
 
 import man from "@assets/images/illustrations/landing-page/man.png";
 
@@ -9,7 +9,7 @@ import { AnimatedCaption } from "@components/animations/AnimatedCaption";
 import { AnimatedSubtitle } from "@components/animations/AnimatedSubtitle";
 import { AnimatedTitle } from "@components/animations/AnimatedTitle";
 
-import { Topic } from "@/components/otros/Topic";
+import { Topic } from "@/components/ui/Topic";
 import { topics } from "@/utils/data";
 import { IconArrowNarrowRight } from "@tabler/icons-react";
 

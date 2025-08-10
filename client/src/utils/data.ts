@@ -8,12 +8,12 @@ import {
     IconEarScan,
     IconListSearch,
     IconLock,
-    IconMessage2,
+    IconMessage,
     IconMessageUp,
     IconMeteorFilled,
     IconReport,
-    IconReportSearch,
     IconSparkles,
+    IconTimeline,
     IconUser,
 } from "@tabler/icons-react";
 
@@ -30,8 +30,8 @@ export const portaVozLogo =
         : "https://res.cloudinary.com/di5bma0gm/image/upload/v1754164869/Title_black_Grad._bd392t.png";
 
 export const SidebarItems = [
-    { label: "Denúncias", icon: IconReportSearch, href: "/reports" },
-    { label: "Chat", icon: IconMessage2, href: "/chat" },
+    { label: "Feed", icon: IconTimeline, href: "/feed" },
+    { label: "Chat", icon: IconMessage, href: "/chat" },
     { label: "Ajuda", icon: IconEarScan, href: "/help" },
 ];
 
@@ -68,11 +68,11 @@ export const Tags = [
 ];
 
 export const SeverityClassNames: { [key: string]: string } = {
-    "pequena": "bg-gradient-to-r from-green-100 to-green-200 text-green-700 inset-ring-zinc-300/30",
-    "media": "bg-yellow-100 text-yellow-700",
-    "grave": "bg-red-100 text-red-700",
+    pequena: "bg-gradient-to-r from-green-100 to-green-200 text-green-700 inset-ring-zinc-300/30",
+    media: "bg-yellow-100 text-yellow-700",
+    grave: "bg-red-100 text-red-700",
     "super grave": "bg-red-100 text-red-700",
-}
+};
 
 export const TestimonalItems = [
     {
