@@ -1,5 +1,6 @@
 import { CreatePost } from "@/pages/CreatePost";
 import { NotFound } from "@/pages/NotFound";
+import { Post } from "@/pages/PostView";
 import { Posts } from "@/pages/Posts";
 import { Profile } from "@/pages/Profile";
 import { Dashboard } from "@pages/admin/Dashboard";
@@ -62,7 +63,7 @@ export const AppRoutes = () => {
                     element={
                         <ProtectedLayout>
                             <SidebarLayout>
-                                <Posts />
+                                <Post />
                             </SidebarLayout>
                         </ProtectedLayout>
                     }

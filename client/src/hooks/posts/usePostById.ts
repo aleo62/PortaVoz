@@ -10,5 +10,6 @@ export function usePostById(id: string, enabled: boolean) {
         queryKey: ["posts", id],
         queryFn: () => Server.getPostById(id, token!),
         enabled: !!token && !!id && enabled
+        
     });
 }

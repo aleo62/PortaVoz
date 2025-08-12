@@ -6,17 +6,14 @@ import { PostData } from "@/utils/types/postDataType";
 import { IconArrowBigUp, IconDotsVertical, IconMap, IconMessageDots } from "@tabler/icons-react";
 import { InvalidateQueryFilters, QueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { PostDrop } from "../drop/PostDrop";
 import { PostOverlay } from "../overlay/PostOverlay";
 
-export const Post = ({
-    post,
-    onDeletePost,
-}: {
-    post: PostData;
-    onDeletePost: () => void;
-}) => {
+export const Post = ({ post, onDeletePost }: { post: PostData; onDeletePost: () => void }) => {
+    const navigate = useNavigate();
+
     const { userData, userDecoded } = useUser();
     const isMobile = useIsMobile();
     const queryClient = new QueryClient();
@@ -67,10 +64,10 @@ export const Post = ({
                 post={post}
             />
 
-            <article className="w-full max-w-xl rounded-xl bg-white shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] dark:bg-zinc-900">
+            <article className="w-full max-w-2xl rounded-xl bg-white shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] dark:bg-zinc-900">
                 <header className="flex items-center gap-3 p-3 py-5 lg:p-5 lg:py-6">
-                    <a
-                        href={`/profile/${post.userId}`}
+                    <div
+                        onClick={() => navigate(`/profile/${post.userId}`)}
                         className="flex cursor-pointer items-center gap-3"
                     >
                         <img
@@ -83,7 +80,7 @@ export const Post = ({
                             <p className="text-md text-title font-medium">{post.userName}</p>
                             <p className="text-subtitle text-[.8rem]">{post.userId}</p>
                         </div>
-                    </a>
+                    </div>
 
                     <div
                         className="relative ml-auto w-fit cursor-pointer"
@@ -143,7 +140,10 @@ export const Post = ({
 
                     <div className="p-5 pt-0">
                         <div className="mb-1 flex w-full items-center justify-between gap-2">
-                            <h2 className="text-title font-title max-w-[70%] text-lg font-semibold wrap-break-word lg:mb-2 lg:text-[1.5rem]">
+                            <h2
+                                onClick={() => navigate(`/post/${post._id}`)}
+                                className="text-title font-title max-w-[90%] cursor-pointer truncate text-xl font-semibold wrap-break-word hover:underline lg:mb-2 lg:text-[1.5rem]"
+                            >
                                 {post.title}
                             </h2>
                         </div>
@@ -164,8 +164,13 @@ export const Post = ({
                     </div>
                 </main>
 
-                <footer className="p-5 w-full flex items-center justify-end">
-                    <a href={`post/${post._id}`} className="flex gap-1 text-accent font-medium underline">Ver Localização <IconMap/></a>
+                <footer className="flex w-full items-center justify-end p-5">
+                    <a
+                        onClick={() => navigate(`/post/${post._id}`)}
+                        className="text-accent text-md flex items-center gap-1 font-medium underline"
+                    >
+                        Localização <IconMap size={20} />
+                    </a>
                 </footer>
             </article>
         </>

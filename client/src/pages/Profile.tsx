@@ -6,15 +6,14 @@ import { useParams } from "react-router-dom";
 
 export const Profile = () => {
     const { publicId } = useParams();
-    const { fetchUser, userData } = useUser();
+    const { fetchUser, userData, isFetchingUser } = useUser();
     const [user, setUser] = useState<UserData | null>(null);
 
     useEffect(() => {
         const fetchUserData = async () => {
             let data;
-            if (publicId) {
+            if (publicId && publicId !== userData?._publicId ) {
                 data = await fetchUser(publicId);
-                console.log(await fetchUser(publicId));
             } else {
                 data = userData;
             }
@@ -22,29 +21,42 @@ export const Profile = () => {
         };
 
         fetchUserData();
-    }, [publicId, fetchUser, userData]);
+    }, [publicId, userData]);
 
     return (
         <>
             <div className="w-full">
                 <HeaderSidebar></HeaderSidebar>
-                <section className="w-full max-w-4xl rounded-3xl mx-auto bg-white p-2 pb-5 shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] dark:bg-zinc-900">
+                <section className="mx-auto w-full max-w-4xl rounded-3xl bg-white p-2 pb-5 shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] dark:bg-zinc-900">
                     <header>
-                        <div className="relative h-full w-full">
-                            {user?.banner ? (
-                                <img
-                                    src={user?.banner}
-                                    alt="Banner"
-                                    className="h-40 w-full rounded-2xl object-cover md:h-60"
-                                />
+                        <div className="text-title relative h-full w-full">
+                            {publicId && isFetchingUser ? (
+                                <>
+                                    {/* Banner placeholder */}
+                                    <div className="h-40 w-full animate-pulse rounded-2xl bg-stone-300 md:h-60 dark:bg-zinc-800"></div>
+
+                                    {/* Imagem de perfil placeholder */}
+                                    <div className="absolute top-[50%] left-5 h-40 w-40 animate-pulse rounded-full bg-stone-300 ring-3 ring-white dark:bg-zinc-800 dark:ring-zinc-900"></div>
+                                </>
                             ) : (
-                                <div className="h-40 w-full rounded-2xl bg-stone-300 md:h-60 dark:bg-zinc-800"></div>
+                                <>
+                                    {user?.banner ? (
+                                        <img
+                                            src={user.banner}
+                                            alt="Banner"
+                                            className="h-40 w-full rounded-2xl object-cover md:h-60"
+                                        />
+                                    ) : (
+                                        <div className="h-40 w-full rounded-2xl bg-stone-300 md:h-60 dark:bg-zinc-800"></div>
+                                    )}
+
+                                    <img
+                                        src={user?.image}
+                                        alt="Foto de perfil"
+                                        className="absolute top-[50%] left-5 h-40 w-40 rounded-full object-cover ring-3 ring-white dark:ring-zinc-900"
+                                    />
+                                </>
                             )}
-                            <img
-                                src={user?.image}
-                                alt=""
-                                className="absolute top-[50%] left-5 h-40 w-40 rounded-full ring-3 ring-white dark:ring-zinc-900"
-                            />
                         </div>
 
                         <div className="text-title mt-15 flex w-full items-center justify-between px-8">

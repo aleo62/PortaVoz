@@ -21,6 +21,7 @@ type UserContextType = {
     setUserData: React.Dispatch<React.SetStateAction<UserData | DocumentData | null>>;
     updateUser: (data: Partial<UserData>) => void;
     isFetching?: boolean;
+    isFetchingUser?: boolean;
     fetchUser: (publicId: string) => void;
 };
 
@@ -32,6 +33,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const [userDecoded, setUserDecoded] = useState<IdTokenResult | null>(null);
     const [userTags, setUserTags] = useState<DocumentData[]>([]);
     const [isFetching, setIsFetching] = useState(true);
+    const [isFetchingUser, setIsFetchingUser] = useState(true);
 
     const fetchUserData = async (userAuth: User) => {
         try {
@@ -92,13 +94,20 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     const fetchUser = async (publicId: string) => {
-        const q = await query(collection(db, "Users"), where("_publicId", "==", publicId));
-        const querySnapshot = await getDocs(q);
+        setIsFetchingUser(true);
+        try {
+            const q = await query(collection(db, "Users"), where("_publicId", "==", publicId));
+            const querySnapshot = await getDocs(q);
 
-        if (querySnapshot.empty) return null;
+            if (querySnapshot.empty) return null;
 
-        const userDoc = querySnapshot.docs[0];
-        return userDoc.data() as UserData;
+            const userDoc = querySnapshot.docs[0];
+            const data = userDoc.data();
+
+            return data;
+        } finally {
+            setIsFetchingUser(false);
+        }
     };
 
     return (
@@ -112,6 +121,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
                 userTags,
                 fetchUser,
                 isFetching,
+                isFetchingUser,
             }}
         >
             {children}
