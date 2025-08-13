@@ -1,4 +1,4 @@
-import { portaVozLogo, SidebarItems } from "@/utils/data";
+import { portaVozLogo, SidebarItems, SidebarSpecialItems } from "@/utils/data";
 
 import { useTheme } from "@/hooks/useTheme";
 import { useIsMobile } from "@/utils/isMobile";
@@ -27,7 +27,7 @@ export const Sidebar = ({
                 className={`fixed top-0 left-0 z-20 h-screen flex-shrink-0 transition-all duration-100 ease-in-out lg:relative ${isMobile && (!isOpen ? "pointer-events-none -translate-x-full" : "translate-x-0")} ${className}`}
             >
                 <nav
-                    className={`grid h-full grid-rows-[1.5fr_7fr_1fr] justify-center border-r-1 border-zinc-200 bg-white px-3.5 shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] duration-100 dark:border-zinc-700 dark:bg-zinc-900 ${isMobile && !isOpen ? "pointer-events-none" : ""}`}
+                    className={`grid h-full grid-rows-[1.5fr_6fr_1fr] justify-center border-r-1 border-zinc-200 bg-white px-3.5 shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] duration-100 dark:border-zinc-700 dark:bg-zinc-900 ${isMobile && !isOpen ? "pointer-events-none" : ""}`}
                 >
                     {/* LOGO */}
                     <div className={`flex items-center justify-between px-2 pb-2.5`}>
@@ -49,7 +49,7 @@ export const Sidebar = ({
                         </button>
                     </div>
 
-                    <ul className={`space-y-1 p-5 px-1 ${!isOpen ? "items-center" : ""}`}>
+                    <ul className={`space-y-2 p-5 px-1 ${!isOpen ? "items-center" : ""}`}>
                         {SidebarItems.map(({ label, icon, href }, key) => (
                             <SidebarItem
                                 key={key}
@@ -63,7 +63,18 @@ export const Sidebar = ({
                         ))}
                     </ul>
 
-                    <ul className={`space-y-1 p-5 px-1 ${!isOpen ? "items-center" : ""}`}>
+                    <ul className={`space-y-2 p-5 px-1 ${!isOpen ? "items-center" : ""}`}>
+                        {SidebarSpecialItems.map(({ label, icon, href }, key) => (
+                            <SidebarItem
+                                key={key}
+                                href={href}
+                                Icon={icon}
+                                label={label}
+                                isOpen={isOpen}
+                                active={location.pathname === href}
+                                isMobile={isMobile}
+                            />
+                        ))}
                         <div
                             className="mx-auto flex w-[95%] items-center gap-2 rounded-[15px] bg-zinc-200 p-[4px] text-sm font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
                             onClick={() => !isOpen && setIsDarkTheme(!isDarkTheme)}

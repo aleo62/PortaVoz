@@ -13,6 +13,7 @@ import {
     IconMeteorFilled,
     IconReport,
     IconSparkles,
+    IconSword,
     IconTimeline,
     IconUser,
 } from "@tabler/icons-react";
@@ -34,6 +35,8 @@ export const SidebarItems = [
     { label: "Chat", icon: IconMessage, href: "/chat" },
     { label: "Ajuda", icon: IconEarScan, href: "/help" },
 ];
+
+export const SidebarSpecialItems = [{ label: "Admin", icon: IconSword, href: "/admin" }];
 
 export const SidebarConfig = [{ label: "Notificações", icon: IconBell, href: "/notifications" }];
 

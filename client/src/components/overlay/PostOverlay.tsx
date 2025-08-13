@@ -12,6 +12,7 @@ import { useInView } from "react-intersection-observer";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { OverlayTemplate, OverlayTemplateProps } from "../templates/OverlayTemplate";
 import { Comment } from "../ui/Comment";
+import { UserData } from "@/utils/types/userDataType";
 
 type SearchOverlayProps = OverlayTemplateProps & {
     post: PostData;
@@ -21,7 +22,7 @@ export const PostOverlay = ({ isOpen, onClose, post }: SearchOverlayProps) => {
     const isMobile = useIsMobile();
 
     const { userData } = useUser();
-    const createComment = useCreateComment();
+    const createComment = useCreateComment(userData as UserData);
 
     const { data, isLoading, fetchNextPage, hasNextPage } = useComments(post._id);
     const [commentInput, setCommentInput] = useState("");
@@ -31,28 +32,11 @@ export const PostOverlay = ({ isOpen, onClose, post }: SearchOverlayProps) => {
     const handleCreateComment = async (e: React.FormEvent) => {
         e.preventDefault();
 
+
         await createComment.mutate({
             content: commentInput,
             parentId: post._id,
         });
-
-        comments = [
-            ...comments,
-            {
-                _id: "sdfsdfsdf",
-                parentId: post._id,
-                parentType: "Post",
-                userId: userData?._publicId as string,
-                userName: userData?.fName as string,
-                userPhoto: userData?.image as string,
-                content: commentInput,
-                upvotesCount: 0,
-                repliesCount: 0,
-                replies: [],
-                createdAt: new Date(),
-                isUpvoted: false,
-            },
-        ];
 
         setCommentInput("");
     };
@@ -60,7 +44,6 @@ export const PostOverlay = ({ isOpen, onClose, post }: SearchOverlayProps) => {
     const deleteComment = useDeleteComment();
 
     const handleDeleteComment = async (id: string) => {
-        comments = comments.filter((comment) => comment._id !== id);
         await deleteComment.mutate(id);
     };
 
@@ -126,7 +109,7 @@ export const PostOverlay = ({ isOpen, onClose, post }: SearchOverlayProps) => {
                             <span className="h-[1px] flex-1 rounded-full bg-zinc-400 dark:bg-zinc-500"></span>
                         </h2>
 
-                        <div className="scrollbar-thin scrollbar-track-[#fafafa] dark:scrollbar-track-[#212121] scrollbar-thumb-zinc-200 dark:scrollbar-thumb-zinc-700 mt-3 flex-1 overflow-y-auto">
+                        <div className="scrollbar-thin scrollbar-track-[#fafafa] space-y-2 dark:scrollbar-track-[#212121] scrollbar-thumb-zinc-200 dark:scrollbar-thumb-zinc-700 mt-3 flex-1 overflow-y-auto">
                             {comments.map((comment) => (
                                 <Comment
                                     key={comment._id}

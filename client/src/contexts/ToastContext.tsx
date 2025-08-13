@@ -1,3 +1,4 @@
+import { Icon12Hours } from "@tabler/icons-react";
 import { ReactNode, createContext, useContext } from "react";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -11,23 +12,23 @@ const ToastContext = createContext<ToastContextType | undefined>(undefined);
 export const ToastProvider = ({ children }: { children: ReactNode }) => {
     const successToast = (message: string) => {
         toast.success(message, {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
+            position: "bottom-center",
+            autoClose: 5000,
+            hideProgressBar: true,
             pauseOnHover: true,
+            icon: false,
             className: "toastSuccess",
         });
     };
 
     const errorToast = (message: string) => {
         toast.error(message, {
-            position: "top-right",
+            position: "bottom-center",
             autoClose: 3000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
-            className: "toastError",
+            className: "toast toastError",
         });
     };
 

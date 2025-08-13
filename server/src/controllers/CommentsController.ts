@@ -120,7 +120,7 @@ export const createComment = async (
         if (parentType === "Comment") {
             await Comment.findByIdAndUpdate(parentId, {
                 $push: { replies: _id },
-                $inc: { commentsCount: 1 },
+                $inc: { repliesCount: 1 },
             });
         } else {
             await Post.findByIdAndUpdate(parentId, {
@@ -160,10 +160,18 @@ export const deleteComment = async (
         const commentData = await Comment.findByIdAndDelete(commentId);
         if (!commentData) throw new Error("Comment does not exist");
 
-        await Post.findByIdAndUpdate(commentData.parentId, {
-            $pull: { comments: commentId },
-            $inc: { repliesCount: -1 },
-        });
+        const parentId = commentData.parentId;
+
+        // Editing parent Id
+        if (commentData.parentType === "Comment") {
+            await Comment.findByIdAndUpdate(parentId, {
+                $inc: { repliesCount: -1 },
+            });
+        } else {
+            await Post.findByIdAndUpdate(parentId, {
+                $inc: { commentsCount: -1 },
+            });
+        }
 
         res.status(200).json({ message: "Comment deleted", data: commentData });
     } catch (err) {

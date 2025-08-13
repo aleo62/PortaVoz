@@ -12,6 +12,7 @@ export function useDeleteComment() {
         mutationFn: (id: string) => Server.deleteCommentById(id, token!),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["comments"] });
+            queryClient.invalidateQueries({ queryKey: ["posts"] });
         },
         onError: (error) => {
             console.error("❌ Erro na mutation:", error, token);

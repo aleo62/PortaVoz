@@ -1,23 +1,35 @@
 import { useUser } from "@/contexts/UserContext";
+import { useComments } from "@/hooks/comments/useComments";
+import { useCreateComment } from "@/hooks/comments/useCreateComment";
 import { useCreateVote } from "@/hooks/vote/useCreateVote";
 import { useDeleteVote } from "@/hooks/vote/useDeleteVote";
 import { formatDate } from "@/utils/formatHour";
 import { CommentData } from "@/utils/types/commentDataType";
-import { IconDotsVertical, IconThumbUp } from "@tabler/icons-react";
-import { useState } from "react";
+import { UserData } from "@/utils/types/userDataType";
+import { IconChevronDown, IconDotsVertical, IconThumbUp } from "@tabler/icons-react";
+import { useRef, useState } from "react";
 import { CommentDrop } from "../drop/CommentDrop";
 
 export const Comment = ({
     comment,
     onDeleteComment,
+    reply,
 }: {
     comment: CommentData;
     onDeleteComment: () => void;
+    reply?: boolean;
 }) => {
     const { userData, userDecoded } = useUser();
     const date = formatDate(new Date(comment.createdAt));
     const [isUpvoted, setIsUpvoted] = useState(comment.isUpvoted);
     const [optionsContainerOpen, setOptionsContainerOpen] = useState(false);
+    const [replyInputOpen, setReplyInputOpen] = useState(false);
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    const createComment = useCreateComment(userData as UserData);
+    const [commentInput, setCommentInput] = useState("");
+    const [replies, setReplies] = useState<CommentData[]>();
+    const { data: repliesData } = useComments(comment._id);
 
     // VOTE MANAGEMENT
     const createVote = useCreateVote();
@@ -39,50 +51,117 @@ export const Comment = ({
         await createVote.mutate(comment._id);
     };
 
+    const handleCreateReply = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        comment.repliesCount++;
+
+        await createComment.mutate({
+            content: commentInput,
+            parentId: comment._id,
+        });
+    };
+
+    const handleShowReplies = () => {
+        console.log("sdfsdfsdfsf");
+
+        // @ts-ignore
+        setReplies(repliesData?.pages.flatMap((page) => page.comments));
+    };
+
     return (
-        <div className="flex w-full items-start gap-3">
-            <header className="gap-1">
-                <img src={comment.userPhoto} className="h-9 w-9 rounded-full" alt="User photo" />
-            </header>
-
-            <main className="flex-1 pt-[.5rem]">
-                <div className="relative flex items-center gap-2">
-                    <h3 className="text-title text-[.92rem] font-medium">{comment.userName}</h3>
-                    <span className="text-xs text-zinc-500 dark:text-zinc-400">{date}</span>
-                    <IconDotsVertical
-                        className="text-subtitle ml-auto size-3.5"
-                        onClick={() => setOptionsContainerOpen(true)}
+        <>
+            <div className="flex w-full items-start gap-3">
+                <header className="gap-1">
+                    <img
+                        src={comment.userPhoto}
+                        className="h-9 w-9 rounded-full"
+                        alt="User photo"
                     />
-                    <CommentDrop
-                        isOpen={optionsContainerOpen}
-                        orientation="top"
-                        onClose={() => setOptionsContainerOpen(false)}
-                        isOwner={
-                            comment.userId == userData?._publicId || !!userDecoded?.claims.admin
-                        }
-                        onDeleteComment={onDeleteComment}
-                    />
-                </div>
+                </header>
 
-                <p className="mt-1 text-sm text-zinc-800 dark:text-zinc-200"> {comment.content} </p>
-
-                <div
-                    className={`mt-2 flex items-center gap-4 ${isUpvoted ? "text-accent" : "text-subtitle"}`}
-                >
-                    <button
-                        onClick={() => {
-                            isUpvoted ? deleteUpvote() : addUpvote();
-                        }}
-                        className={`flex items-center gap-1 rounded-lg p-1 px-4 text-xs font-semibold ${isUpvoted ? "bg-secondary-lighter" : "bg-zinc-100 dark:bg-zinc-800"}`}
-                    >
-                        <IconThumbUp
-                            className={`size-4 ${isUpvoted ? "fill-secondary" : "fill-zinc-300"}`}
+                <main className="flex-1 pt-[.5rem]">
+                    <div className="relative flex items-center gap-2">
+                        <h3 className="text-title text-[.92rem] font-medium">{comment.userName}</h3>
+                        <span className="text-xs text-zinc-500 dark:text-zinc-400">{date}</span>
+                        <IconDotsVertical
+                            className="text-subtitle ml-auto size-3.5"
+                            onClick={() => setOptionsContainerOpen(true)}
                         />
-                        <p className="w-2">{comment.upvotesCount}</p>
-                    </button>
-                    <button className="text-xs text-zinc-500 dark:text-zinc-400">Responder</button>
-                </div>
-            </main>
-        </div>
+                        <CommentDrop
+                            isOpen={optionsContainerOpen}
+                            orientation="top"
+                            onClose={() => setOptionsContainerOpen(false)}
+                            isOwner={
+                                comment.userId == userData?._publicId || !!userDecoded?.claims.admin
+                            }
+                            onDeleteComment={onDeleteComment}
+                        />
+                    </div>
+
+                    <p className="mt-1 text-sm text-zinc-800 dark:text-zinc-200">
+                        {" "}
+                        {comment.content}{" "}
+                    </p>
+
+                    <div
+                        className={`mt-2 flex items-center gap-4 ${isUpvoted ? "text-accent" : "text-subtitle"}`}
+                    >
+                        <button
+                            onClick={() => {
+                                isUpvoted ? deleteUpvote() : addUpvote();
+                            }}
+                            className={`flex items-center gap-1 rounded-lg p-1 px-4 text-xs font-semibold ${isUpvoted ? "bg-secondary-lighter" : "bg-zinc-100 dark:bg-zinc-800"}`}
+                        >
+                            <IconThumbUp
+                                className={`size-4 ${isUpvoted ? "fill-secondary" : "fill-zinc-300"}`}
+                            />
+                            <p className="w-2">{comment.upvotesCount}</p>
+                        </button>
+                        {!reply && (
+                            <button
+                                onClick={() => {
+                                    setReplyInputOpen(true);
+                                    setTimeout(() => inputRef.current!.focus(), 100);
+                                }}
+                                className="text-xs text-zinc-500 dark:text-zinc-400"
+                            >
+                                Responder
+                            </button>
+                        )}
+                    </div>
+
+                    <form action="" onSubmit={(e) => handleCreateReply(e)}>
+                        <input
+                            type="text"
+                            ref={inputRef}
+                            onChange={(e) => setCommentInput(e.target.value)}
+                            placeholder="Responder..."
+                            className={`${!replyInputOpen && "hidden"} my-1 w-full rounded-md bg-white px-3 py-2 text-[.8rem] outline-none dark:bg-zinc-900`}
+                        />
+                    </form>
+
+                    <div className={`${replies && "mt-5"}`}>
+                        {replies?.map((reply) => (
+                            <Comment
+                                comment={reply}
+                                onDeleteComment={() => console.log("asdfsdf")}
+                                reply
+                            />
+                        ))}
+                    </div>
+
+                    {comment.repliesCount > 0 && (
+                        <p
+                            className="text-subtitle mt-2 flex items-center gap-2 text-xs"
+                            onClick={() => handleShowReplies()}
+                        >
+                            <IconChevronDown className="size-3" /> Ver respostas{" "}
+                            {comment.repliesCount}
+                        </p>
+                    )}
+                </main>
+            </div>
+        </>
     );
 };

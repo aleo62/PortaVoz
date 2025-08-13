@@ -2,6 +2,7 @@ import { IconAlertTriangle, IconLink, IconPencilCog, IconTrash } from "@tabler/i
 import { useState } from "react";
 import { ClipLoader as DeleteLoader } from "react-spinners";
 import { DropdownTemplate, DropdownTemplateProps } from "../templates/DropdownTemplate";
+import { useToast } from "@/contexts/ToastContext";
 
 type PostDropProps = DropdownTemplateProps & {
     isOwner: boolean;
@@ -16,6 +17,7 @@ export const PostDrop = ({
     onDeletePost,
 }: PostDropProps) => {
     const [isDeleting, setIsDeleting] = useState(false);
+    const { successToast } = useToast();
 
     return (
         <>
@@ -28,6 +30,7 @@ export const PostDrop = ({
                     <ul className="flex w-46 flex-col py-1 text-sm">
                         <li>
                             <a
+                                onClick={() => successToast("skibidi")}
                                 className="flex w-full items-center gap-2 rounded-lg p-3 px-4 hover:bg-zinc-100 hover:text-zinc-800 dark:hover:bg-zinc-800 hover:dark:text-white"
                             >
                                 <IconLink className="size-4.5" /> Copiar Link

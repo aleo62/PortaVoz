@@ -12,7 +12,7 @@ export const Profile = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             let data;
-            if (publicId && publicId !== userData?._publicId ) {
+            if (publicId && publicId !== userData?._publicId) {
                 data = await fetchUser(publicId);
             } else {
                 data = userData;
@@ -53,15 +53,17 @@ export const Profile = () => {
                                     <img
                                         src={user?.image}
                                         alt="Foto de perfil"
-                                        className="absolute top-[50%] left-5 h-40 w-40 rounded-full object-cover ring-3 ring-white dark:ring-zinc-900"
+                                        className="absolute top-[50%] left-5 h-27 w-27 rounded-full object-cover ring-3 ring-white lg:h-40 lg:w-40 dark:ring-zinc-900"
                                     />
                                 </>
                             )}
                         </div>
 
-                        <div className="text-title mt-15 flex w-full items-center justify-between px-8">
+                        <div className="text-title mt-12 flex w-full flex-col justify-between gap-3 px-2 lg:mt-15 lg:flex-row lg:items-center lg:px-8">
                             <div>
-                                <h2 className="text-3xl font-semibold capitalize">{user?.fName}</h2>
+                                <h2 className="text-2xl font-semibold capitalize lg:text-3xl">
+                                    {user?.fName}
+                                </h2>
                                 <p className="text-subtitle text-md">
                                     {user?.fName} {user?.lName}
                                 </p>
