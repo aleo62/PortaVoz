@@ -1,4 +1,3 @@
-import { generateId } from "@/utils/generateId";
 import { UserData } from "@/utils/types/userDataType";
 import { Server } from "@api/Server";
 import { useUser } from "@contexts/UserContext";
@@ -18,7 +17,7 @@ export function useCreateComment(userData: UserData) {
             // await queryClient.cancelQueries({ queryKey: ["comments", parentId] });
             const previousComments = queryClient.getQueryData(["comments", parentId]);
 
-            console.log(previousComments);
+            console.log(previousComments, content, userData);
             // queryClient.setQueryData(["comments", parentId], (old) => [
             //     ...(old as any),
             //     {

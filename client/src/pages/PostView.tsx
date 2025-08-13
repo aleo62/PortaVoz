@@ -1,9 +1,8 @@
 import { HeaderSidebar } from "@/components/sidebar/HeaderSidebar";
 import { MapView } from "@/components/ui/MapView";
-import { useDeletePost } from "@/hooks/posts/useDeletePost";
 import { usePostById } from "@/hooks/posts/usePostById";
 import { IconArrowBigUp, IconDotsVertical } from "@tabler/icons-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -11,18 +10,18 @@ export const Post = () => {
     const { postId } = useParams();
     const { data, isLoading, isError } = usePostById(postId!, true);
     const isUpvoted = data?.post?.isUpvoted;
-    const [optionsDropOpen, setOptionsDropOpen] = useState(false);
-    const deletePost = useDeletePost();
+    // const [optionsDropOpen, setOptionsDropOpen] = useState(false);
+    // const deletePost = useDeletePost();
 
     useEffect(() => {
         if (data?.post) console.log(data?.post?.location.longitude);
     }, [data]);
 
-    const handleDeletePost = async (id: string) => {
-        // @ts-ignore
+    // const handleDeletePost = async (id: string) => {
+    //     // @ts-ignore
 
-        await deletePost.mutate(id);
-    };
+    //     await deletePost.mutate(id);
+    // };
 
     if (isLoading) return <div>Carregando...</div>;
     if (isError) return <div>Erro ao carregar post</div>;
