@@ -14,7 +14,6 @@ export interface CommentData extends Document {
     content: string;
     upvotesCount: number;
     repliesCount: number;
-    replies: ObjectId[] | string[];
 }
 
 /**
@@ -86,7 +85,6 @@ const CommentSchema: Schema = new Schema(
             type: Number,
             default: 0,
         },
-        replies: [{ type: String, ref: "Comment" }],
     },
     { timestamps: true }
 );

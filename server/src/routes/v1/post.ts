@@ -115,7 +115,12 @@ router.put(
 // * COMMENTS ROUTES -----------------------------------------------------------------------------------
 
 // GET - Rota para ver todos os comentarios de um post
-router.get("/:parentId/comments", authenticateUser, validationError, getCommentsById);
+router.get(
+    "/:parentId/comments",
+    authenticateUser,
+    validationError,
+    getCommentsById
+);
 
 // POST - Rota para adicionar comentario
 router.post(

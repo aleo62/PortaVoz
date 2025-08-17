@@ -12,7 +12,7 @@ export const HeaderSidebar = ({ children }: { children?: ReactNode }) => {
 
     const [activeUserDrop, setActiveUserDrop] = useState(false);
     return (
-        <header className="mb-3 flex w-full items-center gap-6 lg:gap-3 bg-transparent py-3 lg:px-6">
+        <header className="mb-3 flex w-full items-center gap-6 lg:gap-3 bg-transparent py-3 max-w-7xl mx-auto">
             {children}
 
             <div className="ml-auto flex items-center lg:gap-3">

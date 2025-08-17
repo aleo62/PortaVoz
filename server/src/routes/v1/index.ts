@@ -2,9 +2,11 @@
  * Arquivo principal de rotas da API v1.
  * Define as rotas raiz, de posts e de imagens.
  */
+import { GeminiClient } from "@/ai/geminiClient";
 import imageRouter from "@/routes/v1/image";
 import postRouter from "@/routes/v1/post";
 import userRouter from "@/routes/v1/user";
+import aiRouter from "@/routes/v1/ai";
 import { Router } from "express";
 
 // Instancia o router do Express
@@ -14,12 +16,14 @@ const router = Router();
  * Rota raiz para verificação de status da API
  */
 router.get("/", (req, res) => {
+    
     res.status(200).json({
         message: "API is running",
         status: "ok",
         version: "1.0.0",
         success: true,
         timeStamp: new Date().toISOString(),
+        teste: GeminiClient("ola!")
     });
 });
 
@@ -29,5 +33,7 @@ router.use("/posts", postRouter);
 router.use("/users", userRouter);
 // Rotas de imagens
 router.use("/images", imageRouter);
+// Rotas de ia
+router.use("/ai", aiRouter);
 
 export default router;

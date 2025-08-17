@@ -118,13 +118,14 @@ export const createComment = async (
 
         // Editing parent Id
         if (parentType === "Comment") {
-            await Comment.findByIdAndUpdate(parentId, {
-                $push: { replies: _id },
+            const parent = await Comment.findByIdAndUpdate(parentId, {
                 $inc: { repliesCount: 1 },
+            });
+            await Post.findByIdAndUpdate(parent?.parentId, {
+                $inc: { commentsCount: 1 },
             });
         } else {
             await Post.findByIdAndUpdate(parentId, {
-                $push: { comments: _id },
                 $inc: { commentsCount: 1 },
             });
         }
@@ -164,8 +165,11 @@ export const deleteComment = async (
 
         // Editing parent Id
         if (commentData.parentType === "Comment") {
-            await Comment.findByIdAndUpdate(parentId, {
+            const parent = await Comment.findByIdAndUpdate(parentId, {
                 $inc: { repliesCount: -1 },
+            });
+            await Post.findByIdAndUpdate(parent?.parentId, {
+                $inc: { commentsCount: -1 },
             });
         } else {
             await Post.findByIdAndUpdate(parentId, {

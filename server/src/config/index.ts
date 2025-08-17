@@ -30,7 +30,8 @@ const config = {
     ),
     SYSTEM_COMMENTS_PER_PAGE: parseInt(
         process.env.SYSTEM_COMMENTS_PER_PAGE || "15"
-    )
+    ),
+    GEMINI_API_KEY: process.env.GEMINI_API_KEY
 };
 
 export default config;

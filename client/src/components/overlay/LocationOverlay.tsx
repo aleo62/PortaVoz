@@ -17,7 +17,7 @@ export const LocationOverlay = ({ isOpen, onClose, post }: LocationOverlayProps)
                     animate={{ scale: 1 }}
                     exit={{ scale: 0.95 }}
                     transition={{ duration: 0.1 }}
-                    className="bg-body-background h-fit w-full max-w-xl rounded-xl p-5 space-y-5"
+                    className="bg-body-background h-fit w-full max-w-[97%] lg:max-w-xl  rounded-xl p-5 space-y-5"
                 >
                     <div>
                         <h3 className="text-title font-title mb-2 text-lg font-medium">Endereço</h3>

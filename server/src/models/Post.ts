@@ -24,7 +24,6 @@ export interface PostData extends Document {
     commentsCount: number;
     status: "ativo" | "resolvido" | "oculto";
     severity: "pequena" | "média" | "urgente" | "super urgente";
-    comments: ObjectId[] | string[];
     isUpvoted?: boolean;
 }
 
@@ -146,7 +145,6 @@ const PostSchema: Schema = new Schema(
             },
             required: [true, "Severity is required"],
         },
-        comments: [{ type: String, ref: "Comment" }],
     },
     { timestamps: true }
 );

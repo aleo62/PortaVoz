@@ -132,21 +132,23 @@ export const Post = ({ post, onDeletePost }: { post: PostData; onDeletePost: () 
                         </Swiper>
                     </div>
 
-                    <div className="flex items-center space-x-1.5 p-3 font-semibold lg:p-5">
+                    <div
+                        className={`flex items-center space-x-1.5 p-3 font-semibold lg:p-5 ${isMobile ? "text-xs" : "text-[.8rem]"} `}
+                    >
                         <div
-                            className={`${isUpvoted ? "text-orange-500 dark:text-orange-300" : "text-subtitle"} flex cursor-pointer items-center justify-center gap-1 rounded-full rounded-l-full p-2 px-4 text-sm ring-1 ring-zinc-300 hover:bg-zinc-100 dark:ring-zinc-700 dark:hover:bg-zinc-800`}
+                            className={`${isUpvoted ? "text-orange-500 dark:text-orange-300" : "text-subtitle"} flex cursor-pointer items-center justify-center gap-1 rounded-full rounded-l-full p-2 px-4 ring-1 ring-zinc-300 hover:bg-zinc-100 dark:ring-zinc-700 dark:hover:bg-zinc-800`}
                             onClick={() => (isUpvoted ? deleteUpvote() : addUpvote())}
                         >
                             <IconArrowBigUp
-                                className={`${isUpvoted && "fill-orange-500 dark:fill-orange-300"} size-5`}
+                                className={`${isUpvoted && "fill-orange-500 dark:fill-orange-300"} ${isMobile ? "size-4.5" : "size-5"}`}
                             />
                             <p className="w-4 text-center">{post.upvotesCount}</p>
                         </div>
                         <div
-                            className="text-subtitle flex cursor-pointer items-center justify-center gap-1 rounded-full rounded-r-full p-2 px-4 text-sm ring-1 ring-zinc-300 hover:bg-zinc-100 dark:ring-zinc-700 dark:hover:bg-zinc-800"
+                            className="text-subtitle flex cursor-pointer items-center justify-center gap-1 rounded-full rounded-r-full p-2 px-4 ring-1 ring-zinc-300 hover:bg-zinc-100 dark:ring-zinc-700 dark:hover:bg-zinc-800"
                             onClick={() => setIsOverlayOpen(true)}
                         >
-                            <IconMessageDots className="size-5" />
+                            <IconMessageDots className={`size-5 ${isMobile ? "size-4.5" : "size-5"}`} />
                             <p className="w-4 text-center">{post.commentsCount}</p>
                         </div>
 

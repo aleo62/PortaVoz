@@ -1,3 +1,4 @@
+import { HeaderSidebar } from "@/components/sidebar/HeaderSidebar";
 import { SidebarProfile } from "@/components/sidebar/SidebarProfile";
 import { ViewDanger } from "@/sections/EditProfile/ViewDanger";
 import { ViewProfile } from "@/sections/EditProfile/ViewProfile";
@@ -22,10 +23,17 @@ export const EditProfile = () => {
 
     return (
         <>
-            <SidebarProfile activeItem={activeItem} setActiveItem={setActiveItem} />
-            <section className="flex w-full max-w-4xl items-start justify-center">
-                {ShowView}
-            </section>
+            <div className="w-full">
+                <HeaderSidebar/>
+
+                <div className="flex gap-5 justify-center max-lg:flex-col">
+                <SidebarProfile activeItem={activeItem} setActiveItem={setActiveItem} />
+                <section className="flex w-full max-w-4xl items-start justify-center">
+                    {ShowView}
+                </section>
+
+                </div>
+            </div>
         </>
     );
 };

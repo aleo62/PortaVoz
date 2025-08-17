@@ -6,9 +6,10 @@ import { useDeleteVote } from "@/hooks/vote/useDeleteVote";
 import { formatDate } from "@/utils/formatHour";
 import { CommentData } from "@/utils/types/commentDataType";
 import { UserData } from "@/utils/types/userDataType";
-import { IconChevronDown, IconDotsVertical, IconThumbUp } from "@tabler/icons-react";
+import { IconChevronDown, IconChevronUp, IconDotsVertical, IconThumbUp } from "@tabler/icons-react";
 import { useRef, useState } from "react";
 import { CommentDrop } from "../drop/CommentDrop";
+import { useDeleteComment } from "@/hooks/comments/useDeleteComment";
 
 export const Comment = ({
     comment,
@@ -28,8 +29,10 @@ export const Comment = ({
 
     const createComment = useCreateComment(userData as UserData);
     const [commentInput, setCommentInput] = useState("");
-    const [replies, setReplies] = useState<CommentData[]>();
-    const { data: repliesData } = useComments(comment._id);
+    const [repliesOpen, setRepliesOpen] = useState(false);
+    const { data: repliesData, hasNextPage } = useComments(comment._id);
+
+    const replies = repliesData?.pages.flatMap((page) => page.comments) ?? [];
 
     // VOTE MANAGEMENT
     const createVote = useCreateVote();
@@ -51,22 +54,23 @@ export const Comment = ({
         await createVote.mutate(comment._id);
     };
 
+    // REPLIES MANAGEMENT
+    const deleteComment = useDeleteComment();
+
+    const handleDeleteComment = async (id: string) => {
+        await deleteComment.mutate(id);
+    };
+
     const handleCreateReply = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        setReplyInputOpen(false);
         comment.repliesCount++;
 
         await createComment.mutate({
             content: commentInput,
             parentId: comment._id,
         });
-    };
-
-    const handleShowReplies = () => {
-        console.log("sdfsdfsdfsf");
-
-        // @ts-ignore
-        setReplies(repliesData?.pages.flatMap((page) => page.comments));
     };
 
     return (
@@ -141,25 +145,43 @@ export const Comment = ({
                         />
                     </form>
 
-                    <div className={`${replies && "mt-5"}`}>
-                        {replies?.map((reply) => (
-                            <Comment
-                                comment={reply}
-                                onDeleteComment={() => console.log("asdfsdf")}
-                                reply
-                            />
-                        ))}
+                    <div className={`${replies && "mt-5"} ${!repliesOpen && "hidden"}`}>
+                        {repliesOpen &&
+                            replies?.map((reply) => (
+                                <Comment
+                                    comment={reply}
+                                    onDeleteComment={() => handleDeleteComment(reply._id)}
+                                    reply
+                                />
+                            ))}
                     </div>
 
-                    {comment.repliesCount > 0 && (
-                        <p
-                            className="text-subtitle mt-2 flex items-center gap-2 text-xs"
-                            onClick={() => handleShowReplies()}
-                        >
-                            <IconChevronDown className="size-3" /> Ver respostas{" "}
-                            {comment.repliesCount}
-                        </p>
-                    )}
+                    {comment.repliesCount > 0 &&
+                        (repliesOpen ? (
+                            hasNextPage ? (
+                                <p
+                                    className="text-subtitle mt-2 flex items-center gap-2 text-xs"
+                                    onClick={() => setRepliesOpen(true)}
+                                >
+                                    <IconChevronDown className="size-3" /> Ver mais
+                                </p>
+                            ) : (
+                                <p
+                                    className="text-subtitle mt-2 flex items-center gap-2 text-xs"
+                                    onClick={() => setRepliesOpen(false)}
+                                >
+                                    <IconChevronUp className="size-3" /> Ocultar
+                                </p>
+                            )
+                        ) : (
+                            <p
+                                className="text-subtitle mt-2 flex items-center gap-2 text-xs"
+                                onClick={() => setRepliesOpen(true)}
+                            >
+                                <IconChevronDown className="size-3" /> Ver respostas{" "}
+                                {comment.repliesCount}
+                            </p>
+                        ))}
                 </main>
             </div>
         </>

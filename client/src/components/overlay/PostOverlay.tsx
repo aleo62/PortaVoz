@@ -32,7 +32,7 @@ export const PostOverlay = ({ isOpen, onClose, post }: SearchOverlayProps) => {
     const handleCreateComment = async (e: React.FormEvent) => {
         e.preventDefault();
 
-
+        
         await createComment.mutate({
             content: commentInput,
             parentId: post._id,

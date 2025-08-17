@@ -1,10 +1,6 @@
 import Comment from "@/models/Comment";
 import Post from "@/models/Post";
 
-/**
- * Pega todos os comentarios de um parent.
- * @param parentId ID do parent dos comentarios
- */
 
 /**
  * Deleta todos os comentarios de um parent.
