@@ -25,6 +25,7 @@ export class Server {
             })
         ).data;
     }
+
     // POST Post
     static async createPost(reportForm: Partial<PostData>, token: string) {
         const formData = new FormData();
@@ -131,6 +132,30 @@ export class Server {
             {
                 headers: { Authorization: `Bearer ${token}` },
             },
+        );
+    }
+
+    /* VALIDATOR ENDPOINTS -----------> */
+    // POST Validates
+    static async validateStage(reportForm: Partial<PostData>, stage: string) {
+        const formData = new FormData();
+        formData.append("title", reportForm.title!);
+        formData.append("desc", reportForm.desc!);
+
+        if (reportForm.images && reportForm.images.length > 0) {
+            reportForm.images.forEach((file) => {
+                formData.append(`images`, file);
+            });
+        }
+        if (reportForm.hashtags && reportForm.hashtags.length > 0) {
+            reportForm.hashtags.forEach((hashtags) => {
+                formData.append(`hashtags`, hashtags);
+            });
+        }
+
+        return axios.post(
+            `${this.baseUrl}validate/${stage}`,
+            formData
         );
     }
 }

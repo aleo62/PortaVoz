@@ -6,7 +6,7 @@ import { GeminiClient } from "@/ai/geminiClient";
 import imageRouter from "@/routes/v1/image";
 import postRouter from "@/routes/v1/post";
 import userRouter from "@/routes/v1/user";
-import aiRouter from "@/routes/v1/ai";
+import validateRouter from "@/routes/v1/validate";
 import { Router } from "express";
 
 // Instancia o router do Express
@@ -15,7 +15,7 @@ const router = Router();
 /**
  * Rota raiz para verificação de status da API
  */
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
     
     res.status(200).json({
         message: "API is running",
@@ -23,7 +23,6 @@ router.get("/", (req, res) => {
         version: "1.0.0",
         success: true,
         timeStamp: new Date().toISOString(),
-        teste: GeminiClient("ola!")
     });
 });
 
@@ -34,6 +33,6 @@ router.use("/users", userRouter);
 // Rotas de imagens
 router.use("/images", imageRouter);
 // Rotas de ia
-router.use("/ai", aiRouter);
+router.use("/validate", validateRouter);
 
 export default router;

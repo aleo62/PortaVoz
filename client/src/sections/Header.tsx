@@ -15,6 +15,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { AnimatePresence, motion } from "framer-motion";
 import hotkeys from "hotkeys-js";
 import { useEffect, useState } from "react";
+import { portaVozLogo } from "@/utils/data";
 
 export const Header = ({ search = true }: { search?: boolean }) => {
     const [navOpen, setNavOpen] = useState(false);
@@ -81,7 +82,7 @@ export const Header = ({ search = true }: { search?: boolean }) => {
                     {/* LOGO */}
                     <h1 className="font-title flex items-center font-bold">
                         <a href="/" className="logo">
-                            <img src={logo} width={80} alt="PortaVoz" />
+                            <img src={portaVozLogo} width={90} alt="PortaVoz" />
                         </a>
                     </h1>
 

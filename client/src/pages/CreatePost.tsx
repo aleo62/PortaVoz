@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/Button";
 import { useToast } from "@/contexts/ToastContext";
 import { useCreatePost } from "@/hooks/posts/useCreatePost";
+import { useValidateStage } from "@/hooks/validate/useValidateStage";
 import { PostContent } from "@/sections/CreatePost/PostContent";
 import { PostImages } from "@/sections/CreatePost/PostImages";
 import { PostLocation } from "@/sections/CreatePost/PostLocation";
@@ -14,6 +15,7 @@ import { useEffect, useState } from "react";
 export const CreatePost = () => {
     const { errorToast } = useToast();
     const createPost = useCreatePost();
+    const { data: responseStage, mutate: validateStage, isSuccess } = useValidateStage();
 
     // Declare report form
     const [reportForm, setReportForm] = useState<Partial<PostData>>({
@@ -39,23 +41,27 @@ export const CreatePost = () => {
         false /* location */,
     ];
 
-    const handleReportValidate = (key: number) => {
-        validatedSections[key] = true;
-    };
-    const handleNext = () => {
+    const handleNext = async () => {
         if (validatedSections[reportPage]) {
-            setReportPage((prev) => prev + 1);
+            await validateStage({ formData: reportForm, stage: "content" });
         } else {
-            errorToast("Preencha todos os campos");
+            errorToast("Preencha todos os campos corretamente");
         }
     };
+
+    useEffect(() => {
+        if (isSuccess) {
+            responseStage.data.valid
+                ? setReportPage((prev) => prev + 1)
+                : errorToast(responseStage.data.errors[0]);
+        }
+    }, [isSuccess, responseStage]);
 
     useEffect(() => {
         const registerPost = async () => {
             if (reportPage !== reportSections.length) return;
 
-            const response = await createPost.mutate({ formData: reportForm });
-            console.log(response);
+            await createPost.mutate({ formData: reportForm });
         };
 
         registerPost();
@@ -117,7 +123,7 @@ export const CreatePost = () => {
                                     style={{ position: "absolute", width: "100%" }}
                                 >
                                     <ReportSection
-                                        validate={() => handleReportValidate(reportPage)}
+                                        validate={() => (validatedSections[reportPage] = true)}
                                         setReportForm={
                                             setReportForm as React.Dispatch<
                                                 React.SetStateAction<PostData>
