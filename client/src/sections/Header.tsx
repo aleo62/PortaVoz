@@ -1,7 +1,7 @@
+import { SearchOverlay } from "@/components/overlay/SearchOverlay";
 import { Button } from "@/components/ui/Button";
 import { Navbar } from "@/components/ui/Navbar";
-import { SearchOverlay } from "@/components/overlay/SearchOverlay";
-import logo from "@assets/images/logo/logo-light.png";
+import { portaVozLogo } from "@/utils/data";
 import {
     IconChevronDown,
     IconLanguage,
@@ -15,7 +15,6 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { AnimatePresence, motion } from "framer-motion";
 import hotkeys from "hotkeys-js";
 import { useEffect, useState } from "react";
-import { portaVozLogo } from "@/utils/data";
 
 export const Header = ({ search = true }: { search?: boolean }) => {
     const [navOpen, setNavOpen] = useState(false);
@@ -29,11 +28,6 @@ export const Header = ({ search = true }: { search?: boolean }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
-        /**
-         * Handles the window scroll event.
-         * Checks if the user is scrolling up or down and sets the state accordingly.
-         * Also sets the outside state if the user is scrolling down.
-         */
         const handleScroll = () => {
             if (window.scrollY > 0) {
                 setOutside(true);
