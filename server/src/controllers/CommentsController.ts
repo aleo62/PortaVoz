@@ -173,7 +173,7 @@ export const deleteComment = async (
             });
         } else {
             await Post.findByIdAndUpdate(parentId, {
-                $inc: { commentsCount: -1 },
+                $inc: { commentsCount: -(commentData.repliesCount + 1) },
             });
         }
 

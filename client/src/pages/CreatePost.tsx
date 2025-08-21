@@ -11,10 +11,12 @@ import loading from "@assets/images/loading.gif";
 import { IconArrowRight, IconHome2 } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const CreatePost = () => {
     const { errorToast } = useToast();
     const createPost = useCreatePost();
+    const navigate = useNavigate();
     const { data: responseStage, mutate: validateStage, isSuccess } = useValidateStage();
 
     // Declare report form
@@ -40,10 +42,15 @@ export const CreatePost = () => {
         false /* tags */,
         false /* location */,
     ];
+    const stageSections = [
+        "content",
+        "images",
+        "hashtags"
+    ];
 
     const handleNext = async () => {
         if (validatedSections[reportPage]) {
-            await validateStage({ formData: reportForm, stage: "content" });
+            await validateStage({ formData: reportForm, stage: stageSections[reportPage !== 3 ? reportPage : 2] });
         } else {
             errorToast("Preencha todos os campos corretamente");
         }
@@ -67,30 +74,56 @@ export const CreatePost = () => {
         registerPost();
     }, [reportPage]);
 
-    const pageVariants = {
-        initial: {
-            x: "100%",
-            opacity: 0,
-        },
-        animate: {
-            x: "0%",
-            opacity: 1,
-            transition: {
-                type: "tween",
-                ease: "easeOut",
-                duration: 0.3,
-            },
-        },
-        exit: {
-            x: "-100%",
-            opacity: 0,
-            transition: {
-                type: "tween",
-                ease: "easeIn",
-                duration: 0.3,
-            },
-        },
-    };
+    const pageVariants =
+        reportPage !== 0
+            ? {
+                  initial: {
+                      x: "100%",
+                      opacity: 0,
+                  },
+                  animate: {
+                      x: "0%",
+                      opacity: 1,
+                      transition: {
+                          type: "tween",
+                          ease: "easeOut",
+                          duration: 0.3,
+                      },
+                  },
+                  exit: {
+                      x: "-100%",
+                      opacity: 0,
+                      transition: {
+                          type: "tween",
+                          ease: "easeIn",
+                          duration: 0.3,
+                      },
+                  },
+              }
+            : {
+                  initial: {
+                      x: "0%",
+                      opacity: 100,
+                  },
+                  animate: {
+                      x: "0%",
+                      opacity: 1,
+                      transition: {
+                          type: "tween",
+                          ease: "easeOut",
+                          duration: 0.3,
+                      },
+                  },
+                  exit: {
+                      x: "-100%",
+                      opacity: 0,
+                      transition: {
+                          type: "tween",
+                          ease: "easeIn",
+                          duration: 0.3,
+                      },
+                  },
+              };
 
     return (
         <>
@@ -104,6 +137,7 @@ export const CreatePost = () => {
                             iconLeft
                             Icon={IconHome2}
                             small
+                            onClick={() => navigate("/feed")}
                         />
                         <div
                             className={`relative mx-auto mt-5 h-3 w-full max-w-3xl rounded-full bg-zinc-200 lg:mt-10 dark:bg-zinc-700`}

@@ -1,9 +1,11 @@
+import { useUser } from "@/contexts/UserContext";
 import { db } from "@/firebase";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
 export const Dashboard = () => {
     const [dados, setDados] = useState<any[]>();
+    const {userDecoded }= useUser();
 
     useEffect(() => {
         const getDocuments = async () => {
@@ -14,6 +16,8 @@ export const Dashboard = () => {
                     ...doc.data(),
                 })),
             );
+
+            console.log(userDecoded?.token)
         };
 
         getDocuments();

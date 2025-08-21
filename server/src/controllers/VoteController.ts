@@ -35,9 +35,13 @@ export const createUpvote = async (
             parentType = "Post";
         }
 
+        
         // Verifying if user exists
         const userData = (await fetchUid(uid)) as UserData;
-
+        const alreadyUpvoted = await Vote.find({ parentId: parentDoc._id, userId: userData._publicId });
+        console.log(alreadyUpvoted);
+        if(alreadyUpvoted.length > 0) throw new Error("You have already upvoted this Post");
+        
         const _id = generateId(config.SYSTEM_ID_SIZE, "L_"),
             userId = userData._publicId,
             userPhoto = userData.image,

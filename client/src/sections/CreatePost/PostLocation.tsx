@@ -27,7 +27,7 @@ export const PostLocation = ({
     useEffect(() => {
         const fetchLocation = async () => {
             const queryFormatada = encodeURIComponent(query).replace(/%20/g, "+");
-            const url = `https://nominatim.openstreetmap.org/search?street=${queryFormatada}&city=Piracicaba&country=Brazil&format=json&addressdetails=1&limit=10`;
+            const url = `https://nominatim.openstreetmap.org/search?q=${queryFormatada}%20Piracicaba%20S%C3%A3o%20Paulo%20Brasil&format=json&addressdetails=1&limit=10`;
             try {
                 const response = await fetch(url);
                 if (!response.ok) throw new Error(`Response status: ${response.status}`);
@@ -60,7 +60,7 @@ export const PostLocation = ({
                 latitude: Number(suggestion.lat),
                 longitude: Number(suggestion.lon),
             },
-            address: `${suggestion.address.road}, ${suggestion.address.suburb}`,
+            address: `${suggestion.address.suburb} ${suggestion.address.road ? ", " + suggestion.address.road : ""}`,
         });
     };
     return (
@@ -86,7 +86,6 @@ export const PostLocation = ({
                 ) : (
                     suggestions
                         .filter((sg) => sg.address.city === "Piracicaba")
-                        .filter((sg) => sg.address.road !== "")
                         .map((sg, key) => (
                             <div
                                 className={`w-full cursor-pointer p-2 py-4 hover:bg-zinc-800`}
@@ -94,11 +93,11 @@ export const PostLocation = ({
                                 onClick={() => handleClickLocation(sg)}
                             >
                                 <p>
-                                    {sg.address.road}, {sg.address.suburb}
+                                    {sg.address.suburb} {sg.address.road ?  ", " + sg.address.road : "" }
                                 </p>
 
                                 <small>
-                                    Lat: {sg.lat}, Lon: {sg.lon}, Rua: {sg.address.road}
+                                    Lat: {sg.lat}, Lon: {sg.lon}
                                 </small>
                             </div>
                         ))

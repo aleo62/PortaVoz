@@ -1,10 +1,9 @@
 import { useUser } from "@/contexts/UserContext";
 import { SidebarConfig } from "@/utils/data";
 import { useIsMobile } from "@/utils/isMobile";
-import { IconPlus, IconSelector } from "@tabler/icons-react";
+import { IconSelector } from "@tabler/icons-react";
 import { ReactNode, useState } from "react";
 import { UserDrop } from "../drop/UserDrop";
-import { Button } from "../ui/Button";
 
 export const HeaderSidebar = ({ children }: { children?: ReactNode }) => {
     const { userData } = useUser();
@@ -12,7 +11,7 @@ export const HeaderSidebar = ({ children }: { children?: ReactNode }) => {
 
     const [activeUserDrop, setActiveUserDrop] = useState(false);
     return (
-        <header className="mb-3 flex w-full items-center gap-6 lg:gap-3 bg-transparent py-3 max-w-7xl mx-auto">
+        <header className="mx-auto mb-3 flex h-full max-h-20 w-full max-w-6xl items-center gap-6 bg-transparent lg:gap-3">
             {children}
 
             <div className="ml-auto flex items-center lg:gap-3">
@@ -47,7 +46,7 @@ export const HeaderSidebar = ({ children }: { children?: ReactNode }) => {
                     </div>
                 </div>
 
-                {!isMobile && <Button Icon={IconPlus} text="Criar" small />}
+                {/* {!isMobile && <Button Icon={IconPlus} text="Criar" small />} */}
             </div>
         </header>
     );

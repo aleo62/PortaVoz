@@ -89,5 +89,5 @@ const CommentSchema: Schema = new Schema(
     { timestamps: true }
 );
 
-// Exporta o model Post
+// Exporta o model Comment
 export default mongoose.model<CommentData>("Comment", CommentSchema);
