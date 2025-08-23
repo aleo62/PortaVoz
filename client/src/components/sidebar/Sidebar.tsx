@@ -5,6 +5,7 @@ import { useIsMobile } from "@/utils/isMobile";
 import { IconChevronLeftPipe, IconChevronRightPipe, IconMoon, IconSun } from "@tabler/icons-react";
 import { useLocation } from "react-router-dom";
 import { SidebarItem } from "./SidebarItem";
+import { useUser } from "@/contexts/UserContext";
 
 export const Sidebar = ({
     isOpen,
@@ -18,6 +19,7 @@ export const Sidebar = ({
     const location = useLocation();
     const { isDarkTheme, setIsDarkTheme } = useTheme();
     const isMobile = useIsMobile();
+    const { userDecoded} = useUser();
 
     const IconBar = isOpen ? IconChevronLeftPipe : IconChevronRightPipe;
 
@@ -64,7 +66,8 @@ export const Sidebar = ({
                     </ul>
 
                     <ul className={`space-y-2 p-5 px-1 ${!isOpen ? "items-center" : ""}`}>
-                        {SidebarSpecialItems.map(({ label, icon, href }, key) => (
+                        
+                        {userDecoded?.claims.admin! && SidebarSpecialItems.map(({ label, icon, href }, key) => (
                             <SidebarItem
                                 key={key}
                                 href={href}

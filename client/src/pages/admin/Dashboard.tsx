@@ -1,11 +1,9 @@
-import { useUser } from "@/contexts/UserContext";
 import { db } from "@/firebase";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
 export const Dashboard = () => {
     const [dados, setDados] = useState<any[]>();
-    const {userDecoded }= useUser();
 
     useEffect(() => {
         const getDocuments = async () => {
@@ -16,8 +14,6 @@ export const Dashboard = () => {
                     ...doc.data(),
                 })),
             );
-
-            console.log(userDecoded?.token)
         };
 
         getDocuments();
@@ -25,25 +21,27 @@ export const Dashboard = () => {
 
     return (
         <>
-            <section className="w-full lg:px-5 py-2">
+            <section className="w-full py-2 lg:px-5">
                 <h1 className="font-title text-title text-4xl font-semibold">Users</h1>
 
-                <table className="mt-10 text-subtitle divide-y-1 overflow-x-auto max-lg:block w-full divide-subtitle ring-1 ring-subtitle">
-                    <tr className="divide-x-1 divide-subtitle">
+                <table className="text-subtitle divide-subtitle ring-subtitle mt-10 w-full divide-y-1 overflow-x-auto ring-1 max-lg:block">
+                    <tr className="divide-subtitle divide-x-1">
                         <th>Public Id</th>
                         <th>Nome</th>
                         <th>E-mail</th>
                         <th>Ferramentas</th>
                     </tr>
                     {dados?.map((d) => (
-                        <tr className="divide-x-1 divide-subtitle">
+                        <tr className="divide-subtitle divide-x-1">
                             <td className="overflow-hidden px-2 py-1">{d._publicId}</td>
                             <td className="overflow-hidden px-2 py-1">{d.fName}</td>
                             <td className="overflow-hidden px-2 py-1">{d.email}</td>
-                            <td className="overflow-hidden px-2 py-1 flex items-center justify-end gap-5"> <IconTrash/> <IconPencil/></td>
+                            <td className="flex items-center justify-end gap-5 overflow-hidden px-2 py-1">
+                                {" "}
+                                <IconTrash /> <IconPencil />
+                            </td>
                         </tr>
                     ))}
-
                 </table>
             </section>
         </>

@@ -9,7 +9,31 @@ export type UserData = {
     banner: string;
     phone: string;
     about: string;
-    remainingReports: number;
-    reportsResetAt: Timestamp | Date;
-    totalReports: number;
+
+    meta: {
+        counters: {
+            followers: number;
+            following: number;
+            unreadNotifications: number;
+        };
+        limits: {
+            remainingReports: number;
+            totalReports: number;
+            reportsResetAt: Timestamp | Date | null;
+        };
+        verification: {
+            codeHash: string | null;
+            expiresAt: Timestamp | Date | null;
+        };
+        timestamps?: {
+            updatedAt?: Timestamp | Date | null;
+            lastSeen?: Timestamp | Date | null;
+        };
+        settings?: {
+            darkMode?: boolean;
+            language?: string;
+        };
+    };
+
+    verified: boolean;
 };

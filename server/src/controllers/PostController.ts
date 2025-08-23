@@ -1,7 +1,6 @@
 import config from "@/config";
 import { editUser } from "@/firebase/editUser";
 import { fetchUid } from "@/firebase/fetchUid";
-import { CommentData } from "@/models/Comment";
 import Post, { PostData } from "@/models/Post";
 import Vote from "@/models/Vote";
 import { deleteByParentId } from "@/services/CommentService";
@@ -104,7 +103,7 @@ export const getPostById = async (req: Request, res: Response) => {
         const postId = req.params.postId;
 
         // Fetching post data and verifying if post exists
-        const postData = await Post.findById(postId)
+        const postData = await Post.findById(postId);
         if (!postData) throw new Error("Post not found");
 
         // Verifying if user exists
@@ -194,33 +193,42 @@ export const createPost = async (
 
         const convertedReset = new Timestamp(
             // @ts-ignore
-            userData.reportsResetAt._seconds,
+            userData.meta.limits.reportsResetAt!._seconds,
             // @ts-ignore
-            userData.reportsResetAt._nanoseconds
+            userData.meta.limits.reportsResetAt!._nanoseconds
         );
         const resetDate = convertedReset.toMillis();
 
         // Verifying if user can do reports
         if (Date.now() > resetDate) {
             await editUser(uid, {
-                remainingReports: config.SYSTEM_MAXIMUM_REPORTS,
-                reportsResetAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 4),
+                meta: {
+                    ...userData.meta,
+                    limits: {
+                        ...userData.meta.limits,
+                        remainingReports: config.SYSTEM_MAXIMUM_REPORTS,
+                        reportsResetAt: new Date(
+                            Date.now() + 1000 * 60 * 60 * 24 * 4
+                        ),
+                    },
+                },
             });
-            userData.remainingReports = config.SYSTEM_MAXIMUM_REPORTS;
+            // @ts-ignore
+            userData.limits.remainingReports = config.SYSTEM_MAXIMUM_REPORTS;
         }
 
-        if (!isAdmin && userData.remainingReports <= 0) {
+        if (!isAdmin && userData.meta.limits.remainingReports <= 0) {
             throw new Error("User has no remaining reports");
         }
-
-        
 
         const _id = generateId(config.SYSTEM_ID_SIZE, "P_"),
             userPhoto = userData.image,
             userName = userData.fName,
             userId = userData._publicId,
             severity = "pequena",
-            hashtagsFormatted = hashtags.map((tag: string) => tag.toLowerCase());
+            hashtagsFormatted = hashtags.map((tag: string) =>
+                tag.toLowerCase()
+            );
 
         // Cria o novo post no banco de dados
         const newPost = await Post.create({
@@ -239,20 +247,28 @@ export const createPost = async (
         });
 
         const userRemainingReports = isAdmin
-            ? userData.remainingReports
-            : userData.remainingReports - 1;
+            ? userData.meta.limits.remainingReports
+            : userData.meta.limits.remainingReports - 1;
 
-        const userTotalReports = (await Post.find({ userUid: uid })).length;
+        const userTotalReports = (
+            await Post.find({ userId: userData._publicId })
+        ).length;
+        console.log(userTotalReports, userRemainingReports);
 
-        let newUserData: Partial<UserData> = {
-            remainingReports: userRemainingReports,
-            totalReports: userTotalReports,
+        const newUserData: Partial<UserData> = {
+            meta: {
+                ...(userData.meta ?? {}),
+                limits: {
+                    ...userData.meta?.limits,
+                    remainingReports: userRemainingReports,
+                    totalReports: userTotalReports,
+                    reportsResetAt:
+                        userRemainingReports <= 0
+                            ? new Date(Date.now() + 1000 * 60 * 60 * 24 * 4)
+                            : userData.meta?.limits?.reportsResetAt ?? null,
+                },
+            },
         };
-        if (userData.remainingReports - 1 <= 0)
-            newUserData = {
-                ...newUserData,
-                reportsResetAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 4),
-            };
 
         await editUser(uid, newUserData);
 
