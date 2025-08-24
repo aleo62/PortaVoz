@@ -32,6 +32,7 @@ const CommentSchema: Schema = new Schema(
                 config.SYSTEM_ID_SIZE,
                 `User id must be ${config.SYSTEM_ID_SIZE} characters long`,
             ],
+            imutable: true
         },
         parentId: {
             type: String,

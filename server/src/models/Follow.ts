@@ -5,8 +5,10 @@ import mongoose, { Document, ObjectId, Schema } from "mongoose";
  * Interfaces para tipagem dos dados de Seguidor
  */
 export interface FollowData extends Document {
-    followingId: ObjectId | string;
-    followerId: ObjectId | string;
+    userId: ObjectId | string;
+    followingId: string;
+    followingName: string;
+    followingPhoto: string;
 }
 
 /**
@@ -14,7 +16,7 @@ export interface FollowData extends Document {
  */
 const FollowSchema: Schema = new Schema(
     {
-        followingId: {
+        userId: {
             type: String,
             required: [true, "Following Id is required"],
             maxLength: [
@@ -26,7 +28,7 @@ const FollowSchema: Schema = new Schema(
                 `User id must be ${config.SYSTEM_ID_SIZE} characters long`,
             ],
         },
-        followerId: {
+        followingId: {
             type: String,
             required: [true, "Follower Id is required"],
             maxLength: [
@@ -37,6 +39,16 @@ const FollowSchema: Schema = new Schema(
                 config.SYSTEM_ID_SIZE,
                 `User id must be ${config.SYSTEM_ID_SIZE} characters long`,
             ],
+        },
+        followingName: {
+            type: String,
+            required: [true, "Following name is required"],
+            maxLength: [150, "Followingname must be less than 150 characters"],
+        },
+        followingPhoto: {
+            type: String,
+            required: [true, "Following photo is required"],
+            maxLength: [200, "Following photo must be less than 200 characters"],
         },
     
     },

@@ -118,7 +118,7 @@ export const deleteUpvote = async (
             });
         }
 
-        res.status(201).json({ message: "Deleted Upvote", data: deleteUpvote });
+        res.status(200).json({ message: "Deleted Upvote", data: deleteUpvote });
     } catch (err) {
         if (!(err instanceof Error)) throw err;
 

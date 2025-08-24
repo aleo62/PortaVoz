@@ -2,7 +2,7 @@ import { auth } from "@/firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useEffect } from "react";
 
-const SESSION_DURATION = 30 * 60 * 1000;
+const SESSION_DURATION = 3 * 1000 * 60 * 60; ; // 3 horas
 
 export const useAutoLogout = () => {
     useEffect(() => {
@@ -15,9 +15,8 @@ export const useAutoLogout = () => {
                     if (now - loginTime > SESSION_DURATION) {
                         signOut(auth);
                         clearInterval(logoutTimer);
-                        alert("Sua sessão expirou. Faça login novamente.");
                     }
-                }, 60 * 1000);
+                }, SESSION_DURATION);
             }
         });
 

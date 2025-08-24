@@ -46,11 +46,9 @@ export class Server {
             });
         }
 
-        return axios.post(
-            `${this.baseUrl}posts`,
-            formData,
-            { headers: { Authorization: `Bearer ${token}` } },
-        );
+        return axios.post(`${this.baseUrl}posts`, formData, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
     }
 
     // DELETE Post by ID
@@ -124,6 +122,32 @@ export class Server {
 
     /* USER ENDPOINTS -----------> */
 
+    // GET Follow
+    static async getFollowingById(token: string, followingId: string) {
+        const res = await axios.get(`${this.baseUrl}users/${followingId}/following`, {
+            headers: { authorization: `Bearer ${token}` },
+        });
+        return res.data;
+    }
+
+    // POST Comment
+    static async createFollow(token: string, followingId: string) {
+        return axios.post(
+            `${this.baseUrl}users/${followingId}/follow`,
+            {},
+            { headers: { Authorization: `Bearer ${token}` } },
+        );
+    }
+
+    // DELETE Comment by ID
+    static async deleteFollow(token: string, followingId: string) {
+        return (
+            await axios.delete(`${this.baseUrl}users/${followingId}/unfollow`, {
+                headers: { authorization: `Bearer ${token}` },
+            })
+        ).data;
+    }
+
     // PUT User
     static async reloadUser(token: string) {
         return axios.put(
@@ -153,9 +177,6 @@ export class Server {
             });
         }
 
-        return axios.post(
-            `${this.baseUrl}validate/${stage}`,
-            formData
-        );
+        return axios.post(`${this.baseUrl}validate/${stage}`, formData);
     }
 }

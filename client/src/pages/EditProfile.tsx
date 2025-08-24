@@ -3,10 +3,12 @@ import { SidebarProfile } from "@/components/sidebar/SidebarProfile";
 import { ViewDanger } from "@/sections/EditProfile/ViewDanger";
 import { ViewProfile } from "@/sections/EditProfile/ViewProfile";
 import { ViewSecurity } from "@/sections/EditProfile/ViewSecurity";
+import { useIsMobile } from "@/utils/isMobile";
 import { JSX, useState } from "react";
 
 export const EditProfile = () => {
     const [activeItem, setActiveItem] = useState(0);
+    const isMobile = useIsMobile();
     let ShowView: JSX.Element = <ViewProfile />;
 
     switch (activeItem) {
@@ -24,14 +26,13 @@ export const EditProfile = () => {
     return (
         <>
             <div className="w-full">
-                <HeaderSidebar/>
+                {!isMobile && <HeaderSidebar />}
 
-                <div className="flex gap-5 justify-center max-lg:flex-col">
-                <SidebarProfile activeItem={activeItem} setActiveItem={setActiveItem} />
-                <section className="flex w-full max-w-4xl items-start justify-center">
-                    {ShowView}
-                </section>
-
+                <div className="flex justify-center gap-5 max-lg:flex-col">
+                    <SidebarProfile activeItem={activeItem} setActiveItem={setActiveItem} />
+                    <section className="flex w-full max-w-4xl items-start justify-center">
+                        {ShowView}
+                    </section>
                 </div>
             </div>
         </>

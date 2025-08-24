@@ -86,7 +86,7 @@ export const Post = ({ post, onDeletePost }: { post: PostData; onDeletePost: () 
                         <img
                             src={post.userPhoto}
                             alt={post.userName}
-                            className="h-10 w-10 rounded-full"
+                            className="lg:h-12 lg:w-12 h-10 w-10 rounded-full"
                         />
 
                         <div className="leading-4.5">
@@ -161,7 +161,7 @@ export const Post = ({ post, onDeletePost }: { post: PostData; onDeletePost: () 
                     </div>
 
                     <div className="p-3 pt-1 lg:p-5 lg:pt-2">
-                        <div className="mb-1 flex w-full items-center justify-between gap-2">
+                        <div className="mb-3 flex w-full items-center justify-between gap-2">
                             <h2
                                 onClick={() => navigate(`/post/${post._id}`)}
                                 className="text-title font-title max-w-[90%] cursor-pointer truncate text-xl font-semibold wrap-break-word hover:underline lg:mb-2 lg:text-[1.5rem]"
@@ -171,7 +171,7 @@ export const Post = ({ post, onDeletePost }: { post: PostData; onDeletePost: () 
                         </div>
 
                         <div>
-                            <p className="mb-2 w-full text-sm wrap-break-word text-zinc-800 dark:text-zinc-300">
+                            <p className="mb-2 w-full text-[.8rem] lg:text-sm wrap-break-word text-zinc-800 dark:text-zinc-300">
                                 {postDescription}
                             </p>
                         </div>

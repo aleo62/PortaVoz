@@ -1,4 +1,4 @@
-import { updateUserContent } from "@/controllers/UserController";
+import { createUserCounter, followUser, getFollowing, unfollowUser, updateUserContent } from "@/controllers/UserController";
 import { authenticateUser } from "@/middlewares/auth";
 import { validationError } from "@/middlewares/validationError";
 import { Router } from "express";
@@ -12,5 +12,38 @@ router.put(
     validationError,
     updateUserContent
 );
+
+// POST - Rota para criar counter
+router.post(
+    "/:userId/counter",
+    authenticateUser,
+    validationError,
+    createUserCounter
+);
+
+// GET - Rota para ver se segue
+router.get(
+    "/:followingId/following",
+    authenticateUser,
+    validationError,
+    getFollowing
+);
+
+// POST - Rota para adicionar seguidor
+router.post(
+    "/:followingId/follow",
+    authenticateUser,
+    validationError,
+    followUser
+);
+
+// DELETE - Rota para remover seguidor
+router.delete(
+    "/:unfollowId/unfollow",
+    authenticateUser,
+    validationError,
+    unfollowUser
+);
+
 
 export default router;

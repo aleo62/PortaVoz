@@ -45,7 +45,7 @@ export const deleteImage = async (
     const url = req.query.url as string;
     await deleteImageService(url);
 
-    res.status(201).json({ message: "Image Deleted Successfully" });
+    res.status(200).json({ message: "Image Deleted Successfully" });
 };
 
 /**
@@ -75,7 +75,7 @@ export const updateImage = async (
         // Faz upload da imagem e obtém a URL
         const createURL = await createImageService(req.file.path);
 
-        res.status(201).json({
+        res.status(200).json({
             message: "Image Deleted and Uploaded Successfully",
             image_url: createURL,
         });
