@@ -20,9 +20,9 @@ export const HeaderOptions = () => {
 
             <div className="relative flex items-center px-2.5">
                 <div
-                    className={`${!isMobile && "mr-2"} hidden h-fit flex-col items-center justify-end overflow-hidden transition-all lg:flex`}
+                    className={`${!isMobile && "mr-2"} hidden h-fit flex-col items-end overflow-hidden transition-all lg:flex`}
                 >
-                    <h4 className="text-title text-md w-fit font-medium">{userData?.fName}</h4>
+                    <h4 className="text-title text-md w-fit font-medium mr-2">{userData?.fName}</h4>
                     <span className="text-subtitle block max-w-[6rem] truncate text-[.8rem]">
                         {userData?.email}
                     </span>

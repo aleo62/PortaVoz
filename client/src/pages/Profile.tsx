@@ -38,7 +38,7 @@ export const Profile = () => {
     // Setando o número de seguidores
     useEffect(() => {
         setFollowers(user?.meta.counters.followers!);
-    }, [userData]);
+    }, [user]);
 
     // Verificando se está seguindo
     useEffect(() => {
@@ -57,8 +57,8 @@ export const Profile = () => {
         }
     };
 
-    if (isFetchingUser || isLoading || !user) {
-        return <ProfileSkeleton />;
+    if(isLoading) {
+        return <ProfileSkeleton/>
     }
 
     return (
@@ -95,8 +95,8 @@ export const Profile = () => {
                             </p>
                         </div>
 
-                        <div className="">
-                            {!publicId || publicId !== userData?._publicId ? (
+                        <div className="text-white">
+                            {publicId || publicId === userData?._publicId ? (
                                 <button
                                     onClick={() => handleFollow()}
                                     className={`p-2 px-5 ${isFollowing ? "text-accent bg-transparent" : "bg-accent"} ring-accent rounded-full text-sm ring-1 transition-all`}
@@ -106,7 +106,7 @@ export const Profile = () => {
                             ) : (
                                 <button
                                     onClick={() => navigate("/editprofile")}
-                                    className={`bg-accent ring-accent rounded-full p-2 px-5 text-sm ring-1 transition-all`}
+                                    className={`bg-accent ring-accent  rounded-full p-2 px-5 text-sm ring-1 transition-all`}
                                 >
                                     Editar Perfil
                                 </button>
@@ -114,7 +114,7 @@ export const Profile = () => {
                         </div>
                     </div>
 
-                    <div className="text-title mb-5 flex items-center justify-center divide-x-1 divide-zinc-300 px-2 text-sm lg:justify-start lg:divide-zinc-700 lg:px-8">
+                    <div className="text-title mb-5 flex items-center justify-center divide-x-1 divide-zinc-300 px-2 text-sm font-semibold lg:justify-start lg:px-8 dark:divide-zinc-700">
                         <p className="pr-4">Seguidores {followers}</p>
                         <p className="pl-4">Seguindo {user?.meta.counters.following}</p>
                     </div>

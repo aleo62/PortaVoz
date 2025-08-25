@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { auth, db } from "@/firebase";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc, Timestamp } from "firebase/firestore";
 
 import facebook from "@assets/images/icons/facebook.png";
 
@@ -17,17 +14,15 @@ import workspace from "@assets/images/illustrations/register/workspace.png";
 
 import { FormInput } from "@/components/ui/FormInput";
 import { Loader } from "@/components/ui/Loader";
-import { generateVerificationCode } from "@/utils/generateCode";
 import { useIsMobile } from "@/utils/isMobile";
-import { sendVerificationEmail } from "@/utils/sendEmail";
 import { validateEmail, validateName, validatePassword } from "@/utils/validations";
 import { AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
 import { GoogleButton } from "@/components/ui/GoogleButton";
 import { useToast } from "@/contexts/ToastContext";
-import { generateId } from "@/utils/generateId";
-import { UserData } from "@/utils/types/userDataType";
+import { auth } from "@/firebase";
+import { registerUserEmailAndPassword } from "@/firebase/functions";
 import { FirebaseError } from "firebase/app";
 
 export const Register = () => {
@@ -37,7 +32,6 @@ export const Register = () => {
     const [lName, setLName] = useState("");
 
     const [isLoading, setIsLoading] = useState(true);
-
     const { errorToast } = useToast();
 
     const navigate = useNavigate();
@@ -59,51 +53,11 @@ export const Register = () => {
         }
 
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
+            await registerUserEmailAndPassword({ email, fName, lName, password });
             const user = auth.currentUser;
-
-            if (user) {
-                const verificationCode = generateVerificationCode();
-                const codeExpiresAt = Date.now() + 5 * 60 * 1000;
-
-                await setDoc(doc(db, "Users", user.uid), {
-                    _publicId: generateId(20, "@_"),
-                    email: user.email,
-                    fName: fName,
-                    lName: lName,
-                    image: "https://res.cloudinary.com/di5bma0gm/image/upload/v1748032813/default_image_wroapp.png",
-                    about: "",
-                    banner: "",
-                    followers: 0,
-                    following: 0,
-                    phone: "",
-                    remainingReports: 2,
-                    reportsResetAt: new Timestamp(10000, 10000),
-                    totalReports: 0,
-                    verified: false,
-                    verificationCode: verificationCode,
-                    codeExpiresAt,
-                    createdAt: Date.now(),
-                } as UserData);
-
-                const expirationText = new Date(codeExpiresAt).toLocaleTimeString("pt-BR", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                });
-
-                sendVerificationEmail({
-                    email: user.email || "",
-                    passcode: verificationCode,
-                    time: expirationText,
-                });
-
-                navigate("/verify", {
-                    state: {
-                        uid: user.uid,
-                        email: user.email,
-                    },
-                });
-            }
+            navigate("/verify", {
+                state: { uid: user?.uid, email: user?.email },
+            });
         } catch (error: unknown) {
             if (error instanceof FirebaseError && error.code === "auth/email-already-in-use") {
                 console.log(error);

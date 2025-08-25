@@ -5,7 +5,7 @@ import { db } from "@/firebase";
 import logo from "@assets/images/logo/logo-light.png";
 import { IconArrowLeft, IconCheck } from "@tabler/icons-react";
 import { codeLength } from "@utils/data";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { deleteField, doc, getDoc, updateDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -17,6 +17,7 @@ export const Verify = () => {
     const location = useLocation();
     const uid = location.state?.uid;
     const email = location.state?.email;
+
     const { errorToast, successToast } = useToast();
     if (!uid || !email) {
         navigate("/");
@@ -76,28 +77,28 @@ export const Verify = () => {
                 errorToast("Usuário já verificado");
                 return;
             }
+            const codeHash: string | undefined = userData?.meta?.verification?.codeHash;
+            const expiresAt: number | undefined = userData?.meta?.verification?.expiresAt;
 
-            if (Date.now() > userData.codeExpiresAt) {
+            if (Date.now() > expiresAt!) {
                 errorToast("Código expirado. Solicite um novo.");
                 return;
             }
 
-            if (userData.verificationCode !== inputCode) {
+            if (codeHash !== inputCode) {
                 errorToast("Código inválido");
                 return;
             }
 
             await updateDoc(userRef, {
                 verified: true,
-                verificationCode: null,
-                expiresAt: null,
+                "meta.verification.codeHash": deleteField(),
+                "meta.verification.expiresAt": deleteField(),
             });
-
-            localStorage.setItem("auth_uid", uid);
 
             successToast("Usuário cadastrado e verificado com sucesso");
 
-            navigate("/");
+            navigate("/feed");
         } catch (error) {
             console.log(error);
         }
@@ -155,14 +156,6 @@ export const Verify = () => {
                 </div>
             </form>
 
-            <footer className="relative mx-auto w-full max-w-screen-2xl px-6 md:absolute md:bottom-0">
-                <div className="w-full border-t-1 border-t-zinc-300 py-3 md:py-8">
-                    <p className="text-title text-sm">
-                        © 2025 PortaVoz, por uma <span className="font-semibold">Piracicaba</span>{" "}
-                        melhor. Todos Direitos Reservados
-                    </p>
-                </div>
-            </footer>
         </>
     );
 };

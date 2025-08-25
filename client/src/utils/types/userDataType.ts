@@ -2,12 +2,12 @@ import { Timestamp } from "firebase/firestore";
 
 export type UserData = {
     _publicId: string;
+    username: string;
     fName: string;
     lName: string;
     email: string;
     image: string;
     banner: string;
-    phone: string;
     about: string;
 
     meta: {
@@ -23,7 +23,7 @@ export type UserData = {
         };
         verification: {
             codeHash: string | null;
-            expiresAt: Timestamp | Date | null;
+            expiresAt: Timestamp | Date | null | number;
         };
         timestamps?: {
             updatedAt?: Timestamp | Date | null;
