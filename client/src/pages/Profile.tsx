@@ -11,7 +11,7 @@ import { useNavigate, useParams } from "react-router-dom";
 export const Profile = () => {
     const { publicId } = useParams();
     const { data, isLoading } = useFollow(publicId!);
-    const { fetchUser, userData, isFetchingUser } = useUser();
+    const { fetchUser, userData } = useUser();
     const createFollow = useCreateFollow();
     const deleteFollow = useDeleteFollow();
 
@@ -57,8 +57,8 @@ export const Profile = () => {
         }
     };
 
-    if(isLoading) {
-        return <ProfileSkeleton/>
+    if (isLoading) {
+        return <ProfileSkeleton />;
     }
 
     return (
@@ -106,7 +106,7 @@ export const Profile = () => {
                             ) : (
                                 <button
                                     onClick={() => navigate("/editprofile")}
-                                    className={`bg-accent ring-accent  rounded-full p-2 px-5 text-sm ring-1 transition-all`}
+                                    className={`bg-accent ring-accent rounded-full p-2 px-5 text-sm ring-1 transition-all`}
                                 >
                                     Editar Perfil
                                 </button>

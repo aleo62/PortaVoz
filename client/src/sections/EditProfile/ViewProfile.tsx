@@ -42,7 +42,7 @@ export const ViewProfile = () => {
     const [previewFName, setPreviewFName] = useState("");
     const [previewLName, setPreviewLName] = useState("");
 
-    const [previewPhone, setPreviewPhone] = useState<string | undefined>(undefined);
+    const [previewUsername, setPreviewUsername] = useState<string | undefined>(undefined);
 
     const [previewAbout, setPreviewAbout] = useState<string | undefined>(undefined);
 
@@ -71,9 +71,9 @@ export const ViewProfile = () => {
     const handleUpdateUser = async () => {
         try {
             let newUserData: Partial<UserData> = {
+                username: previewUsername,
                 fName: previewFName,
                 lName: previewLName,
-                phone: previewPhone,
                 about: previewAbout,
             };
 
@@ -114,7 +114,7 @@ export const ViewProfile = () => {
             try {
                 setPreviewFName(userData.fName);
                 setPreviewLName(userData.lName);
-                setPreviewPhone(userData.phone);
+                setPreviewUsername(userData.username);
                 setPreviewAbout(userData.about);
             } finally {
                 setLoading(false);
@@ -128,7 +128,7 @@ export const ViewProfile = () => {
         if (
             userData?.fName == previewFName &&
             userData?.lName == previewLName &&
-            userData?.phone == previewPhone
+            userData?.username == previewUsername
         ) {
             setUnsave(false);
             return;
@@ -142,7 +142,7 @@ export const ViewProfile = () => {
 
         setPreviewFName(userData?.fName || "");
         setPreviewLName(userData?.lName || "");
-        setPreviewPhone(userData?.phone || undefined);
+        setPreviewUsername(userData?.username)
         setPreviewAbout(userData?.about || undefined);
     };
 
@@ -183,11 +183,11 @@ export const ViewProfile = () => {
                         />
                         <FormInput
                             inputProps={{
-                                placeholder: "Telefone",
+                                placeholder: "Username",
                                 type: "text",
                                 phone: true,
-                                value: previewPhone,
-                                onChange: (e) => setPreviewPhone(e.target.value),
+                                value: previewUsername,
+                                onChange: (e) => setPreviewUsername(e.target.value),
                             }}
                             label="Telefone"
                         />
@@ -289,7 +289,7 @@ export const ViewProfile = () => {
                             <InfoField topic="E-mail" info={userData?.email} />
                             <InfoField
                                 topic="Telefone"
-                                info={previewPhone ? previewPhone : "Não informado"}
+                                info={previewUsername!}
                             />
                         </dl>
                     </div>
