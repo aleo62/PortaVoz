@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 import { GoogleButton } from "@/components/ui/GoogleButton";
 import { useToast } from "@/contexts/ToastContext";
 import { auth } from "@/firebase";
-import { registerUserEmailAndPassword } from "@/firebase/functions";
+import { registerUserEmailAndPassword } from "@/firebase/firebaseFunctions";
 import { FirebaseError } from "firebase/app";
 
 export const Register = () => {

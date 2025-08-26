@@ -1,4 +1,4 @@
-import { registerUserGoogle } from "@/firebase/functions";
+import { registerUserGoogle } from "@/firebase/firebaseFunctions";
 import { useIsMobile } from "@/utils/isMobile";
 import google from "@assets/images/icons/google.png";
 import { Widgets } from "./Widgets";

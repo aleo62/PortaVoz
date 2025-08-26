@@ -3,7 +3,7 @@ import { generateId } from "@/utils/generateId";
 import { sendVerificationEmail } from "@/utils/sendEmail";
 import { UserData } from "@/utils/types/userDataType";
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { doc, setDoc, Timestamp } from "firebase/firestore";
+import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
 import { auth, db, googleProvider } from ".";
 
 type registerUserEmailAndPasswordProps = {
@@ -95,11 +95,16 @@ export const registerUserGoogle = async () => {
         const googleUser = await signInWithPopup(auth, googleProvider);
         const user = googleUser.user;
 
-        await createUserDoc({
-            fName: user.displayName?.split(" ")[0]!,
-            lName: user.displayName?.split(" ")[1]!,
-            image: user.photoURL!,
-        });
+        const userRef = doc(db, "Users", user.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (!userSnap.exists()) {
+            await createUserDoc({
+                fName: user.displayName?.split(" ")[0]!,
+                lName: user.displayName?.split(" ")[1]!,
+                image: user.photoURL!,
+            });
+        }
     } catch (err) {
         throw err;
     }
