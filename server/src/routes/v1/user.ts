@@ -1,3 +1,4 @@
+import { getNotifications } from "@/controllers/NotificationController";
 import { createUserCounter, followUser, getFollowing, unfollowUser, updateUserContent } from "@/controllers/UserController";
 import { authenticateUser } from "@/middlewares/auth";
 import { validationError } from "@/middlewares/validationError";
@@ -45,5 +46,12 @@ router.delete(
     unfollowUser
 );
 
+// GET - Rota para notificações
+router.get(
+    "/notifications",
+    authenticateUser,
+    validationError,
+    getNotifications
+);
 
 export default router;

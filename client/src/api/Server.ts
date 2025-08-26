@@ -179,4 +179,13 @@ export class Server {
 
         return axios.post(`${this.baseUrl}validate/${stage}`, formData);
     }
+
+    // GET all Posts
+    static async getNotifications(token: string, pageParam: number) {
+        const res = await axios.get(`${this.baseUrl}users/notifications`, {
+            params: { page: pageParam },
+            headers: { authorization: `Bearer ${token}` },
+        });
+        return res.data;
+    }
 }

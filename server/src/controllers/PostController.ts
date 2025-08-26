@@ -223,7 +223,7 @@ export const createPost = async (
 
         const _id = generateId(config.SYSTEM_ID_SIZE, "P_"),
             userPhoto = userData.image,
-            userName = userData.fName,
+            userName = userData.username,
             userId = userData._publicId,
             severity = "pequena",
             hashtagsFormatted = hashtags.map((tag: string) =>

@@ -89,7 +89,7 @@ export const PostOverlay = ({ isOpen, onClose, post }: SearchOverlayProps) => {
                 >
                     {/* HEADER */}
                     <header className="flex items-center gap-2">
-                        <img src={post.userPhoto} className="h-11 w-11 rounded-full" alt="" />
+                        <img src={post.userPhoto} className="h-11 w-11 rounded-full object-cover" alt="" />
                         <div className="leading-4">
                             <h3 className="text-md font-title font-medium">{post.userName}</h3>
                             <p className="text-subtitle text-sm">{post._id}</p>

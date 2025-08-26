@@ -79,7 +79,7 @@ export const Comment = ({
                 <header className="gap-1">
                     <img
                         src={comment.userPhoto}
-                        className="h-9 w-9 rounded-full"
+                        className="h-9 w-9 rounded-full object-cover"
                         alt="User photo"
                     />
                 </header>
@@ -104,8 +104,7 @@ export const Comment = ({
                     </div>
 
                     <p className="mt-1 text-sm text-zinc-800 dark:text-zinc-200">
-                        {" "}
-                        {comment.content}{" "}
+                        {comment.content}
                     </p>
 
                     <div

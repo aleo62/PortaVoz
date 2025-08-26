@@ -2,7 +2,8 @@ import config from "@/config";
 import { fetchUid } from "@/firebase/fetchUid";
 import Comment from "@/models/Comment";
 import Post from "@/models/Post";
-import Vote, { VoteData } from "@/models/Vote";
+import Vote from "@/models/Vote";
+import { sendNotificationToUser } from "@/services/NotificationService";
 import { formatError } from "@/utils/formatError";
 import { generateId } from "@/utils/generateId";
 import { UserData } from "@/utils/types/userDataType";
@@ -21,6 +22,7 @@ export const createUpvote = async (
 
         if (!req.params.parentId) throw new Error("Parent Id is required");
         const parentId = req.params.parentId;
+        let notificationPreview;
 
         // Verifying if parent exists
         let parentDoc = await Comment.findById(parentId);
@@ -35,14 +37,17 @@ export const createUpvote = async (
             parentType = "Post";
         }
 
-        
         // Verifying if user exists
         const userData = (await fetchUid(uid)) as UserData;
-        const alreadyUpvoted = await Vote.find({ parentId: parentDoc._id, userId: userData._publicId });
+        const alreadyUpvoted = await Vote.find({
+            parentId: parentDoc._id,
+            userId: userData._publicId,
+        });
         console.log(alreadyUpvoted);
-        if(alreadyUpvoted.length > 0) throw new Error("You have already upvoted this Post");
-        
-        const _id = generateId(config.SYSTEM_ID_SIZE, "L_"),
+        if (alreadyUpvoted.length > 0)
+            throw new Error("You have already upvoted this Post");
+
+        const _id = generateId(config.SYSTEM_ID_SIZE, "L_") as string,
             userId = userData._publicId,
             userPhoto = userData.image,
             userName = userData.fName;
@@ -57,16 +62,27 @@ export const createUpvote = async (
             userPhoto,
         });
 
-        // Editing parent Id
-        if (parentType === "Comment") {
-            await Comment.findByIdAndUpdate(parentId, {
-                $inc: { upvotesCount: 1 },
-            });
-        } else {
-            await Post.findByIdAndUpdate(parentId, {
-                $inc: { upvotesCount: 1 },
-            });
-        }
+        // Incrementing the upvotes count on the parent document
+        parentDoc.upvotesCount = (parentDoc.upvotesCount || 0) + 1;
+        await parentDoc.save();
+
+        // Sending notification:
+        await sendNotificationToUser({
+            userId: parentDoc.userId,
+            senderId: userId,
+            senderPhoto: userPhoto,
+            title: `${userData.username} deu Upvote! em ${
+                parentType === "Post" ? "sua Denúncia" : "seu Comentário"
+            }`,
+            content: `Upvote foi dado em ${
+                parentType === "Post" ? "sua Denúncia" : "seu Comentário"
+            }, por ${userData.username}: ${parentDoc.content}`,
+            href: `/post/${
+                parentType === "Post" ? parentId : parentDoc.parentId
+            }`,
+            type: "Vote",
+            preview: notificationPreview,
+        });
 
         res.status(201).json({ message: "Post Upvoted", data: newUpvote });
     } catch (err) {

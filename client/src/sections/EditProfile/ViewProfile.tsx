@@ -154,7 +154,7 @@ export const ViewProfile = () => {
                 </AnimatePresence>
             )}
 
-            {unsave && <UnsaveContainer onCancel={handleCancelUnsave} onSave={handleUpdateUser} />}
+            
 
             {editInfo && (
                 <EditModal
@@ -185,11 +185,10 @@ export const ViewProfile = () => {
                             inputProps={{
                                 placeholder: "Username",
                                 type: "text",
-                                phone: true,
                                 value: previewUsername,
                                 onChange: (e) => setPreviewUsername(e.target.value),
                             }}
-                            label="Telefone"
+                            label="Username"
                         />
                         <div className="mt-20 flex flex-col-reverse items-start gap-2 lg:flex-row lg:items-center lg:justify-end">
                             <Button
@@ -214,6 +213,7 @@ export const ViewProfile = () => {
             <div
                 className={`relative w-full overflow-hidden rounded-2xl max-w-4xl bg-white p-1 pb-10 shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] lg:mx-0 dark:bg-zinc-900`}
             >
+                {unsave && <UnsaveContainer onCancel={handleCancelUnsave} onSave={handleUpdateUser} />}
                 {/* PFP AND USER BANNER */}
                 <div className="relative">
                     {userData?.banner ? (
@@ -286,11 +286,11 @@ export const ViewProfile = () => {
                                 topic="Nome Inteiro"
                                 info={`${previewFName} ${previewLName}`}
                             />
-                            <InfoField topic="E-mail" info={userData?.email} />
-                            <InfoField
-                                topic="Telefone"
+                            <InfoField topic="Username" info={previewUsername!} />
+                            {/* <InfoField
+                                topic="Aniversário"
                                 info={previewUsername!}
-                            />
+                            /> */}
                         </dl>
                     </div>
                     {/* USER ABOUT */}

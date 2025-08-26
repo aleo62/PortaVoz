@@ -48,7 +48,7 @@ export const updateUserContent = async (
         const userId = userData._publicId;
 
         const userNewInfo: any = {};
-        userNewInfo.userName = userData.fName;
+        userNewInfo.userName = userData.username;
         userNewInfo.userPhoto = userData.image;
 
         if (

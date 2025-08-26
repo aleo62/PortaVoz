@@ -77,7 +77,7 @@ export const Posts = () => {
                     </div>
                 </HeaderSidebar>
 
-                <div className="grid-cols-1 grid w-full gap-5 lg:grid-cols-[1fr_570px_1fr]">
+                <div className="grid-cols-1 grid w-full gap-5 lg:grid-cols-[1fr_2fr_1fr]">
                     <div></div>
 
                     {isLoading ? (

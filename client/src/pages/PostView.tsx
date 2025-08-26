@@ -32,7 +32,7 @@ export const Post = () => {
                 <HeaderSidebar />
 
                 <article className="mx-auto flex w-full flex-col justify-center rounded-xl max-lg:items-center lg:flex-row lg:gap-4">
-                    <div className="w-full max-w-[570px]">
+                    <div className="w-full max-w-[500px]">
                         <header className="flex items-center gap-3 px-1 py-4">
                             <div
                                 // onClick={() => navigate(`/profile/${post.userId}`)}
@@ -41,7 +41,7 @@ export const Post = () => {
                                 <img
                                     src={data?.post?.userPhoto}
                                     alt={data?.post?.userName}
-                                    className="h-10 w-10 rounded-full"
+                                    className="h-10 w-10 rounded-full object-cover"
                                 />
 
                                 <div className="leading-4.5">
@@ -84,7 +84,7 @@ export const Post = () => {
                                     {data?.post?.images.map((image: string) => (
                                         <SwiperSlide>
                                             <img
-                                                className={`h-full w-full transition-all duration-300 ease-in-out`}
+                                                className={`h-full w-full transition-all duration-300 ease-in-out object-cover`}
                                                 // ${imageContain ? "object-contain" : "object-cover"}
                                                 // onClick={() => setImageContain(!imageContain)}
                                                 src={image}

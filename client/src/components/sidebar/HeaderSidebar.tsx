@@ -7,7 +7,7 @@ export const HeaderSidebar = ({ children, linkBack }: { children?: ReactNode, li
     const isMobile = useIsMobile();
 
     return (
-        <header className="mx-auto mb-3 flex h-full max-h-20 w-full max-w-6xl items-center gap-6 bg-transparent lg:gap-3">
+        <header className="mx-auto mb-3 flex h-full max-h-20 w-full max-w-7xl items-center gap-6 bg-transparent lg:gap-3 lg:px-10">
             {linkBack && <LinkBack/> }
             {children}
             {!isMobile && <HeaderOptions />}

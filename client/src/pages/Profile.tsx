@@ -57,7 +57,7 @@ export const Profile = () => {
         }
     };
 
-    if (isLoading) {
+    if (isLoading || !user || (publicId && !publicId)) {
         return <ProfileSkeleton />;
     }
 
@@ -87,8 +87,8 @@ export const Profile = () => {
 
                     <div className="text-title mt-14 mb-4 flex w-full flex-col justify-between gap-3 px-2 text-center lg:mt-15 lg:flex-row lg:items-center lg:px-8 lg:text-start">
                         <div>
-                            <h2 className="text-2xl font-semibold capitalize lg:text-3xl">
-                                {user?.fName}
+                            <h2 className="text-2xl font-semibold lg:text-3xl">
+                                {user?.username ?? user?.fName}
                             </h2>
                             <p className="text-subtitle text-md">
                                 {user?.fName} {user?.lName}

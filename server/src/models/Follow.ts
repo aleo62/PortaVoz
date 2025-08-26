@@ -18,7 +18,7 @@ const FollowSchema: Schema = new Schema(
     {
         userId: {
             type: String,
-            required: [true, "Following Id is required"],
+            required: [true, "User Id is required"],
             maxLength: [
                 config.SYSTEM_ID_SIZE,
                 `User id must be ${config.SYSTEM_ID_SIZE} characters long`,

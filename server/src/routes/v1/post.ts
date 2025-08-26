@@ -6,7 +6,7 @@ import {
     deleteCommentByParentId,
     getCommentsById,
     updateComment,
-} from "@/controllers/CommentsController";
+} from "@/controllers/CommentController";
 import {
     createPost,
     deletePost,

@@ -12,7 +12,7 @@ export const UserDrop = ({ isOpen, orientation, onClose }: DropdownTemplateProps
                     <li>
                         <a
                             onClick={() => navigate("/profile")}
-                            className="flex w-full items-center gap-2 rounded-lg cursor-pointer p-3 px-4 hover:bg-zinc-100 hover:text-zinc-800 dark:hover:bg-zinc-800 hover:dark:text-white"
+                            className="flex w-full items-center gap-2 rounded-lg cursor-pointer p-3 px-3 hover:bg-zinc-100 hover:text-zinc-800 dark:hover:bg-zinc-800 hover:dark:text-white"
                         >
                             <IconUser className="size-4.5" /> Acessar Perfil
                         </a>
@@ -20,7 +20,7 @@ export const UserDrop = ({ isOpen, orientation, onClose }: DropdownTemplateProps
                     <li>
                         <a
                             onClick={() => navigate("/editprofile")}
-                            className="flex w-full items-center gap-2 rounded-lg cursor-pointer p-3 px-4 hover:bg-zinc-100 hover:text-zinc-800 dark:hover:bg-zinc-800 hover:dark:text-white"
+                            className="flex w-full items-center gap-2 rounded-lg cursor-pointer p-3 px-3 hover:bg-zinc-100 hover:text-zinc-800 dark:hover:bg-zinc-800 hover:dark:text-white"
                         >
                             <IconPencil className="size-4.5" /> Editar Perfil
                         </a>
@@ -30,7 +30,7 @@ export const UserDrop = ({ isOpen, orientation, onClose }: DropdownTemplateProps
                     <li>
                         <a
                             onClick={() => navigate("/logout")}
-                            className="flex w-full items-center gap-2 cursor-pointer rounded-lg p-3 px-4 text-red-700 hover:bg-red-200/50 hover:text-red-500 hover:dark:bg-red-600/30"
+                            className="flex w-full items-center gap-2 cursor-pointer rounded-lg p-3 px-3 text-red-700 hover:bg-red-200/50 hover:text-red-500 hover:dark:bg-red-600/30"
                         >
                             <IconLogout className="size-4.5" />
                             Sair

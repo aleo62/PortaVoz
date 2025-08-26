@@ -76,7 +76,7 @@ export const Post = ({ post, onDeletePost }: { post: PostData; onDeletePost: () 
             )}
 
             <article
-                className={`relative w-full max-w-2xl rounded-xl bg-white shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] transition-all ${!isMobile && locationOpen && "translate-x-[-45%]"} dark:bg-zinc-900`}
+                className={`relative w-full max-w-[570px] rounded-xl bg-white shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] transition-all ${!isMobile && locationOpen && "translate-x-[-45%]"} dark:bg-zinc-900`}
             >
                 <header className="relative flex items-center gap-3 p-3 py-5 lg:p-5 lg:py-6">
                     <div
@@ -86,7 +86,7 @@ export const Post = ({ post, onDeletePost }: { post: PostData; onDeletePost: () 
                         <img
                             src={post.userPhoto}
                             alt={post.userName}
-                            className="lg:h-12 lg:w-12 h-10 w-10 rounded-full"
+                            className="lg:h-12 lg:w-12 h-10 w-10 object-cover rounded-full"
                         />
 
                         <div className="leading-4.5">

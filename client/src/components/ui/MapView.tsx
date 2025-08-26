@@ -12,7 +12,7 @@ export function MapView({ latitude, longitude }: { latitude: number; longitude: 
         <MapContainer
             center={[latitude, longitude]} 
             zoom={15}
-            style={{ height: "250px", width: "100%", borderRadius: "10px" }}
+            style={{ height: "250px", width: "100%", borderRadius: "10px", zIndex: 1 }}
         >
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
