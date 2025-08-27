@@ -1,6 +1,5 @@
 import { IconAlertTriangle, IconLink, IconPencilCog, IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
-import { ClipLoader as DeleteLoader } from "react-spinners";
 import { DropdownTemplate, DropdownTemplateProps } from "../templates/DropdownTemplate";
 import { useToast } from "@/contexts/ToastContext";
 
@@ -64,12 +63,8 @@ export const PostDrop = ({
                                         setIsDeleting(true);
                                     }}
                                 >
-                                    <IconTrash className="size-4.5" /> Deletar Post{" "}
-                                    <DeleteLoader
-                                        className={`ml-auto ${isDeleting ? "opacity-100" : "opacity-0"}`}
-                                        color="#ed1307"
-                                        size={18}
-                                    />
+                                    <IconTrash className="size-4.5" /> Deletar Post
+                                    
                                 </a>
                             </li>
                         </ul>

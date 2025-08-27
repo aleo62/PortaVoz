@@ -1,6 +1,7 @@
 import { useUser } from "@/contexts/UserContext";
 import { useComments } from "@/hooks/comments/useComments";
 import { useCreateComment } from "@/hooks/comments/useCreateComment";
+import { useDeleteComment } from "@/hooks/comments/useDeleteComment";
 import { useCreateVote } from "@/hooks/vote/useCreateVote";
 import { useDeleteVote } from "@/hooks/vote/useDeleteVote";
 import { formatDate } from "@/utils/formatHour";
@@ -9,7 +10,6 @@ import { UserData } from "@/utils/types/userDataType";
 import { IconChevronDown, IconChevronUp, IconDotsVertical, IconThumbUp } from "@tabler/icons-react";
 import { useRef, useState } from "react";
 import { CommentDrop } from "../drop/CommentDrop";
-import { useDeleteComment } from "@/hooks/comments/useDeleteComment";
 
 export const Comment = ({
     comment,
@@ -85,22 +85,25 @@ export const Comment = ({
                 </header>
 
                 <main className="flex-1 pt-[.5rem]">
-                    <div className="relative flex items-center gap-2">
+                    <div className="flex items-center gap-2">
                         <h3 className="text-title text-[.92rem] font-medium">{comment.userName}</h3>
                         <span className="text-xs text-zinc-500 dark:text-zinc-400">{date}</span>
-                        <IconDotsVertical
-                            className="text-subtitle ml-auto size-3.5"
-                            onClick={() => setOptionsContainerOpen(true)}
-                        />
-                        <CommentDrop
-                            isOpen={optionsContainerOpen}
-                            orientation="top"
-                            onClose={() => setOptionsContainerOpen(false)}
-                            isOwner={
-                                comment.userId == userData?._publicId || !!userDecoded?.claims.admin
-                            }
-                            onDeleteComment={onDeleteComment}
-                        />
+                        <div className="relative ml-auto">
+                            <IconDotsVertical
+                                className="text-subtitle size-3.5"
+                                onClick={() => setOptionsContainerOpen(true)}
+                            />
+                            <CommentDrop
+                                isOpen={optionsContainerOpen}
+                                orientation="top"
+                                onClose={() => setOptionsContainerOpen(false)}
+                                isOwner={
+                                    comment.userId == userData?._publicId ||
+                                    !!userDecoded?.claims.admin
+                                }
+                                onDeleteComment={onDeleteComment}
+                            />
+                        </div>
                     </div>
 
                     <p className="mt-1 text-sm text-zinc-800 dark:text-zinc-200">

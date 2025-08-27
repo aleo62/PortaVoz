@@ -21,8 +21,8 @@ export const PostContent = ({
 
     return (
         <div>
-            <h1 className="font-title text-title mb-7 text-2xl font-semibold">
-                Conteudo da Denuncia
+            <h1 className="font-title text-title mb-7 text-3xl font-semibold">
+                Conteúdo da Denuncia
             </h1>
             <FormInput
                 label="Título"

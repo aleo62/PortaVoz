@@ -202,7 +202,7 @@ export const Register = () => {
                             <div className="grid justify-center">
                                 <p className="text-title text-sm">
                                     Já tem uma conta?
-                                    <a href="/login" className="link">
+                                    <a href="/auth/login" className="link">
                                         {" "}
                                         Entre aqui
                                     </a>

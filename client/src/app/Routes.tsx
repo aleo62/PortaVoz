@@ -18,11 +18,11 @@ export const AppRoutes = () => {
     return (
         <Router>
             <Routes>
-                <Route path="/verify" element={<Verify />} />
+                <Route path="/auth/verify" element={<Verify />} />
                 <Route path="/" element={<Home />} />
-                <Route path="/logout" element={<Logout />} />
+                <Route path="/auth/logout" element={<Logout />} />
                 <Route
-                    path="/login"
+                    path="/auth/login"
                     element={
                         <ProtectedLayout onlyGuest={true}>
                             <Login />
@@ -30,7 +30,7 @@ export const AppRoutes = () => {
                     }
                 />
                 <Route
-                    path="/register"
+                    path="/auth/register"
                     element={
                         <ProtectedLayout onlyGuest={true}>
                             <Register />

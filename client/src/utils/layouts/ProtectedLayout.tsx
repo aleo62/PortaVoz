@@ -17,7 +17,7 @@ export const ProtectedLayout = ({ children, onlyGuest, onlyAdmin }: ProtectedLay
         return <Navigate to="/feed" />;
     }
     if (!onlyGuest && !user && !isFetching) {
-        return <Navigate to="/login" />;
+        return <Navigate to="/auth/login" />;
     }
     if (onlyAdmin && !userDecoded?.claims.admin && !isFetching) {
         return <Navigate to="/" />;

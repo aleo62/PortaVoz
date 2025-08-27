@@ -1,4 +1,5 @@
 import React from "react";
+import { SpinnerCircular } from "spinners-react";
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
     text?: string;
@@ -7,10 +8,11 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
     small?: boolean;
     styleType?: "primary" | "secondary" | "outlined";
     iconLeft?: boolean;
+    isLoading?: boolean;
 };
 
 const baseClass =
-    "button flex items-center justify-center gap-2 overflow-hidden rounded-[.7rem] px-[2rem] py-[.700rem] font-medium tracking-wider transition-transform duration-200 active:scale-95 disabled:opacity-60 lg:px-[1.4rem] ";
+    "button flex items-center justify-center gap-2 overflow-hidden rounded-[.7rem] px-[2rem] py-[.700rem] font-medium tracking-wider transition-transform duration-200 active:scale-95 disabled:opacity-90 lg:px-[1.4rem] ";
 
 const styleTypeClass = {
     primary:
@@ -27,6 +29,7 @@ export const Button = ({
     Icon,
     styleType = "primary",
     iconLeft,
+    isLoading = false,
     ...rest
 }: ButtonProps) => {
     const finalClass = [
@@ -39,17 +42,29 @@ export const Button = ({
         .join(" ");
 
     const buttonContent = (
-        <button className={finalClass} {...rest}>
-            <div
-                className={`${iconLeft && "flex-row-reverse"} inline-flex items-center justify-center gap-2 whitespace-nowrap`}
-            >
-                <p>{text}</p>
-                {Icon && (
-                    <Icon
-                        className={` ${small ? "size-5.5" : "size-6"} ${styleType === "outlined" ? "stroke-[1.5]" : "stroke-[2.2]"} `}
-                    />
-                )}
-            </div>
+        <button className={finalClass} {...rest} disabled={isLoading || rest.disabled}>
+            {isLoading ? (
+                <SpinnerCircular
+                    size={20}
+                    thickness={180}
+                    speed={100}
+                    color="#ffffff"
+                    secondaryColor="rgba(0, 0, 0, 0)"
+                />
+            ) : (
+                <div
+                    className={`${iconLeft && "flex-row-reverse"} inline-flex items-center justify-center gap-2 whitespace-nowrap`}
+                >
+                    <p>{text}</p>
+                    {Icon && (
+                        <Icon
+                            className={` ${small ? "size-5.5" : "size-6"} ${
+                                styleType === "outlined" ? "stroke-[1.5]" : "stroke-[2.2]"
+                            } `}
+                        />
+                    )}
+                </div>
+            )}
         </button>
     );
 

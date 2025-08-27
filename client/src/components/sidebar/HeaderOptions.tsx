@@ -3,8 +3,8 @@ import { SidebarConfig } from "@/utils/data";
 import { useIsMobile } from "@/utils/isMobile";
 import { IconSelector } from "@tabler/icons-react";
 import { useState } from "react";
-import { UserDrop } from "../drop/UserDrop";
 import { NotificationDrop } from "../drop/NotificationDrop";
+import { UserDrop } from "../drop/UserDrop";
 
 export const HeaderOptions = () => {
     const isMobile = useIsMobile();
@@ -14,25 +14,6 @@ export const HeaderOptions = () => {
 
     return (
         <div className="ml-auto flex items-center lg:gap-3">
-            {SidebarConfig.map(({ icon: Icon }, key) => (
-                <a
-                    className="text-title relative"
-                    onClick={() => setActiveNotificationDrop(!activeNotificationDrop)}
-                >
-                    <Icon key={key} className="size-6 fill-zinc-200 dark:fill-zinc-800" />
-                    {userData?.meta.counters.unreadNotifications > 0 && (
-                        <span className="ring-body-background absolute top-[-2px] left-[-5px] flex h-3.5 w-3.5 items-center justify-center rounded-full bg-red-500 text-[.7rem] text-white ring-2 content-['']">
-                            {userData?.meta.counters.unreadNotifications}
-                        </span>
-                    )}
-                    <NotificationDrop
-                        isOpen={activeNotificationDrop}
-                        orientation="top"
-                        onClose={() => setActiveNotificationDrop(false)}
-                    />
-                </a>
-            ))}
-
             <div className="relative flex items-center px-2.5">
                 <div
                     className={`${!isMobile && "mr-2"} hidden h-fit flex-col items-end overflow-hidden transition-all lg:flex`}
@@ -59,6 +40,25 @@ export const HeaderOptions = () => {
                     />
                 </div>
             </div>
+
+            {SidebarConfig.map(({ icon: Icon }, key) => (
+                <a
+                    className="text-title relative"
+                    onClick={() => setActiveNotificationDrop(!activeNotificationDrop)}
+                >
+                    <Icon key={key} className="size-6 fill-zinc-200 dark:fill-zinc-800" />
+                    {userData?.meta.counters.unreadNotifications > 0 && (
+                        <span className="ring-body-background absolute top-[-2px] left-[-5px] flex h-3.5 w-3.5 items-center justify-center rounded-full bg-red-500 text-[.7rem] text-white ring-2 content-['']">
+                            {userData?.meta.counters.unreadNotifications}
+                        </span>
+                    )}
+                    <NotificationDrop
+                        isOpen={activeNotificationDrop}
+                        orientation="top"
+                        onClose={() => setActiveNotificationDrop(false)}
+                    />
+                </a>
+            ))}
 
             {/* {!isMobile && <Button Icon={IconPlus} text="Criar" small />} */}
         </div>

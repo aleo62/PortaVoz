@@ -1,6 +1,5 @@
 import { IconAlertTriangle, IconPencilCog, IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
-import { ClipLoader as DeleteLoader } from "react-spinners";
 import { DropdownTemplate, DropdownTemplateProps } from "../templates/DropdownTemplate";
 
 type CommentDropProps = DropdownTemplateProps & {
@@ -43,7 +42,7 @@ export const CommentDrop = ({
                                     className="flex w-full items-center gap-2 rounded-lg p-3 px-4 hover:bg-zinc-100 hover:text-zinc-800 dark:hover:bg-zinc-800 hover:dark:text-white"
                                 >
                                     <IconPencilCog className="size-4.5" />
-                                    Editar Comentário
+                                    Editar
                                 </a>
                             </li>
                             <li>
@@ -54,12 +53,8 @@ export const CommentDrop = ({
                                         setIsDeleting(true);
                                     }}
                                 >
-                                    <IconTrash className="size-4.5" /> Deletar Comentário{" "}
-                                    <DeleteLoader
-                                        className={`ml-auto ${isDeleting ? "opacity-100" : "opacity-0"}`}
-                                        color="#ed1307"
-                                        size={18}
-                                    />
+                                    <IconTrash className="size-4.5" /> Deletar
+                                    
                                 </a>
                             </li>
                         </ul>

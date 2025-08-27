@@ -8,7 +8,7 @@ export const Logout = () => {
 
     signOut(auth).then(() => {
         localStorage.setItem("cpfWarning", "false");
-        navigate("/login");
+        navigate("/auth/login");
     });
 
     return <></>;

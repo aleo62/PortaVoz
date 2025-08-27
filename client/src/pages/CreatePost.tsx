@@ -18,6 +18,7 @@ export const CreatePost = () => {
     const createPost = useCreatePost();
     const navigate = useNavigate();
     const { data: responseStage, mutate: validateStage, isSuccess } = useValidateStage();
+    const [isValidating, setIsValidating] = useState(false);
 
     // Declare report form
     const [reportForm, setReportForm] = useState<Partial<PostData>>({
@@ -42,15 +43,15 @@ export const CreatePost = () => {
         false /* tags */,
         false /* location */,
     ];
-    const stageSections = [
-        "content",
-        "images",
-        "hashtags"
-    ];
+    const stageSections = ["content", "images", "hashtags"];
 
     const handleNext = async () => {
         if (validatedSections[reportPage]) {
-            await validateStage({ formData: reportForm, stage: stageSections[reportPage !== 3 ? reportPage : 2] });
+            setIsValidating(true);
+            await validateStage({
+                formData: reportForm,
+                stage: stageSections[reportPage !== 3 ? reportPage : 2],
+            });
         } else {
             errorToast("Preencha todos os campos corretamente");
         }
@@ -58,6 +59,7 @@ export const CreatePost = () => {
 
     useEffect(() => {
         if (isSuccess) {
+            setIsValidating(false); // desliga aqui
             responseStage.data.valid
                 ? setReportPage((prev) => prev + 1)
                 : errorToast(responseStage.data.errors[0]);
@@ -157,7 +159,9 @@ export const CreatePost = () => {
                                     style={{ position: "absolute", width: "100%" }}
                                 >
                                     <ReportSection
-                                        validate={() => (validatedSections[reportPage] = true)}
+                                        validate={() => {
+                                            validatedSections[reportPage] = true;
+                                        }}
                                         setReportForm={
                                             setReportForm as React.Dispatch<
                                                 React.SetStateAction<PostData>
@@ -175,6 +179,7 @@ export const CreatePost = () => {
                                 onClick={() => handleNext()}
                                 Icon={IconArrowRight}
                                 small
+                                isLoading={isValidating}
                             />
                         </div>
                     </>

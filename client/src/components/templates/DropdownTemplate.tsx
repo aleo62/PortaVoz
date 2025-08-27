@@ -52,7 +52,7 @@ export const DropdownTemplate = ({
                         y: orientation === "top" ? -20 : 20,
                     }}
                     transition={{ duration: 0.15 }}
-                    className={`text-subtitle absolute z-200 bg-white dark:bg-zinc-900 ${orientation}-15 right-0 z-10 grid w-fit gap-2 rounded-lg p-1 font-normal ring-1 ring-zinc-200 dark:ring-zinc-700`}
+                    className={`text-subtitle absolute z-100 bg-white dark:bg-zinc-900 ${orientation}-2 ${orientation == "top" ? "mt" : "mb"}-2 right-0 grid w-fit gap-2 rounded-lg p-1 font-normal ring-1 ring-zinc-200 dark:ring-zinc-700`}
                 >
                     {children}
                 </motion.div>

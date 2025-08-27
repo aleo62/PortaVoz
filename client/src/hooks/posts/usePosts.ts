@@ -3,7 +3,7 @@ import { Server } from "@api/Server";
 import { useUser } from "@contexts/UserContext";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
-export function usePosts(filters: FiltersType) {
+export function usePosts(filters: Partial<FiltersType>) {
     const { userDecoded } = useUser();
     const token = userDecoded?.token;
 

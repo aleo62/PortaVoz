@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useIsMobile } from "../isMobile";
 import { HeaderOptions } from "@/components/sidebar/HeaderOptions";
 export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(true);
     const isMobile = useIsMobile();
 
     return (

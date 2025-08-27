@@ -144,7 +144,7 @@ export const Header = ({ search = true }: { search?: boolean }) => {
                                             small={true}
                                             text="Começar"
                                             Icon={IconTrendingUp}
-                                            path="/login"
+                                            path="/auth/login"
                                         />
                                     </>
                                 ) : (
@@ -160,7 +160,7 @@ export const Header = ({ search = true }: { search?: boolean }) => {
                                             small={true}
                                             text="Entrar"
                                             Icon={IconLogin}
-                                            path="/login"
+                                            path="/auth/login"
                                         />
                                     </>
                                 )}
