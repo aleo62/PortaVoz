@@ -1,7 +1,8 @@
+import { useToast } from "@/contexts/ToastContext";
 import { IconAlertTriangle, IconLink, IconPencilCog, IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
 import { DropdownTemplate, DropdownTemplateProps } from "../templates/DropdownTemplate";
-import { useToast } from "@/contexts/ToastContext";
+import { SpinnerCircular } from "spinners-react";
 
 type PostDropProps = DropdownTemplateProps & {
     isOwner: boolean;
@@ -20,11 +21,7 @@ export const PostDrop = ({
 
     return (
         <>
-            <DropdownTemplate
-                isOpen={isOpen}
-                onClose={onClose}
-                orientation={orientation}
-            >
+            <DropdownTemplate isOpen={isOpen} onClose={onClose} orientation={orientation}>
                 <nav className="divide-y-1 divide-zinc-100 dark:divide-zinc-700" onClick={onClose}>
                     <ul className="flex w-46 flex-col py-1 text-sm">
                         <li>
@@ -64,7 +61,16 @@ export const PostDrop = ({
                                     }}
                                 >
                                     <IconTrash className="size-4.5" /> Deletar Post
-                                    
+                                    {isDeleting && (
+                                        <SpinnerCircular
+                                            size={10}
+                                            thickness={180}
+                                            speed={100}
+                                            color="#FF0000"
+                                            secondaryColor="rgba(0, 0, 0, 0)"
+                                            className="ml-auto"
+                                        />
+                                    )}
                                 </a>
                             </li>
                         </ul>

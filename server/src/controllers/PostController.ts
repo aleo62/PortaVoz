@@ -40,6 +40,7 @@ export const getAllPosts = async (req: Request, res: Response) => {
             if (!req.user.isAdmin && status === "oculto")
                 findFilter.status = "ativo";
         } // status filter
+        
         if (search) {
             findFilter.title = { $regex: search, $options: "i" };
         } // search filter

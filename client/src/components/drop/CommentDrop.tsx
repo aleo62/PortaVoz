@@ -1,6 +1,7 @@
 import { IconAlertTriangle, IconPencilCog, IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
 import { DropdownTemplate, DropdownTemplateProps } from "../templates/DropdownTemplate";
+import { SpinnerCircular } from "spinners-react";
 
 type CommentDropProps = DropdownTemplateProps & {
     isOwner: boolean;
@@ -18,11 +19,7 @@ export const CommentDrop = ({
 
     return (
         <>
-            <DropdownTemplate 
-                isOpen={isOpen}
-                orientation={orientation}
-                onClose={onClose}
-            >
+            <DropdownTemplate isOpen={isOpen} orientation={orientation} onClose={onClose}>
                 <nav className="divide-y-1 divide-zinc-100 dark:divide-zinc-700">
                     <ul className="flex w-46 flex-col py-1 text-sm">
                         <li>
@@ -54,7 +51,16 @@ export const CommentDrop = ({
                                     }}
                                 >
                                     <IconTrash className="size-4.5" /> Deletar
-                                    
+                                    {isDeleting && (
+                                        <SpinnerCircular
+                                            size={10}
+                                            thickness={180}
+                                            speed={100}
+                                            color="#FF0000"
+                                            secondaryColor="rgba(0, 0, 0, 0)"
+                                            className="ml-auto"
+                                        />
+                                    )}
                                 </a>
                             </li>
                         </ul>

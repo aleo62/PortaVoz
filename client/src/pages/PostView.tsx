@@ -115,7 +115,7 @@ export const Post = () => {
                                 </div>
 
                                 <div>
-                                    <p className="mb-2 w-full text-sm wrap-break-word text-zinc-800 dark:text-zinc-300">
+                                    <p className="mb-2 w-full text-sm wrap-break-word text-zinc-800 dark:text-zinc-300 ">
                                         {data?.post?.desc}
                                     </p>
                                 </div>

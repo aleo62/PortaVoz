@@ -1,10 +1,11 @@
 import { HeaderSidebar } from "@/components/sidebar/HeaderSidebar";
 import { Post } from "@/components/ui/Post";
+import { PostPreview } from "@/components/ui/PostPreview";
 import { useDeletePost } from "@/hooks/posts/useDeletePost";
 import { useIsMobile } from "@/utils/isMobile";
 import loading from "@assets/images/loading.gif";
 import { usePosts } from "@hooks/posts/usePosts";
-import { IconArrowBigUp, IconMessageDots, IconPlus } from "@tabler/icons-react";
+import { IconPlus } from "@tabler/icons-react";
 import { PostData } from "@utils/types/postDataType";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
@@ -16,15 +17,27 @@ export const Posts = () => {
     const navigate = useNavigate();
     const deletePost = useDeletePost();
 
-    const { data, isLoading, fetchNextPage, hasNextPage } = usePosts({});
+    const {
+        data: feedData,
+        isLoading: feedLoading,
+        fetchNextPage: fetchFeedNextPage,
+        hasNextPage: feedHasNextPage,
+    } = usePosts({});
+    const {
+        data: reflectedData,
+        isLoading: reflectedLoading,
+        fetchNextPage: fetchReflectedNextPage,
+        hasNextPage: reflectedHasNextPage,
+    } = usePosts({ vote: "desc" });
 
     const { ref, inView } = useInView({});
-    let posts: PostData[] = (data?.pages.flatMap((page) => page.posts) as PostData[]) || [];
+    let posts: PostData[] = (feedData?.pages.flatMap((page) => page.posts) as PostData[]) || [];
+    let reflectedPosts: PostData[] =
+        (reflectedData?.pages.flatMap((page) => page.posts) as PostData[]) || [];
 
     useEffect(() => {
-        if (inView && !isLoading && hasNextPage) {
-            console.log("capturando mais");
-            fetchNextPage();
+        if (inView && !feedLoading && feedHasNextPage) {
+            fetchFeedNextPage();
         }
     }, [inView]);
 
@@ -38,8 +51,8 @@ export const Posts = () => {
         <>
             <div className="w-full">
                 {!useIsMobile() && <HeaderSidebar />}
-                <div className="mx-auto w-full max-w-6xl gap-3 space-y-2 pb-8 border-b-1 border-b-zinc-200 dark:border-b-zinc-700">
-                    <h2 className="text-title font-title text-lg px-1">Mais Repercutidos</h2>
+                <div className="mx-auto w-full max-w-6xl gap-3 space-y-2 border-b-1 border-b-zinc-200 px-5 pb-8 dark:border-b-zinc-700">
+                    <h2 className="text-title font-title px-1 text-lg">Mais Repercutidos</h2>
 
                     <Swiper
                         modules={[Navigation]}
@@ -47,40 +60,21 @@ export const Posts = () => {
                         slidesPerView={"auto"}
                         className="max-w-lg:hidden w-full"
                     >
-                        {[1, 2, 3, 4].map((i) => (
-                            <SwiperSlide key={i} className="!w-auto px-1 py-2">
-                                <div className="flex h-35 items-center gap-2 rounded-xl bg-white p-2 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-700">
-                                    <div className="h-30 p-3">
-                                        <h3 className="text-md text-title font-title font-medium">
-                                            Skibid toilet é bom {i}
-                                        </h3>
-                                        <p className="text-subtitle max-w-45 text-xs">
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                        </p>
-
-                                        <div className="text-subtitle mt-4 flex items-center gap-3 text-xs">
-                                            <span className="flex items-center gap-1">
-                                                <IconArrowBigUp className="size-4.5" /> 0
-                                            </span>
-                                            <span className="flex items-center gap-1">
-                                                <IconMessageDots className="size-4.5" /> 0
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                    <img
-                                        src="https://res.cloudinary.com/dzruwovge/image/upload/v1756208400/posts/bdhf9mrpae5skuagmvsy.png"
-                                        className="h-30 w-30 rounded-xl object-cover"
-                                        alt=""
-                                    />
-                                </div>
+                        {reflectedPosts.map(({ _id, title, desc, upvotesCount, commentsCount }) => (
+                            <SwiperSlide key={_id} className="!w-auto px-1 py-2">
+                                <PostPreview
+                                    title={title}
+                                    desc={desc}
+                                    upvotesCount={upvotesCount}
+                                    commentsCount={commentsCount}
+                                />
                             </SwiperSlide>
                         ))}
                     </Swiper>
                 </div>
 
-                <div className="grid w-full grid-cols-1 gap-5 pt-8 lg:grid-cols-[2fr_1fr]">
-                    {isLoading ? (
+                <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-5 pt-8 lg:grid-cols-[2fr_1fr]">
+                    {feedLoading ? (
                         <img src={loading} alt="" className="mx-auto" />
                     ) : (
                         <section className="flex w-full flex-col items-center space-y-3">
@@ -93,7 +87,7 @@ export const Posts = () => {
                                 />
                             ))}
 
-                            {hasNextPage && <div ref={ref}>carregando...</div>}
+                            {feedHasNextPage && <div ref={ref}>carregando...</div>}
                         </section>
                     )}
                 </div>
