@@ -25,9 +25,9 @@ export const Posts = () => {
     } = usePosts({});
     const {
         data: reflectedData,
-        isLoading: reflectedLoading,
-        fetchNextPage: fetchReflectedNextPage,
-        hasNextPage: reflectedHasNextPage,
+        // isLoading: reflectedLoading,
+        // fetchNextPage: fetchReflectedNextPage,
+        // hasNextPage: reflectedHasNextPage,
     } = usePosts({ vote: "desc" });
 
     const { ref, inView } = useInView({});
