@@ -55,7 +55,7 @@ export const Register = () => {
         try {
             await registerUserEmailAndPassword({ email, fName, lName, password });
             const user = auth.currentUser;
-            navigate("/verify", {
+            navigate("/auth/verify", {
                 state: { uid: user?.uid, email: user?.email },
             });
         } catch (error: unknown) {
