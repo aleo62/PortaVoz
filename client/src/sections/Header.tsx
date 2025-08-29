@@ -153,7 +153,7 @@ export const Header = ({ search = true }: { search?: boolean }) => {
                                             styleType="secondary"
                                             small={true}
                                             text="Cadastrar"
-                                            path="/register"
+                                            path="/auth/register"
                                         />
                                         <Button
                                             styleType="primary"
