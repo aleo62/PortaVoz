@@ -186,7 +186,7 @@ export const createPost = async (
         if (!req.files) throw new Error("Image required");
         const files = req.files as Express.Multer.File[];
         for (const image of files) {
-            uploadedImages.push(await createImageService(image.path));
+            uploadedImages.push(await createImageService(image.path, "posts_images"));
         }
 
         // Verifying if user exists

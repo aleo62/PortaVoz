@@ -9,7 +9,7 @@ export function useChangeImage() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ({ newImage }: { newImage: File }) => Server.changeImage(newImage, token!),
+        mutationFn: ({ newImage, folder }: { newImage: File, folder?: string }) => Server.changeImage(newImage, token!, folder),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["images"] });
         },

@@ -16,12 +16,22 @@ cloudinary.config({
  * @param filePath Caminho do arquivo local a ser enviad
  * @returns URL segura da imagem hospedada
  */
-export async function createImageService(filePath: string): Promise<string> {
+export async function createImageService(
+    filePath: string,
+    folder?: string
+): Promise<string> {
     try {
-        const request = await cloudinary.uploader.upload(filePath, {
-            folder: "posts",
-        });
-        return request.secure_url;
+        let response;
+
+        if (folder) {
+            response = await cloudinary.uploader.upload(filePath, {
+                folder,
+            });
+        } else {
+            response = await cloudinary.uploader.upload(filePath);
+        }
+
+        return response.secure_url;
     } catch (err) {
         return err as string;
     }
@@ -49,12 +59,12 @@ export async function deleteImageService(url: string) {
  * @param url URL da imagem a ser removida
  * @returns URL segura da imagem hospedada
  */
-export async function updateImageService(filePath: string, url: string) {
+export async function updateImageService(filePath: string, url: string, folder?: string) {
     try {
         await deleteImageService(url);
-        const request = await createImageService(filePath);
+        const response = await createImageService(filePath, folder);
 
-        return request;
+        return response;
     } catch (err) {
         // Retorna o erro (pode customizar para melhor tratamento)
         return err;

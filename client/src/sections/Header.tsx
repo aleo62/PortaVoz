@@ -1,31 +1,30 @@
 import { SearchOverlay } from "@/components/overlay/SearchOverlay";
 import { Button } from "@/components/ui/Button";
 import { Navbar } from "@/components/ui/Navbar";
+import { useUser } from "@/contexts/UserContext";
+import { useTheme } from "@/hooks/useTheme";
 import { portaVozLogo } from "@/utils/data";
 import {
-    IconChevronDown,
-    IconLanguage,
     IconLogin,
+    IconMoon,
     IconSearch,
     IconTrendingUp,
     IconX,
     IconMenu2 as Menu,
 } from "@tabler/icons-react";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { AnimatePresence, motion } from "framer-motion";
 import hotkeys from "hotkeys-js";
 import { useEffect, useState } from "react";
 
 export const Header = ({ search = true }: { search?: boolean }) => {
-    const [navOpen, setNavOpen] = useState(false);
+    const { user } = useUser();
 
     const [hidden, setHidden] = useState(false);
     const [outside, setOutside] = useState(false);
     const [lastScrollY, setLastScrollY] = useState(0);
 
     const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const [isLanguageOpen, setIsLanguageOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const { isDarkTheme, setIsDarkTheme } = useTheme();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -51,19 +50,15 @@ export const Header = ({ search = true }: { search?: boolean }) => {
 
     useEffect(() => {
         hotkeys("esc", () => setIsSearchOpen(false));
-        hotkeys("esc", () => setIsLanguageOpen(false));
 
         return () => hotkeys.unbind("esc");
     }, []);
 
     useEffect(() => {
-        const auth = getAuth();
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            setIsLoggedIn(!!user);
-        });
+        setIsLoggedIn(!!user);
+    }, [user]);
 
-        return () => unsubscribe();
-    }, []);
+    useEffect;
 
     return (
         <>
@@ -82,16 +77,8 @@ export const Header = ({ search = true }: { search?: boolean }) => {
 
                     {/* NAVBAR */}
                     <div className="flex flex-row-reverse items-center justify-center lg:grid lg:grid-cols-[3fr_1fr]">
-                        <div className="relative pl-3 lg:justify-self-center lg:pl-0">
-                            {/* TOOGLE MENU */}
-                            <button
-                                className="nav-button"
-                                onClick={() => setNavOpen((prev) => !prev)}
-                            >
-                                {navOpen ? <IconX /> : <Menu />}
-                            </button>
-
-                            <Navbar navOpen={navOpen} />
+                        <div className="relative pl-3 lg:pl-0 max-lg:flex max-lg:items-center">
+                            <Navbar/>
                         </div>
 
                         {/* BUTTONS AND SEARCH/LANGUAGE */}
@@ -100,40 +87,19 @@ export const Header = ({ search = true }: { search?: boolean }) => {
                                 {search && (
                                     <>
                                         <button
-                                            className="text-title hover:text-zinc-900"
+                                            className="text-title hover:text-zinc-900 hover:dark:text-subtitle"
                                             onClick={() => setIsSearchOpen(true)}
                                         >
                                             <IconSearch className="" />
                                         </button>
                                     </>
                                 )}
-
                                 <button
-                                    className="text-title flex items-center justify-center hover:text-zinc-900"
-                                    onClick={() => setIsLanguageOpen((prev) => !prev)}
+                                    className="text-title hover:text-zinc-900 hover:dark:text-subtitle"
+                                    onClick={() => setIsDarkTheme(!isDarkTheme)}
                                 >
-                                    <IconLanguage className="" />
-                                    <IconChevronDown width={15} />
+                                    <IconMoon className="" />
                                 </button>
-
-                                <AnimatePresence>
-                                    {isLanguageOpen && (
-                                        <motion.div
-                                            initial={{ opacity: 0, scale: 0.9 }}
-                                            animate={{ opacity: 1, scale: 1 }}
-                                            exit={{ opacity: 0, scale: 0.9 }}
-                                            transition={{ duration: 0.15 }}
-                                            className="bg-body-background text-subtitle absolute top-10 right-0 z-10 grid w-fit origin-top gap-2 rounded-lg p-4 font-medium inset-ring-2 inset-ring-zinc-300/20"
-                                        >
-                                            <div className="bg-accent w-45 cursor-pointer rounded-lg p-2 text-white">
-                                                Português - BR
-                                            </div>
-                                            <div className="w-45 cursor-pointer rounded-lg p-2">
-                                                English - USA
-                                            </div>
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
                             </div>
 
                             <div className="flex items-center gap-2 pl-4 max-lg:hidden md:justify-self-end">
@@ -153,7 +119,7 @@ export const Header = ({ search = true }: { search?: boolean }) => {
                                             styleType="secondary"
                                             small={true}
                                             text="Cadastrar"
-                                            path="/register"
+                                            path="/auth/register"
                                         />
                                         <Button
                                             styleType="primary"

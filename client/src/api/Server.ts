@@ -111,9 +111,10 @@ export class Server {
     /* IMAGES ENDPOINTS -----------> */
 
     // PUT Image
-    static async changeImage(newImage: File, token: string) {
+    static async changeImage(newImage: File, token: string, folder?: string,) {
         const formData = new FormData();
         formData.append("image", newImage);
+        if(folder) formData.append("folder", folder);
 
         return axios.put(`${this.baseUrl}images`, formData, {
             headers: { Authorization: `Bearer ${token}` },

@@ -4,7 +4,7 @@ import { useToast } from "@/contexts/ToastContext";
 import { db } from "@/firebase";
 import logo from "@assets/images/logo/logo-light.png";
 import { IconArrowLeft, IconCheck } from "@tabler/icons-react";
-import { codeLength } from "@utils/data";
+import { codeLength, portaVozLogo } from "@utils/data";
 import { deleteField, doc, getDoc, updateDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -123,7 +123,7 @@ export const Verify = () => {
                 className="transparent mb-12 flex flex-col items-center px-2 py-2 md:mb-0 md:min-h-[calc(100vh-theme(spacing.24))]"
             >
                 <div className="flex w-fit flex-col items-center justify-center">
-                    <img src={logo} alt="" width={120} className="mb-15" />
+                    <img src={portaVozLogo} alt="" width={120} className="mb-15" />
                     <h1 className="font-title mb-5 text-xl font-normal md:text-[1.7rem]">
                         Código enviado por <span className="font-semibold">E-mail</span>
                     </h1>

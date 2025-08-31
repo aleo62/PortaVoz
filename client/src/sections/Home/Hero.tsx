@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/Button";
-import woman from "@assets/images/illustrations/landing-page/woman.png";
 import { AnimatedButton } from "@components/animations/AnimatedButton";
 import { AnimatedSubtitle } from "@components/animations/AnimatedSubtitle";
 import { IconArrowNarrowRight } from "@tabler/icons-react";
@@ -70,7 +69,7 @@ export const Hero = () => {
                     <figure className="flex h-80 justify-center lg:h-full">
                         <motion.img
                             className="woman-image xxl:right-[220px] absolute bottom-0 w-[85vw] max-w-[380px] md:w-[45vw] xl:bottom-[-30.5%] xl:max-w-[600px]"
-                            src={woman}
+                            src="https://res.cloudinary.com/di5bma0gm/image/upload/v1756560511/woman_obyfm9.png"
                             alt="Woman"
                             initial={{ opacity: 0, x: 70 }}
                             whileInView={{ opacity: 1, x: 0 }}

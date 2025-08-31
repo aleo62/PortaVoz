@@ -1,30 +1,38 @@
+import { useIsMobile } from "@/utils/isMobile";
+import { IconMenu, IconX } from "@tabler/icons-react";
 import { NavItems } from "@utils/data";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { HeaderDrop } from "../drop/HeaderDrop";
 
-type NavbarProps = {
-    navOpen?: boolean;
-};
-
-/**
- * The main navbar component, containing the links to the sections.
- * The links are conditionally rendered based on the `navOpen` prop.
- * The component is responsive and will be hidden on mobile devices when `navOpen` is false.
- *
- * @param {NavbarProps} props - The component props.
- * @param {boolean} [props.navOpen=false] - Whether or not to show the navbar.
- * @returns {JSX.Element} - The navbar component.
- */
-export const Navbar = ({ navOpen }: NavbarProps) => {
-    return (
-        <nav className={"navbar" + (navOpen ? " active" : "")}>
-            {NavItems.map(({ label }, key) => (
-                <a className={"nav-link"} href="" key={key}>
-                    {label}
-                </a>
-            ))}
-
-            <a href="" className="nav-link menu-btn">
-                Entrar
-            </a>
+export const Navbar = () => {
+    const isMobile = useIsMobile();
+    const navigate = useNavigate();
+    const [navOpen, setNavOpen] = useState(false);
+    return isMobile ? (
+        <>
+            <button
+                className="bg-accent relative flex h-9 w-9 items-center justify-center rounded-lg text-white ring-1 ring-zinc-200 dark:ring-zinc-700"
+                onClick={() => setNavOpen((prev) => !prev)}
+            >
+                {navOpen ? <IconX /> : <IconMenu />}
+            </button>
+            <HeaderDrop isOpen={navOpen} orientation="top" onClose={() => setNavOpen(!navOpen)} />
+        </>
+    ) : (
+        <nav>
+            <ul className="text-title flex items-center justify-center gap-10">
+                {NavItems.map((item) => (
+                    <li>
+                        <a
+                            className="hover:dark:text-subtitle text-md cursor-pointer font-medium hover:text-zinc-900"
+                            onClick={() => navigate(item.href)}
+                        >
+                            {item.label}
+                        </a>
+                    </li>
+                ))}
+            </ul>
         </nav>
     );
 };

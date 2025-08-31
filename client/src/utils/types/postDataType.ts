@@ -15,6 +15,7 @@ export interface PostData {
     severity: "pequena" | "média" | "urgente" | "super urgente";
     comments: string[];
     isUpvoted: boolean;
+    createdAt: string;
 }
 
 export interface LocationData {

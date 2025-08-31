@@ -17,8 +17,10 @@ export const createImage = async (
     try {
         // Verifica se o arquivo foi enviado
         if (!req.file?.path) throw new Error("File required");
+        // Verifica se mandou alguma folder
+        const folder = req.body.folder ?? null;
         // Faz upload da imagem e obtém a URL
-        const url = await createImageService(req.file.path);
+        const url = await createImageService(req.file.path, folder);
 
         res.status(201).json({
             message: "Image Uploaded Successfully",
@@ -58,6 +60,7 @@ export const updateImage = async (
 ): Promise<void> => {
     try {
         if (!req.user) throw new Error("Unauthorized");
+        const folder = req.body.folder ?? null;
 
         const user: UserData = await fetchUid(req.user.uid) as UserData;
         if (!user) throw new Error("User not found");
@@ -73,7 +76,7 @@ export const updateImage = async (
         // Verifica se o arquivo foi enviado
         if (!req.file?.path) throw new Error("File required");
         // Faz upload da imagem e obtém a URL
-        const createURL = await createImageService(req.file.path);
+        const createURL = await createImageService(req.file.path, folder);
 
         res.status(200).json({
             message: "Image Deleted and Uploaded Successfully",

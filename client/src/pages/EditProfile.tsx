@@ -26,7 +26,7 @@ export const EditProfile = () => {
     return (
         <>
             <div className="w-full">
-                {!isMobile && <HeaderSidebar />}
+            {!isMobile && <HeaderSidebar />}
 
                 <div className="flex justify-center gap-5 max-lg:flex-col">
                     <SidebarProfile activeItem={activeItem} setActiveItem={setActiveItem} />

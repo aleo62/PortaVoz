@@ -19,10 +19,9 @@ import {
 } from "@tabler/icons-react";
 
 export const NavItems = [
-    { label: "Início", href: "/home" },
-    { label: "Sobre", href: "/about" },
+    { label: "Início", href: "/" },
     { label: "FAQ", href: "/faq" },
-    { label: "Contato", href: "/contact" },
+    { label: "Denúncias", href: "/feed" },
 ];
 
 export const portaVozLogo =

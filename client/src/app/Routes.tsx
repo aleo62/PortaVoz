@@ -1,8 +1,10 @@
 import { CreatePost } from "@/pages/CreatePost";
+import { Posts } from "@/pages/Feed";
+import { ForgotPassword } from "@/pages/ForgotPassword";
 import { NotFound } from "@/pages/NotFound";
 import { Post } from "@/pages/PostView";
-import { Posts } from "@/pages/Feed";
 import { Profile } from "@/pages/Profile";
+import { ResetPassword } from "@/pages/ResetPassword";
 import { Dashboard } from "@pages/admin/Dashboard";
 import { EditProfile } from "@pages/EditProfile";
 import { Home } from "@pages/Home";
@@ -29,6 +31,7 @@ export const AppRoutes = () => {
                         </ProtectedLayout>
                     }
                 />
+                
                 <Route
                     path="/auth/register"
                     element={
@@ -37,9 +40,25 @@ export const AppRoutes = () => {
                         </ProtectedLayout>
                     }
                 />
+                <Route
+                    path="/auth/forgot-password"
+                    element={
+                        <ProtectedLayout onlyGuest={true}>
+                            <ForgotPassword />
+                        </ProtectedLayout>
+                    }
+                />
+                <Route
+                    path="/auth/reset-password"
+                    element={
+                        <ProtectedLayout onlyGuest={true}>
+                            <ResetPassword />
+                        </ProtectedLayout>
+                    }
+                />
                 // * PROTECTED ROUTES // * ROUTES WITH SIDEBAR
                 <Route
-                    path="/editprofile"
+                    path="/edit-profile"
                     element={
                         <ProtectedLayout>
                             <SidebarLayout>
@@ -69,7 +88,7 @@ export const AppRoutes = () => {
                     }
                 />
                 <Route
-                    path="/createpost"
+                    path="/create-post"
                     element={
                         <ProtectedLayout>
                             <CreatePost />

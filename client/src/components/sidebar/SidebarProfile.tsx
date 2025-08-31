@@ -16,7 +16,7 @@ export const SidebarProfile = ({
         : ["lg:before:top-0", "lg:before:top-1/3", "lg:before:top-2/3"];
 
     return (
-        <nav className="scrollbar-thin sticky z-10 top-0 rounded-lg scrollbar-thumb-zinc-300 scrollbar-track-transparent h-fit w-full overflow-x-auto bg-white p-2 lg:w-full lg:max-w-60 dark:bg-zinc-900">
+        <nav className="scrollbar-thin sticky z-10 top-0 rounded-xl ring-1 ring-zinc-200 dark:ring-zinc-700 scrollbar-thumb-zinc-300 scrollbar-track-transparent h-fit w-full overflow-x-auto bg-white p-2 lg:w-full lg:max-w-60 dark:bg-zinc-900">
             <ul
                 className={`${positionClasses[activeItem]} before:bg-accent relative z-10 flex w-max flex-nowrap gap-1 shadow-[0px_4px_59px_-28px_rgba(0,_0,_0,_0.1)] before:absolute before:z-[-1] before:h-11 before:w-40 before:rounded-md before:transition-all before:content-[''] lg:w-full lg:flex-col lg:before:w-full`}
             >

@@ -1,8 +1,9 @@
 import { useToast } from "@/contexts/ToastContext";
-import { IconAlertTriangle, IconLink, IconPencilCog, IconTrash } from "@tabler/icons-react";
+import { copyToClipboard } from "@/utils/copyClipboard";
+import { IconAlertTriangle, IconLink, IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
-import { DropdownTemplate, DropdownTemplateProps } from "../templates/DropdownTemplate";
 import { SpinnerCircular } from "spinners-react";
+import { DropdownTemplate, DropdownTemplateProps } from "../templates/DropdownTemplate";
 
 type PostDropProps = DropdownTemplateProps & {
     isOwner: boolean;
@@ -26,8 +27,14 @@ export const PostDrop = ({
                     <ul className="flex w-46 flex-col py-1 text-sm">
                         <li>
                             <a
-                                onClick={() => successToast("skibidi")}
-                                className="flex w-full items-center gap-2 rounded-lg p-3 px-4 hover:bg-zinc-100 hover:text-zinc-800 dark:hover:bg-zinc-800 hover:dark:text-white"
+                                onClick={() =>
+                                    copyToClipboard(
+                                        `${window.location.protocol}//${window.location.hostname}/post/P_DijdTdthJmoqVHImPn`,
+                                        "Link copiado",
+                                        successToast,
+                                    )
+                                }
+                                className="flex w-full items-center gap-2 rounded-lg p-3 px-4 font-medium hover:bg-zinc-100 hover:text-zinc-900 dark:hover:bg-zinc-800 hover:dark:text-white"
                             >
                                 <IconLink className="size-4.5" /> Copiar Link
                             </a>
@@ -35,7 +42,7 @@ export const PostDrop = ({
                         <li>
                             <a
                                 href="/profile"
-                                className="flex w-full items-center gap-2 rounded-lg p-3 px-4 hover:bg-zinc-100 hover:text-zinc-800 dark:hover:bg-zinc-800 hover:dark:text-white"
+                                className="flex w-full items-center gap-2 rounded-lg p-3 px-4 font-medium hover:bg-zinc-100 hover:text-zinc-900 dark:hover:bg-zinc-800 hover:dark:text-white"
                             >
                                 <IconAlertTriangle className="size-4.5" /> Denunciar Post
                             </a>
@@ -45,16 +52,7 @@ export const PostDrop = ({
                         <ul className="flex w-46 flex-col py-1 text-sm">
                             <li>
                                 <a
-                                    href="/profile"
-                                    className="flex w-full items-center gap-2 rounded-lg p-3 px-4 hover:bg-zinc-100 hover:text-zinc-800 dark:hover:bg-zinc-800 hover:dark:text-white"
-                                >
-                                    <IconPencilCog className="size-4.5" />
-                                    Editar Post
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    className="flex w-full items-center gap-2 rounded-lg p-3 px-4 text-red-500 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                                    className="flex w-full items-center gap-2 rounded-lg p-3 px-4 font-medium text-red-500 hover:bg-zinc-100 dark:hover:bg-zinc-800"
                                     onClick={() => {
                                         onDeletePost();
                                         setIsDeleting(true);

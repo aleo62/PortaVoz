@@ -16,7 +16,7 @@ export const Card = ({ title, desc, Icon, className }: CardProps) => {
 
     return (
         <motion.div
-            className={`card group relative flex min-h-[210px] max-w-70 flex-col justify-center gap-2 self-center rounded-2xl bg-white p-[25px] shadow-[0px_0px_100px_-27px_rgba(0,_0,_0,_0.1)] lg:h-full lg:w-full dark:bg-zinc-900 ${className} hover:bg-accent cursor-pointer transition duration-300`}
+            className={`card group relative flex min-h-[210px] max-w-70 flex-col justify-center gap-2 self-center rounded-2xl bg-white p-[25px] shadow-[0px_0px_100px_-27px_rgba(0,_0,_0,_0.1)] lg:h-full lg:w-full dark:bg-zinc-800 ${className} hover:bg-accent cursor-pointer transition duration-300`}
             variants={item}
         >
             <div className="h-fit w-fit">

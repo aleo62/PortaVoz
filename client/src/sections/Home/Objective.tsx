@@ -1,7 +1,5 @@
 import { Button } from "@/components/ui/Button";
 
-import man from "@assets/images/illustrations/landing-page/man.png";
-
 import { motion } from "framer-motion";
 
 import { AnimatedButton } from "@components/animations/AnimatedButton";
@@ -30,8 +28,8 @@ export const Objective = () => {
                     <figure className="flex items-center justify-center">
                         <motion.img
                             className="w-[80vw] max-w-[495px] sm:w-[45vw] xl:absolute xl:bottom-[50%] xl:translate-y-[50%]"
-                            src={man}
-                            alt="Woman"
+                            src="https://res.cloudinary.com/di5bma0gm/image/upload/v1756560511/man_o1ymbg.png"
+                            alt="Man"
                             width={520}
                             initial={{ opacity: 0, x: -70 }}
                             whileInView={{ opacity: 1, x: 0 }}

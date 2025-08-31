@@ -11,7 +11,6 @@ import { useReload } from "@/hooks/user/useUpdate";
 import { UserData } from "@/utils/types/userDataType";
 
 import { IconArrowRight, IconEdit, IconPencil, IconUserCog } from "@tabler/icons-react";
-import { Tags } from "@utils/data";
 
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
@@ -20,7 +19,7 @@ export const ViewProfile = () => {
     // const { upload } = useImageUpload();
 
     // USER DATAS
-    const { userData, userTags, updateUser } = useUser();
+    const { userData, updateUser } = useUser();
     const changeImage = useChangeImage();
     const reloadUser = useReload();
 
@@ -78,7 +77,7 @@ export const ViewProfile = () => {
             };
 
             if (previewImageFile) {
-                const response = await changeImage.mutateAsync({ newImage: previewImageFile });
+                const response = await changeImage.mutateAsync({ newImage: previewImageFile, folder: "users_image" });
                 newUserData.image = response.data.image_url;
             }
 
@@ -227,7 +226,7 @@ export const ViewProfile = () => {
                     )}
 
                     <figure
-                        className="group absolute bottom-15 left-1/2 h-30 w-30 -translate-x-1/2 cursor-pointer rounded-3xl ring-3 ring-white md:left-10 md:h-40 md:w-40 md:translate-x-0 lg:-bottom-2 dark:ring-zinc-900"
+                    className="group absolute bottom-0 left-1/2 h-30 w-30 -translate-x-1/2 cursor-pointer rounded-3xl ring-3 ring-white md:left-10 md:h-40 md:w-40 md:translate-x-0 lg:-bottom-2 dark:ring-zinc-900"
                         onClick={() => {
                             fileInputRef.current?.click();
                         }}
@@ -252,21 +251,6 @@ export const ViewProfile = () => {
                             </div>
                         </div>
                     </figure>
-                    {/* USER TAGS */}
-                    <ul className="mx-auto mt-15 flex max-w-[90%] flex-wrap justify-center gap-2 md:mx-0 md:mt-5 md:ml-55 md:justify-start">
-                        {userTags.map((tag: { Tag: string }, index: number) => {
-                            const { className, Icon } = Tags.find((t) => t.Tag === tag.Tag) || {};
-                            return (
-                                <li
-                                    key={index}
-                                    className={`flex w-fit items-center gap-2 rounded-xl p-2 px-2 text-[12px] font-medium capitalize md:text-sm ${className ? className : "text-title bg-gray-200"}`}
-                                >
-                                    {Icon && <Icon className="size-5 stroke-[2.2]" />}
-                                    {tag.Tag}
-                                </li>
-                            );
-                        })}
-                    </ul>
                 </div>
 
                 <div className="mt-5 px-2 lg:px-6">

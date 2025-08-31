@@ -69,7 +69,7 @@
     --color-secondary: #cfe3ff;
     --color-secondary-lighter: #dae9ff;
     --color-accent: #3d69d8;
-    --color-body-background: #F4F3F2;
+    --color-body-background: #f4f3f2;
 
     --color-title: #343434;
     --color-subtitle: #5e5f61;
@@ -112,29 +112,7 @@ button {
 /** COMPONENTS */
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
-/* ? NAVBAR */
 
-.navbar {
-    @apply bg-primary text-body-background lg:text-subtitle pointer-events-none invisible absolute top-full right-0 isolate grid min-w-40 scale-90 gap-2 rounded-2xl p-2 opacity-0 ring-1 ring-zinc-500/70 backdrop-blur-2xl transition-[opacity,transform,filter] max-lg:mt-2 lg:pointer-events-auto lg:visible lg:static lg:flex lg:items-center lg:gap-6 lg:bg-transparent lg:opacity-100 lg:ring-0 lg:backdrop-blur-none;
-}
-
-.navbar.active {
-    @apply pointer-events-auto visible scale-100 opacity-100 transition-[opacity,transform,filter];
-}
-
-.nav-link {
-    @apply md:text-title max-md:active:bg-body-background max-md:active:text-title max-md:hover:bg-body-background/20 grid h-10 items-center rounded-[.5rem] px-4 text-(length:--size-links) font-medium md:hover:text-zinc-900 dark:md:hover:text-stone-300;
-}
-
-.nav-link.menu-btn {
-    @apply hover:bg-secondary text-primary before:bg-body-background/65 relative mt-5 bg-white/85 text-center font-bold before:absolute before:top-[-50%] before:h-[.5px] before:w-[95%] before:justify-self-center before:content-[''] lg:hidden;
-}
-
-/* ? NAVBAR BUTTON */
-
-.nav-button {
-    @apply bg-primary/90 text-body-background hover:bg-primary grid h-10 w-10 items-center justify-center rounded-xl ring-2 ring-zinc-50/70 backdrop-blur-2xl active:scale-95 lg:hidden;
-}
 
 /* ? SWIPER */
 
@@ -210,10 +188,9 @@ section.gradient-section {
 }
 
 .toastSuccess {
-    @apply bg-green-200/50 backdrop-blur-3xl p-1 max-h-5 text-zinc-700 font-semibold font-title;
+    @apply font-title max-h-5 bg-green-200/50 p-1 font-semibold text-zinc-700 backdrop-blur-3xl;
 }
 
 .toastError {
     @apply from-body-background font-title text-title bg-gradient-to-r to-red-100 to-95%;
 }
-

@@ -2,10 +2,10 @@
 import { Border } from "@/components/deco/Border";
 import { Circle } from "@/components/deco/Circle";
 import { Ret } from "@/components/deco/Ret";
-import { GoogleButton } from "@/components/ui/GoogleButton";
-import { InfoFooter } from "@/components/ui/InfoFooter";
 import { Button } from "@/components/ui/Button";
 import { FormInput } from "@/components/ui/FormInput";
+import { GoogleButton } from "@/components/ui/GoogleButton";
+import { InfoFooter } from "@/components/ui/InfoFooter";
 import { Loader } from "@/components/ui/Loader";
 import { Widgets } from "@/components/ui/Widgets";
 import { useToast } from "@/contexts/ToastContext";
@@ -17,6 +17,7 @@ import { IconArrowLeft, IconArrowUpRight } from "@tabler/icons-react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
     const [email, setEmail] = useState("");
@@ -26,6 +27,7 @@ export const Login = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     const isMobile = useIsMobile();
+    const navigate = useNavigate();
     const { successToast, errorToast } = useToast();
 
     const handleLogin = async (e: React.FormEvent) => {
@@ -98,11 +100,10 @@ export const Login = () => {
                                         label="Senha"
                                     />
                                     <div className="mt-2 flex items-center justify-between">
-                                        <div className="flex items-center gap-1">
-                                            <input type="checkbox" name="" id="" />
-                                            <p className="text-title text-sm">Lembre-se de mim</p>
-                                        </div>
-                                        <a href="" className="link text-sm">
+                                        <a
+                                            onClick={() => navigate("/auth/forgot-password")}
+                                            className="link text-sm"
+                                        >
                                             Esqueci minha Senha
                                         </a>
                                     </div>
@@ -118,7 +119,7 @@ export const Login = () => {
                                 <div className="flex items-center justify-center">
                                     <p className="text-title text-sm">
                                         Não tem uma conta?{" "}
-                                        <a href="/register" className="link text-sm">
+                                        <a href="/auth/register" className="link text-sm">
                                             Criar conta
                                         </a>
                                     </p>

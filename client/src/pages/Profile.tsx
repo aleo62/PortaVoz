@@ -65,7 +65,7 @@ export const Profile = () => {
         <div className="w-full">
             <HeaderSidebar linkBack />
 
-            <section className="mx-auto w-full max-w-4xl rounded-2xl bg-white pb-9 shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] lg:rounded-3xl lg:p-2 lg:pb-10 dark:bg-zinc-900">
+            <section className="mx-auto w-full max-w-4xl rounded-2xl bg-white pb-12 shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] lg:rounded-3xl lg:p-2 lg:pb-14 dark:bg-zinc-900">
                 <header>
                     <div className="text-title relative h-full w-full">
                         {user?.banner ? (
@@ -105,7 +105,7 @@ export const Profile = () => {
                                 </button>
                             ) : (
                                 <button
-                                    onClick={() => navigate("/editprofile")}
+                                    onClick={() => navigate("/edit-profile")}
                                     className={`bg-accent ring-accent rounded-full p-2 px-5 text-sm ring-1 transition-all`}
                                 >
                                     Editar Perfil

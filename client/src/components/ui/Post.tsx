@@ -12,6 +12,7 @@ import { PostDrop } from "../drop/PostDrop";
 import { LocationOverlay } from "../overlay/LocationOverlay";
 import { PostOverlay } from "../overlay/PostOverlay";
 import { MapView } from "./MapView";
+import { formatDate } from "@/utils/formatHour";
 
 export const Post = ({ post, onDeletePost }: { post: PostData; onDeletePost: () => void }) => {
     const navigate = useNavigate();
@@ -76,7 +77,7 @@ export const Post = ({ post, onDeletePost }: { post: PostData; onDeletePost: () 
             )}
 
             <article
-                className={`relative w-full max-w-[570px] rounded-xl bg-white shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] transition-all ${!isMobile && locationOpen && "translate-x-[-45%]"} dark:bg-zinc-900`}
+                className={`relative w-full max-w-[590px] rounded-xl bg-white shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] transition-all ${!isMobile && locationOpen && "translate-x-[-25%]"} dark:bg-zinc-900`}
             >
                 <header className="relative flex items-center gap-3 p-3 py-5 lg:p-5 lg:py-6">
                     <div
@@ -86,12 +87,12 @@ export const Post = ({ post, onDeletePost }: { post: PostData; onDeletePost: () 
                         <img
                             src={post.userPhoto}
                             alt={post.userName}
-                            className="lg:h-12 lg:w-12 h-10 w-10 object-cover rounded-full"
+                            className="h-10 w-10 rounded-full object-cover lg:h-12 lg:w-12"
                         />
 
                         <div className="leading-4.5">
                             <p className="text-md text-title font-medium">{post.userName}</p>
-                            <p className="text-subtitle text-[.8rem]">{post.userId}</p>
+                            <p className="text-subtitle text-[.8rem]">{formatDate(post.createdAt)}</p>
                         </div>
                     </div>
 
@@ -148,7 +149,9 @@ export const Post = ({ post, onDeletePost }: { post: PostData; onDeletePost: () 
                             className="text-subtitle flex cursor-pointer items-center justify-center gap-1 rounded-full rounded-r-full p-2 px-4 ring-1 ring-zinc-300 hover:bg-zinc-100 dark:ring-zinc-700 dark:hover:bg-zinc-800"
                             onClick={() => setIsOverlayOpen(true)}
                         >
-                            <IconMessageDots className={`size-5 ${isMobile ? "size-4.5" : "size-5"}`} />
+                            <IconMessageDots
+                                className={`size-5 ${isMobile ? "size-4.5" : "size-5"}`}
+                            />
                             <p className="w-4 text-center">{post.commentsCount}</p>
                         </div>
 
@@ -171,7 +174,7 @@ export const Post = ({ post, onDeletePost }: { post: PostData; onDeletePost: () 
                         </div>
 
                         <div>
-                            <p className="mb-2 w-full text-[.8rem] lg:text-sm wrap-break-word text-zinc-800 dark:text-zinc-300">
+                            <p className="mb-2 w-full text-[.8rem] wrap-break-word text-zinc-800 lg:text-sm dark:text-zinc-300">
                                 {postDescription}
                             </p>
                         </div>
