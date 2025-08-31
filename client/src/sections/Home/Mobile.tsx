@@ -12,14 +12,6 @@ export const Mobile = () => {
         },
     };
 
-    const line = {
-        hidden: { opacity: 0, y: -25 },
-        show: {
-            opacity: 1,
-            y: 0,
-            transition: { duration: 0.7, ease: "easeOut" },
-        },
-    };
     return (
         <section className="relative px-2 pt-33 pb-33">
             <div className="bg-accent from-accent to-primary relative container flex h-100 max-w-6xl items-center rounded-4xl bg-gradient-to-r px-3 py-10">
@@ -49,7 +41,7 @@ export const Mobile = () => {
                         </AnimatedSubtitle>
                     </div>
 
-                    <button className="ml-auto flex items-center gap-5 rounded-xl hover:bg-zinc-200 active:scale-95 transition border-none bg-white p-5 py-2 text-lg font-semibold text-zinc-900">
+                    <button className="ml-auto flex items-center gap-5 rounded-xl border-none bg-white p-5 py-2 text-lg font-semibold text-zinc-900 transition hover:bg-zinc-200 active:scale-95">
                         Instalar <IconDownload />
                     </button>
                 </div>

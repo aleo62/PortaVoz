@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { SpinnerCircular } from "spinners-react";
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -33,7 +32,6 @@ export const Button = ({
     isLoading = false,
     ...rest
 }: ButtonProps) => {
-
     const finalClass = [
         baseClass,
         styleTypeClass[styleType],

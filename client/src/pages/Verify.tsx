@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/Button";
 import { CodeInput } from "@/components/ui/CodeInput";
 import { useToast } from "@/contexts/ToastContext";
 import { db } from "@/firebase";
-import logo from "@assets/images/logo/logo-light.png";
 import { IconArrowLeft, IconCheck } from "@tabler/icons-react";
 import { codeLength, portaVozLogo } from "@utils/data";
 import { deleteField, doc, getDoc, updateDoc } from "firebase/firestore";
@@ -155,7 +154,6 @@ export const Verify = () => {
                     </div>
                 </div>
             </form>
-
         </>
     );
 };

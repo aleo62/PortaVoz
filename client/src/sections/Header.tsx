@@ -4,14 +4,7 @@ import { Navbar } from "@/components/ui/Navbar";
 import { useUser } from "@/contexts/UserContext";
 import { useTheme } from "@/hooks/useTheme";
 import { portaVozLogo } from "@/utils/data";
-import {
-    IconLogin,
-    IconMoon,
-    IconSearch,
-    IconTrendingUp,
-    IconX,
-    IconMenu2 as Menu,
-} from "@tabler/icons-react";
+import { IconLogin, IconMoon, IconSearch, IconTrendingUp } from "@tabler/icons-react";
 import hotkeys from "hotkeys-js";
 import { useEffect, useState } from "react";
 
@@ -77,8 +70,8 @@ export const Header = ({ search = true }: { search?: boolean }) => {
 
                     {/* NAVBAR */}
                     <div className="flex flex-row-reverse items-center justify-center lg:grid lg:grid-cols-[3fr_1fr]">
-                        <div className="relative pl-3 lg:pl-0 max-lg:flex max-lg:items-center">
-                            <Navbar/>
+                        <div className="relative pl-3 max-lg:flex max-lg:items-center lg:pl-0">
+                            <Navbar />
                         </div>
 
                         {/* BUTTONS AND SEARCH/LANGUAGE */}
@@ -87,7 +80,7 @@ export const Header = ({ search = true }: { search?: boolean }) => {
                                 {search && (
                                     <>
                                         <button
-                                            className="text-title hover:text-zinc-900 hover:dark:text-subtitle"
+                                            className="text-title hover:dark:text-subtitle hover:text-zinc-900"
                                             onClick={() => setIsSearchOpen(true)}
                                         >
                                             <IconSearch className="" />
@@ -95,7 +88,7 @@ export const Header = ({ search = true }: { search?: boolean }) => {
                                     </>
                                 )}
                                 <button
-                                    className="text-title hover:text-zinc-900 hover:dark:text-subtitle"
+                                    className="text-title hover:dark:text-subtitle hover:text-zinc-900"
                                     onClick={() => setIsDarkTheme(!isDarkTheme)}
                                 >
                                     <IconMoon className="" />
