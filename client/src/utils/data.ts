@@ -1,7 +1,6 @@
 import {
     IconAlertTriangle,
     IconBadgesFilled,
-    IconBell,
     IconChecklist,
     IconCloudLock,
     IconCodeCircleFilled,
@@ -38,7 +37,9 @@ export const SidebarItems = [
 
 export const SidebarSpecialItems = [{ label: "Admin", icon: IconSword, href: "/admin" }];
 
-export const SidebarConfig = [{ label: "Caixa de Entrada", icon: IconInbox, href: "/notifications" }];
+export const SidebarConfig = [
+    { label: "Caixa de Entrada", icon: IconInbox, href: "/notifications" },
+];
 
 export const SidebarProfileItems = [
     { label: "Visão Geral", icon: IconUser },
