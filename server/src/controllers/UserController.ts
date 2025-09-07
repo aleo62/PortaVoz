@@ -1,8 +1,8 @@
 import { fetchPublicId } from "@/firebase/fetchPublidId";
 import { fetchUid } from "@/firebase/fetchUid";
-import Comment from "@/models/Comment";
-import Follow from "@/models/Follow";
-import Post from "@/models/Post";
+import Comment from "@/models/Comment.model";
+import Follow from "@/models/Follow.model";
+import Post from "@/models/Post.model";
 import { createCounter, updateCounter } from "@/services/UserService";
 import { formatError } from "@/utils/formatError";
 import { UserData } from "@/utils/types/userDataType";
@@ -100,7 +100,11 @@ export const getFollowing = async (
             followingId: followingData._publicId,
         });
 
-        res.status(200).json({ userId: userData._publicId, followingId: followingData._publicId, following: following.length > 0 });
+        res.status(200).json({
+            userId: userData._publicId,
+            followingId: followingData._publicId,
+            following: following.length > 0,
+        });
     } catch (err) {
         if (!(err instanceof Error)) throw err;
 
@@ -204,10 +208,7 @@ export const unfollowUser = async (
             followingId: unfollowData._publicId,
         });
 
-        if (
-            existing.length === 0
-        )
-            throw new Error("Not following this User.");
+        if (existing.length === 0) throw new Error("Not following this User.");
 
         const unfollow = await Follow.findOneAndDelete({
             userId: userData._publicId,

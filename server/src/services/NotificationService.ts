@@ -1,5 +1,5 @@
 import { fetchPublicId } from "@/firebase/fetchPublidId";
-import Notification, { NotificationData } from "@/models/Notification";
+import Notification, { NotificationData } from "@/models/Notification.model";
 import { updateCounter } from "./UserService";
 
 export const sendNotificationToUser = async ({
@@ -16,7 +16,7 @@ export const sendNotificationToUser = async ({
         // Verifying if user exists
         const { userData } = await fetchPublicId(userId as string);
         if (!userData) throw new Error("User does not exists.");
-        if(userId === senderId) return;
+        if (userId === senderId) return;
 
         const existing = await Notification.find({ userId, senderId, type });
         if (existing.length > 0 && type !== "Comment") return;

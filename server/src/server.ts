@@ -17,6 +17,7 @@ import config from "@/config";
 import limit from "@/lib/express_rate_limit";
 import { connectToDatabase, disconnectFromDatabase } from "@/lib/mongoose";
 import routerV1 from "@/routes/v1";
+import { setupSocket } from "./realtime";
 
 /**
  * SERVER
@@ -24,7 +25,13 @@ import routerV1 from "@/routes/v1";
 
 const app = express();
 const server = createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+    cors: {
+        origin: config.NODE_ENV === "development" ? "*" : config.WHITELISTED_DOMAINS,
+        methods: ["GET", "POST"],
+        credentials: true,
+    },
+});
 
 const corsOptions: CorsOptions = {
     origin(origin, callback) {
@@ -56,6 +63,11 @@ app.use(
     })
 );
 app.use(limit);
+
+/**
+ * SOCKET
+ */
+setupSocket(io);
 
 /**
  * LISTEN

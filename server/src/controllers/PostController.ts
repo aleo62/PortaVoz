@@ -1,8 +1,8 @@
 import config from "@/config";
 import { editUser } from "@/firebase/editUser";
 import { fetchUid } from "@/firebase/fetchUid";
-import Post, { PostData } from "@/models/Post";
-import Vote from "@/models/Vote";
+import Post, { PostData } from "@/models/Post.model";
+import Vote from "@/models/Vote.model";
 import { deleteByParentId } from "@/services/CommentService";
 import {
     createImageService,
@@ -40,7 +40,7 @@ export const getAllPosts = async (req: Request, res: Response) => {
             if (!req.user.isAdmin && status === "oculto")
                 findFilter.status = "ativo";
         } // status filter
-        
+
         if (search) {
             findFilter.title = { $regex: search, $options: "i" };
         } // search filter
@@ -186,7 +186,9 @@ export const createPost = async (
         if (!req.files) throw new Error("Image required");
         const files = req.files as Express.Multer.File[];
         for (const image of files) {
-            uploadedImages.push(await createImageService(image.path, "posts_images"));
+            uploadedImages.push(
+                await createImageService(image.path, "posts_images")
+            );
         }
 
         // Verifying if user exists

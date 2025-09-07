@@ -23,7 +23,7 @@ export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
                         <HeaderOptions />
                     </div>
                 )}
-                <div className="flex flex-col justify-center gap-3 lg:flex-row pb-9">{children}</div>
+                <div className="flex flex-col justify-center gap-3 lg:flex-row lg:h-full">{children}</div>
             </div>
         </div>
     );

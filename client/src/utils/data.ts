@@ -6,6 +6,7 @@ import {
     IconCloudLock,
     IconCodeCircleFilled,
     IconEarScan,
+    IconInbox,
     IconListSearch,
     IconLock,
     IconMessage,
@@ -37,7 +38,7 @@ export const SidebarItems = [
 
 export const SidebarSpecialItems = [{ label: "Admin", icon: IconSword, href: "/admin" }];
 
-export const SidebarConfig = [{ label: "Notificações", icon: IconBell, href: "/notifications" }];
+export const SidebarConfig = [{ label: "Caixa de Entrada", icon: IconInbox, href: "/notifications" }];
 
 export const SidebarProfileItems = [
     { label: "Visão Geral", icon: IconUser },

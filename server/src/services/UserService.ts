@@ -1,6 +1,6 @@
 import { editUser } from "@/firebase/editUser";
 import { fetchPublicId } from "@/firebase/fetchPublidId";
-import UserCounters, { UserCountersData } from "@/models/UserCounters";
+import UserCounters, { UserCountersData } from "@/models/UserCounters.model";
 
 /**
  * Criar um documento de counters

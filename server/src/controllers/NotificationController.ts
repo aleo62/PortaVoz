@@ -1,6 +1,6 @@
 import config from "@/config";
 import { fetchUid } from "@/firebase/fetchUid";
-import Notification from "@/models/Notification";
+import Notification from "@/models/Notification.model";
 import { updateCounter } from "@/services/UserService";
 import { formatError } from "@/utils/formatError";
 import { UserData } from "@/utils/types/userDataType";

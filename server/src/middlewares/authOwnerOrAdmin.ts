@@ -3,7 +3,7 @@ import { UserData } from "@/utils/types/userDataType";
 import { NextFunction, Request, Response } from "express";
 
 export const authenticateOwnerOrAdmin = (
-    getUserId: (req: Request) => Promise<string | undefined>
+    getUserId: (req: Request) => Promise<string | string[] | undefined>
 ) => {
     return async (
         req: Request,
@@ -17,10 +17,15 @@ export const authenticateOwnerOrAdmin = (
             if (!userId) throw new Error("No User ID provided");
 
             const ownerData = (await fetchUid(req.user.uid)) as UserData;
-            console.log(ownerData._publicId)
-            console.log(req.user.isAdmin)
-            if (userId !== ownerData._publicId && !req.user.isAdmin)
-                throw new Error("User not allowed");
+            if (Array.isArray(userId)) {
+                userId.forEach((id) => {
+                    if (id !== ownerData._publicId && !req?.user?.isAdmin)
+                        throw new Error("User not allowed");
+                });
+            } else {
+                if (userId !== ownerData._publicId && !req.user.isAdmin)
+                    throw new Error("User not allowed");
+            }
 
             next();
         } catch (err) {

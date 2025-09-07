@@ -20,8 +20,8 @@ import upload from "@/lib/multer";
 import { authenticateUser } from "@/middlewares/auth";
 import { authenticateOwnerOrAdmin } from "@/middlewares/authOwnerOrAdmin";
 import { validationError } from "@/middlewares/validationError";
-import Comment from "@/models/Comment";
-import Post from "@/models/Post";
+import Comment from "@/models/Comment.model";
+import Post from "@/models/Post.model";
 import { Router } from "express";
 import { body } from "express-validator";
 

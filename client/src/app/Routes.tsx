@@ -1,3 +1,4 @@
+import { Chat } from "@/pages/Chat";
 import { CreatePost } from "@/pages/CreatePost";
 import { Posts } from "@/pages/Feed";
 import { ForgotPassword } from "@/pages/ForgotPassword";
@@ -73,6 +74,16 @@ export const AppRoutes = () => {
                         <ProtectedLayout>
                             <SidebarLayout>
                                 <Posts />
+                            </SidebarLayout>
+                        </ProtectedLayout>
+                    }
+                />
+                <Route
+                    path="/chat"
+                    element={
+                        <ProtectedLayout>
+                            <SidebarLayout>
+                                <Chat />
                             </SidebarLayout>
                         </ProtectedLayout>
                     }

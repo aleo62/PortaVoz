@@ -31,6 +31,9 @@ const config = {
     SYSTEM_COMMENTS_PER_PAGE: parseInt(
         process.env.SYSTEM_COMMENTS_PER_PAGE || "15"
     ),
+    SYSTEM_MESSAGES_PER_PAGE: parseInt(
+        process.env.SYSTEM_MESSAGES_PER_PAGE || "50"
+    ),
     GEMINI_API_KEY: process.env.GEMINI_API_KEY
 };
 

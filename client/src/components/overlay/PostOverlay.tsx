@@ -20,35 +20,30 @@ type SearchOverlayProps = OverlayTemplateProps & {
 
 export const PostOverlay = ({ isOpen, onClose, post }: SearchOverlayProps) => {
     const isMobile = useIsMobile();
-
     const { userData } = useUser();
-    const createComment = useCreateComment(userData as UserData);
-
-    const { data, isLoading, fetchNextPage, hasNextPage } = useComments(post._id);
     const [commentInput, setCommentInput] = useState("");
 
+    // COMMENT MANAGEMENT
+    const { data, isLoading, fetchNextPage, hasNextPage } = useComments(post._id);
     let comments: CommentData[] = data?.pages.flatMap((page) => page.comments) ?? [];
 
+    const createComment = useCreateComment(userData as UserData);
     const handleCreateComment = async (e: React.FormEvent) => {
         e.preventDefault();
-
         
         await createComment.mutate({
             content: commentInput,
             parentId: post._id,
         });
-
         setCommentInput("");
     };
-    // COMMENT MANAGEMENT
-    const deleteComment = useDeleteComment();
 
+    const deleteComment = useDeleteComment();
     const handleDeleteComment = async (id: string) => {
         await deleteComment.mutate(id);
     };
 
     const { ref, inView } = useInView({});
-
     useEffect(() => {
         if (inView && !isLoading && hasNextPage) {
             fetchNextPage();

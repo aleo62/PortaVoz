@@ -181,9 +181,31 @@ export class Server {
         return axios.post(`${this.baseUrl}validate/${stage}`, formData);
     }
 
-    // GET all Posts
+
+    /* NOTIFICATIONS ENDPOINTS -----------> */
+    // GET all Notifications
     static async getNotifications(token: string, pageParam: number) {
         const res = await axios.get(`${this.baseUrl}users/notifications`, {
+            params: { page: pageParam },
+            headers: { authorization: `Bearer ${token}` },
+        });
+        return res.data;
+    }
+
+    /* CHATS ENDPOINTS -----------> */
+
+    // GET Chats
+    static async getChats(token: string, pageParam: number) {
+        const res = await axios.get(`${this.baseUrl}chats`, {
+            params: { page: pageParam },
+            headers: { authorization: `Bearer ${token}` },
+        });
+        return res.data;
+    }
+
+    // GET Messages by chat id
+    static async getMessagesByChatId(token: string, pageParam: number, chatId: string) {
+        const res = await axios.get(`${this.baseUrl}chats/${chatId}/messages`, {
             params: { page: pageParam },
             headers: { authorization: `Bearer ${token}` },
         });

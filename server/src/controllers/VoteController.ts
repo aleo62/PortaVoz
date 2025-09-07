@@ -1,8 +1,8 @@
 import config from "@/config";
 import { fetchUid } from "@/firebase/fetchUid";
-import Comment from "@/models/Comment";
-import Post from "@/models/Post";
-import Vote from "@/models/Vote";
+import Comment from "@/models/Comment.model";
+import Post from "@/models/Post.model";
+import Vote from "@/models/Vote.model";
 import { sendNotificationToUser } from "@/services/NotificationService";
 import { formatError } from "@/utils/formatError";
 import { generateId } from "@/utils/generateId";
