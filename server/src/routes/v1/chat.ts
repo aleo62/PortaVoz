@@ -21,6 +21,7 @@ router.get(
     authenticateOwnerOrAdmin(async (req) => {
         const chat = await Chat.findById(req.params.chatId);
         if (!chat) throw new Error("Chat does not exist");
+        console.log(chat.participants);
         return chat.participants;
     }),
     validationError,

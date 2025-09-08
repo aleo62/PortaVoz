@@ -11,7 +11,7 @@ import { useNavigate, useParams } from "react-router-dom";
 export const Profile = () => {
     const { publicId } = useParams();
     const { data, isLoading } = useFollow(publicId!);
-    const { fetchUser, userData } = useUser();
+    const { fetchUser, userData, userDecoded } = useUser();
     const createFollow = useCreateFollow();
     const deleteFollow = useDeleteFollow();
 
@@ -60,6 +60,8 @@ export const Profile = () => {
     if (isLoading || !user || (publicId && !publicId)) {
         return <ProfileSkeleton />;
     }
+
+    console.log(userDecoded?.token);
 
     return (
         <div className="w-full">

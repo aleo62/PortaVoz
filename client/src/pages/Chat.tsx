@@ -58,8 +58,6 @@ export const Chat = () => {
         }
     }, [messagesData]);
 
-    console.log(chats);
-
     return (
         <>
             <div className="flex w-full items-center gap-5">
