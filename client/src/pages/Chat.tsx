@@ -8,6 +8,7 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import io, { Socket } from "socket.io-client";
 
 export const Chat = () => {
+    const chatRef = useRef<HTMLDivElement | null>(null);
     const [chatId, setChatId] = useState<string | null>(null);
     const [inputText, setInputText] = useState<string>("");
     const { userData } = useUser();
@@ -40,6 +41,7 @@ export const Chat = () => {
         });
 
         setInputText("");
+        chatRef.current!.scrollTop = chatRef.current!.scrollHeight;
     };
     const { data: messagesData } = useMessages(chatId);
     const { data } = useChats();
@@ -95,7 +97,7 @@ export const Chat = () => {
                 </aside>
 
                 <div className="relative flex h-full max-h-[100vh] w-full flex-col space-y-2 p-3 py-8 max-lg:hidden">
-                    <div className="scrollbar-thin flex-1 space-y-2 overflow-y-auto px-6">
+                    <div className="scrollbar-thin flex-1 space-y-2 overflow-y-auto px-6" ref={chatRef}>
                         {messages.map((message) => {
                             const now = new Date(Date.now());
                             const date = new Date(message.createdAt);
