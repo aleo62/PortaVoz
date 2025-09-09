@@ -41,7 +41,9 @@ export const Chat = () => {
         });
 
         setInputText("");
-        chatRef.current!.scrollTop = chatRef.current!.scrollHeight;
+        setTimeout(() => {
+            chatRef.current!.scrollTop = chatRef.current!.scrollHeight;
+        }, 200)
     };
     const { data: messagesData } = useMessages(chatId);
     const { data } = useChats();
@@ -65,24 +67,27 @@ export const Chat = () => {
             <div className="flex w-full items-center gap-5">
                 <aside className="text-title mr-auto h-full w-full max-w-89 rounded-2xl p-3 py-8">
                     <h1 className="mb-7 text-2xl font-medium">Chats</h1>
+
                     {chats.length > 0 ? (
-                        chats.map((chat) => {
-                            const userIndex =
-                                chat.participantsIndex[userId] === "userA" ? "userB" : "userA";
-                            return (
-                                <div
-                                    onClick={() => joinChat(chat._id)}
-                                    className="hover:bg-body-background flex w-full cursor-pointer items-center gap-5 rounded-xl bg-white p-5 py-4 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800"
-                                >
-                                    <img
-                                        src={chat.participantsPhotos[userIndex]}
-                                        alt=""
-                                        className="h-12 w-12 rounded-full"
-                                    />
-                                    <p className="text-lg">{chat.participantsNames[userIndex]}</p>
-                                </div>
-                            );
-                        })
+                        <div className="w-full space-y-3">
+                            {chats.map((chat) => {
+                                const userIndex =
+                                    chat.participantsIndex[userId] === "userA" ? "userB" : "userA";
+                                return (
+                                    <div
+                                        onClick={() => joinChat(chat._id)}
+                                        className="hover:bg-body-background flex w-full cursor-pointer items-center gap-5 rounded-xl bg-white p-5 py-4 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800"
+                                    >
+                                        <img
+                                            src={chat.participantsPhotos[userIndex]}
+                                            alt=""
+                                            className="h-12 w-12 rounded-full"
+                                        />
+                                        <p className="text-lg">{chat.participantsNames[userIndex]}</p>
+                                    </div>
+                                );
+                            })}
+                        </div>
                     ) : (
                         <div className="mx-auto w-fit">
                             <p className="text-subtitle mx-auto mb-2 max-w-50 text-center">
