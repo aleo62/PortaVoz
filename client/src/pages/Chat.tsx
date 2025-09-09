@@ -43,7 +43,7 @@ export const Chat = () => {
         setInputText("");
         setTimeout(() => {
             chatRef.current!.scrollTop = chatRef.current!.scrollHeight;
-        }, 200)
+        }, 300)
     };
     const { data: messagesData } = useMessages(chatId);
     const { data } = useChats();
