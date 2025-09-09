@@ -41,10 +41,11 @@ export const Chat = () => {
         });
 
         setInputText("");
-        setTimeout(() => {
-            chatRef.current!.scrollTop = chatRef.current!.scrollHeight;
-        }, 300)
     };
+    useEffect(() => {
+        chatRef.current!.scrollTop = chatRef.current!.scrollHeight;
+    }, [messages])
+
     const { data: messagesData } = useMessages(chatId);
     const { data } = useChats();
 
