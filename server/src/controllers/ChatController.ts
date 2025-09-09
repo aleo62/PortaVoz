@@ -59,7 +59,7 @@ export const getMessagesByChatId = async (
         if (!req.user) throw new Error("No User provided");
 
         // Verifying if page is provided
-        const page = Number(req.query.page) === 0 ? 1 : Number(req.query.page),
+        const page = !req.query.page ? 1 : Number(req.query.page),
             limit = config.SYSTEM_MESSAGES_PER_PAGE;
 
         // Fetch chat id
@@ -70,13 +70,15 @@ export const getMessagesByChatId = async (
         const count = await Message.countDocuments({ chatId });
 
         const messagesData = await Message.find({ chatId })
+            .sort({ createdAt: -1 })
             .skip((page - 1) * limit)
-            .limit(limit);
+            .limit(limit)
+            .lean();
 
         // Sending response
         res.status(200).json({
             chatId,
-            messages: messagesData,
+            messages: messagesData.reverse(),
             hasMore: count > page * limit,
         });
     } catch (err) {
@@ -116,6 +118,7 @@ export const getMessagesByUsers = async (
         const count = await Message.countDocuments({ chatId });
 
         const messagesData = await Message.find({ chatId })
+            .sort({ dataset: -1 })
             .skip((page - 1) * limit)
             .limit(limit);
 
@@ -124,6 +127,7 @@ export const getMessagesByUsers = async (
             chatId,
             messages: messagesData,
             hasMore: count > page * limit,
+            count
         });
     } catch (err) {
         if (!(err instanceof Error)) throw err;
