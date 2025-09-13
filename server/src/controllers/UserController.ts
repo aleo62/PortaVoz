@@ -1,3 +1,4 @@
+import admin from "@/firebase/admin";
 import { fetchPublicId } from "@/firebase/fetchPublidId";
 import { fetchUid } from "@/firebase/fetchUid";
 import Comment from "@/models/Comment.model";
@@ -59,6 +60,37 @@ export const updateUserContent = async (
 
         res.status(200).json({
             message: `All Posts and Comments updated from: ${userId}`,
+        });
+    } catch (err) {
+        if (!(err instanceof Error)) throw err;
+
+        const errors = formatError(err.message);
+
+        res.status(500).json({
+            code: "ServerError",
+            message: "Internal Server Error",
+            errors: errors,
+        });
+    }
+};
+
+/**
+ * PUT - Controller responsável por tornar um user em admin
+ */
+export const updateUserAdmin = async (
+    req: Request,
+    res: Response
+): Promise<void> => {
+    try {
+        // Verifying if Following Id exists
+        if (!req.params.updateUserId) throw new Error("No User Id to Update provided.");
+        
+        const { uid } = await fetchPublicId(req.params.updateUserId);
+        await admin.auth().setCustomUserClaims(uid, { admin: true });
+
+        // Sending response
+        res.status(200).json({
+            message: "User updated sucessfully."
         });
     } catch (err) {
         if (!(err instanceof Error)) throw err;

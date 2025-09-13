@@ -1,17 +1,19 @@
 import { HeaderSidebar } from "@/components/sidebar/HeaderSidebar";
 import { ProfileSkeleton } from "@/components/ui/ProfileSkeleton";
 import { useUser } from "@/contexts/UserContext";
+import { useChatByUsers } from "@/hooks/chat/useChatByUsers";
 import { useCreateFollow } from "@/hooks/user/useCreateFollow";
 import { useDeleteFollow } from "@/hooks/user/useDeleteFollow";
 import { useFollow } from "@/hooks/user/useFollow";
 import { UserData } from "@/utils/types/userDataType";
+import { IconMessage2 } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 export const Profile = () => {
     const { publicId } = useParams();
     const { data, isLoading } = useFollow(publicId!);
-    const { fetchUser, userData, userDecoded } = useUser();
+    const { fetchUser, userData } = useUser();
     const createFollow = useCreateFollow();
     const deleteFollow = useDeleteFollow();
 
@@ -19,6 +21,8 @@ export const Profile = () => {
     const [isFollowing, setIsFollowing] = useState(false);
     const [followers, setFollowers] = useState(0);
     const navigate = useNavigate();
+
+    const getChatByUser = useChatByUsers();
 
     // Puxando dados do usuário
     useEffect(() => {
@@ -57,11 +61,15 @@ export const Profile = () => {
         }
     };
 
+    const fetchChat = async () => {
+        getChatByUser.mutateAsync({ otherUserId: user?._publicId! }).then((response) => {
+            navigate(`/chat/${response.chatId}`);
+        });
+    };
+
     if (isLoading || !user || (publicId && !publicId)) {
         return <ProfileSkeleton />;
     }
-
-    console.log(userDecoded?.token);
 
     return (
         <div className="w-full">
@@ -97,14 +105,22 @@ export const Profile = () => {
                             </p>
                         </div>
 
-                        <div className="text-white">
-                            {publicId || publicId === userData?._publicId ? (
-                                <button
-                                    onClick={() => handleFollow()}
-                                    className={`p-2 px-5 ${isFollowing ? "text-accent bg-transparent" : "bg-accent"} ring-accent rounded-full text-sm ring-1 transition-all`}
-                                >
-                                    {isFollowing ? "Seguindo" : "Seguir"}
-                                </button>
+                        <div className="flex items-center gap-2 text-white">
+                            {publicId && publicId !== userData?._publicId ? (
+                                <>
+                                    <button
+                                        onClick={() => handleFollow()}
+                                        className={`p-2 px-5 ${isFollowing ? "text-accent bg-transparent" : "bg-accent"} ring-accent rounded-full text-sm ring-1 transition-all`}
+                                    >
+                                        {isFollowing ? "Seguindo" : "Seguir"}
+                                    </button>
+                                    <button
+                                        className="text-title rounded-full p-3 ring-1 ring-zinc-300 hover:bg-zinc-100 dark:ring-zinc-700 hover:dark:bg-zinc-800"
+                                        onClick={() => fetchChat()}
+                                    >
+                                        <IconMessage2 className="size-5" />
+                                    </button>
+                                </>
                             ) : (
                                 <button
                                     onClick={() => navigate("/edit-profile")}

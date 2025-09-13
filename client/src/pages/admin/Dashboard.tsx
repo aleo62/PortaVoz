@@ -41,7 +41,6 @@ export const Dashboard = () => {
                             <td className="overflow-hidden px-2 py-1">{d.fName}</td>
                             <td className="overflow-hidden px-2 py-1">{d.email}</td>
                             <td className="flex items-center justify-end gap-5 overflow-hidden px-2 py-1">
-                                {" "}
                                 <IconTrash /> <IconPencil />
                             </td>
                         </tr>

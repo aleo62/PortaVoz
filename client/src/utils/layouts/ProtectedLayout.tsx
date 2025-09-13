@@ -1,8 +1,9 @@
-import { AlertCPF } from "@/components/overlay/AlertCPF";
+import { NotVerifiedOverlay } from "@/components/overlay/NotVerifiedOverlay";
 import { Loader } from "@/components/ui/Loader";
 import { useUser } from "@/contexts/UserContext";
 import { AnimatePresence } from "framer-motion";
-import { Navigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 type ProtectedLayoutProps = {
     children: React.ReactNode;
@@ -12,22 +13,38 @@ type ProtectedLayoutProps = {
 
 export const ProtectedLayout = ({ children, onlyGuest, onlyAdmin }: ProtectedLayoutProps) => {
     const { user, userDecoded, isFetching } = useUser();
+    const navigate = useNavigate();
 
-    if (onlyGuest && user) {
-        return <Navigate to="/feed" />;
-    }
-    if (!onlyGuest && !user && !isFetching) {
-        return <Navigate to="/auth/login" />;
-    }
-    if (onlyAdmin && !userDecoded?.claims.admin && !isFetching) {
-        return <Navigate to="/" />;
-    }
+    useEffect(() => {
+        const verifyPaths = async () => {
+            if (onlyGuest && user) {
+                return navigate("/feed");
+            }
+            if (!onlyGuest && !user && !isFetching) {
+                return navigate("/auth/login");
+            }
+            if (onlyAdmin && !userDecoded?.claims.admin && userDecoded) {
+                return navigate("/");
+            }
+        };
+
+        verifyPaths();
+    }, [isFetching, user]);
 
     return (
         <>
             {children}
             <AnimatePresence>{isFetching && <Loader />}</AnimatePresence>
-            {user && <AlertCPF />}
+            {
+                <NotVerifiedOverlay
+                    isOpen={
+                        !!user &&
+                        !user?.emailVerified &&
+                        window.location.pathname !== "/auth/verify"
+                    }
+                    onClose={() => {}}
+                />
+            }
         </>
     );
 };

@@ -5,14 +5,13 @@ import { ForgotPassword } from "@/pages/ForgotPassword";
 import { NotFound } from "@/pages/NotFound";
 import { Post } from "@/pages/PostView";
 import { Profile } from "@/pages/Profile";
-import { ResetPassword } from "@/pages/ResetPassword";
+import { Verify } from "@/pages/Verify";
 import { Dashboard } from "@pages/admin/Dashboard";
 import { EditProfile } from "@pages/EditProfile";
 import { Home } from "@pages/Home";
 import { Login } from "@pages/Login";
 import { Logout } from "@pages/Logout";
 import { Register } from "@pages/Register";
-import { Verify } from "@pages/Verify";
 import { ProtectedLayout } from "@utils/layouts/ProtectedLayout";
 import { SidebarLayout } from "@utils/layouts/SidebarLayout";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
@@ -21,7 +20,6 @@ export const AppRoutes = () => {
     return (
         <Router>
             <Routes>
-                <Route path="/auth/verify" element={<Verify />} />
                 <Route path="/" element={<Home />} />
                 <Route path="/auth/logout" element={<Logout />} />
                 <Route
@@ -32,7 +30,6 @@ export const AppRoutes = () => {
                         </ProtectedLayout>
                     }
                 />
-                
                 <Route
                     path="/auth/register"
                     element={
@@ -50,10 +47,10 @@ export const AppRoutes = () => {
                     }
                 />
                 <Route
-                    path="/auth/reset-password"
+                    path="/auth/verify"
                     element={
-                        <ProtectedLayout onlyGuest={true}>
-                            <ResetPassword />
+                        <ProtectedLayout>
+                            <Verify />
                         </ProtectedLayout>
                     }
                 />
@@ -80,6 +77,16 @@ export const AppRoutes = () => {
                 />
                 <Route
                     path="/chat"
+                    element={
+                        <ProtectedLayout>
+                            <SidebarLayout>
+                                <Chat />
+                            </SidebarLayout>
+                        </ProtectedLayout>
+                    }
+                />
+                <Route
+                    path="/chat/:chatId"
                     element={
                         <ProtectedLayout>
                             <SidebarLayout>

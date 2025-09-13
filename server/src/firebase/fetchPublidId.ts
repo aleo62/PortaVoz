@@ -3,8 +3,8 @@ import admin from "./admin";
 export const fetchPublicId = async (
     publicId: string
 ): Promise<{
-    userData: UserData | null;
-    uid: string | null;
+    userData: UserData;
+    uid: string;
 }> => {
     const db = admin.firestore();
     try {
@@ -14,7 +14,7 @@ export const fetchPublicId = async (
             .limit(1)
             .get();
 
-        if (snapshot.empty) return { userData: null, uid: null };
+        if (snapshot.empty) throw new Error("User not exists.")
 
         const doc = snapshot.docs[0];
         const userData = doc.data() as UserData;

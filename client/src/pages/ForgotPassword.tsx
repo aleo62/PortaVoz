@@ -1,4 +1,3 @@
-// src/pages/ForgotPassword.tsx
 import { Border } from "@/components/deco/Border";
 import { Circle } from "@/components/deco/Circle";
 import { Ret } from "@/components/deco/Ret";
@@ -28,12 +27,12 @@ export const ForgotPassword = () => {
         }
 
         setIsLoading(true);
-
         try {
             await sendPasswordResetEmail(auth, email);
             successToast("E-mail enviado!");
         } catch (err) {
-            errorToast(err as string);
+            // @ts-ignore
+            errorToast(err.message);
         }
         setIsLoading(false);
     };

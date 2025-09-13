@@ -18,8 +18,6 @@ export const authenticateOwnerOrAdmin = (
 
             const ownerData = (await fetchUid(req.user.uid)) as UserData;
             if (Array.isArray(userId)) {
-                console.log(ownerData._publicId);
-                console.log(userId.includes(ownerData._publicId));
                 if (!userId.includes(ownerData._publicId) && !req?.user?.isAdmin)
                     throw new Error("User not allowed");
             } else {

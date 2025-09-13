@@ -1,14 +1,15 @@
 // Roteador de posts: define endpoint para criação de post
 import {
+    getChatByUsers,
     getChats,
     getMessagesByChatId,
-    getMessagesByUsers,
 } from "@/controllers/ChatController";
 import { authenticateUser } from "@/middlewares/auth";
 import { authenticateOwnerOrAdmin } from "@/middlewares/authOwnerOrAdmin";
 import { validationError } from "@/middlewares/validationError";
-import { Router } from "express";
 import Chat from "@/models/Chat.model";
+import { Router } from "express";
+import { body } from "express-validator";
 
 const router = Router();
 
@@ -27,12 +28,16 @@ router.get(
     validationError,
     getMessagesByChatId
 );
-// GET - Rota para pegar as mensagens antigas
-router.get(
-    "/with/:otherUser/messages",
+// POST - Rota para pegar o chat com base nos users
+router.post(
+    "/start",
     authenticateUser,
+    body("otherUserId")
+        .trim()
+        .notEmpty()
+        .withMessage("otherUserId is required"),
     validationError,
-    getMessagesByUsers
+    getChatByUsers
 );
 
 export default router;

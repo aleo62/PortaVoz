@@ -111,10 +111,10 @@ export class Server {
     /* IMAGES ENDPOINTS -----------> */
 
     // PUT Image
-    static async changeImage(newImage: File, token: string, folder?: string,) {
+    static async changeImage(newImage: File, token: string, folder?: string) {
         const formData = new FormData();
         formData.append("image", newImage);
-        if(folder) formData.append("folder", folder);
+        if (folder) formData.append("folder", folder);
 
         return axios.put(`${this.baseUrl}images`, formData, {
             headers: { Authorization: `Bearer ${token}` },
@@ -181,7 +181,6 @@ export class Server {
         return axios.post(`${this.baseUrl}validate/${stage}`, formData);
     }
 
-
     /* NOTIFICATIONS ENDPOINTS -----------> */
     // GET all Notifications
     static async getNotifications(token: string, pageParam: number) {
@@ -209,6 +208,18 @@ export class Server {
             params: { page: pageParam },
             headers: { authorization: `Bearer ${token}` },
         });
+        return res.data;
+    }
+
+    // POST Messages by users id
+    static async getChatByUserId(token: string, otherUserId: string) {
+        const res = await axios.post(
+            `${this.baseUrl}chats/start`,
+            { otherUserId },
+            {
+                headers: { Authorization: `Bearer ${token}` },
+            },
+        );
         return res.data;
     }
 }

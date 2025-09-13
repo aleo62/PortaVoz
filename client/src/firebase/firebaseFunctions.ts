@@ -1,8 +1,10 @@
-import { generateVerificationCode } from "@/utils/generateCode";
 import { generateId } from "@/utils/generateId";
-import { sendVerificationEmail } from "@/utils/sendEmail";
 import { UserData } from "@/utils/types/userDataType";
-import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import {
+    createUserWithEmailAndPassword,
+    sendEmailVerification,
+    signInWithPopup,
+} from "firebase/auth";
 import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
 import { auth, db, googleProvider } from ".";
 
@@ -26,9 +28,6 @@ const createUserDoc = async ({ fName, lName, image }: createUserDocProps) => {
     const user = auth.currentUser;
 
     if (user) {
-        const verificationCode = generateVerificationCode();
-        const codeExpiresAt = Date.now() + 5 * 60 * 1000;
-
         await setDoc(doc(db, "Users", user.uid), {
             _publicId: generateId(20, "@_"),
             username: fName,
@@ -51,25 +50,8 @@ const createUserDoc = async ({ fName, lName, image }: createUserDocProps) => {
                     totalReports: 0,
                     reportsResetAt: new Timestamp(10000, 10000),
                 },
-                verification: {
-                    codeHash: verificationCode,
-                    expiresAt: codeExpiresAt,
-                },
             },
-
-            verified: false,
         } as UserData);
-
-        const expirationText = new Date(codeExpiresAt).toLocaleTimeString("pt-BR", {
-            hour: "2-digit",
-            minute: "2-digit",
-        });
-
-        sendVerificationEmail({
-            email: user.email || "",
-            passcode: verificationCode,
-            time: expirationText,
-        });
     }
 };
 
@@ -83,8 +65,10 @@ export const registerUserEmailAndPassword = async ({
     image,
 }: registerUserEmailAndPasswordProps) => {
     try {
-        await createUserWithEmailAndPassword(auth, email, password);
+        const userData = (await createUserWithEmailAndPassword(auth, email, password)).user;
         await createUserDoc({ fName, lName, image });
+
+        await sendEmailVerification(userData);
     } catch (err) {
         throw err;
     }

@@ -25,7 +25,10 @@ export const getChats = async (req: Request, res: Response): Promise<void> => {
 
         // Fetching messages
         const count = await Chat.countDocuments({ participants: userId });
-        const chatsData = await Chat.find({ participants: userId })
+        const chatsData = await Chat.find({
+            participants: userId,
+            [`visible.${userId}`]: true,
+        })
             .skip((page - 1) * limit)
             .limit(limit);
 
@@ -64,7 +67,7 @@ export const getMessagesByChatId = async (
 
         // Fetch chat id
         const chatId = req.params.chatId;
-        if(!chatId) throw new Error("chat id not informed.");
+        if (!chatId) throw new Error("chat id not informed.");
 
         // Fetching messages
         const count = await Message.countDocuments({ chatId });
@@ -94,10 +97,10 @@ export const getMessagesByChatId = async (
     }
 };
 /**
- * GET - Controller responsável por pegar as mensagens pelos usuarios
+ * POST - Controller responsável por pegar as mensagens pelos usuarios
  */
 
-export const getMessagesByUsers = async (
+export const getChatByUsers = async (
     req: Request,
     res: Response
 ): Promise<void> => {
@@ -105,29 +108,14 @@ export const getMessagesByUsers = async (
         // Verifying if user is authenticated
         if (!req.user) throw new Error("No User provided");
 
-        // Verifying if page is provided
-        const page = Number(req.query.page) === 0 ? 1 : Number(req.query.page),
-            limit = config.SYSTEM_MESSAGES_PER_PAGE;
-
         // Fetch chat id
         const userA = ((await fetchUid(req.user.uid)) as UserData)._publicId;
-        const userB = req.params.otherUser;
-        const chatId = (await findOrCreateChat(userA, userB))._id;
-
-        // Fetching messages
-        const count = await Message.countDocuments({ chatId });
-
-        const messagesData = await Message.find({ chatId })
-            .sort({ dataset: -1 })
-            .skip((page - 1) * limit)
-            .limit(limit);
-
+        const userB = req.body.otherUserId;
+        
         // Sending response
+        const chatId = (await findOrCreateChat(userA, userB))._id;
         res.status(200).json({
             chatId,
-            messages: messagesData,
-            hasMore: count > page * limit,
-            count
         });
     } catch (err) {
         if (!(err instanceof Error)) throw err;

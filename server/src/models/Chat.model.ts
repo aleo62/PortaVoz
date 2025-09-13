@@ -10,6 +10,7 @@ export interface ChatData extends Document {
     participantsIndex: Record<string, "userA" | "userB">;
     participantsPhotos: Record<string, string>;
     participantsNames: Record<string, string>;
+    visible: Map<string, boolean>;
 }
 
 /**
@@ -30,17 +31,27 @@ const ChatSchema: Schema = new Schema(
             ],
         },
         participants: {
-            type: [String], 
+            type: [String],
             required: true,
+        },
+        participantsIndex: {
+            type: Map,
+            of: String,
+            default: {},
         },
         participantsPhotos: {
             type: Map,
-            of: String, 
+            of: String,
             default: {},
         },
         participantsNames: {
             type: Map,
-            of: String, 
+            of: String,
+            default: {},
+        },
+        visible: {
+            type: Map,
+            of: Boolean,
             default: {},
         },
     },

@@ -1,4 +1,5 @@
 export interface MessageData {
+    _id: string;
     chatId: string;
     senderId: string;
     text: string;

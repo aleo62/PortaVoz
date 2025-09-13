@@ -17,8 +17,8 @@ export const Sidebar = ({
     className: string;
 }) => {
     const location = useLocation();
-    const { isDarkTheme, setIsDarkTheme } = useTheme();
     const isMobile = useIsMobile();
+    const { isDarkTheme, setIsDarkTheme } = useTheme();
     const { userDecoded} = useUser();
 
     const IconBar = isOpen ? IconChevronLeftPipe : IconChevronRightPipe;

@@ -21,10 +21,6 @@ export type UserData = {
             totalReports: number;
             reportsResetAt: Timestamp | Date | null;
         };
-        verification: {
-            codeHash: string | null;
-            expiresAt: Timestamp | Date | null | number;
-        };
         timestamps?: {
             updatedAt?: Timestamp | Date | null;
             lastSeen?: Timestamp | Date | null;
@@ -34,6 +30,4 @@ export type UserData = {
             language?: string;
         };
     };
-
-    verified: boolean;
 };

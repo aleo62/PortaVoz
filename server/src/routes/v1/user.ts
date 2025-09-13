@@ -1,5 +1,5 @@
 import { getNotifications } from "@/controllers/NotificationController";
-import { createUserCounter, followUser, getFollowing, unfollowUser, updateUserContent } from "@/controllers/UserController";
+import { createUserCounter, followUser, getFollowing, unfollowUser, updateUserAdmin, updateUserContent } from "@/controllers/UserController";
 import { authenticateUser } from "@/middlewares/auth";
 import { validationError } from "@/middlewares/validationError";
 import { Router } from "express";
@@ -12,6 +12,14 @@ router.put(
     authenticateUser,
     validationError,
     updateUserContent
+);
+
+// PUT - Rota para tornar user admin
+router.put(
+    "/:updateUserId/admin",
+    authenticateUser,
+    validationError,
+    updateUserAdmin
 );
 
 // POST - Rota para criar counter

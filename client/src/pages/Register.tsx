@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import React, { useState } from "react";
 
 import facebook from "@assets/images/icons/facebook.png";
 
@@ -13,15 +11,11 @@ import blob from "@assets/images/illustrations/register/blob-scene-haikei.png";
 import workspace from "@assets/images/illustrations/register/workspace.png";
 
 import { FormInput } from "@/components/ui/FormInput";
-import { Loader } from "@/components/ui/Loader";
 import { useIsMobile } from "@/utils/isMobile";
 import { validateEmail, validateName, validatePassword } from "@/utils/validations";
-import { AnimatePresence } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 
 import { GoogleButton } from "@/components/ui/GoogleButton";
 import { useToast } from "@/contexts/ToastContext";
-import { auth } from "@/firebase";
 import { registerUserEmailAndPassword } from "@/firebase/firebaseFunctions";
 import { FirebaseError } from "firebase/app";
 
@@ -31,10 +25,8 @@ export const Register = () => {
     const [fName, setFName] = useState("");
     const [lName, setLName] = useState("");
 
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const { errorToast } = useToast();
-
-    const navigate = useNavigate();
 
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -54,10 +46,6 @@ export const Register = () => {
 
         try {
             await registerUserEmailAndPassword({ email, fName, lName, password });
-            const user = auth.currentUser;
-            navigate("/auth/verify", {
-                state: { uid: user?.uid, email: user?.email },
-            });
         } catch (error: unknown) {
             if (error instanceof FirebaseError && error.code === "auth/email-already-in-use") {
                 console.log(error);
@@ -72,22 +60,8 @@ export const Register = () => {
 
     const isMobile = useIsMobile();
 
-    useEffect(() => {
-        setIsLoading(true);
-
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 1000);
-
-        return () => {
-            setIsLoading(false);
-        };
-    }, []);
-
     return (
         <>
-            <AnimatePresence>{isLoading && <Loader />}</AnimatePresence>
-
             <div className="flex h-full md:h-screen">
                 <div className="from-accent to-primary relative hidden h-full w-4/9 overflow-y-clip bg-gradient-to-r lg:block xl:w-6/16">
                     <div className="relative px-18 pt-40 text-white">
@@ -182,12 +156,13 @@ export const Register = () => {
                             text="Cadastre-se"
                             Icon={IconArrowRight}
                             className="w-full"
+                            isLoading={isLoading}
                         />
 
                         <div className="mt-10 flex items-center justify-center gap-2">
-                            <span className="flex-1 border-t border-zinc-300"></span>
-                            <p className="text-sm text-zinc-500">Ou cadastre-se com</p>
-                            <span className="flex-1 border-t border-zinc-300"></span>
+                            <span className="flex-1 border-t border-zinc-300 dark:border-zinc-700"></span>
+                            <p className="text-sm text-zinc-500 dark:text-zinc-600">Ou cadastre-se com</p>
+                            <span className="flex-1 border-t border-zinc-300 dark:border-zinc-700"></span>
                         </div>
 
                         <div className="space-y-3">

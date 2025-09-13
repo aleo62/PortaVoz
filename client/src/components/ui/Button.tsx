@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { SpinnerCircular } from "spinners-react";
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -32,6 +33,8 @@ export const Button = ({
     isLoading = false,
     ...rest
 }: ButtonProps) => {
+    const navigate = useNavigate();
+
     const finalClass = [
         baseClass,
         styleTypeClass[styleType],
@@ -41,8 +44,10 @@ export const Button = ({
         .filter(Boolean)
         .join(" ");
 
+    const handleClick = path ? () => navigate(path) : rest.onClick;
+
     const buttonContent = (
-        <button className={finalClass} {...rest} disabled={isLoading || rest.disabled}>
+        <button className={finalClass} {...rest} disabled={isLoading || rest.disabled} onClick={handleClick}>
             {isLoading ? (
                 <SpinnerCircular
                     size={20}
