@@ -1,5 +1,6 @@
 // Roteador de posts: define endpoint para criação de post
 import {
+    getChatById,
     getChatByUsers,
     getChats,
     getMessagesByChatId,
@@ -27,6 +28,18 @@ router.get(
     }),
     validationError,
     getMessagesByChatId
+);
+// GET - Rota para pegar chats peloId
+router.get(
+    "/:chatId",
+    authenticateUser,
+    authenticateOwnerOrAdmin(async (req) => {
+        const chat = await Chat.findById(req.params.chatId);
+        if (!chat) throw new Error("Chat does not exist");
+        return chat.participants;
+    }),
+    validationError,
+    getChatById
 );
 // POST - Rota para pegar o chat com base nos users
 router.post(

@@ -26,7 +26,7 @@ export const Sidebar = ({
     return (
         <>
             <aside
-                className={`fixed top-0 left-0 z-20 h-screen flex-shrink-0 transition-all duration-100 ease-in-out lg:relative ${isMobile && (!isOpen ? "pointer-events-none -translate-x-full" : "translate-x-0")} ${className}`}
+                className={`fixed top-0 left-0 z-120 h-screen flex-shrink-0 transition-all duration-100 ease-in-out lg:relative ${isMobile && (!isOpen ? "pointer-events-none -translate-x-full" : "translate-x-0")} ${className}`}
             >
                 <nav
                     className={`grid h-full grid-rows-[1.5fr_6fr_1fr] justify-center border-r-1 border-zinc-200 bg-white px-3.5 shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] duration-100 dark:border-zinc-700 dark:bg-zinc-900 ${isMobile && !isOpen ? "pointer-events-none" : ""}`}

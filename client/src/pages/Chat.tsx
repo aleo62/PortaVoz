@@ -1,5 +1,6 @@
 import { ChatContainer } from "@/components/ui/ChatContainer";
 import { ChatContainerSkeleton } from "@/components/ui/ChatContainerSkeleton";
+import { HeaderChat } from "@/components/ui/HeaderChat";
 import { InputChat } from "@/components/ui/InputChat";
 import { Message } from "@/components/ui/Message";
 import { useUser } from "@/contexts/UserContext";
@@ -14,7 +15,7 @@ import io, { Socket } from "socket.io-client";
 export const Chat = () => {
     const params = useParams();
     const chatRef = useRef<HTMLDivElement | null>(null);
-    const [chatId, setChatId] = useState<string>(params.chatId!);
+    const [chatId, setChatId] = useState<string>("");
     const [inputText, setInputText] = useState<string>("");
     const { userData } = useUser();
     const userId = userData?._publicId;
@@ -45,6 +46,11 @@ export const Chat = () => {
     useEffect(() => {
         if (chatId) socketRef?.current?.emit("join_chat", chatId);
     }, [chatId]);
+    useEffect(() => {
+        if (!chatsLoading) setChatId(params.chatId!);
+    }, [chatsLoading]);
+
+    const currentChat = chats.find((chat) => chat._id === chatId)!;
 
     // HANDLE SEND MESSAGE
     const handleSend = (text: string, e: FormEvent) => {
@@ -72,11 +78,11 @@ export const Chat = () => {
 
     return (
         <>
-            <div className="flex h-full w-full items-center divide-zinc-300 lg:gap-5 lg:divide-x-1 dark:divide-zinc-700">
+            <div className="flex w-full items-center divide-zinc-300 lg:gap-5 lg:divide-x-1 dark:divide-zinc-700">
                 <aside
-                    className={`text-title mr-auto h-full w-full px-2 lg:max-w-89 lg:p-3 lg:py-8 ${chatId && "max-lg:hidden"}`}
+                    className={`text-title mr-auto w-full lg:max-w-89 h-full lg:p-3 lg:py-8 ${chatId && "max-lg:hidden"}`}
                 >
-                    <h1 className="mb-4 text-2xl font-medium lg:mb-7">Chats</h1>
+                    <h1 className="mb-4 px-1 text-2xl font-medium lg:mb-7">Chats</h1>
 
                     <div className={`w-full space-y-3`}>
                         {chatsLoading ? (
@@ -102,15 +108,16 @@ export const Chat = () => {
                     </div>
                 </aside>
 
-                <div
-                    className={`relative flex h-[100dvh] w-full flex-col space-y-2 lg:h-full lg:max-h-[100dvh] lg:p-3 lg:py-8 ${!chatId && "max-lg:hidden"}`}
-                >
+                <div className={`relative flex w-full flex-col h-full lg:p-1 lg:py-3 ${!chatId && "max-lg:hidden"}`}>
+  
+                    {chatId && currentChat && <HeaderChat userId={userId} chat={currentChat} />}
                     <div
-                        className="scrollbar-thin flex-1 space-y-2 overflow-y-auto lg:px-6"
+                        className="scrollbar-thin flex-1 space-y-2 overflow-y-auto my-1 lg:px-6"
                         ref={chatRef}
                     >
                         {messages.map((message, index) => (
                             <Message
+                                key={message._id ?? index}
                                 message={message}
                                 userId={userId}
                                 ownNext={
@@ -120,6 +127,7 @@ export const Chat = () => {
                             />
                         ))}
                     </div>
+
                     {chatId && (
                         <InputChat
                             handleSend={handleSend}

@@ -49,6 +49,34 @@ export const getChats = async (req: Request, res: Response): Promise<void> => {
         });
     }
 };
+/**
+ * GET - Controller responsável por pegar os chats de um User.
+ */
+
+export const getChatById = async (req: Request, res: Response): Promise<void> => {
+    try {
+        // Verifying if user is authenticated
+        if (!req.user) throw new Error("No User provided");
+
+        // Fetching messages
+        const chat = await Chat.find({ chatId: req.params.chatId });
+
+        // Sending response
+        res.status(200).json({
+            chat
+        });
+    } catch (err) {
+        if (!(err instanceof Error)) throw err;
+
+        const errors = formatError(err.message);
+
+        res.status(500).json({
+            code: "ServerError",
+            message: "Internal Server Error",
+            errors: errors,
+        });
+    }
+};
 
 /**
  * GET - Controller responsável por pegar as mensagens pelo chat id

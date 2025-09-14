@@ -89,7 +89,7 @@ export const AppRoutes = () => {
                     path="/chat/:chatId"
                     element={
                         <ProtectedLayout>
-                            <SidebarLayout>
+                            <SidebarLayout noHeader>
                                 <Chat />
                             </SidebarLayout>
                         </ProtectedLayout>
