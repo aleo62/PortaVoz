@@ -105,7 +105,7 @@ export const Profile = () => {
                             </p>
                         </div>
 
-                        <div className="flex items-center gap-2 text-white mx-auto w-fit">
+                        <div className="flex items-center gap-2 text-white max-lg:mx-auto w-fit">
                             {publicId && publicId !== userData?._publicId ? (
                                 <>
                                     <button
