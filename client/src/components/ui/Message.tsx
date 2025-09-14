@@ -13,10 +13,11 @@ export const Message = ({
     const date = new Date(message.createdAt);
 
     let messageDate;
-    if (date.getDate() == now.getDate()) messageDate = `${date.getHours()}:${date.getMinutes()}`;
+    if (date.getDate() == now.getDate())
+        messageDate = `${String(date.getHours()).length <= 1 ? `0${date.getHours()}` : date.getHours()}:${String(date.getMinutes()).length <= 1 ? `0${date.getMinutes()}` : date.getMinutes()}`;
     else messageDate = `${date.getDate()}/${date.getMonth()}`;
 
-    const ownMessage = message.senderId === userId
+    const ownMessage = message.senderId === userId;
 
     return (
         <div
@@ -25,7 +26,9 @@ export const Message = ({
         >
             <p className="md:text-md w-fit text-sm">{message.text}</p>
 
-            <p className={`${ownMessage ? "text-subtitle" : "text-zinc-300"} absolute right-2.5 bottom-2 mt-1 flex h-11 w-fit items-end text-[10px]`}>
+            <p
+                className={`${ownMessage ? "text-subtitle" : "text-zinc-300"} absolute right-2.5 bottom-2 mt-1 flex h-11 w-fit items-end text-[10px]`}
+            >
                 {/* <IconChevronDown className="mb-2 size-5 text-subtitle"/> */}
                 {messageDate}
             </p>
