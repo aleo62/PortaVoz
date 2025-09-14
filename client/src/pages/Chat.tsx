@@ -103,7 +103,7 @@ export const Chat = () => {
                 </aside>
 
                 <div
-                    className={`relative flex h-[100vh] w-full flex-col space-y-2 lg:h-full lg:max-h-[100vh] lg:p-3 lg:py-8 ${!chatId && "max-lg:hidden"}`}
+                    className={`relative flex h-[100dvh] w-full flex-col space-y-2 lg:h-full lg:max-h-[100dvh] lg:p-3 lg:py-8 ${!chatId && "max-lg:hidden"}`}
                 >
                     <div
                         className="scrollbar-thin flex-1 space-y-2 overflow-y-auto lg:px-6"
