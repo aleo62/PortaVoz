@@ -1,4 +1,4 @@
-import { InputProps } from "@/utils/types/inputType";
+import { InputProps } from "@/utils/types/inputDataType";
 import { Input } from "./Input";
 import { Textarea } from "./Textarea";
 

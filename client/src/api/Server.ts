@@ -1,4 +1,4 @@
-import { FiltersType } from "@/utils/types/filtersType";
+import { FiltersType } from "@/utils/types/filtersDataType";
 import { PostData } from "@/utils/types/postDataType";
 import axios from "axios";
 

@@ -1,4 +1,4 @@
-import { InputProps } from "@/utils/types/inputType";
+import { InputProps } from "@/utils/types/inputDataType";
 import { IconEye, IconEyeOff } from "@tabler/icons-react";
 import { useState } from "react";
 
