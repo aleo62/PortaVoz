@@ -27,7 +27,7 @@ export const SearchOverlay = ({ isOpen, onClose }: OverlayTemplateProps) => {
                         type="text"
                         placeholder="Pesquisar por denúncias, comunidade, etc..."
                         className="text-title flex-1 border-0 px-2 py-5 text-sm outline-0"
-                        onChange={() => setSearch(this.value)}
+                        onChange={() => setSearch(this.value!)}
                     />
                     <button
                         onClick={onClose}
