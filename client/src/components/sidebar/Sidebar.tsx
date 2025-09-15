@@ -1,11 +1,11 @@
 import { portaVozLogo, SidebarItems, SidebarSpecialItems } from "@/utils/data";
 
+import { useUser } from "@/contexts/UserContext";
 import { useTheme } from "@/hooks/useTheme";
 import { useIsMobile } from "@/utils/isMobile";
 import { IconChevronLeftPipe, IconChevronRightPipe, IconMoon, IconSun } from "@tabler/icons-react";
 import { useLocation } from "react-router-dom";
 import { SidebarItem } from "./SidebarItem";
-import { useUser } from "@/contexts/UserContext";
 
 export const Sidebar = ({
     isOpen,
@@ -19,7 +19,7 @@ export const Sidebar = ({
     const location = useLocation();
     const isMobile = useIsMobile();
     const { isDarkTheme, setIsDarkTheme } = useTheme();
-    const { userDecoded} = useUser();
+    const { userDecoded } = useUser();
 
     const IconBar = isOpen ? IconChevronLeftPipe : IconChevronRightPipe;
 
@@ -59,25 +59,25 @@ export const Sidebar = ({
                                 Icon={icon}
                                 label={label}
                                 isOpen={isOpen}
-                                active={location.pathname === href}
+                                active={location.pathname.includes(href)}
                                 isMobile={isMobile}
                             />
                         ))}
                     </ul>
 
                     <ul className={`space-y-2 p-5 px-1 ${!isOpen ? "items-center" : ""}`}>
-                        
-                        {userDecoded?.claims.admin! && SidebarSpecialItems.map(({ label, icon, href }, key) => (
-                            <SidebarItem
-                                key={key}
-                                href={href}
-                                Icon={icon}
-                                label={label}
-                                isOpen={isOpen}
-                                active={location.pathname === href}
-                                isMobile={isMobile}
-                            />
-                        ))}
+                        {userDecoded?.claims.admin! &&
+                            SidebarSpecialItems.map(({ label, icon, href }, key) => (
+                                <SidebarItem
+                                    key={key}
+                                    href={href}
+                                    Icon={icon}
+                                    label={label}
+                                    isOpen={isOpen}
+                                    active={location.pathname === href}
+                                    isMobile={isMobile}
+                                />
+                            ))}
                         <div
                             className="mx-auto flex w-[95%] items-center gap-2 rounded-[15px] bg-zinc-200 p-[4px] text-sm font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
                             onClick={() => !isOpen && setIsDarkTheme(!isDarkTheme)}

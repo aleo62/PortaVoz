@@ -77,7 +77,7 @@ export const Post = ({ post, onDeletePost }: { post: PostData; onDeletePost: () 
             )}
 
             <article
-                className={`relative w-full max-w-[590px] rounded-xl bg-white shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] transition-all ${!isMobile && locationOpen && "translate-x-[-25%]"} dark:bg-zinc-900`}
+                className={`relative w-full max-w-[590px] max-lg:pb-3 rounded-xl bg-white shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] transition-all ${!isMobile && locationOpen && "translate-x-[-25%]"} dark:bg-zinc-900`}
             >
                 <header className="relative flex items-center gap-3 p-3 py-5 lg:p-5 lg:py-6">
                     <div

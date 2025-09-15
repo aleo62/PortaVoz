@@ -3,9 +3,9 @@ import { IconArrowBigUp, IconMessageDots } from "@tabler/icons-react";
 
 export const PostPreview = ({ title, desc, upvotesCount, commentsCount }: Partial<PostData>) => {
     return (
-        <div className="flex h-35 items-center gap-2 rounded-xl bg-white p-2 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-700">
+        <div className="flex h-35 items-center gap-2 rounded-xl  bg-white p-2 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-700">
             <div className="h-30 p-3">
-                <h3 className="text-md text-title font-title font-medium">
+                <h3 className="text-md text-title font-title font-medium w-50 truncate ">
                     { title }
                 </h3>
                 <p className="text-subtitle max-w-45 text-xs line-clamp-2">

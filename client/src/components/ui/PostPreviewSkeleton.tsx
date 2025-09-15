@@ -1,6 +1,6 @@
 export const PostPreviewSkeleton = () => {
     return (
-        <div className="flex h-35 w-[380px] animate-pulse items-center gap-2 rounded-xl bg-white p-2 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-700">
+        <div className="flex h-35 w-[368px] animate-pulse items-center gap-2 rounded-xl bg-white p-2 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-700">
             {/* Texto */}
             <div className="flex h-30 flex-col justify-between p-3">
                 <div>
