@@ -10,7 +10,7 @@ type InputChatProps = {
 export const InputChat = ({ handleSend, setInputText, inputText }: InputChatProps) => {
     return (
         <form
-            className="text-title flex h-fit items-center space-x-3 rounded-2xl ring-1 ring-zinc-300 dark:ring-zinc-700 bg-white p-1.5 pl-2 md:pl-3 dark:bg-zinc-900"
+            className="text-title sticky bottom-0 flex h-fit items-center space-x-3 rounded-2xl ring-1 ring-zinc-300 dark:ring-zinc-700 bg-white p-1.5 pl-2 md:pl-3 dark:bg-zinc-900"
             onSubmit={(e) => handleSend(inputText, e)}
         >
             <input

@@ -9,11 +9,12 @@ import { useMessages } from "@/hooks/messages/useMessages";
 import { ChatData } from "@/utils/types/chatDataType";
 import { MessageData } from "@/utils/types/messageDataType";
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import io, { Socket } from "socket.io-client";
 
 export const Chat = () => {
     const params = useParams();
+    const navigate = useNavigate();
     const chatRef = useRef<HTMLDivElement | null>(null);
     const [chatId, setChatId] = useState<string>("");
     const [inputText, setInputText] = useState<string>("");
@@ -44,7 +45,10 @@ export const Chat = () => {
 
     // HANDLE JOIN CHAT
     useEffect(() => {
-        if (chatId) socketRef?.current?.emit("join_chat", chatId);
+        if (chatId) {
+            socketRef?.current?.emit("join_chat", chatId);
+            navigate(`/chat/${chatId}`);
+        }
     }, [chatId]);
     useEffect(() => {
         if (!chatsLoading) setChatId(params.chatId!);
@@ -80,7 +84,7 @@ export const Chat = () => {
         <>
             <div className="flex w-full items-center divide-zinc-300 lg:gap-5 lg:divide-x-1 dark:divide-zinc-700">
                 <aside
-                    className={`text-title mr-auto w-full lg:max-w-89 h-full lg:p-3 lg:py-8 ${chatId && "max-lg:hidden"}`}
+                    className={`text-title mr-auto h-full w-full lg:max-w-89 lg:p-3 lg:py-8 ${chatId && "max-lg:hidden"}`}
                 >
                     <h1 className="mb-4 px-1 text-2xl font-medium lg:mb-7">Chats</h1>
 
@@ -108,11 +112,12 @@ export const Chat = () => {
                     </div>
                 </aside>
 
-                <div className={`relative flex w-full flex-col h-full lg:p-1 lg:py-3 ${!chatId && "max-lg:hidden"}`}>
-  
-                    {chatId && currentChat && <HeaderChat userId={userId} chat={currentChat} />}
+                <div
+                    className={`relative flex h-full w-full flex-col lg:p-1 lg:py-3 ${!chatId && "max-lg:hidden"}`}
+                >
+                    {chatId && currentChat && <HeaderChat userId={userId} chat={currentChat} setChatId={setChatId}/>}
                     <div
-                        className="scrollbar-thin flex-1 space-y-2 overflow-y-auto my-1 lg:px-6"
+                        className="scrollbar-thin my-2 h-full space-y-2 overflow-y-auto lg:px-6"
                         ref={chatRef}
                     >
                         {messages.map((message, index) => (
