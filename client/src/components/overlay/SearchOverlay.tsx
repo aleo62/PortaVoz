@@ -2,13 +2,13 @@ import { IconHash, IconSearch, IconTableRow, IconUser } from "@tabler/icons-reac
 import { motion } from "framer-motion";
 
 import { usePosts } from "@/hooks/posts/usePosts";
+import { PostData } from "@/utils/types/postDataType";
 import algolia from "@assets/images/svg/algolia-logo.svg";
 import { useState } from "react";
 import { OverlayTemplate, OverlayTemplateProps } from "../templates/OverlayTemplate";
-import { PostData } from "@/utils/types/postDataType";
 
 export const SearchOverlay = ({ isOpen, onClose }: OverlayTemplateProps) => {
-    const [search, setSearch] = useState();
+    const [search, setSearch] = useState<string>("");
     const { data: feedData } = usePosts({ search });
 
     let posts: PostData[] = (feedData?.pages.flatMap((page) => page.posts) as PostData[]) || [];
@@ -27,7 +27,8 @@ export const SearchOverlay = ({ isOpen, onClose }: OverlayTemplateProps) => {
                         type="text"
                         placeholder="Pesquisar por denúncias, comunidade, etc..."
                         className="text-title flex-1 border-0 px-2 py-5 text-sm outline-0"
-                        onChange={() => setSearch(this.value!)}
+                        onChange={(e) => setSearch(e.target.value)}
+                        
                     />
                     <button
                         onClick={onClose}
@@ -48,7 +49,9 @@ export const SearchOverlay = ({ isOpen, onClose }: OverlayTemplateProps) => {
                             <IconHash size={17} /> Hashtags
                         </li>
                     </ul>
-                    <p className="text-subtitle p-5 py-15">{posts ? posts.map(post => post.title) : "Nada encontrado ;("} </p>
+                    <p className="text-subtitle p-5 py-15">
+                        {posts ? posts.map((post) => post.title) : "Nada encontrado ;("}{" "}
+                    </p>
                 </main>
                 <footer className="flex items-center justify-end p-5">
                     <a
