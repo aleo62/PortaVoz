@@ -82,7 +82,7 @@ export const Chat = () => {
 
     return (
         <>
-            <div className="flex w-full items-center divide-zinc-300 lg:gap-5 lg:divide-x-1 dark:divide-zinc-700">
+            <div className={`flex w-full items-center divide-zinc-300 lg:gap-5 lg:divide-x-1 dark:divide-zinc-700 ${chatId && "max-lg:h-[95dvh]"}`}>
                 <aside
                     className={`text-title mr-auto h-full w-full lg:max-w-89 lg:p-3 lg:py-8 ${chatId && "max-lg:hidden"}`}
                 >
@@ -117,7 +117,7 @@ export const Chat = () => {
                 >
                     {chatId && currentChat && <HeaderChat userId={userId} chat={currentChat} setChatId={setChatId}/>}
                     <div
-                        className="scrollbar-thin my-2 h-full space-y-2 overflow-y-auto lg:px-6"
+                        className="scrollbar-thin my-2 flex-1 space-y-2 overflow-y-auto lg:px-6"
                         ref={chatRef}
                     >
                         {messages.map((message, index) => (

@@ -92,7 +92,7 @@ export const Posts = () => {
                 </div>
 
                 <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-5 pt-8 lg:px-6">
-                    <div className="mb-5 flex items-center gap-1 text-xs">
+                    <div className="lg:mb-5 flex items-center gap-1 text-xs">
                         <button
                             onClick={() => (setDateFilter("asc"), feedRefetch())}
                             className={`text-title rounded-lg p-3 px-7 ${dateFilter === "asc" ? "bg-white ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800" : "hover:bg-zinc-200 hover:dark:bg-zinc-700"} font-medium`}
@@ -135,7 +135,7 @@ export const Posts = () => {
             </div>
 
             <button
-                className="bg-accent absolute right-10 bottom-10 z-100 flex h-12 w-12 items-center justify-center rounded-full text-white"
+                className="bg-accent fixed right-10 bottom-10 z-100 flex h-12 w-12 items-center justify-center rounded-full text-white"
                 onClick={() => navigate("/create-post")}
             >
                 <IconPlus size={25} />
