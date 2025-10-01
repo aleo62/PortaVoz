@@ -1,11 +1,10 @@
-import { useUser } from "@/contexts/UserContext";
+import { useUserById } from "@/hooks/user/useUser";
 import { SidebarConfig } from "@/utils/data";
 import { useIsMobile } from "@/utils/isMobile";
 import { IconSelector } from "@tabler/icons-react";
 import { useState } from "react";
 import { NotificationDrop } from "../drop/NotificationDrop";
 import { UserDrop } from "../drop/UserDrop";
-import { useUserById } from "@/hooks/user/useUser";
 
 export const HeaderOptions = () => {
     const isMobile = useIsMobile();

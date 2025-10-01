@@ -113,9 +113,7 @@ export const Post = ({ post, onDeletePost }: { post: PostData; onDeletePost: () 
                             onClose={() => {
                                 setOptionsDropOpen(false);
                             }}
-                            isOwner={
-                                post.user._id == userData?._publicId || !!userDecoded?.claims.admin
-                            }
+                            isOwner={post.user._id == userData?._id || !!userDecoded?.claims.admin}
                             onDeletePost={onDeletePost}
                         />
                     </div>

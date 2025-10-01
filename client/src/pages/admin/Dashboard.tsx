@@ -16,10 +16,9 @@ export const Dashboard = () => {
                     ...doc.data(),
                 })),
             );
-            console.log(userDecoded?.token)
+            console.log(userDecoded?.token);
         };
 
-        
         getDocuments();
     }, []);
 
@@ -37,7 +36,7 @@ export const Dashboard = () => {
                     </tr>
                     {dados?.map((d) => (
                         <tr className="divide-subtitle divide-x-1">
-                            <td className="overflow-hidden px-2 py-1">{d._publicId}</td>
+                            <td className="overflow-hidden px-2 py-1">{d._id}</td>
                             <td className="overflow-hidden px-2 py-1">{d.fName}</td>
                             <td className="overflow-hidden px-2 py-1">{d.email}</td>
                             <td className="flex items-center justify-end gap-5 overflow-hidden px-2 py-1">

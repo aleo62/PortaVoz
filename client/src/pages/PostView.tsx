@@ -70,7 +70,7 @@ export const Post = () => {
                                         setOptionsDropOpen(false);
                                     }}
                                     isOwner={
-                                        post.userId == userData?._publicId ||
+                                        post.userId == userData?._id ||
                                         !!userDecoded?.claims.admin
                                     }
                                     onDeletePost={() => handleDeletePost}
@@ -84,7 +84,7 @@ export const Post = () => {
                                     {data?.post?.images.map((image: string) => (
                                         <SwiperSlide>
                                             <img
-                                                className={`h-full w-full transition-all duration-300 ease-in-out object-cover`}
+                                                className={`h-full w-full object-cover transition-all duration-300 ease-in-out`}
                                                 // ${imageContain ? "object-contain" : "object-cover"}
                                                 // onClick={() => setImageContain(!imageContain)}
                                                 src={image}
@@ -115,7 +115,7 @@ export const Post = () => {
                                 </div>
 
                                 <div>
-                                    <p className="mb-2 w-full text-sm wrap-break-word text-zinc-800 dark:text-zinc-300 ">
+                                    <p className="mb-2 w-full text-sm wrap-break-word text-zinc-800 dark:text-zinc-300">
                                         {data?.post?.desc}
                                     </p>
                                 </div>

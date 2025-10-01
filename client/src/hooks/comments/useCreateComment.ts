@@ -24,7 +24,7 @@ export function useCreateComment(userData: UserData) {
             //         _id: "tempId" + generateId,
             //         parentId: parentId,
             //         parentType: "Post",
-            //         userId: userData?._publicId as string,
+            //         userId: userData?._id as string,
             //         userName: userData?.fName as string,
             //         userPhoto: userData?.image as string,
             //         content: content,

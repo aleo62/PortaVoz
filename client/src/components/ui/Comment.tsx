@@ -1,12 +1,11 @@
 import { useUser } from "@/contexts/UserContext";
 import { useComments } from "@/hooks/comments/useComments";
-import { useCreateComment } from "@/hooks/comments/useCreateComment";
 import { useDeleteComment } from "@/hooks/comments/useDeleteComment";
+import { useUserById } from "@/hooks/user/useUser";
 import { useCreateVote } from "@/hooks/vote/useCreateVote";
 import { useDeleteVote } from "@/hooks/vote/useDeleteVote";
 import { formatDate } from "@/utils/formatHour";
 import { CommentData } from "@/utils/types/commentDataType";
-import { UserData } from "@/utils/types/userDataType";
 import { IconChevronDown, IconChevronUp, IconDotsVertical, IconThumbUp } from "@tabler/icons-react";
 import { useRef, useState } from "react";
 import { CommentDrop } from "../drop/CommentDrop";
@@ -20,13 +19,14 @@ export const Comment = ({
     onDeleteComment: () => void;
     reply?: boolean;
 }) => {
-    const { userData, userDecoded } = useUser();
+    const { userDecoded } = useUser();
     const date = formatDate(new Date(comment.createdAt));
     const [isUpvoted, setIsUpvoted] = useState(comment.isUpvoted);
     const [optionsContainerOpen, setOptionsContainerOpen] = useState(false);
     const [replyInputOpen, setReplyInputOpen] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
 
+    const { data: userData } = useUserById();
     const createComment = useCreateComment(userData as UserData);
     const [commentInput, setCommentInput] = useState("");
     const [repliesOpen, setRepliesOpen] = useState(false);
@@ -98,8 +98,7 @@ export const Comment = ({
                                 orientation="top"
                                 onClose={() => setOptionsContainerOpen(false)}
                                 isOwner={
-                                    comment.userId == userData?._publicId ||
-                                    !!userDecoded?.claims.admin
+                                    comment.userId == userData?._id || !!userDecoded?.claims.admin
                                 }
                                 onDeleteComment={onDeleteComment}
                             />

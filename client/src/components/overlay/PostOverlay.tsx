@@ -1,18 +1,18 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
-import { useUser } from "@/contexts/UserContext";
 import { useComments } from "@/hooks/comments/useComments";
 import { useCreateComment } from "@/hooks/comments/useCreateComment";
 import { useDeleteComment } from "@/hooks/comments/useDeleteComment";
+import { useUserById } from "@/hooks/user/useUser";
 import { useIsMobile } from "@/utils/isMobile";
 import { CommentData } from "@/utils/types/commentDataType";
 import { PostData } from "@/utils/types/postDataType";
+import { UserData } from "@/utils/types/userDataType";
 import { useInView } from "react-intersection-observer";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { OverlayTemplate, OverlayTemplateProps } from "../templates/OverlayTemplate";
 import { Comment } from "../ui/Comment";
-import { UserData } from "@/utils/types/userDataType";
 
 type SearchOverlayProps = OverlayTemplateProps & {
     post: PostData;
@@ -20,8 +20,8 @@ type SearchOverlayProps = OverlayTemplateProps & {
 
 export const PostOverlay = ({ isOpen, onClose, post }: SearchOverlayProps) => {
     const isMobile = useIsMobile();
-    const { userData } = useUser();
     const [commentInput, setCommentInput] = useState("");
+    const { data: userData } = useUserById();
 
     // COMMENT MANAGEMENT
     const { data, isLoading, fetchNextPage, hasNextPage } = useComments(post._id);
@@ -30,7 +30,7 @@ export const PostOverlay = ({ isOpen, onClose, post }: SearchOverlayProps) => {
     const createComment = useCreateComment(userData as UserData);
     const handleCreateComment = async (e: React.FormEvent) => {
         e.preventDefault();
-        
+
         await createComment.mutate({
             content: commentInput,
             parentId: post._id,
@@ -84,9 +84,13 @@ export const PostOverlay = ({ isOpen, onClose, post }: SearchOverlayProps) => {
                 >
                     {/* HEADER */}
                     <header className="flex items-center gap-2">
-                        <img src={post.userPhoto} className="h-11 w-11 rounded-full object-cover" alt="" />
+                        <img
+                            src={post.user.image}
+                            className="h-11 w-11 rounded-full object-cover"
+                            alt=""
+                        />
                         <div className="leading-4">
-                            <h3 className="text-md font-title font-medium">{post.userName}</h3>
+                            <h3 className="text-md font-title font-medium">{post.user.username}</h3>
                             <p className="text-subtitle text-sm">{post._id}</p>
                         </div>
                     </header>
@@ -104,7 +108,7 @@ export const PostOverlay = ({ isOpen, onClose, post }: SearchOverlayProps) => {
                             <span className="h-[1px] flex-1 rounded-full bg-zinc-400 dark:bg-zinc-500"></span>
                         </h2>
 
-                        <div className="scrollbar-thin scrollbar-track-[#fafafa] space-y-2 dark:scrollbar-track-[#212121] scrollbar-thumb-zinc-200 dark:scrollbar-thumb-zinc-700 mt-3 flex-1 overflow-y-auto">
+                        <div className="scrollbar-thin scrollbar-track-[#fafafa] dark:scrollbar-track-[#212121] scrollbar-thumb-zinc-200 dark:scrollbar-thumb-zinc-700 mt-3 flex-1 space-y-2 overflow-y-auto">
                             {comments.map((comment) => (
                                 <Comment
                                     key={comment._id}
@@ -120,7 +124,7 @@ export const PostOverlay = ({ isOpen, onClose, post }: SearchOverlayProps) => {
                         className="mt-2 flex items-center gap-3 border-t border-zinc-200 pt-2 dark:border-zinc-700"
                         onSubmit={(e) => handleCreateComment(e)}
                     >
-                        <img src={userData?.image} alt="" className="h-10 w-10 rounded-full" />
+                        <img src={userData.image} alt="" className="h-10 w-10 rounded-full" />
                         <input
                             type="text"
                             placeholder="Adicione um comentário"
