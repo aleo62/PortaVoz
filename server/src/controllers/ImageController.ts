@@ -1,9 +1,9 @@
-import { fetchUid } from "@/firebase/fetchUid";
+import { UserData } from "@/models/User.model";
 import {
     createImageService,
     deleteImageService,
 } from "@/services/ImageService";
-import { UserData } from "@/utils/types/userDataType";
+import { fetchUser } from "@/services/UserService";
 import { Request, Response } from "express";
 
 /**
@@ -62,7 +62,7 @@ export const updateImage = async (
         if (!req.user) throw new Error("Unauthorized");
         const folder = req.body.folder ?? null;
 
-        const user: UserData = await fetchUid(req.user.uid) as UserData;
+        const user: UserData = (await fetchUser(req.user.uid)) as UserData;
         if (!user) throw new Error("User not found");
 
         if (

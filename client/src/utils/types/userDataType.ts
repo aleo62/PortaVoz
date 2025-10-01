@@ -1,15 +1,12 @@
-import { Timestamp } from "firebase/firestore";
-
-export type UserData = {
-    _publicId: string;
+export interface UserData {
+    _id: string;
     username: string;
+    email: string;
     fName: string;
     lName: string;
-    email: string;
     image: string;
-    banner: string;
-    about: string;
-
+    about?: string;
+    banner?: string;
     meta: {
         counters: {
             followers: number;
@@ -18,16 +15,8 @@ export type UserData = {
         };
         limits: {
             remainingReports: number;
+            reportsResetAt: Date;
             totalReports: number;
-            reportsResetAt: Timestamp | Date | null;
-        };
-        timestamps?: {
-            updatedAt?: Timestamp | Date | null;
-            lastSeen?: Timestamp | Date | null;
-        };
-        settings?: {
-            darkMode?: boolean;
-            language?: string;
         };
     };
-};
+}

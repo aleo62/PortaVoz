@@ -3,8 +3,10 @@ import { portaVozLogo, SidebarItems, SidebarSpecialItems } from "@/utils/data";
 import { useUser } from "@/contexts/UserContext";
 import { useTheme } from "@/hooks/useTheme";
 import { useIsMobile } from "@/utils/isMobile";
-import { IconChevronLeftPipe, IconChevronRightPipe, IconMoon, IconSun } from "@tabler/icons-react";
+import { IconChevronLeftPipe, IconChevronRightPipe, IconMoon, IconSearch, IconSun } from "@tabler/icons-react";
+import { useState } from "react";
 import { useLocation } from "react-router-dom";
+import { SearchOverlay } from "../overlay/SearchOverlay";
 import { SidebarItem } from "./SidebarItem";
 
 export const Sidebar = ({
@@ -20,11 +22,13 @@ export const Sidebar = ({
     const isMobile = useIsMobile();
     const { isDarkTheme, setIsDarkTheme } = useTheme();
     const { userDecoded } = useUser();
+    const [searchOpen, setSearchOpen] = useState(false);
 
     const IconBar = isOpen ? IconChevronLeftPipe : IconChevronRightPipe;
 
     return (
         <>
+            <SearchOverlay isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
             <aside
                 className={`fixed top-0 left-0 z-120 h-screen flex-shrink-0 transition-all duration-100 ease-in-out lg:relative ${isMobile && (!isOpen ? "pointer-events-none -translate-x-full" : "translate-x-0")} ${className}`}
             >
@@ -52,6 +56,9 @@ export const Sidebar = ({
                     </div>
 
                     <ul className={`space-y-2 p-5 px-1 ${!isOpen ? "items-center" : ""}`}>
+
+                        <div onClick={() => setSearchOpen(true)} className="text-title p-3 bg-zinc-200 dark:bg-zinc-700 flex items-center justify-center"><IconSearch className="size-5"/></div>
+
                         {SidebarItems.map(({ label, icon, href }, key) => (
                             <SidebarItem
                                 key={key}

@@ -2,16 +2,38 @@ import { IconHash, IconSearch, IconTableRow, IconUser } from "@tabler/icons-reac
 import { motion } from "framer-motion";
 
 import { usePosts } from "@/hooks/posts/usePosts";
+import { useUsersByName } from "@/hooks/user/useUsersByName";
 import { PostData } from "@/utils/types/postDataType";
-import algolia from "@assets/images/svg/algolia-logo.svg";
-import { useState } from "react";
+import { UserData } from "@/utils/types/userDataType";
+import { SetStateAction, useState } from "react";
+import { SpinnerCircular } from "spinners-react";
 import { OverlayTemplate, OverlayTemplateProps } from "../templates/OverlayTemplate";
+import { PostPreview } from "../ui/PostPreview";
+import { UserPreview } from "../ui/UserPreview";
 
 export const SearchOverlay = ({ isOpen, onClose }: OverlayTemplateProps) => {
+    const searchTopics = [
+        { id: 1, label: "Denúncias", Icon: IconTableRow },
+        { id: 2, label: "Usuários", Icon: IconUser },
+        { id: 3, label: "Hashtags", Icon: IconHash },
+    ];
+    const [activeTopic, setActiveTopic] = useState<1 | 2 | 3>(1);
+
     const [search, setSearch] = useState<string>("");
-    const { data: feedData } = usePosts({ search });
+    const { data: feedData, isLoading: feedLoading } = usePosts(
+        { search },
+        isOpen && activeTopic == 1,
+    );
+
+    const { data: usersData, isLoading: usersLoading } = useUsersByName(
+        search,
+        isOpen && activeTopic == 2,
+    );
 
     let posts: PostData[] = (feedData?.pages.flatMap((page) => page.posts) as PostData[]) || [];
+    let users: UserData[] = (usersData?.pages.flatMap((page) => page.users) as UserData[]) || [];
+
+    console.log(usersData);
     return (
         <OverlayTemplate isOpen={isOpen} onClose={onClose}>
             <motion.div
@@ -21,14 +43,13 @@ export const SearchOverlay = ({ isOpen, onClose }: OverlayTemplateProps) => {
                 transition={{ duration: 0.1 }}
                 className="bg-body-background h-fit w-full max-w-xl rounded-xl"
             >
-                <header className="text-title flex items-center px-5">
-                    <IconSearch className="size-7" />
+                <header className="text-title flex items-center px-3 lg:px-5">
+                    <IconSearch className="size-6 lg:size-7" />
                     <input
                         type="text"
                         placeholder="Pesquisar por denúncias, comunidade, etc..."
                         className="text-title flex-1 border-0 px-2 py-5 text-sm outline-0"
                         onChange={(e) => setSearch(e.target.value)}
-                        
                     />
                     <button
                         onClick={onClose}
@@ -37,32 +58,54 @@ export const SearchOverlay = ({ isOpen, onClose }: OverlayTemplateProps) => {
                         esc
                     </button>
                 </header>
-                <main className="border-y-1 border-zinc-300 py-2 dark:border-zinc-700">
-                    <ul className="flex items-center border-b-1 border-zinc-200 text-zinc-400 dark:border-zinc-800 dark:text-zinc-600">
-                        <li className="flex h-full w-full max-w-35 cursor-pointer items-center justify-center gap-1 py-2 text-sm">
-                            <IconTableRow size={17} /> Denúncias
-                        </li>
-                        <li className="flex w-full max-w-35 cursor-pointer items-center justify-center gap-1 py-2">
-                            <IconUser size={17} /> Usuários
-                        </li>
-                        <li className="flex w-full max-w-35 cursor-pointer items-center justify-center gap-1 py-2">
-                            <IconHash size={17} /> Hashtags
-                        </li>
+                <main className="py-2">
+                    <ul className="flex items-center border-b-1 border-zinc-200 px-2 text-zinc-400 lg:px-5 dark:border-zinc-800 dark:text-zinc-600">
+                        {searchTopics.map((topic) => (
+                            <li
+                                className={`flex h-full w-full cursor-pointer items-center justify-center gap-1 py-2 text-sm ${activeTopic === topic.id && "text-title border-b-title border-b-1 transition-all"}`}
+                                key={topic.id}
+                                onClick={() =>
+                                    setActiveTopic(topic.id as SetStateAction<1 | 2 | 3>)
+                                }
+                            >
+                                <topic.Icon size={17} /> {topic.label}
+                            </li>
+                        ))}
                     </ul>
-                    <p className="text-subtitle p-5 py-15">
-                        {posts ? posts.map((post) => post.title) : "Nada encontrado ;("}{" "}
-                    </p>
+                    <div className="text-subtitle w-full p-2 lg:p-4">
+                        {activeTopic === 1 &&
+                            (posts.length > 0 ? (
+                                posts.map((post) => <PostPreview post={post} />)
+                            ) : feedLoading ? (
+                                <SpinnerCircular
+                                    size={10}
+                                    thickness={180}
+                                    speed={100}
+                                    color="#3d69d8"
+                                    secondaryColor="rgba(0, 0, 0, 0)"
+                                    className="ml-auto"
+                                />
+                            ) : (
+                                "Nada encontrado ;("
+                            ))}
+
+                        {activeTopic === 2 &&
+                            (users.length > 0 ? (
+                                users.map((user) => <UserPreview user={user} />)
+                            ) : usersLoading ? (
+                                <SpinnerCircular
+                                    size={10}
+                                    thickness={180}
+                                    speed={100}
+                                    color="#3d69d8"
+                                    secondaryColor="rgba(0, 0, 0, 0)"
+                                    className="ml-auto"
+                                />
+                            ) : (
+                                "Nada encontrado ;("
+                            ))}
+                    </div>
                 </main>
-                <footer className="flex items-center justify-end p-5">
-                    <a
-                        href="https://www.algolia.com/"
-                        target="_blank"
-                        className="text-title flex items-center justify-center gap-[0.35rem] text-sm font-medium"
-                    >
-                        Searched by{" "}
-                        <img src={algolia} alt="Angolia" className="fill-title" width={80} />
-                    </a>
-                </footer>
             </motion.div>
         </OverlayTemplate>
     );

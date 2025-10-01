@@ -1,9 +1,6 @@
 import config from "@/config";
-import { fetchUid } from "@/firebase/fetchUid";
 import Notification from "@/models/Notification.model";
-import { updateCounter } from "@/services/UserService";
 import { formatError } from "@/utils/formatError";
-import { UserData } from "@/utils/types/userDataType";
 import { Request, Response } from "express";
 /**
  * GET - Controller responsável por pegar as notificações
@@ -15,9 +12,7 @@ export const getNotifications = async (
 ): Promise<void> => {
     try {
         // Verifying if user is authenticated
-        if (!req?.user) throw new Error("User not provided.");
-        const { uid } = req?.user;
-        const userId = ((await fetchUid(uid)) as UserData)._publicId;
+        const userId = req.params.userId;
 
         // Verifying if page is provided
         const page = Number(req.query.page) === 0 ? 1 : Number(req.query.page),
@@ -28,9 +23,6 @@ export const getNotifications = async (
             .skip((page - 1) * limit)
             .limit(limit);
         const count = await Notification.countDocuments({ userId });
-
-        // Updating the counts
-        await updateCounter(userId, { unreadNotifications: 0 });
 
         // Sending response
         res.status(200).json({

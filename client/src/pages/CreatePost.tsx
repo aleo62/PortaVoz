@@ -7,7 +7,6 @@ import { PostImages } from "@/sections/CreatePost/PostImages";
 import { PostLocation } from "@/sections/CreatePost/PostLocation";
 import { PostTags } from "@/sections/CreatePost/PostTags";
 import { PostData } from "@/utils/types/postDataType";
-import loading from "@assets/images/loading.gif";
 import { IconArrowRight, IconHome2 } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
@@ -185,7 +184,6 @@ export const CreatePost = () => {
                     </>
                 ) : (
                     <div className="mx-auto mt-40 w-fit">
-                        <img src={loading} alt="Carregando..." />
                         <h1 className="text-title mt-5 text-2xl font-bold">Registrando...</h1>
                     </div>
                 )}

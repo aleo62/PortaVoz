@@ -1,8 +1,10 @@
 export interface PostData {
     _id: string;
-    userId: string;
-    userName: string;
-    userPhoto: string;
+    user: {
+        _id: string;
+        username: string;
+        image: string;
+    }
     title: string;
     desc: string;
     images: string[] | File[];

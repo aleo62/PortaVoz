@@ -13,6 +13,7 @@
   "description": "",
   "dependencies": {
     "@google/genai": "^1.14.0",
+    "algoliasearch": "^4.25.2",
     "cloudinary": "^2.7.0",
     "colors": "^1.4.0",
     "compression": "^1.8.0",
@@ -23,6 +24,7 @@
     "express-rate-limit": "^7.5.1",
     "firebase": "^11.10.0",
     "firebase-admin": "^13.4.0",
+    "firebase-functions": "^6.4.0",
     "helmet": "^8.1.0",
     "log-symbols": "^7.0.1",
     "module-alias": "^2.2.3",

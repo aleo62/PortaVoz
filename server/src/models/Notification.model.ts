@@ -1,4 +1,3 @@
-import config from "@/config";
 import mongoose, { Document, ObjectId, Schema } from "mongoose";
 
 /**
@@ -7,7 +6,7 @@ import mongoose, { Document, ObjectId, Schema } from "mongoose";
 export interface NotificationData extends Document {
     userId: ObjectId | string;
     senderId: ObjectId | string;
-    senderPhoto: string;
+    senderImage: string;
     title: string;
     content: string;
     href: string;
@@ -23,28 +22,12 @@ const NotificationSchema: Schema = new Schema(
         userId: {
             type: String,
             required: [true, "User Id is required"],
-            maxLength: [
-                config.SYSTEM_ID_SIZE,
-                `User id must be ${config.SYSTEM_ID_SIZE} characters long`,
-            ],
-            minLength: [
-                config.SYSTEM_ID_SIZE,
-                `User id must be ${config.SYSTEM_ID_SIZE} characters long`,
-            ],
         },
         senderId: {
             type: String,
             required: [true, "Sender Id is required"],
-            maxLength: [
-                config.SYSTEM_ID_SIZE,
-                `Sender id must be ${config.SYSTEM_ID_SIZE} characters long`,
-            ],
-            minLength: [
-                config.SYSTEM_ID_SIZE,
-                `Sender id must be ${config.SYSTEM_ID_SIZE} characters long`,
-            ],
         },
-        senderPhoto: {
+        senderImage: {
             type: String,
             required: [true, "Sender photo is required"],
         },
@@ -63,15 +46,17 @@ const NotificationSchema: Schema = new Schema(
         type: {
             type: String,
             required: [true, "Type is required"],
-            enum: ["Comment", "Vote", "Notification"],
+            enum: ["Comment", "Vote", "Follow"],
         },
         preview: {
             type: String,
         },
-    
     },
     { timestamps: true }
 );
 
 // Exporta o model Notification
-export default mongoose.model<NotificationData>("Notification", NotificationSchema);
+export default mongoose.model<NotificationData>(
+    "Notification",
+    NotificationSchema
+);

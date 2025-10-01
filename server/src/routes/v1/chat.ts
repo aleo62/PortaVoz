@@ -5,25 +5,26 @@ import {
     getChats,
     getMessagesByChatId,
 } from "@/controllers/ChatController";
-import { authenticateUser } from "@/middlewares/auth";
 import { authenticateOwnerOrAdmin } from "@/middlewares/authOwnerOrAdmin";
+import { authenticateUser } from "@/middlewares/authUser";
+import { authenticateVerified } from "@/middlewares/authVerified";
 import { validationError } from "@/middlewares/validationError";
 import Chat from "@/models/Chat.model";
-import { Router } from "express";
+import { Request, Router } from "express";
 import { body } from "express-validator";
 
 const router = Router();
 
 // GET - Rota para pegar chats dos users
-router.get("/", authenticateUser, validationError, getChats);
+router.get("/", authenticateVerified, authenticateUser, validationError, getChats);
 // GET - Rota para pegar chats dos users
 router.get(
     "/:chatId/messages",
     authenticateUser,
-    authenticateOwnerOrAdmin(async (req) => {
+    authenticateVerified,
+    authenticateOwnerOrAdmin(async (req: Request) => {
         const chat = await Chat.findById(req.params.chatId);
         if (!chat) throw new Error("Chat does not exist");
-        console.log(chat.participants);
         return chat.participants;
     }),
     validationError,
@@ -33,10 +34,11 @@ router.get(
 router.get(
     "/:chatId",
     authenticateUser,
-    authenticateOwnerOrAdmin(async (req) => {
+    authenticateVerified,
+    authenticateOwnerOrAdmin(async (req: Request) => {
         const chat = await Chat.findById(req.params.chatId);
         if (!chat) throw new Error("Chat does not exist");
-        return chat.participants;
+        return chat.participants as string[];
     }),
     validationError,
     getChatById
@@ -45,6 +47,7 @@ router.get(
 router.post(
     "/start",
     authenticateUser,
+    authenticateVerified,
     body("otherUserId")
         .trim()
         .notEmpty()

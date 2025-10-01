@@ -1,66 +1,40 @@
-import admin from "@/firebase/admin";
-import { fetchPublicId } from "@/firebase/fetchPublidId";
-import { fetchUid } from "@/firebase/fetchUid";
-import Comment from "@/models/Comment.model";
+import config from "@/config";
 import Follow from "@/models/Follow.model";
-import Post from "@/models/Post.model";
-import { createCounter, updateCounter } from "@/services/UserService";
+import User from "@/models/User.model";
 import { formatError } from "@/utils/formatError";
-import { UserData } from "@/utils/types/userDataType";
 import { Request, Response } from "express";
 
 /**
- * POST - Controller responsável por criar counter.
+ * GET - Controller responsável por pegar usuários pelo nome
  */
-export const createUserCounter = async (
+export const getUsersByName = async (
     req: Request,
     res: Response
 ): Promise<void> => {
     try {
-        if (!req.params) throw new Error("No UserId provided.");
-        const userCounterData = await createCounter(req.params.userId);
-
-        res.status(201).json({ data: userCounterData });
-    } catch (err) {
-        if (!(err instanceof Error)) throw err;
-
-        const errors = formatError(err.message);
-
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: errors,
-        });
-    }
-};
-
-/**
- * PUT - Controller responsável por atulizar todos os posts e comments.
- */
-export const updateUserContent = async (
-    req: Request,
-    res: Response
-): Promise<void> => {
-    try {
-        if (!req.user) throw new Error("No User provided");
+        if (!req.user) throw new Error("User not provided.");
         const { uid } = req.user;
 
-        const userData = (await fetchUid(uid)) as UserData;
-        const userId = userData._publicId;
+        // Verifying if page is provided
+        const page = Number(req.query.page) === 0 ? 1 : Number(req.query.page),
+            limit = config.SYSTEM_POSTS_PER_PAGE;
 
-        const userNewInfo: any = {};
-        userNewInfo.userName = userData.username;
-        userNewInfo.userPhoto = userData.image;
-
-        if (
-            !(await Post.updateMany({ userId }, { $set: userNewInfo })) ||
-            !(await Comment.updateMany({ userId }, { $set: userNewInfo }))
+        const users = await User.find(
+            {
+                _id: { $ne: uid },
+                username: { $regex: `${req.query.name}`, $options: "i" },
+            },
+            { username: 1, fName: 1, lName: 1, image: 1 }
         )
-            throw new Error("Error to update");
+            .skip((page - 1) * limit)
+            .limit(limit);
 
-        res.status(200).json({
-            message: `All Posts and Comments updated from: ${userId}`,
+        const count = await User.countDocuments({
+            _id: { $ne: uid },
+            username: { $regex: req.query.name },
         });
+
+        res.status(200).json({ users, hasMore: count > page * limit });
     } catch (err) {
         if (!(err instanceof Error)) throw err;
 
@@ -75,131 +49,38 @@ export const updateUserContent = async (
 };
 
 /**
- * PUT - Controller responsável por tornar um user em admin
+ * GET - Controller responsável por pegar um usuário pelo seu id
  */
-export const updateUserAdmin = async (
+export const getUserById = async (
     req: Request,
     res: Response
 ): Promise<void> => {
     try {
-        // Verifying if Following Id exists
-        if (!req.params.updateUserId) throw new Error("No User Id to Update provided.");
-        
-        const { uid } = await fetchPublicId(req.params.updateUserId);
-        await admin.auth().setCustomUserClaims(uid, { admin: true });
-
-        // Sending response
-        res.status(200).json({
-            message: "User updated sucessfully."
-        });
-    } catch (err) {
-        if (!(err instanceof Error)) throw err;
-
-        const errors = formatError(err.message);
-
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: errors,
-        });
-    }
-};
-
-/**
- * GET - Controller responsável por ver se o User esta seguindo outro.
- */
-export const getFollowing = async (
-    req: Request,
-    res: Response
-): Promise<void> => {
-    try {
-        // Verifying if Following Id exists
-        if (!req.params) throw new Error("No FollowingId provided.");
-
-        // Verifying if user exists.
-        if (!req.user) throw new Error("No User provided.");
+        if (!req.user) throw new Error("User not provided.");
         const { uid } = req.user;
-        const userData = (await fetchUid(uid)) as UserData;
 
-        // Verifying if following user exists
-        const { userData: followingData } = await fetchPublicId(
-            req.params.followingId
+        const user = await User.findById(
+            req.params.userId,
+            req.params.userId !== uid
+                ? {
+                      username: 1,
+                      fName: 1,
+                      lName: 1,
+                      image: 1,
+                      banner: 1,
+                      about: 1,
+                      "meta.counters.following": 1,
+                      "meta.counters.followers": 1,
+                  }
+                : {}
         );
-        if (!followingData) throw new Error("Following User does not exists.");
 
-        const following = await Follow.find({
-            userId: userData._publicId,
-            followingId: followingData._publicId,
-        });
+        const isFollowing = !!(await Follow.findOne({
+            userId: req.params.userId,
+            followerId: req.user.uid,
+        }));
 
-        res.status(200).json({
-            userId: userData._publicId,
-            followingId: followingData._publicId,
-            following: following.length > 0,
-        });
-    } catch (err) {
-        if (!(err instanceof Error)) throw err;
-
-        const errors = formatError(err.message);
-
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: errors,
-        });
-    }
-};
-/**
- * POST - Controller responsável por seguir.
- */
-export const followUser = async (
-    req: Request,
-    res: Response
-): Promise<void> => {
-    try {
-        // Verifying if Following Id exists
-        if (!req.params) throw new Error("No FollowingId provided.");
-
-        // Verifying if user exists.
-        if (!req.user) throw new Error("No User provided.");
-        const { uid } = req.user;
-        const userData = (await fetchUid(uid)) as UserData;
-
-        // Verifying if following user exists
-        const { userData: followingData } = await fetchPublicId(
-            req.params.followingId
-        );
-        if (!followingData) throw new Error("Following User does not exists.");
-
-        const existing = await Follow.find({
-            userId: userData._publicId,
-            followingId: followingData._publicId,
-        });
-
-        if (
-            existing.length > 0 ||
-            followingData._publicId === userData._publicId
-        )
-            throw new Error("Already following.");
-
-        const newFollow = await Follow.create({
-            userId: userData._publicId,
-            followingId: followingData._publicId,
-            followingName: `${followingData.fName} ${followingData.lName}`,
-            followingPhoto: followingData.image,
-        });
-
-        // Updating who is following
-        await updateCounter(userData._publicId, {
-            following: userData.meta.counters.following + 1,
-        });
-
-        // Updating who is being followed
-        await updateCounter(followingData._publicId, {
-            followers: followingData.meta.counters.followers + 1,
-        });
-
-        res.status(201).json({ data: newFollow });
+        res.status(200).json({ user, isFollowing });
     } catch (err) {
         if (!(err instanceof Error)) throw err;
 
@@ -214,50 +95,29 @@ export const followUser = async (
 };
 
 /**
- * DELETE - Controller responsável por desseguir.
+ * POST - Controller responsável por criar um usuário
  */
-export const unfollowUser = async (
+export const createUser = async (
     req: Request,
     res: Response
 ): Promise<void> => {
     try {
-        // Verifying if Following Id exists
-        if (!req.params) throw new Error("No UnfollowId provided.");
+        let user;
+        const exists = await User.findById(req.user?.uid);
+        if (exists) {
+            user = exists;
+        } else {
+            user = await User.create({
+                _id: req.user?.uid,
+                email: req.user?.email,
+                username: req.body.fName,
+                fName: req.body.fName,
+                lName: req.body.lName,
+                image: req.body.image,
+            });
+        }
 
-        // Verifying if user exists.
-        if (!req.user) throw new Error("No User provided.");
-        const { uid } = req.user;
-        const userData = (await fetchUid(uid)) as UserData;
-
-        // Verifying if following user exists
-        const { userData: unfollowData } = await fetchPublicId(
-            req.params.unfollowId
-        );
-        if (!unfollowData) throw new Error("Unfollow User does not exists.");
-
-        const existing = await Follow.find({
-            userId: userData._publicId,
-            followingId: unfollowData._publicId,
-        });
-
-        if (existing.length === 0) throw new Error("Not following this User.");
-
-        const unfollow = await Follow.findOneAndDelete({
-            userId: userData._publicId,
-            followingId: unfollowData._publicId,
-        });
-
-        // Updating who is following
-        await updateCounter(userData._publicId, {
-            following: userData.meta.counters.following - 1,
-        });
-
-        // Updating who is being followed
-        await updateCounter(unfollowData._publicId, {
-            followers: unfollowData.meta.counters.followers - 1,
-        });
-
-        res.status(200).json({ data: unfollow });
+        res.status(200).json({ user });
     } catch (err) {
         if (!(err instanceof Error)) throw err;
 

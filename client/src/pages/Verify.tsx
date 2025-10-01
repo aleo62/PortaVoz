@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/Button";
 import { FormInput } from "@/components/ui/FormInput";
 import { InfoFooter } from "@/components/ui/InfoFooter";
 import { useToast } from "@/contexts/ToastContext";
-import { useUser } from "@/contexts/UserContext";
 import { auth } from "@/firebase";
 import { portaVozLogo } from "@/utils/data";
 import { IconArrowLeft, IconArrowUpRight, IconCheck } from "@tabler/icons-react";
@@ -14,7 +13,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 export const Verify = () => {
-    const { user } = useUser();
+    const user = auth.currentUser;
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);

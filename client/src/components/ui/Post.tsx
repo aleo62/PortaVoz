@@ -1,6 +1,8 @@
 import { useUser } from "@/contexts/UserContext";
+import { useUserById } from "@/hooks/user/useUser";
 import { useCreateVote } from "@/hooks/vote/useCreateVote";
 import { useDeleteVote } from "@/hooks/vote/useDeleteVote";
+import { formatDate } from "@/utils/formatHour";
 import { useIsMobile } from "@/utils/isMobile";
 import { PostData } from "@/utils/types/postDataType";
 import { IconArrowBigUp, IconDotsVertical, IconMap, IconMessageDots } from "@tabler/icons-react";
@@ -12,12 +14,12 @@ import { PostDrop } from "../drop/PostDrop";
 import { LocationOverlay } from "../overlay/LocationOverlay";
 import { PostOverlay } from "../overlay/PostOverlay";
 import { MapView } from "./MapView";
-import { formatDate } from "@/utils/formatHour";
 
 export const Post = ({ post, onDeletePost }: { post: PostData; onDeletePost: () => void }) => {
     const navigate = useNavigate();
 
-    const { userData, userDecoded } = useUser();
+    const { userDecoded } = useUser();
+    const { data: userData } = useUserById();
     const isMobile = useIsMobile();
     const queryClient = new QueryClient();
 
@@ -77,22 +79,24 @@ export const Post = ({ post, onDeletePost }: { post: PostData; onDeletePost: () 
             )}
 
             <article
-                className={`relative w-full max-w-[590px] max-lg:pb-3 rounded-xl bg-white shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] transition-all ${!isMobile && locationOpen && "translate-x-[-25%]"} dark:bg-zinc-900`}
+                className={`relative w-full max-w-[620px] rounded-xl bg-white shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] transition-all max-lg:pb-3 ${!isMobile && locationOpen && "translate-x-[-25%]"} dark:bg-zinc-900`}
             >
-                <header className="relative flex items-center gap-3 p-3 py-5 lg:p-5 lg:py-6">
+                <header className="relative flex items-center gap-3 p-3 py-5 lg:p-6 lg:py-6">
                     <div
-                        onClick={() => navigate(`/profile/${post.userId}`)}
+                        onClick={() => navigate(`/profile/${post.user._id}`)}
                         className="flex cursor-pointer items-center gap-3"
                     >
                         <img
-                            src={post.userPhoto}
-                            alt={post.userName}
+                            src={post.user.image}
+                            alt={post.user.username}
                             className="h-10 w-10 rounded-full object-cover lg:h-12 lg:w-12"
                         />
 
                         <div className="leading-4.5">
-                            <p className="text-md text-title font-medium">{post.userName}</p>
-                            <p className="text-subtitle text-[.8rem]">{formatDate(post.createdAt)}</p>
+                            <p className="text-md text-title font-medium">{post.user.username}</p>
+                            <p className="text-subtitle text-[.8rem]">
+                                {formatDate(post.createdAt)}
+                            </p>
                         </div>
                     </div>
 
@@ -110,7 +114,7 @@ export const Post = ({ post, onDeletePost }: { post: PostData; onDeletePost: () 
                                 setOptionsDropOpen(false);
                             }}
                             isOwner={
-                                post.userId == userData?._publicId || !!userDecoded?.claims.admin
+                                post.user._id == userData?._publicId || !!userDecoded?.claims.admin
                             }
                             onDeletePost={onDeletePost}
                         />
@@ -134,7 +138,7 @@ export const Post = ({ post, onDeletePost }: { post: PostData; onDeletePost: () 
                     </div>
 
                     <div
-                        className={`flex items-center space-x-1.5 p-3 font-semibold lg:p-5 ${isMobile ? "text-xs" : "text-[.8rem]"} `}
+                        className={`flex items-center space-x-1.5 p-3 font-semibold lg:p-6 lg:py-5 ${isMobile ? "text-xs" : "text-[.8rem]"} `}
                     >
                         <div
                             className={`${isUpvoted ? "text-orange-500 dark:text-orange-300" : "text-subtitle"} flex cursor-pointer items-center justify-center gap-1 rounded-full rounded-l-full p-2 px-4 ring-1 ring-zinc-300 hover:bg-zinc-100 dark:ring-zinc-700 dark:hover:bg-zinc-800`}
@@ -163,7 +167,7 @@ export const Post = ({ post, onDeletePost }: { post: PostData; onDeletePost: () 
                         </a>
                     </div>
 
-                    <div className="p-3 pt-1 lg:p-5 lg:pt-2">
+                    <div className="p-3 pt-1 lg:p-6 lg:pt-2">
                         <div className="mb-3 flex w-full items-center justify-between gap-2">
                             <h2
                                 onClick={() => navigate(`/post/${post._id}`)}
@@ -196,7 +200,7 @@ export const Post = ({ post, onDeletePost }: { post: PostData; onDeletePost: () 
                     >
                         <h3 className="text-title font-title mb-2 text-lg font-medium">Endereço</h3>
 
-                        <p className="border-l-2 border-zinc-700/70 pl-2 text-sm text-zinc-800 dark:text-zinc-200">
+                        <p className="border-l-2 border-zinc-200 pl-2 text-sm text-zinc-800 dark:border-zinc-700 dark:text-zinc-200">
                             {post?.address}
                         </p>
 

@@ -1,18 +1,16 @@
 import config from "@/config";
-import { editUser } from "@/firebase/editUser";
-import { fetchUid } from "@/firebase/fetchUid";
 import Post, { PostData } from "@/models/Post.model";
+import { UserData } from "@/models/User.model";
 import Vote from "@/models/Vote.model";
 import { deleteByParentId } from "@/services/CommentService";
 import {
     createImageService,
     deleteImageService,
 } from "@/services/ImageService";
+import { fetchUser } from "@/services/UserService";
 import { formatError } from "@/utils/formatError";
 import { generateId } from "@/utils/generateId";
-import { UserData } from "@/utils/types/userDataType";
 import { Request, Response } from "express";
-import { Timestamp } from "firebase/firestore";
 
 /**
  * GET - Controller responsável por capturar todos os post.
@@ -47,22 +45,19 @@ export const getAllPosts = async (req: Request, res: Response) => {
 
         // Fetching posts
         const postsData = await Post.find(findFilter)
+            .populate("user", "username image")
             .sort(sortFilter)
             .skip((page - 1) * limit)
             .limit(limit);
 
         const count = await Post.countDocuments(findFilter);
 
-        // Verifying if user exists
-        const userData = (await fetchUid(req.user.uid)) as UserData;
-        if (!userData) throw new Error("User not found");
-
         // Adding isUpvoted to each post
         const postsResponse = await Promise.all(
             postsData.map(async (post) => {
                 const isUpvoted = await Vote.findOne({
                     parentId: post._id,
-                    userId: userData._publicId,
+                    userId: req.user?.uid,
                     parentType: "Post",
                 });
 
@@ -104,17 +99,20 @@ export const getPostById = async (req: Request, res: Response) => {
         const postId = req.params.postId;
 
         // Fetching post data and verifying if post exists
-        const postData = await Post.findById(postId);
+        const postData = await Post.findById(postId).populate(
+            "user",
+            "username image"
+        );
         if (!postData) throw new Error("Post not found");
 
         // Verifying if user exists
-        const userData = (await fetchUid(req.user.uid)) as UserData;
+        const userData = (await fetchUser(req.user.uid)) as UserData;
         if (!userData) throw new Error("User not found");
 
         // Verifying if user has upvoted
         const postUpvoted = await Vote.findOne({
             parentId: postData._id,
-            userId: userData._publicId,
+            userId: userData._id,
             parentType: "Post",
         });
 
@@ -149,7 +147,10 @@ export const getPostByUser = async (req: Request, res: Response) => {
         if (!req.params.userId) throw new Error("No User ID provided");
         const userId = req.params.userId;
 
-        const postsData = await Post.find({ userId });
+        const postsData = await Post.find({ userId }).populate(
+            "user",
+            "username image"
+        );
 
         res.status(200).json({ posts: postsData });
     } catch (err) {
@@ -191,43 +192,38 @@ export const createPost = async (
             );
         }
 
-        // Verifying if user exists
-        const userData = (await fetchUid(uid)) as UserData;
+        // const convertedReset = new Timestamp(
+        //     // @ts-ignore
+        //     userData.meta.limits.reportsResetAt!._seconds,
+        //     // @ts-ignore
+        //     userData.meta.limits.reportsResetAt!._nanoseconds
+        // );
+        // const resetDate = convertedReset.toMillis();
 
-        const convertedReset = new Timestamp(
-            // @ts-ignore
-            userData.meta.limits.reportsResetAt!._seconds,
-            // @ts-ignore
-            userData.meta.limits.reportsResetAt!._nanoseconds
-        );
-        const resetDate = convertedReset.toMillis();
+        // // Verifying if user can do reports
+        // if (Date.now() > resetDate) {
+        //     await editUser(uid, {
+        //         meta: {
+        //             ...userData.meta,
+        //             limits: {
+        //                 ...userData.meta.limits,
+        //                 remainingReports: config.SYSTEM_MAXIMUM_REPORTS,
+        //                 reportsResetAt: new Date(
+        //                     Date.now() + 1000 * 60 * 60 * 24 * 4
+        //                 ),
+        //             },
+        //         },
+        //     });
+        //     // @ts-ignore
+        //     userData.limits.remainingReports = config.SYSTEM_MAXIMUM_REPORTS;
+        // }
 
-        // Verifying if user can do reports
-        if (Date.now() > resetDate) {
-            await editUser(uid, {
-                meta: {
-                    ...userData.meta,
-                    limits: {
-                        ...userData.meta.limits,
-                        remainingReports: config.SYSTEM_MAXIMUM_REPORTS,
-                        reportsResetAt: new Date(
-                            Date.now() + 1000 * 60 * 60 * 24 * 4
-                        ),
-                    },
-                },
-            });
-            // @ts-ignore
-            userData.limits.remainingReports = config.SYSTEM_MAXIMUM_REPORTS;
-        }
-
-        if (!isAdmin && userData.meta.limits.remainingReports <= 0) {
-            throw new Error("User has no remaining reports");
-        }
+        // if (!isAdmin && userData.meta.limits.remainingReports <= 0) {
+        //     throw new Error("User has no remaining reports");
+        // }
 
         const _id = generateId(config.SYSTEM_ID_SIZE, "P_"),
-            userPhoto = userData.image,
-            userName = userData.username,
-            userId = userData._publicId,
+            user = uid,
             severity = "pequena",
             hashtagsFormatted = hashtags.map((tag: string) =>
                 tag.toLowerCase()
@@ -236,9 +232,7 @@ export const createPost = async (
         // Cria o novo post no banco de dados
         const newPost = await Post.create({
             _id,
-            userId,
-            userName,
-            userPhoto,
+            user,
             title,
             desc,
             images: uploadedImages,
@@ -249,31 +243,30 @@ export const createPost = async (
             severity,
         });
 
-        const userRemainingReports = isAdmin
-            ? userData.meta.limits.remainingReports
-            : userData.meta.limits.remainingReports - 1;
+        // const userRemainingReports = isAdmin
+        //     ? userData.meta.limits.remainingReports
+        //     : userData.meta.limits.remainingReports - 1;
 
-        const userTotalReports = (
-            await Post.find({ userId: userData._publicId })
-        ).length;
-        console.log(userTotalReports, userRemainingReports);
+        // const userTotalReports = (await Post.find({ userId: userData._id }))
+        //     .length;
+        // console.log(userTotalReports, userRemainingReports);
 
-        const newUserData: Partial<UserData> = {
-            meta: {
-                ...(userData.meta ?? {}),
-                limits: {
-                    ...userData.meta?.limits,
-                    remainingReports: userRemainingReports,
-                    totalReports: userTotalReports,
-                    reportsResetAt:
-                        userRemainingReports <= 0
-                            ? new Date(Date.now() + 1000 * 60 * 60 * 24 * 4)
-                            : userData.meta?.limits?.reportsResetAt ?? null,
-                },
-            },
-        };
+        // const newUserData: Partial<UserData> = {
+        //     meta: {
+        //         ...(userData.meta ?? {}),
+        //         limits: {
+        //             ...userData.meta?.limits,
+        //             remainingReports: userRemainingReports,
+        //             totalReports: userTotalReports,
+        //             reportsResetAt:
+        //                 userRemainingReports <= 0
+        //                     ? new Date(Date.now() + 1000 * 60 * 60 * 24 * 4)
+        //                     : userData.meta?.limits?.reportsResetAt ?? null,
+        //         },
+        //     },
+        // };
 
-        await editUser(uid, newUserData);
+        // await editUser(uid, newUserData);
 
         res.status(201).json({ message: "New post created", data: newPost });
     } catch (err) {

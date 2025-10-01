@@ -1,12 +1,12 @@
 import config from "@/config";
-import { fetchUid } from "@/firebase/fetchUid";
 import Comment from "@/models/Comment.model";
 import Post from "@/models/Post.model";
+import { UserData } from "@/models/User.model";
 import Vote from "@/models/Vote.model";
 import { sendNotificationToUser } from "@/services/NotificationService";
+import { fetchUser } from "@/services/UserService";
 import { formatError } from "@/utils/formatError";
 import { generateId } from "@/utils/generateId";
-import { UserData } from "@/utils/types/userDataType";
 import { Request, Response } from "express";
 
 /**
@@ -38,18 +38,18 @@ export const createUpvote = async (
         }
 
         // Verifying if user exists
-        const userData = (await fetchUid(uid)) as UserData;
+        const userData = (await fetchUser(uid)) as UserData;
         const alreadyUpvoted = await Vote.find({
             parentId: parentDoc._id,
-            userId: userData._publicId,
+            userId: userData._id,
         });
         console.log(alreadyUpvoted);
         if (alreadyUpvoted.length > 0)
             throw new Error("You have already upvoted this Post");
 
         const _id = generateId(config.SYSTEM_ID_SIZE, "L_") as string,
-            userId = userData._publicId,
-            userPhoto = userData.image,
+            userId = userData._id,
+            userImage = userData.image,
             userName = userData.fName;
 
         // Creating new comment
@@ -59,7 +59,7 @@ export const createUpvote = async (
             parentType,
             userId,
             userName,
-            userPhoto,
+            userImage,
         });
 
         // Incrementing the upvotes count on the parent document
@@ -68,9 +68,9 @@ export const createUpvote = async (
 
         // Sending notification:
         await sendNotificationToUser({
-            userId: parentDoc.userId,
+            userId: parentDoc.user as string,
             senderId: userId,
-            senderPhoto: userPhoto,
+            senderImage: userImage,
             title: `${userData.username} deu Upvote! em ${
                 parentType === "Post" ? "sua Denúncia" : "seu Comentário"
             }`,
@@ -113,8 +113,8 @@ export const deleteUpvote = async (
         const parentId = req.params.parentId;
 
         // Verifying if user exists
-        const userData = (await fetchUid(uid)) as UserData;
-        const userId = userData._publicId;
+        const userData = (await fetchUser(uid)) as UserData;
+        const userId = userData._id;
 
         // Removing Upvote
         const deletedUpvote = await Vote.findOneAndDelete({

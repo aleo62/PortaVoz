@@ -5,7 +5,7 @@ import {
     updateImage,
 } from "@/controllers/ImageController";
 import upload from "@/lib/multer";
-import { authenticateUser } from "@/middlewares/auth";
+import { authenticateUser } from "@/middlewares/authUser";
 import { validationError } from "@/middlewares/validationError";
 import { Router } from "express";
 
@@ -18,6 +18,12 @@ router.post("/", upload.single("image"), createImage);
 router.delete("/", deleteImage);
 
 // Rota para upload de uma imagem (recebe arquivo 'image' via multipart/form-data)
-router.put("/", upload.single("image"), authenticateUser, validationError, updateImage);
+router.put(
+    "/",
+    upload.single("image"),
+    authenticateUser,
+    validationError,
+    updateImage
+);
 
 export default router;

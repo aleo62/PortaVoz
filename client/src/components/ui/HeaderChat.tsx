@@ -3,30 +3,30 @@ import { IconChevronLeft } from "@tabler/icons-react";
 import { Dispatch, SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
 
-type HeaderChatProps = {
-    userId: string;
+export const HeaderChat = ({
+    chat,
+    setChatId,
+}: {
     chat: ChatData;
     setChatId: Dispatch<SetStateAction<string>>;
-};
-
-export const HeaderChat = ({ chat, userId, setChatId }: HeaderChatProps) => {
+}) => {
     const navigate = useNavigate();
-    const userIndex = chat.participantsIndex[userId] === "userA" ? "userB" : "userA";
+
     return (
-        <div className="text-title z-100 flex h-fit lg:px-7 items-center rounded-xl bg-white p-3 lg:p-4 px-4 dark:bg-zinc-900">
+        <div className="text-title z-100 flex h-fit items-center rounded-xl bg-white p-3 px-4 ring-1 ring-zinc-200 lg:p-4 lg:px-7 dark:bg-zinc-900 dark:ring-zinc-800">
             <IconChevronLeft
-                className="size-4 mr-1 lg:hidden"
+                className="mr-1 size-4 lg:hidden"
                 onClick={() => {
                     setChatId("");
                     navigate("/chat");
                 }}
             />
             <img
-                src={chat.participantsPhotos[userIndex]}
+                src={chat.participants[0].image}
                 alt=""
-                className="h-full max-w-11 rounded-full lg:max-w-12 mr-2"
+                className="mr-2 h-full max-w-11 rounded-full lg:max-w-12"
             />
-            <p>{chat.participantsNames[userIndex]}</p>
+            <p>{chat.participants[0].username}</p>
         </div>
     );
 };

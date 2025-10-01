@@ -6,10 +6,7 @@ import mongoose, { Document, ObjectId, Schema } from "mongoose";
  */
 export interface ChatData extends Document {
     _id: ObjectId | string;
-    participants: string[2];
-    participantsIndex: Record<string, "userA" | "userB">;
-    participantsPhotos: Record<string, string>;
-    participantsNames: Record<string, string>;
+    participants: string[];
     visible: Map<string, boolean>;
 }
 
@@ -21,33 +18,11 @@ const ChatSchema: Schema = new Schema(
         _id: {
             type: String,
             required: [true, "Id is required"],
-            maxLength: [
-                config.SYSTEM_ID_SIZE,
-                `id must be ${config.SYSTEM_ID_SIZE} characters long`,
-            ],
-            minLength: [
-                config.SYSTEM_ID_SIZE,
-                `id must be ${config.SYSTEM_ID_SIZE} characters long`,
-            ],
         },
         participants: {
             type: [String],
+            ref: "User",
             required: true,
-        },
-        participantsIndex: {
-            type: Map,
-            of: String,
-            default: {},
-        },
-        participantsPhotos: {
-            type: Map,
-            of: String,
-            default: {},
-        },
-        participantsNames: {
-            type: Map,
-            of: String,
-            default: {},
         },
         visible: {
             type: Map,

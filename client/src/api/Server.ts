@@ -1,5 +1,6 @@
 import { FiltersType } from "@/utils/types/filtersDataType";
 import { PostData } from "@/utils/types/postDataType";
+import { UserData } from "@/utils/types/userDataType";
 import axios from "axios";
 
 export class Server {
@@ -123,6 +124,30 @@ export class Server {
 
     /* USER ENDPOINTS -----------> */
 
+    // GET User
+    static async getUserById(userId: string, token: string) {
+        const res = await axios.get(`${this.baseUrl}users/${userId}`, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        return res.data.user;
+    }
+
+    // GET Users by Name
+    static async getUsersByName(name: string, token: string, pageParam: number) {
+        const res = await axios.get(`${this.baseUrl}users`, {
+            params: { name: name, page: pageParam },
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        return res.data;
+    }
+
+    // POST User
+    static async createUser(userData: Partial<UserData>, token: string) {
+        return axios.post(`${this.baseUrl}users/auth`, userData, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
+
     // GET Follow
     static async getFollowingById(token: string, followingId: string) {
         const res = await axios.get(`${this.baseUrl}users/${followingId}/following`, {
@@ -131,7 +156,7 @@ export class Server {
         return res.data;
     }
 
-    // POST Comment
+    // POST Follow
     static async createFollow(token: string, followingId: string) {
         return axios.post(
             `${this.baseUrl}users/${followingId}/follow`,
@@ -183,8 +208,8 @@ export class Server {
 
     /* NOTIFICATIONS ENDPOINTS -----------> */
     // GET all Notifications
-    static async getNotifications(token: string, pageParam: number) {
-        const res = await axios.get(`${this.baseUrl}users/notifications`, {
+    static async getNotifications(token: string, pageParam: number, userId: string) {
+        const res = await axios.get(`${this.baseUrl}users/${userId}/notifications`, {
             params: { page: pageParam },
             headers: { authorization: `Bearer ${token}` },
         });

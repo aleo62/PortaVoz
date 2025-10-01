@@ -31,14 +31,6 @@ const MessageSchema: Schema = new Schema(
         senderId: {
             type: String,
             required: [true, "Sender Id is required"],
-            maxLength: [
-                config.SYSTEM_ID_SIZE,
-                `Sender id must be ${config.SYSTEM_ID_SIZE} characters long`,
-            ],
-            minLength: [
-                config.SYSTEM_ID_SIZE,
-                `Sender id must be ${config.SYSTEM_ID_SIZE} characters long`,
-            ],
         },
         text: {
             type: String,

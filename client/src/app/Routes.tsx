@@ -124,7 +124,7 @@ export const AppRoutes = () => {
                     }
                 />
                 <Route
-                    path="/profile/:publicId"
+                    path="/profile/:userId" 
                     element={
                         <ProtectedLayout>
                             <SidebarLayout>

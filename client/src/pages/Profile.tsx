@@ -5,69 +5,51 @@ import { useChatByUsers } from "@/hooks/chat/useChatByUsers";
 import { useCreateFollow } from "@/hooks/user/useCreateFollow";
 import { useDeleteFollow } from "@/hooks/user/useDeleteFollow";
 import { useFollow } from "@/hooks/user/useFollow";
-import { UserData } from "@/utils/types/userDataType";
+import { useUserById } from "@/hooks/user/useUser";
 import { IconMessage2 } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 export const Profile = () => {
-    const { publicId } = useParams();
-    const { data, isLoading } = useFollow(publicId!);
-    const { fetchUser, userData } = useUser();
+    const { userId } = useParams();
+    const { data, isLoading } = useFollow(userId!);
+
+    const { userDecoded } = useUser();
+    const { data: user } = useUserById(userId!);
+
     const createFollow = useCreateFollow();
     const deleteFollow = useDeleteFollow();
-
-    const [user, setUser] = useState<UserData | null>(null);
     const [isFollowing, setIsFollowing] = useState(false);
     const [followers, setFollowers] = useState(0);
     const navigate = useNavigate();
-
     const getChatByUser = useChatByUsers();
 
-    // Puxando dados do usuário
-    useEffect(() => {
-        const fetchUserData = async () => {
-            let data;
-            if (publicId && publicId !== userData?._publicId) {
-                data = await fetchUser(publicId);
-            } else {
-                data = userData;
-            }
-            setUser(data as UserData);
-        };
-
-        fetchUserData();
-    }, [publicId, userData]);
-
-    // Setando o número de seguidores
     useEffect(() => {
         setFollowers(user?.meta.counters.followers!);
     }, [user]);
 
-    // Verificando se está seguindo
     useEffect(() => {
         if (!isLoading) setIsFollowing(Boolean(data?.following));
     }, [data, isLoading]);
 
-    // Handle seguir
     const handleFollow = async () => {
         setIsFollowing(!isFollowing);
         if (isFollowing) {
             setFollowers(followers! - 1);
-            await deleteFollow.mutateAsync(publicId!);
+            await deleteFollow.mutateAsync(userId!);
         } else {
             setFollowers(followers! + 1);
-            await createFollow.mutateAsync(publicId!);
+            await createFollow.mutateAsync(userId!);
         }
     };
 
     const fetchChat = async () => {
-        getChatByUser.mutateAsync({ otherUserId: user?._publicId! }).then((response) => {
+        getChatByUser.mutateAsync({ otherUserId: user?._userId! }).then((response) => {
             navigate(`/chat/${response.chatId}`);
         });
     };
 
-    if (isLoading || !user || (publicId && !publicId)) {
+    if (isLoading || !user || (userId && !userId)) {
         return <ProfileSkeleton />;
     }
 
@@ -105,8 +87,8 @@ export const Profile = () => {
                             </p>
                         </div>
 
-                        <div className="flex items-center gap-2 text-white max-lg:mx-auto w-fit">
-                            {publicId && publicId !== userData?._publicId ? (
+                        <div className="flex w-fit items-center gap-2 text-white max-lg:mx-auto">
+                            {userId && userDecoded?.uid !== user._id ? (
                                 <>
                                     <button
                                         onClick={() => handleFollow()}

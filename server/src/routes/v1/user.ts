@@ -1,34 +1,50 @@
+import {
+    followUser,
+    getFollowing,
+    unfollowUser,
+} from "@/controllers/FollowController";
 import { getNotifications } from "@/controllers/NotificationController";
-import { createUserCounter, followUser, getFollowing, unfollowUser, updateUserAdmin, updateUserContent } from "@/controllers/UserController";
-import { authenticateUser } from "@/middlewares/auth";
+import {
+    createUser,
+    getUserById,
+    getUsersByName,
+} from "@/controllers/UserController";
+import { authenticateOwnerOrAdmin } from "@/middlewares/authOwnerOrAdmin";
+import { authenticateUser } from "@/middlewares/authUser";
 import { validationError } from "@/middlewares/validationError";
-import { Router } from "express";
+import { Request, Router } from "express";
+import { body } from "express-validator";
 
 const router = Router();
 
-// PUT - Rota para atualizar todos os cometarios e posts de um user
-router.put(
-    "/update",
-    authenticateUser,
-    validationError,
-    updateUserContent
-);
+// GET - Rota para pegar usuarios pelo nome
+router.get("/", authenticateUser, validationError, getUsersByName);
 
-// PUT - Rota para tornar user admin
-router.put(
-    "/:updateUserId/admin",
-    authenticateUser,
-    validationError,
-    updateUserAdmin
-);
+// GET - Rota para pegar usuario por id
+router.get("/:userId", authenticateUser, validationError, getUserById);
 
-// POST - Rota para criar counter
+/*
+ ++
+ ======= Routes to Auth events =======
+ ++
+*/
+
+// POST - Rota para criar usuario
 router.post(
-    "/:userId/counter",
+    "/auth/",
     authenticateUser,
+    body("fName").trim().notEmpty().withMessage("fName is required"),
+    body("lName").trim().notEmpty().withMessage("lName is required"),
+    body("image").optional().isURL().withMessage("image must be an URL"),
     validationError,
-    createUserCounter
+    createUser
 );
+
+/*
+ ++
+ ======= Routes to Follow events =======
+ ++
+*/
 
 // GET - Rota para ver se segue
 router.get(
@@ -54,10 +70,19 @@ router.delete(
     unfollowUser
 );
 
+/*
+ ++
+ ======= Routes to Notifications events =======
+ ++
+*/
+
 // GET - Rota para notificações
 router.get(
-    "/notifications",
+    "/:userId/notifications",
     authenticateUser,
+    authenticateOwnerOrAdmin(async (req: Request) => {
+        return req.params.userId;
+    }),
     validationError,
     getNotifications
 );

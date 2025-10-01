@@ -1,12 +1,13 @@
 import config from "@/config";
-import { fetchUid } from "@/firebase/fetchUid";
 import Comment from "@/models/Comment.model";
 import Post from "@/models/Post.model";
+import { UserData } from "@/models/User.model";
 import Vote from "@/models/Vote.model";
 import { deleteByParentId } from "@/services/CommentService";
+import { sendNotificationToUser } from "@/services/NotificationService";
+import { fetchUser } from "@/services/UserService";
 import { formatError } from "@/utils/formatError";
 import { generateId } from "@/utils/generateId";
-import { UserData } from "@/utils/types/userDataType";
 import { Request, Response } from "express";
 
 /**
@@ -34,7 +35,7 @@ export const getCommentsById = async (
         const count = await Comment.countDocuments({ parentId });
 
         // Verifying if user exists
-        const userData = (await fetchUid(req.user.uid)) as UserData;
+        const userData = (await fetchUser(req.user.uid)) as UserData;
         if (!userData) throw new Error("User not found");
 
         // Adding isUpvoted to each post
@@ -42,7 +43,7 @@ export const getCommentsById = async (
             commentsData.map(async (comment) => {
                 const isUpvoted = await Vote.findOne({
                     parentId: comment._id,
-                    userId: userData._publicId,
+                    userId: userData._id,
                     parentType: "Comment",
                 });
 
@@ -79,7 +80,7 @@ export const createComment = async (
     res: Response
 ): Promise<void> => {
     try {
-        let parentDoc, parentType;
+        let parentDoc, parentType, parentHref;
         if (!req.user) throw new Error("No user provided");
 
         const { uid } = req.user;
@@ -90,19 +91,21 @@ export const createComment = async (
 
         if (parentDoc) {
             parentType = "Comment";
+            parentHref = parentDoc.parentId;
         } else {
             parentDoc = await Post.findById(parentId);
             if (!parentDoc) throw new Error("Parent does not exist");
 
             parentType = "Post";
+            parentHref = parentId;
         }
 
         // Verifying if user exists
-        const userData = (await fetchUid(uid)) as UserData;
+        const userData = (await fetchUser(uid)) as UserData;
 
         const _id = generateId(config.SYSTEM_ID_SIZE, "C_"),
-            userId = userData._publicId,
-            userPhoto = userData.image,
+            userId = userData._id,
+            userImage = userData.image,
             userName = userData.fName;
 
         // Creating new comment
@@ -112,7 +115,7 @@ export const createComment = async (
             parentType,
             userId,
             userName,
-            userPhoto,
+            userImage,
             content,
         });
 
@@ -129,6 +132,23 @@ export const createComment = async (
                 $inc: { commentsCount: 1 },
             });
         }
+
+        // Sending Notification
+
+        await sendNotificationToUser({
+            userId: parentDoc.user as string,
+            senderId: uid,
+            senderImage: userData.image,
+            title: `${userData.username} comentou em ${
+                parentType === "Post" ? "sua Denúncia" : "seu Comentário"
+            }`,
+            content: `Foi comentado em ${
+                parentType === "Post" ? "sua Denúncia" : "seu Comentário"
+            }, "$${content}"`,
+            href: `/post/${parentHref}`,
+            type: "Comment",
+            preview: undefined,
+        });
 
         res.status(201).json({
             message: "New comment created",

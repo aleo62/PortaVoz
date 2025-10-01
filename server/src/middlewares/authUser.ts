@@ -1,4 +1,4 @@
-import admin from "@/firebase/admin";
+import { admin } from "@/firebase";
 import { NextFunction, Request, Response } from "express";
 
 export const authenticateUser = async (
@@ -19,7 +19,8 @@ export const authenticateUser = async (
         req.user = {
             uid: decodedToken.uid,
             isAdmin: decodedToken.admin === true,
-            email: decodedToken.email || "",
+            email: decodedToken.email!,
+            isVerified: decodedToken.email_verified!,
         };
 
         next();

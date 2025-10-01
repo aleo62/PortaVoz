@@ -1,11 +1,11 @@
-import { fetchPublicId } from "@/firebase/fetchPublidId";
 import Notification, { NotificationData } from "@/models/Notification.model";
-import { updateCounter } from "./UserService";
+import User from "@/models/User.model";
+import { fetchUser } from "@/services/UserService";
 
 export const sendNotificationToUser = async ({
     userId,
     senderId,
-    senderPhoto,
+    senderImage,
     title,
     content,
     href,
@@ -14,7 +14,7 @@ export const sendNotificationToUser = async ({
 }: Partial<NotificationData>) => {
     try {
         // Verifying if user exists
-        const { userData } = await fetchPublicId(userId as string);
+        const userData = await fetchUser(userId as string);
         if (!userData) throw new Error("User does not exists.");
         if (userId === senderId) return;
 
@@ -24,7 +24,7 @@ export const sendNotificationToUser = async ({
         await Notification.create({
             userId,
             senderId,
-            senderPhoto,
+            senderImage,
             title,
             content,
             href,
@@ -32,11 +32,11 @@ export const sendNotificationToUser = async ({
             preview,
         });
 
-        // Edit counter
-        await updateCounter(userId as string, {
-            unreadNotifications:
-                userData?.meta?.counters.unreadNotifications + 1,
-        });
+        // Updating user
+        await User.updateOne(
+            { _id: userId },
+            { $inc: { "meta.counters.unreadNotifications": 1 } }
+        );
     } catch (err) {
         throw err;
     }

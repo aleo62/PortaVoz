@@ -1,8 +1,6 @@
-import { NotVerifiedOverlay } from "@/components/overlay/NotVerifiedOverlay";
-import { Loader } from "@/components/ui/Loader";
 import { useUser } from "@/contexts/UserContext";
-import { AnimatePresence } from "framer-motion";
-import { useEffect } from "react";
+import { auth } from "@/firebase";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 type ProtectedLayoutProps = {
@@ -12,39 +10,33 @@ type ProtectedLayoutProps = {
 };
 
 export const ProtectedLayout = ({ children, onlyGuest, onlyAdmin }: ProtectedLayoutProps) => {
-    const { user, userDecoded, isFetching } = useUser();
+    const { userDecoded } = useUser();
+    const [isFetching, setIsFetching] = useState(true);
+    const user = auth.currentUser;
     const navigate = useNavigate();
 
     useEffect(() => {
         const verifyPaths = async () => {
             if (onlyGuest && user) {
-                return navigate("/feed");
+                navigate("/feed");
+                return;
             }
+
             if (!onlyGuest && !user && !isFetching) {
-                return navigate("/auth/login");
+                navigate("/auth/login");
+                return;
             }
-            if (onlyAdmin && !userDecoded?.claims.admin && userDecoded) {
-                return navigate("/");
+
+            if (onlyAdmin && userDecoded && !userDecoded.claims?.admin) {
+                navigate("/");
+                return;
             }
+
+            if (!onlyGuest && user) setIsFetching(false);
         };
 
         verifyPaths();
-    }, [isFetching, user]);
+    }, [user, userDecoded, onlyGuest, onlyAdmin, navigate]);
 
-    return (
-        <>
-            {children}
-            <AnimatePresence>{isFetching && <Loader />}</AnimatePresence>
-            {
-                <NotVerifiedOverlay
-                    isOpen={
-                        !!user &&
-                        !user?.emailVerified &&
-                        window.location.pathname !== "/auth/verify"
-                    }
-                    onClose={() => {}}
-                />
-            }
-        </>
-    );
+    return <>{children}</>;
 };

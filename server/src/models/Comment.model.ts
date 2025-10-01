@@ -8,9 +8,7 @@ export interface CommentData extends Document {
     _id: ObjectId;
     parentId: ObjectId | string;
     parentType: "Post" | "Comment";
-    userId: string;
-    userName: string;
-    userPhoto: string;
+    user: string;
     content: string;
     upvotesCount: number;
     repliesCount: number;
@@ -32,7 +30,7 @@ const CommentSchema: Schema = new Schema(
                 config.SYSTEM_ID_SIZE,
                 `User id must be ${config.SYSTEM_ID_SIZE} characters long`,
             ],
-            imutable: true
+            imutable: true,
         },
         parentId: {
             type: String,
@@ -51,27 +49,10 @@ const CommentSchema: Schema = new Schema(
             required: [true, "Parent Type is required"],
             enum: ["Post", "Comment"],
         },
-        userId: {
+        user: {
             type: String,
-            required: [true, "User Id is required"],
-            maxLength: [
-                config.SYSTEM_ID_SIZE,
-                `User id must be ${config.SYSTEM_ID_SIZE} characters long`,
-            ],
-            minLength: [
-                config.SYSTEM_ID_SIZE,
-                `User id must be ${config.SYSTEM_ID_SIZE} characters long`,
-            ],
-        },
-        userName: {
-            type: String,
-            required: [true, "Username is required"],
-            maxLength: [150, "Username must be less than 150 characters"],
-        },
-        userPhoto: {
-            type: String,
-            required: [true, "User photo is required"],
-            maxLength: [200, "User photo must be less than 200 characters"],
+            ref: "User",
+            required: true,
         },
         content: {
             type: String,

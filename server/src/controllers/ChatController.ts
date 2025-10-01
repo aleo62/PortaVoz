@@ -1,10 +1,8 @@
 import config from "@/config";
-import { fetchUid } from "@/firebase/fetchUid";
 import Chat from "@/models/Chat.model";
 import Message from "@/models/Message.model";
 import { findOrCreateChat } from "@/services/ChatService";
 import { formatError } from "@/utils/formatError";
-import { UserData } from "@/utils/types/userDataType";
 import { Request, Response } from "express";
 
 /**
@@ -15,22 +13,26 @@ export const getChats = async (req: Request, res: Response): Promise<void> => {
     try {
         // Verifying if user is authenticated
         if (!req.user) throw new Error("No User provided");
+        const { uid } = req.user;
 
         // Verifying if page is provided
         const page = Number(req.query.page) === 0 ? 1 : Number(req.query.page),
             limit = config.SYSTEM_MESSAGES_PER_PAGE;
 
-        // Fetch chat id
-        const userId = ((await fetchUid(req.user.uid)) as UserData)._publicId;
-
         // Fetching messages
-        const count = await Chat.countDocuments({ participants: userId });
+        const count = await Chat.countDocuments({ participants: uid });
         const chatsData = await Chat.find({
-            participants: userId,
-            [`visible.${userId}`]: true,
+            participants: uid,
+            [`visible.${uid}`]: true,
         })
+            .populate({
+                path: "participants",
+                select: "username image",
+                match: { _id: { $ne: uid } },
+            })
             .skip((page - 1) * limit)
-            .limit(limit);
+            .limit(limit)
+            .exec();
 
         // Sending response
         res.status(200).json({
@@ -53,17 +55,27 @@ export const getChats = async (req: Request, res: Response): Promise<void> => {
  * GET - Controller responsável por pegar os chats de um User.
  */
 
-export const getChatById = async (req: Request, res: Response): Promise<void> => {
+export const getChatById = async (
+    req: Request,
+    res: Response
+): Promise<void> => {
     try {
         // Verifying if user is authenticated
         if (!req.user) throw new Error("No User provided");
+        const { uid } = req.user;
 
         // Fetching messages
-        const chat = await Chat.find({ chatId: req.params.chatId });
+        const chat = await Chat.findById(req.params.chatId)
+            .populate({
+                path: "participants",
+                select: "username image",
+                match: { _id: { $ne: uid } },
+            })
+            .exec();
 
         // Sending response
         res.status(200).json({
-            chat
+            chat,
         });
     } catch (err) {
         if (!(err instanceof Error)) throw err;
@@ -136,12 +148,10 @@ export const getChatByUsers = async (
         // Verifying if user is authenticated
         if (!req.user) throw new Error("No User provided");
 
-        // Fetch chat id
-        const userA = ((await fetchUid(req.user.uid)) as UserData)._publicId;
-        const userB = req.body.otherUserId;
-        
         // Sending response
-        const chatId = (await findOrCreateChat(userA, userB))._id;
+        const chatId = (
+            await findOrCreateChat(req.user.uid, req.body.otherUserId)
+        )._id;
         res.status(200).json({
             chatId,
         });

@@ -3,9 +3,9 @@ import { ChatContainerSkeleton } from "@/components/ui/ChatContainerSkeleton";
 import { HeaderChat } from "@/components/ui/HeaderChat";
 import { InputChat } from "@/components/ui/InputChat";
 import { Message } from "@/components/ui/Message";
-import { useUser } from "@/contexts/UserContext";
 import { useChats } from "@/hooks/chat/useChats";
 import { useMessages } from "@/hooks/messages/useMessages";
+import { useUserById } from "@/hooks/user/useUser";
 import { ChatData } from "@/utils/types/chatDataType";
 import { MessageData } from "@/utils/types/messageDataType";
 import { FormEvent, useEffect, useRef, useState } from "react";
@@ -18,8 +18,8 @@ export const Chat = () => {
     const chatRef = useRef<HTMLDivElement | null>(null);
     const [chatId, setChatId] = useState<string>("");
     const [inputText, setInputText] = useState<string>("");
-    const { userData } = useUser();
-    const userId = userData?._publicId;
+    const { data: userData } = useUserById();
+    const userId = userData?._id;
     const socketRef = useRef<Socket | null>(null);
     const [messages, setMessages] = useState<MessageData[]>([]);
 
@@ -27,7 +27,7 @@ export const Chat = () => {
         // SOCKET EVENTS
         socketRef.current = io(String(import.meta.env.VITE_API_BASEURL).replace("/api/v1/", ""));
         socketRef.current.emit("register_user", {
-            userId: userData?._publicId,
+            userId,
         });
 
         socketRef.current.on("new_message", (message) => {
@@ -82,7 +82,9 @@ export const Chat = () => {
 
     return (
         <>
-            <div className={`flex w-full items-center divide-zinc-300 lg:gap-5 lg:divide-x-1 dark:divide-zinc-700 ${chatId && "max-lg:h-[95dvh]"}`}>
+            <div
+                className={`flex w-full items-center divide-zinc-300 lg:divide-x-1 dark:divide-zinc-700 ${chatId && "max-lg:h-[97dvh] max-lg:py-1"}`}
+            >
                 <aside
                     className={`text-title mr-auto h-full w-full lg:max-w-89 lg:p-3 lg:py-8 ${chatId && "max-lg:hidden"}`}
                 >
@@ -93,29 +95,31 @@ export const Chat = () => {
                             <ChatContainerSkeleton />
                         ) : (
                             <>
-                                {!chats.length && (
+                                {!chats.length ? (
                                     <div className="mx-auto mt-8 text-center text-zinc-500">
                                         <p className="text-lg">Sem chats cara</p>
                                         <p className="mt-4 text-3xl">(ㆆ_ㆆ)</p>
                                     </div>
+                                ) : (
+                                    chats.map((chat) => (
+                                        <ChatContainer
+                                            key={chat._id}
+                                            joinChat={() => setChatId(chat._id)}
+                                            chat={chat}
+                                        />
+                                    ))
                                 )}
-                                {chats.map((chat) => (
-                                    <ChatContainer
-                                        key={chat._id}
-                                        joinChat={() => setChatId(chat._id)}
-                                        chat={chat}
-                                        userId={userId}
-                                    />
-                                ))}
                             </>
                         )}
                     </div>
                 </aside>
 
                 <div
-                    className={`relative flex h-full w-full flex-col lg:p-1 lg:py-3 ${!chatId && "max-lg:hidden"}`}
+                    className={`relative flex h-full w-full flex-col lg:p-5 lg:py-4 ${!chatId && "max-lg:hidden"} max-lg:my-auto`}
                 >
-                    {chatId && currentChat && <HeaderChat userId={userId} chat={currentChat} setChatId={setChatId}/>}
+                    {chatId && currentChat && (
+                        <HeaderChat chat={currentChat} setChatId={setChatId} />
+                    )}
                     <div
                         className="scrollbar-thin my-2 flex-1 space-y-2 overflow-y-auto lg:px-6"
                         ref={chatRef}

@@ -1,17 +1,17 @@
-import { InfoField } from "@/components/ui/InfoField";
+import { UnsaveContainer } from "@/components/drop/UnsaveContainer";
 import { Button } from "@/components/ui/Button";
 import { EditModal } from "@/components/ui/EditModal";
 import { FormInput } from "@/components/ui/FormInput";
+import { InfoField } from "@/components/ui/InfoField";
 import { Loader } from "@/components/ui/Loader";
 import { Textarea } from "@/components/ui/Textarea";
-import { UnsaveContainer } from "@/components/drop/UnsaveContainer";
-import { useUser } from "@/contexts/UserContext";
 import { useChangeImage } from "@/hooks/images/useChangeImage";
 import { useReload } from "@/hooks/user/useUpdate";
 import { UserData } from "@/utils/types/userDataType";
 
 import { IconArrowRight, IconEdit, IconPencil, IconUserCog } from "@tabler/icons-react";
 
+import { useUserById } from "@/hooks/user/useUser";
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
@@ -19,7 +19,8 @@ export const ViewProfile = () => {
     // const { upload } = useImageUpload();
 
     // USER DATAS
-    const { userData, updateUser } = useUser();
+    const { data: userData } = useUserById();
+    console.log(userData);
     const changeImage = useChangeImage();
     const reloadUser = useReload();
 
@@ -77,13 +78,14 @@ export const ViewProfile = () => {
             };
 
             if (previewImageFile) {
-                const response = await changeImage.mutateAsync({ newImage: previewImageFile, folder: "users_image" });
+                const response = await changeImage.mutateAsync({
+                    newImage: previewImageFile,
+                    folder: "users_image",
+                });
                 newUserData.image = response.data.image_url;
             }
 
-            console.log(newUserData);
-
-            await updateUser(newUserData);
+            // await updateUser(newUserData);
             await reloadUser.mutateAsync();
         } catch (error) {
             console.log(error);
@@ -141,7 +143,7 @@ export const ViewProfile = () => {
 
         setPreviewFName(userData?.fName || "");
         setPreviewLName(userData?.lName || "");
-        setPreviewUsername(userData?.username)
+        setPreviewUsername(userData?.username);
         setPreviewAbout(userData?.about || undefined);
     };
 
@@ -152,8 +154,6 @@ export const ViewProfile = () => {
                     <Loader />
                 </AnimatePresence>
             )}
-
-            
 
             {editInfo && (
                 <EditModal
@@ -210,9 +210,11 @@ export const ViewProfile = () => {
             )}
 
             <div
-                className={`relative w-full overflow-hidden rounded-2xl max-w-4xl bg-white p-1 pb-10 shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] lg:mx-0 dark:bg-zinc-900`}
+                className={`relative w-full max-w-4xl overflow-hidden rounded-2xl bg-white p-1 pb-10 shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] lg:mx-0 dark:bg-zinc-900`}
             >
-                {unsave && <UnsaveContainer onCancel={handleCancelUnsave} onSave={handleUpdateUser} />}
+                {unsave && (
+                    <UnsaveContainer onCancel={handleCancelUnsave} onSave={handleUpdateUser} />
+                )}
                 {/* PFP AND USER BANNER */}
                 <div className="relative">
                     {userData?.banner ? (
@@ -226,7 +228,7 @@ export const ViewProfile = () => {
                     )}
 
                     <figure
-                    className="group absolute bottom-0 left-1/2 h-30 w-30 -translate-x-1/2 cursor-pointer rounded-3xl ring-3 ring-white md:left-10 md:h-40 md:w-40 md:translate-x-0 lg:-bottom-2 dark:ring-zinc-900"
+                        className="group absolute bottom-0 left-1/2 h-30 w-30 -translate-x-1/2 cursor-pointer rounded-3xl ring-3 ring-white md:left-10 md:h-40 md:w-40 md:translate-x-0 lg:-bottom-2 dark:ring-zinc-900"
                         onClick={() => {
                             fileInputRef.current?.click();
                         }}

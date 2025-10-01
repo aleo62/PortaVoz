@@ -1,16 +1,15 @@
 import { SearchOverlay } from "@/components/overlay/SearchOverlay";
 import { Button } from "@/components/ui/Button";
 import { Navbar } from "@/components/ui/Navbar";
-import { useUser } from "@/contexts/UserContext";
+import { auth } from "@/firebase";
 import { useTheme } from "@/hooks/useTheme";
 import { portaVozLogo } from "@/utils/data";
 import { IconLogin, IconMoon, IconSearch, IconTrendingUp } from "@tabler/icons-react";
+import { onAuthStateChanged } from "firebase/auth";
 import hotkeys from "hotkeys-js";
 import { useEffect, useState } from "react";
 
 export const Header = ({ search = true }: { search?: boolean }) => {
-    const { user } = useUser();
-
     const [hidden, setHidden] = useState(false);
     const [outside, setOutside] = useState(false);
     const [lastScrollY, setLastScrollY] = useState(0);
@@ -48,8 +47,12 @@ export const Header = ({ search = true }: { search?: boolean }) => {
     }, []);
 
     useEffect(() => {
-        setIsLoggedIn(!!user);
-    }, [user]);
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            setIsLoggedIn(!!user);
+        });
+
+        return () => unsubscribe();
+    }, [auth]);
 
     useEffect;
 

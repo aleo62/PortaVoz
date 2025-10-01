@@ -1,6 +1,5 @@
 import { FormInput } from "@/components/ui/FormInput";
 import { PostData } from "@/utils/types/postDataType";
-import loading from "@assets/images/loading.gif";
 import React, { useEffect, useRef, useState } from "react";
 
 export const PostLocation = ({
@@ -82,7 +81,7 @@ export const PostLocation = ({
                 className={`${query.trim() == "" && "hidden"} text-title scrollbar-thin scrollbar-track-[#fafafa] dark:scrollbar-track-[#212121] scrollbar-thumb-zinc-200 dark:scrollbar-thumb-zinc-700 flex max-h-60 flex-col items-center divide-y-1 divide-zinc-700 overflow-auto rounded-lg bg-white p-5 text-sm dark:bg-zinc-900`}
             >
                 {suggestions.length === 0 ? (
-                    <img src={loading} alt="" className="w-30" />
+                    <p>Carregando...</p>
                 ) : (
                     suggestions
                         .filter((sg) => sg.address.city === "Piracicaba")
@@ -93,7 +92,8 @@ export const PostLocation = ({
                                 onClick={() => handleClickLocation(sg)}
                             >
                                 <p>
-                                    {sg.address.suburb} {sg.address.road ?  ", " + sg.address.road : "" }
+                                    {sg.address.suburb}{" "}
+                                    {sg.address.road ? ", " + sg.address.road : ""}
                                 </p>
 
                                 <small>

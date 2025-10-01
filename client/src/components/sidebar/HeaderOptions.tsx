@@ -5,10 +5,11 @@ import { IconSelector } from "@tabler/icons-react";
 import { useState } from "react";
 import { NotificationDrop } from "../drop/NotificationDrop";
 import { UserDrop } from "../drop/UserDrop";
+import { useUserById } from "@/hooks/user/useUser";
 
 export const HeaderOptions = () => {
     const isMobile = useIsMobile();
-    const { userData } = useUser();
+    const { data: userData } = useUserById();
     const [activeUserDrop, setActiveUserDrop] = useState(false);
     const [activeNotificationDrop, setActiveNotificationDrop] = useState(false);
 

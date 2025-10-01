@@ -1,5 +1,5 @@
-import { fetchUid } from "@/firebase/fetchUid";
-import { UserData } from "@/utils/types/userDataType";
+import { UserData } from "@/models/User.model";
+import { fetchUser } from "@/services/UserService";
 import { NextFunction, Request, Response } from "express";
 
 export const authenticateOwnerOrAdmin = (
@@ -16,12 +16,15 @@ export const authenticateOwnerOrAdmin = (
             const userId = await getUserId(req);
             if (!userId) throw new Error("No User ID provided");
 
-            const ownerData = (await fetchUid(req.user.uid)) as UserData;
+            const ownerData = (await fetchUser(req.user.uid)) as UserData;
             if (Array.isArray(userId)) {
-                if (!userId.includes(ownerData._publicId) && !req?.user?.isAdmin)
+                if (
+                    !userId.includes(ownerData._id as string) &&
+                    !req?.user?.isAdmin
+                )
                     throw new Error("User not allowed");
             } else {
-                if (userId !== ownerData._publicId && !req.user.isAdmin)
+                if (userId !== ownerData._id && !req.user.isAdmin)
                     throw new Error("User not allowed");
             }
 

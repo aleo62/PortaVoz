@@ -32,7 +32,7 @@ export const Post = () => {
                 <HeaderSidebar />
 
                 <article className="mx-auto flex w-full flex-col justify-center rounded-xl max-lg:items-center lg:flex-row lg:gap-4">
-                    <div className="w-full max-w-[500px]">
+                    <div className="w-full max-w-[550px]">
                         <header className="flex items-center gap-3 px-1 py-4">
                             <div
                                 // onClick={() => navigate(`/profile/${post.userId}`)}

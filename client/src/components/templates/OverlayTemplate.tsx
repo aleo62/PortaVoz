@@ -39,7 +39,7 @@ export const OverlayTemplate = ({ isOpen, children, onClose }: OverlayTemplatePr
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.1 }}
-                    className="fixed top-0 left-0 z-110 flex h-full w-full items-center justify-center gap-2 bg-black/50 pt-20 backdrop-blur-xl lg:px-3 lg:py-10"
+                    className="fixed top-0 left-0 z-[200] flex h-full w-full justify-center gap-2 bg-black/50 pt-20 backdrop-blur-xl lg:px-3 lg:py-10 px-1"
                 >
                     <IconX
                         onClick={onClose}

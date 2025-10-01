@@ -1,133 +1,46 @@
-import { db } from "@/firebase";
-import { UserData } from "@/utils/types/userDataType";
-import { getAuth, IdTokenResult, onAuthStateChanged, User } from "firebase/auth";
-import {
-    collection,
-    doc,
-    DocumentData,
-    getDoc,
-    getDocs,
-    query,
-    updateDoc,
-    where,
-} from "firebase/firestore";
+import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 import { createContext, useContext, useEffect, useState } from "react";
 
+type UserDecoded = {
+    uid: string;
+    token: string;
+    claims: Record<string, any>;
+};
+
 type UserContextType = {
-    user: User | null;
-    userData: UserData | DocumentData | null;
-    userDecoded: IdTokenResult | null;
-    userTags: DocumentData;
-    setUserData: React.Dispatch<React.SetStateAction<UserData | DocumentData | null>>;
-    updateUser: (data: Partial<UserData>) => void;
-    isFetching?: boolean;
-    isFetchingUser?: boolean;
-    fetchUser: (publicId: string) => void;
+    userDecoded: UserDecoded | null;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-    const [user, setUser] = useState<User | null>(null);
-    const [userData, setUserData] = useState<UserData | DocumentData | null>(null);
-    const [userDecoded, setUserDecoded] = useState<IdTokenResult | null>(null);
-    const [userTags, setUserTags] = useState<DocumentData[]>([]);
-    const [isFetching, setIsFetching] = useState(true);
-    const [isFetchingUser, setIsFetchingUser] = useState(true);
-
-    const fetchUserData = async (userAuth: User) => {
-        try {
-            const userDoc = await getDoc(doc(db, "Users", userAuth?.uid));
-            return userDoc.data();
-        } catch (err) {
-            console.log("Erro em capturar user data: ", err);
-        }
-    };
-
-    const fetchUserTags = async (userAuth: User) => {
-        try {
-            const tagsRef = collection(db, "Tags");
-
-            const q = query(tagsRef, where("User", "==", userAuth.uid));
-            const tagsDoc = await getDocs(q);
-
-            const tagsData = tagsDoc.docs.map((doc) => doc.data());
-            return tagsData;
-        } catch (err) {
-            console.log("Erro em capturar as tags: ", err);
-        }
-    };
+    const [userDecoded, setUserDecoded] = useState<UserDecoded | null>(null);
 
     const fetchUserDecoded = async (userAuth: User) => {
-        try {
-            const userDecoded = await userAuth.getIdTokenResult(true);
-            return userDecoded;
-        } catch (err) {
-            console.log("Erro em capturar o user decoded: ", err);
-        }
+        const tokenResult = await userAuth.getIdTokenResult(true);
+        return {
+            uid: userAuth.uid,
+            token: tokenResult.token,
+            claims: tokenResult.claims,
+        };
     };
 
     useEffect(() => {
-        setIsFetching(true);
-
         const auth = getAuth();
         const unsubscribe = onAuthStateChanged(auth, async (userAuth) => {
-            setUser(userAuth);
-
             if (userAuth) {
-                setUserData((await fetchUserData(userAuth))!);
-                setUserTags((await fetchUserTags(userAuth))!);
-                setUserDecoded((await fetchUserDecoded(userAuth))!);
+                setUserDecoded(await fetchUserDecoded(userAuth));
+            } else {
+                setUserDecoded(null);
             }
-            setIsFetching(false);
         });
 
         return () => unsubscribe();
     }, []);
 
-    const updateUser = async (data: Partial<UserData>) => {
-        if (!user) return;
-
-        const userRef = doc(db, "Users", user.uid);
-        await updateDoc(userRef, data);
-        setUserData((prev) => ({ ...prev, ...(data as Record<string, unknown>) }));
-    };
-
-    const fetchUser = async (publicId: string) => {
-        setIsFetchingUser(true);
-        try {
-            const q = await query(collection(db, "Users"), where("_publicId", "==", publicId));
-            const querySnapshot = await getDocs(q);
-
-            if (querySnapshot.empty) return null;
-
-            const userDoc = querySnapshot.docs[0];
-            const data = userDoc.data();
-
-            return data;
-        } finally {
-            setIsFetchingUser(false);
-        }
-    };
-
-    return (
-        <UserContext.Provider
-            value={{
-                user,
-                userData,
-                userDecoded,
-                setUserData,
-                updateUser,
-                userTags,
-                fetchUser,
-                isFetching,
-                isFetchingUser,
-            }}
-        >
-            {children}
-        </UserContext.Provider>
-    );
+    return <UserContext.Provider value={{ userDecoded }}>{children}</UserContext.Provider>;
 };
+
 export const useUser = () => {
     const context = useContext(UserContext);
     if (context === undefined) {

@@ -17,12 +17,13 @@ import {
 } from "@/controllers/PostController";
 import { createUpvote, deleteUpvote } from "@/controllers/VoteController";
 import upload from "@/lib/multer";
-import { authenticateUser } from "@/middlewares/auth";
 import { authenticateOwnerOrAdmin } from "@/middlewares/authOwnerOrAdmin";
+import { authenticateUser } from "@/middlewares/authUser";
+import { authenticateVerified } from "@/middlewares/authVerified";
 import { validationError } from "@/middlewares/validationError";
 import Comment from "@/models/Comment.model";
 import Post from "@/models/Post.model";
-import { Router } from "express";
+import { Request, Router } from "express";
 import { body } from "express-validator";
 
 const router = Router();
@@ -41,6 +42,7 @@ router.get("/:postId", authenticateUser, validationError, getPostById);
 router.post(
     "/",
     authenticateUser,
+    authenticateVerified,
     upload.array("images", 3),
     body("title").trim().notEmpty().withMessage("title is required"),
     body("desc").trim().notEmpty().withMessage("desc is required"),
@@ -69,10 +71,11 @@ router.post(
 router.delete(
     "/:postId",
     authenticateUser,
-    authenticateOwnerOrAdmin(async (req) => {
+    authenticateVerified,
+    authenticateOwnerOrAdmin(async (req: Request) => {
         const post = await Post.findById(req.params.postId);
         if (!post) throw new Error("Post does not exist");
-        return post?.userId;
+        return post?.user as string;
     }),
     deletePost
 );
@@ -81,6 +84,7 @@ router.delete(
 router.put(
     "/:postId",
     authenticateUser,
+    authenticateVerified,
     upload.array("newImages", 3),
     body("title").optional().trim().notEmpty().withMessage("title is required"),
     body("desc").optional().trim().notEmpty().withMessage("desc is required"),
@@ -103,10 +107,10 @@ router.put(
         .trim()
         .notEmpty()
         .withMessage("address is required"),
-    authenticateOwnerOrAdmin(async (req) => {
+    authenticateOwnerOrAdmin(async (req: Request) => {
         const post = await Post.findById(req.params.postId);
         if (!post) throw new Error("Post does not exist");
-        return post?.userId;
+        return post?.user as string;
     }),
     validationError,
     updatePost
@@ -126,6 +130,7 @@ router.get(
 router.post(
     "/comments",
     authenticateUser,
+    authenticateVerified,
     body("parentId")
         .trim()
         .notEmpty()
@@ -143,10 +148,10 @@ router.post(
 router.delete(
     "/comments/:commentId",
     authenticateUser,
-    authenticateOwnerOrAdmin(async (req) => {
+    authenticateOwnerOrAdmin(async (req: Request) => {
         const comment = await Comment.findById(req.params.commentId);
         if (!comment) throw new Error("Comment does not exist");
-        return comment?.userId;
+        return comment?.user as string;
     }),
     validationError,
     deleteComment
@@ -156,9 +161,10 @@ router.delete(
 router.delete(
     "/comments/parent/:parentId",
     authenticateUser,
-    authenticateOwnerOrAdmin(async (req) => {
+    authenticateVerified,
+    authenticateOwnerOrAdmin(async (req: Request) => {
         const post = await Post.findById(req.params.parentId);
-        return post?.userId;
+        return post?.user as string;
     }),
     validationError,
     deleteCommentByParentId
@@ -168,12 +174,13 @@ router.delete(
 router.put(
     "/comments/:commentId",
     authenticateUser,
+    authenticateVerified,
     body().whitelist("userName"),
     body("userName")
         .optional()
         .notEmpty()
         .withMessage("userName can not be empty"),
-    body("userPhoto")
+    body("userImage")
         .optional()
         .notEmpty()
         .withMessage("userName can not be empty"),
@@ -181,10 +188,10 @@ router.put(
         .optional()
         .notEmpty()
         .withMessage("userName can not be empty"),
-    authenticateOwnerOrAdmin(async (req) => {
+    authenticateOwnerOrAdmin(async (req: Request) => {
         const comment = await Comment.findById(req.params.parentId);
         if (!comment) throw new Error("Comment does not exist");
-        return comment?.userId;
+        return comment?.user as string;
     }),
     validationError,
     updateComment
@@ -198,6 +205,7 @@ export default router;
 router.post(
     "/:parentId/upvote",
     authenticateUser,
+    authenticateVerified,
     validationError,
     createUpvote
 );
@@ -206,6 +214,7 @@ router.post(
 router.delete(
     "/:parentId/desupvote",
     authenticateUser,
+    authenticateVerified,
     validationError,
     deleteUpvote
 );
