@@ -9,6 +9,8 @@ import { CommentData } from "@/utils/types/commentDataType";
 import { IconChevronDown, IconChevronUp, IconDotsVertical, IconThumbUp } from "@tabler/icons-react";
 import { useRef, useState } from "react";
 import { CommentDrop } from "../drop/CommentDrop";
+import { useCreateComment } from "@/hooks/comments/useCreateComment";
+import { UserData } from "@/utils/types/userDataType";
 
 export const Comment = ({
     comment,
