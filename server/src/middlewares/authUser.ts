@@ -20,7 +20,7 @@ export const authenticateUser = async (
             uid: decodedToken.uid,
             isAdmin: decodedToken.admin === true,
             email: decodedToken.email!,
-            isVerified: decodedToken.email_verified!,
+            isVerified: decodedToken.email_verified ?? false,
         };
 
         next();

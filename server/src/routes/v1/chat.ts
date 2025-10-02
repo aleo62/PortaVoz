@@ -16,7 +16,7 @@ import { body } from "express-validator";
 const router = Router();
 
 // GET - Rota para pegar chats dos users
-router.get("/", authenticateVerified, authenticateUser, validationError, getChats);
+router.get("/", authenticateUser, authenticateVerified, validationError, getChats);
 // GET - Rota para pegar chats dos users
 router.get(
     "/:chatId/messages",

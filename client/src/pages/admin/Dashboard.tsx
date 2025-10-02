@@ -16,11 +16,12 @@ export const Dashboard = () => {
                     ...doc.data(),
                 })),
             );
-            console.log(userDecoded?.token);
         };
 
         getDocuments();
     }, []);
+
+    console.log(userDecoded?.token);
 
     return (
         <>

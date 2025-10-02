@@ -44,7 +44,7 @@ export const Profile = () => {
     };
 
     const fetchChat = async () => {
-        getChatByUser.mutateAsync({ otherUserId: user?._userId! }).then((response) => {
+        getChatByUser.mutateAsync({ otherUserId: userId! }).then((response) => {
             navigate(`/chat/${response.chatId}`);
         });
     };

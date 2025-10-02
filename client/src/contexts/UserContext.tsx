@@ -5,6 +5,7 @@ type UserDecoded = {
     uid: string;
     token: string;
     claims: Record<string, any>;
+    isVerified: boolean;
 };
 
 type UserContextType = {
@@ -22,6 +23,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
             uid: userAuth.uid,
             token: tokenResult.token,
             claims: tokenResult.claims,
+            isVerified: userAuth.emailVerified
         };
     };
 

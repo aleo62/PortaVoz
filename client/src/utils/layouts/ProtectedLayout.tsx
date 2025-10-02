@@ -1,42 +1,30 @@
 import { useUser } from "@/contexts/UserContext";
-import { auth } from "@/firebase";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 type ProtectedLayoutProps = {
-    children: React.ReactNode;
-    onlyGuest?: boolean;
-    onlyAdmin?: boolean;
+  children: React.ReactNode;
+  onlyGuest?: boolean;
+  onlyAdmin?: boolean;
 };
 
 export const ProtectedLayout = ({ children, onlyGuest, onlyAdmin }: ProtectedLayoutProps) => {
-    const { userDecoded } = useUser();
-    const [isFetching, setIsFetching] = useState(true);
-    const user = auth.currentUser;
-    const navigate = useNavigate();
+  const { userDecoded } = useUser();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        const verifyPaths = async () => {
-            if (onlyGuest && user) {
-                navigate("/feed");
-                return;
-            }
+  useEffect(() => {
+    if (onlyGuest && userDecoded) {
+      navigate("/feed");
+    }
 
-            if (!onlyGuest && !user && !isFetching) {
-                navigate("/auth/login");
-                return;
-            }
+    if (!onlyGuest && !userDecoded) {
+      navigate("/auth/login");
+    }
 
-            if (onlyAdmin && userDecoded && !userDecoded.claims?.admin) {
-                navigate("/");
-                return;
-            }
+    if (onlyAdmin && userDecoded && !userDecoded.claims?.admin) {
+      navigate("/");
+    }
+  }, [userDecoded, onlyGuest, onlyAdmin, navigate]);
 
-            if (!onlyGuest && user) setIsFetching(false);
-        };
-
-        verifyPaths();
-    }, [user, userDecoded, onlyGuest, onlyAdmin, navigate]);
-
-    return <>{children}</>;
+  return <>{children}</>;
 };

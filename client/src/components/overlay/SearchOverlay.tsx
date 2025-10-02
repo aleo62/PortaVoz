@@ -32,8 +32,6 @@ export const SearchOverlay = ({ isOpen, onClose }: OverlayTemplateProps) => {
 
     let posts: PostData[] = (feedData?.pages.flatMap((page) => page.posts) as PostData[]) || [];
     let users: UserData[] = (usersData?.pages.flatMap((page) => page.users) as UserData[]) || [];
-
-    console.log(usersData);
     return (
         <OverlayTemplate isOpen={isOpen} onClose={onClose}>
             <motion.div

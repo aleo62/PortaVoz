@@ -12,6 +12,8 @@ export const SidebarLayout = ({
     const [isOpen, setIsOpen] = useState(true);
     const isMobile = useIsMobile();
 
+    
+
     return (
         <div className="relative flex overflow-hidden lg:h-screen">
             <Sidebar isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} className="flex-shrink-0" />
