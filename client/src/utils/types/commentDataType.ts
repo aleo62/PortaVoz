@@ -2,9 +2,11 @@ export interface CommentData {
     _id: string;
     parentId: string;
     parentType: "Post" | "Comment";
-    userId: string;
-    userName: string;
-    userPhoto: string;
+    user: {
+        _id: string;
+        username: string;
+        image: string;
+    }
     content: string;
     upvotesCount: number;
     repliesCount: number;

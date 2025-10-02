@@ -31,6 +31,7 @@ export const OverlayTemplate = ({ isOpen, children, onClose }: OverlayTemplatePr
             header.style.paddingRight = "";
         }
     };
+    
     return (
         <AnimatePresence onExitComplete={resetScrollLock}>
             {isOpen && (

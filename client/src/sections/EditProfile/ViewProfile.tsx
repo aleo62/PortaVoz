@@ -20,7 +20,6 @@ export const ViewProfile = () => {
 
     // USER DATAS
     const { data: userData } = useUserById();
-    console.log(userData);
     const changeImage = useChangeImage();
     const reloadUser = useReload();
 

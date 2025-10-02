@@ -80,7 +80,7 @@ export const Comment = ({
             <div className="flex w-full items-start gap-3">
                 <header className="gap-1">
                     <img
-                        src={comment.userPhoto}
+                        src={comment.user.image}
                         className="h-9 w-9 rounded-full object-cover"
                         alt="User photo"
                     />
@@ -88,7 +88,7 @@ export const Comment = ({
 
                 <main className="flex-1 pt-[.5rem]">
                     <div className="flex items-center gap-2">
-                        <h3 className="text-title text-[.92rem] font-medium">{comment.userName}</h3>
+                        <h3 className="text-title text-[.92rem] font-medium">{comment.user.username}</h3>
                         <span className="text-xs text-zinc-500 dark:text-zinc-400">{date}</span>
                         <div className="relative ml-auto">
                             <IconDotsVertical
@@ -100,7 +100,7 @@ export const Comment = ({
                                 orientation="top"
                                 onClose={() => setOptionsContainerOpen(false)}
                                 isOwner={
-                                    comment.userId == userData?._id || !!userDecoded?.claims.admin
+                                    comment.user._id == userData?._id || !!userDecoded?.claims.admin
                                 }
                                 onDeleteComment={onDeleteComment}
                             />

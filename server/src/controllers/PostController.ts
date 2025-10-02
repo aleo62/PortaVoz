@@ -57,7 +57,7 @@ export const getAllPosts = async (req: Request, res: Response) => {
             postsData.map(async (post) => {
                 const isUpvoted = await Vote.findOne({
                     parentId: post._id,
-                    userId: req.user?.uid,
+                    user: req.user?.uid,
                     parentType: "Post",
                 });
 

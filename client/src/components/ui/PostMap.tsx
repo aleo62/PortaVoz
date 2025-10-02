@@ -2,13 +2,13 @@ import L from "leaflet";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
 const customIcon = new L.Icon({
-    iconUrl: `https://i.pinimgproxy.com/?url=aHR0cHM6Ly9jZG4taWNvbnMtcG5nLmZsYXRpY29uLmNvbS8yNTYvODU0Lzg1NDg1My5wbmc=&ts=1758240201&sig=11015bddd7581f7e7d8f020757fe78b289ee06ef378f606238b5cbf3c666b57f`,
+    iconUrl: `https://res.cloudinary.com/di5bma0gm/image/upload/v1759436245/location_gkwftw.png`,
     className: "",
     iconSize: [32, 32],
     iconAnchor: [16, 32],
 });
 
-export function MapView({ latitude, longitude }: { latitude: number; longitude: number }) {
+export function PostMap({ latitude, longitude }: { latitude: number; longitude: number }) {
     return (
         <MapContainer
             center={[latitude, longitude]}

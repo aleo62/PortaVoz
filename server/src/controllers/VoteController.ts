@@ -26,62 +26,53 @@ export const createUpvote = async (
 
         // Verifying if parent exists
         let parentDoc = await Comment.findById(parentId);
-        let parentType;
+        let parentType, parentHref;
 
         if (parentDoc) {
             parentType = "Comment";
+            parentHref = parentDoc.parentId;
         } else {
             parentDoc = await Post.findById(parentId);
             if (!parentDoc) throw new Error("Parent does not exist");
 
             parentType = "Post";
+            parentHref = parentDoc.parentId;
         }
 
         // Verifying if user exists
-        const userData = (await fetchUser(uid)) as UserData;
         const alreadyUpvoted = await Vote.find({
             parentId: parentDoc._id,
-            userId: userData._id,
+            user: uid,
         });
-        console.log(alreadyUpvoted);
+
         if (alreadyUpvoted.length > 0)
             throw new Error("You have already upvoted this Post");
 
-        const _id = generateId(config.SYSTEM_ID_SIZE, "L_") as string,
-            userId = userData._id,
-            userImage = userData.image,
-            userName = userData.fName;
+        const _id = generateId(config.SYSTEM_ID_SIZE, "L_") as string;
 
         // Creating new comment
         const newUpvote = await Vote.create({
             _id,
             parentId,
             parentType,
-            userId,
-            userName,
-            userImage,
+            user: uid,
         });
 
         // Incrementing the upvotes count on the parent document
         parentDoc.upvotesCount = (parentDoc.upvotesCount || 0) + 1;
         await parentDoc.save();
 
+        const senderData = await fetchUser(uid);
         // Sending notification:
         await sendNotificationToUser({
-            userId: parentDoc.user as string,
-            senderId: userId,
-            senderImage: userImage,
-            title: `${userData.username} deu Upvote! em ${
-                parentType === "Post" ? "sua Denúncia" : "seu Comentário"
-            }`,
-            content: `Upvote foi dado em ${
-                parentType === "Post" ? "sua Denúncia" : "seu Comentário"
-            }, por ${userData.username}: ${parentDoc.content}`,
-            href: `/post/${
-                parentType === "Post" ? parentId : parentDoc.parentId
-            }`,
+            userId: parentDoc.user,
+            senderId: uid,
+            senderImage: senderData.image,
+            title: `${senderData.username} te deu upvote!`,
+            content: `Você conseguiu um novo upvote em seu ${ parentType === "Comment" ? "comentário" : "post" }`,
+            href: `/post/${parentHref}`,
             type: "Vote",
-            preview: notificationPreview,
+            preview: undefined,
         });
 
         res.status(201).json({ message: "Post Upvoted", data: newUpvote });
@@ -112,14 +103,10 @@ export const deleteUpvote = async (
         if (!req.params.parentId) throw new Error("Parent Id is required");
         const parentId = req.params.parentId;
 
-        // Verifying if user exists
-        const userData = (await fetchUser(uid)) as UserData;
-        const userId = userData._id;
-
         // Removing Upvote
         const deletedUpvote = await Vote.findOneAndDelete({
             parentId,
-            userId,
+            user: uid,
         });
         if (!deletedUpvote) throw new Error("Upvote not found");
 

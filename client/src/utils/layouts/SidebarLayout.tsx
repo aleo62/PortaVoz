@@ -18,7 +18,7 @@ export const SidebarLayout = ({
         <div className="relative flex overflow-hidden lg:h-screen">
             <Sidebar isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} className="flex-shrink-0" />
 
-            <section className="scrollbar-thumb-zinc-500 scrollbar-corner-zinc-950 scrollbar-thin flex min-h-full flex-1 flex-col overflow-y-auto max-lg:px-2">
+            <section className="scrollbar-thumb-zinc-500 scrollbar-corner-zinc-950 scrollbar-thin flex min-h-full flex-1 flex-col overflow-y-auto max-lg:px-1.5">
                 {isMobile && !noHeader && <SidebarMobileHeader setIsOpen={setIsOpen} />}
                 <main className="flex h-full flex-col justify-center gap-3 lg:flex-row">
                     {children}

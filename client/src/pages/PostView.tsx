@@ -1,5 +1,5 @@
 import { HeaderSidebar } from "@/components/sidebar/HeaderSidebar";
-import { MapView } from "@/components/ui/MapView";
+import { PostMap } from "@/components/ui/PostMap";
 import { usePostById } from "@/hooks/posts/usePostById";
 import { IconArrowBigUp, IconDotsVertical } from "@tabler/icons-react";
 import { useEffect } from "react";
@@ -149,7 +149,7 @@ export const Post = () => {
 
                         {data?.post?.location.latitude != null &&
                             data?.post?.location.longitude != null && (
-                                <MapView
+                                <PostMap
                                     latitude={Number(data?.post?.location.latitude)}
                                     longitude={Number(data?.post?.location.longitude)}
                                 />

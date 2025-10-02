@@ -13,7 +13,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { PostDrop } from "../drop/PostDrop";
 import { LocationOverlay } from "../overlay/LocationOverlay";
 import { PostOverlay } from "../overlay/PostOverlay";
-import { MapView } from "./MapView";
+import { PostMap } from "./PostMap";
 
 export const Post = ({ post, onDeletePost }: { post: PostData; onDeletePost: () => void }) => {
     const navigate = useNavigate();
@@ -207,7 +207,7 @@ export const Post = ({ post, onDeletePost }: { post: PostData; onDeletePost: () 
                         </h3>
 
                         {post?.location?.latitude != null && post?.location?.longitude != null && (
-                            <MapView
+                            <PostMap
                                 latitude={Number(post.location.latitude)}
                                 longitude={Number(post.location.longitude)}
                             />

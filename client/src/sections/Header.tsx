@@ -1,21 +1,19 @@
 import { SearchOverlay } from "@/components/overlay/SearchOverlay";
 import { Button } from "@/components/ui/Button";
 import { Navbar } from "@/components/ui/Navbar";
-import { auth } from "@/firebase";
+import { useUser } from "@/contexts/UserContext";
 import { useTheme } from "@/hooks/useTheme";
 import { portaVozLogo } from "@/utils/data";
 import { IconLogin, IconMoon, IconSearch, IconTrendingUp } from "@tabler/icons-react";
-import { onAuthStateChanged } from "firebase/auth";
-import hotkeys from "hotkeys-js";
 import { useEffect, useState } from "react";
 
 export const Header = ({ search = true }: { search?: boolean }) => {
+    const { userDecoded } = useUser();
     const [hidden, setHidden] = useState(false);
     const [outside, setOutside] = useState(false);
     const [lastScrollY, setLastScrollY] = useState(0);
 
     const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const { isDarkTheme, setIsDarkTheme } = useTheme();
 
     useEffect(() => {
@@ -39,22 +37,6 @@ export const Header = ({ search = true }: { search?: boolean }) => {
 
         return () => window.removeEventListener("scroll", handleScroll);
     }, [lastScrollY]);
-
-    useEffect(() => {
-        hotkeys("esc", () => setIsSearchOpen(false));
-
-        return () => hotkeys.unbind("esc");
-    }, []);
-
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            setIsLoggedIn(!!user);
-        });
-
-        return () => unsubscribe();
-    }, [auth]);
-
-    useEffect;
 
     return (
         <>
@@ -99,7 +81,7 @@ export const Header = ({ search = true }: { search?: boolean }) => {
                             </div>
 
                             <div className="flex items-center gap-2 pl-4 max-lg:hidden md:justify-self-end">
-                                {isLoggedIn ? (
+                                {!userDecoded ? (
                                     <>
                                         <Button
                                             styleType="primary"

@@ -29,21 +29,18 @@ export const getCommentsById = async (
 
         // Fetching posts
         const commentsData = await Comment.find({ parentId })
+            .populate("user", "username image")
             .skip((page - 1) * limit)
             .limit(limit);
 
         const count = await Comment.countDocuments({ parentId });
-
-        // Verifying if user exists
-        const userData = (await fetchUser(req.user.uid)) as UserData;
-        if (!userData) throw new Error("User not found");
 
         // Adding isUpvoted to each post
         const commentsResponse = await Promise.all(
             commentsData.map(async (comment) => {
                 const isUpvoted = await Vote.findOne({
                     parentId: comment._id,
-                    userId: userData._id,
+                    user: req.user?.uid,
                     parentType: "Comment",
                 });
 
@@ -100,23 +97,14 @@ export const createComment = async (
             parentHref = parentId;
         }
 
-        // Verifying if user exists
-        const userData = (await fetchUser(uid)) as UserData;
-
-        const _id = generateId(config.SYSTEM_ID_SIZE, "C_"),
-            userId = userData._id,
-            userImage = userData.image,
-            userName = userData.fName;
-
+        const _id = generateId(config.SYSTEM_ID_SIZE, "C_");
         // Creating new comment
         const newComment = await Comment.create({
             _id,
             parentId,
             parentType,
-            userId,
-            userName,
-            userImage,
             content,
+            user: uid
         });
 
         // Editing parent Id
@@ -133,13 +121,13 @@ export const createComment = async (
             });
         }
 
-        // Sending Notification
-
+        const senderData = await fetchUser(uid);
+        // Sending notification:
         await sendNotificationToUser({
-            userId: parentDoc.user as string,
+            userId: parentDoc.user,
             senderId: uid,
-            senderImage: userData.image,
-            title: `${userData.username} comentou em ${
+            senderImage: senderData.image,
+            title: `${senderData.username} comentou em ${
                 parentType === "Post" ? "sua Denúncia" : "seu Comentário"
             }`,
             content: `Foi comentado em ${
