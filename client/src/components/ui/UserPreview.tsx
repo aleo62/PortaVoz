@@ -6,7 +6,7 @@ export const UserPreview = ({ user }: { user: UserData }) => {
 
     return (
         <div className="w-full flex items-center gap-5 cursor-pointer" onClick={() => navigate(`/profile/${user._id}`)}>
-            <img src={user.image} alt="Imagem do user" className="w-15" />
+            <img src={user.image as string} alt="Imagem do user" className="w-15" />
             <div className="leading-4.5">
                 <h3>{user.username}</h3>
                 <small>

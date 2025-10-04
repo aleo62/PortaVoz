@@ -23,7 +23,7 @@ export const ViewProfile = () => {
 
     const [editInfo, setEditInfo] = useState(false);
     const [editAbout, setEditAbout] = useState(true);
-    const [loading, setLoading] = useState(true);
+    // const [loading, setLoading] = useState(true);
     const [unsave, setUnsave] = useState(false);
     const [previewUser, setPreviewUser] = useState<PreviewUser>();
 
