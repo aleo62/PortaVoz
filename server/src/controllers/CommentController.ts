@@ -132,7 +132,7 @@ export const createComment = async (
             }`,
             content: `Foi comentado em ${
                 parentType === "Post" ? "sua Denúncia" : "seu Comentário"
-            }, "$${content}"`,
+            }, "${content}"`,
             href: `/post/${parentHref}`,
             type: "Comment",
             preview: undefined,

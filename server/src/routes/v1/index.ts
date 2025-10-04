@@ -2,11 +2,10 @@
  * Arquivo principal de rotas da API v1.
  * Define as rotas raiz, de posts e de imagens.
  */
-import imageRouter from "@/routes/v1/image";
+import chatRouter from "@/routes/v1/chat";
 import postRouter from "@/routes/v1/post";
 import userRouter from "@/routes/v1/user";
 import validateRouter from "@/routes/v1/validate";
-import chatRouter from "@/routes/v1/chat";
 import { Router } from "express";
 
 // Instancia o router do Express
@@ -29,8 +28,6 @@ router.get("/", async (req, res) => {
 router.use("/posts", postRouter);
 // Rotas de users
 router.use("/users", userRouter);
-// Rotas de imagens
-router.use("/images", imageRouter);
 // Rotas de ia
 router.use("/validate", validateRouter);
 // Rotas das mensagens

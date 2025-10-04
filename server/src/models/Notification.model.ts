@@ -4,8 +4,8 @@ import mongoose, { Document, ObjectId, Schema } from "mongoose";
  * Interfaces para tipagem dos dados de Seguidor
  */
 export interface NotificationData extends Document {
-    userId: ObjectId | string;
-    senderId: ObjectId | string;
+    userId: string;
+    senderId: string;
     senderImage: string;
     title: string;
     content: string;

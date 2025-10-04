@@ -1,6 +1,8 @@
 import config from "@/config";
 import Follow from "@/models/Follow.model";
 import User from "@/models/User.model";
+import { updateImageService } from "@/services/ImageService";
+import { fetchUser } from "@/services/UserService";
 import { formatError } from "@/utils/formatError";
 import { Request, Response } from "express";
 
@@ -12,8 +14,7 @@ export const getUsersByName = async (
     res: Response
 ): Promise<void> => {
     try {
-        if (!req.user) throw new Error("User not provided.");
-        const { uid } = req.user;
+        const { uid } = req.user!;
 
         // Verifying if page is provided
         const page = Number(req.query.page) === 0 ? 1 : Number(req.query.page),
@@ -56,8 +57,7 @@ export const getUserById = async (
     res: Response
 ): Promise<void> => {
     try {
-        if (!req.user) throw new Error("User not provided.");
-        const { uid } = req.user;
+        const { uid } = req.user!;
 
         const user = await User.findById(
             req.params.userId,
@@ -77,7 +77,7 @@ export const getUserById = async (
 
         const isFollowing = !!(await Follow.findOne({
             userId: req.params.userId,
-            followerId: req.user.uid,
+            followerId: req.user?.uid,
         }));
 
         res.status(200).json({ user, isFollowing });
@@ -116,6 +116,61 @@ export const createUser = async (
                 image: req.body.image,
             });
         }
+
+        res.status(200).json({ user });
+    } catch (err) {
+        if (!(err instanceof Error)) throw err;
+
+        const errors = formatError(err.message);
+
+        res.status(500).json({
+            code: "ServerError",
+            message: "Internal Server Error",
+            errors: errors,
+        });
+    }
+};
+
+/**
+ * PUT - Controller responsável por editar um usuário
+ */
+export const editUser = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { uid } = req.user!;
+        const currentData = await fetchUser(uid);
+        let newImage, newBanner;
+
+        const files = req.files as {
+            [fieldname: string]: Express.Multer.File[];
+        };
+        if (files.image && files.image[0]) {
+            newImage = await updateImageService(
+                files.image[0].path,
+                currentData.image,
+                "users_image"
+            );
+        }
+
+        if (files.banner && files.banner[0]) {
+            newBanner = await updateImageService(
+                files.banner[0].path,
+                currentData.banner!,
+                "banners_image"
+            );
+        }
+
+        const newData = {
+            username: req.body.username ?? currentData.username,
+            fName: req.body.fName ?? currentData.fName,
+            lName: req.body.lName ?? currentData.lName,
+            about: req.body.about ?? currentData.about,
+            image: newImage ?? currentData.image,
+            banner: newBanner ?? currentData.banner,
+        };
+
+        const user = await User.findByIdAndUpdate(req.params.userId, newData, {
+            new: true,
+        });
 
         res.status(200).json({ user });
     } catch (err) {

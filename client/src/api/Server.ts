@@ -148,6 +148,15 @@ export class Server {
         });
     }
 
+    // PUT User
+    static async editUser(userData: FormData, userId: string, token: string) {
+        return axios.put(`${this.baseUrl}users/${userId}`, userData, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
+
+    /* Follow ENDPOINTS -----------> */
+
     // GET Follow
     static async getFollowingById(token: string, followingId: string) {
         const res = await axios.get(`${this.baseUrl}users/${followingId}/following`, {
@@ -165,24 +174,13 @@ export class Server {
         );
     }
 
-    // DELETE Comment by ID
+    // DELETE Follow
     static async deleteFollow(token: string, followingId: string) {
         return (
             await axios.delete(`${this.baseUrl}users/${followingId}/unfollow`, {
                 headers: { authorization: `Bearer ${token}` },
             })
         ).data;
-    }
-
-    // PUT User
-    static async reloadUser(token: string) {
-        return axios.put(
-            `${this.baseUrl}users/update`,
-            {},
-            {
-                headers: { Authorization: `Bearer ${token}` },
-            },
-        );
     }
 
     /* VALIDATOR ENDPOINTS -----------> */

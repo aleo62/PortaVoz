@@ -6,9 +6,11 @@ import {
 import { getNotifications } from "@/controllers/NotificationController";
 import {
     createUser,
+    editUser,
     getUserById,
     getUsersByName,
 } from "@/controllers/UserController";
+import upload from "@/lib/multer";
 import { authenticateOwnerOrAdmin } from "@/middlewares/authOwnerOrAdmin";
 import { authenticateUser } from "@/middlewares/authUser";
 import { validationError } from "@/middlewares/validationError";
@@ -38,6 +40,29 @@ router.post(
     body("image").optional().isURL().withMessage("image must be an URL"),
     validationError,
     createUser
+);
+
+// PUT - Rota para editar usuario
+router.put(
+    "/:userId",
+    authenticateUser,
+    authenticateOwnerOrAdmin(async (req: Request) => {
+        return req.params.userId;
+    }),
+    upload.fields([
+        { name: "image", maxCount: 1 },
+        { name: "banner", maxCount: 1 },
+    ]),
+    body("username")
+        .optional()
+        .trim()
+        .notEmpty()
+        .withMessage("username is required"),
+    body("fName").optional().trim().notEmpty().withMessage("fName is required"),
+    body("lName").optional().trim().notEmpty().withMessage("lName is required"),
+    body("about").optional().trim().notEmpty().withMessage("about is required"),
+    validationError,
+    editUser
 );
 
 /*

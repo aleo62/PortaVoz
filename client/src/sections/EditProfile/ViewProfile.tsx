@@ -3,89 +3,79 @@ import { Button } from "@/components/ui/Button";
 import { EditModal } from "@/components/ui/EditModal";
 import { FormInput } from "@/components/ui/FormInput";
 import { InfoField } from "@/components/ui/InfoField";
-import { Loader } from "@/components/ui/Loader";
 import { Textarea } from "@/components/ui/Textarea";
-import { useChangeImage } from "@/hooks/images/useChangeImage";
-import { useReload } from "@/hooks/user/useUpdate";
 import { UserData } from "@/utils/types/userDataType";
 
 import { IconArrowRight, IconEdit, IconPencil, IconUserCog } from "@tabler/icons-react";
 
+import { useEditUser } from "@/hooks/user/useEditUser";
 import { useUserById } from "@/hooks/user/useUser";
-import { AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
+type PreviewUser = UserData & {
+    imageFile?: File;
+    bannerFile?: File;
+};
+
 export const ViewProfile = () => {
-    // const { upload } = useImageUpload();
-
-    // USER DATAS
     const { data: userData } = useUserById();
-    const changeImage = useChangeImage();
-    const reloadUser = useReload();
+    const editUser = useEditUser();
 
-    // EDIT MODAL
     const [editInfo, setEditInfo] = useState(false);
     const [editAbout, setEditAbout] = useState(true);
-
-    // LOADING STATE
     const [loading, setLoading] = useState(true);
-
-    // UNSAVE STATE
     const [unsave, setUnsave] = useState(false);
+    const [previewUser, setPreviewUser] = useState<PreviewUser>();
 
-    // PREVIEWs
-
-    const [previewImage, setPreviewImage] = useState<string | null>(null);
-    const [previewImageFile, setPreviewImageFile] = useState<File | null>(null);
-
-    const [previewFName, setPreviewFName] = useState("");
-    const [previewLName, setPreviewLName] = useState("");
-
-    const [previewUsername, setPreviewUsername] = useState<string | undefined>(undefined);
-
-    const [previewAbout, setPreviewAbout] = useState<string | undefined>(undefined);
-
-    // INPUT REF
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const fileBannerRef = useRef<HTMLInputElement>(null);
 
-    // HANDLE CHANGE FILE IMAGE INPUT
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    useEffect(() => {
+        if (userData) {
+            setPreviewUser(userData);
+            setLoading(false);
+        }
+    }, [userData]);
+
+    const handleFileChange = (
+        e: React.ChangeEvent<HTMLInputElement>,
+        key: "imageFile" | "bannerFile",
+    ) => {
         const file = e.target.files?.[0];
         if (file) {
-            setPreviewImageFile(file);
-
-            const imageUrl = URL.createObjectURL(file);
-            setPreviewImage(imageUrl);
+            const url = URL.createObjectURL(file);
+            setPreviewUser((prev) =>
+                prev
+                    ? {
+                          ...prev,
+                          [key]: file,
+                          [key === "imageFile" ? "image" : "banner"]: url,
+                      }
+                    : prev,
+            );
             setUnsave(true);
         }
     };
 
-    // HANDLE CHANGE ABOUT INPUT
     const handleAboutChange = (body: string) => {
-        setPreviewAbout(body);
+        setPreviewUser((prev) => (prev ? { ...prev, about: body } : prev));
         setUnsave(true);
     };
 
-    // HANDLE UPDATE USER
     const handleUpdateUser = async () => {
+        if (!previewUser) return;
         try {
-            let newUserData: Partial<UserData> = {
-                username: previewUsername,
-                fName: previewFName,
-                lName: previewLName,
-                about: previewAbout,
-            };
+            const formData = new FormData();
 
-            if (previewImageFile) {
-                const response = await changeImage.mutateAsync({
-                    newImage: previewImageFile,
-                    folder: "users_image",
-                });
-                newUserData.image = response.data.image_url;
-            }
+            if (previewUser.imageFile) formData.append("image", previewUser.imageFile);
+            if (previewUser.bannerFile) formData.append("banner", previewUser.bannerFile);
 
-            // await updateUser(newUserData);
-            await reloadUser.mutateAsync();
+            formData.append("username", previewUser.username);
+            formData.append("fName", previewUser.fName);
+            formData.append("lName", previewUser.lName);
+            formData.append("about", previewUser.about!);
+
+            await editUser.mutateAsync({ userData: formData, userId: userData._id });
         } catch (error) {
             console.log(error);
         } finally {
@@ -94,41 +84,24 @@ export const ViewProfile = () => {
         }
     };
 
-    // HANDLE CHANGE FILE IMAGE INPUT
-    const handleCancelUnsave = async () => {
-        setUnsave(false);
-        setPreviewImage(null);
-        if (fileInputRef.current) {
-            fileInputRef.current.value = "";
+    const handleCancelUnsave = () => {
+        if (userData) {
+            setPreviewUser(userData);
         }
+        setUnsave(false);
+        if (fileInputRef.current) fileInputRef.current.value = "";
+        if (fileBannerRef.current) fileBannerRef.current.value = "";
         cancelEditInfo();
         setEditAbout(true);
-        setPreviewAbout(userData?.about);
-        console.log(userData?.about);
-        console.log(previewAbout);
     };
-
-    // PULL USER DATA
-    useEffect(() => {
-        if (userData) {
-            try {
-                setPreviewFName(userData.fName);
-                setPreviewLName(userData.lName);
-                setPreviewUsername(userData.username);
-                setPreviewAbout(userData.about);
-            } finally {
-                setLoading(false);
-            }
-        }
-    }, [userData]);
 
     const saveEditInfo = () => {
         setEditInfo(false);
 
         if (
-            userData?.fName == previewFName &&
-            userData?.lName == previewLName &&
-            userData?.username == previewUsername
+            userData?.fName === previewUser?.fName &&
+            userData?.lName === previewUser?.lName &&
+            userData?.username === previewUser?.username
         ) {
             setUnsave(false);
             return;
@@ -139,21 +112,13 @@ export const ViewProfile = () => {
 
     const cancelEditInfo = () => {
         setEditInfo(false);
-
-        setPreviewFName(userData?.fName || "");
-        setPreviewLName(userData?.lName || "");
-        setPreviewUsername(userData?.username);
-        setPreviewAbout(userData?.about || undefined);
+        if (userData) {
+            setPreviewUser(userData);
+        }
     };
 
     return (
         <>
-            {loading && (
-                <AnimatePresence>
-                    <Loader />
-                </AnimatePresence>
-            )}
-
             {editInfo && (
                 <EditModal
                     onClose={() => cancelEditInfo()}
@@ -165,8 +130,9 @@ export const ViewProfile = () => {
                             inputProps={{
                                 placeholder: "Nome",
                                 type: "text",
-                                value: previewFName,
-                                onChange: (e) => setPreviewFName(e.target.value),
+                                value: previewUser?.fName,
+                                onChange: (e) =>
+                                    setPreviewUser({ ...previewUser!, fName: e.target.value }),
                             }}
                             label="Nome"
                         />
@@ -174,8 +140,9 @@ export const ViewProfile = () => {
                             inputProps={{
                                 placeholder: "Sobrenome",
                                 type: "text",
-                                value: previewLName,
-                                onChange: (e) => setPreviewLName(e.target.value),
+                                value: previewUser?.lName,
+                                onChange: (e) =>
+                                    setPreviewUser({ ...previewUser!, lName: e.target.value }),
                             }}
                             label="Sobrenome"
                         />
@@ -183,8 +150,9 @@ export const ViewProfile = () => {
                             inputProps={{
                                 placeholder: "Username",
                                 type: "text",
-                                value: previewUsername,
-                                onChange: (e) => setPreviewUsername(e.target.value),
+                                value: previewUser?.username,
+                                onChange: (e) =>
+                                    setPreviewUser({ ...previewUser!, username: e.target.value }),
                             }}
                             label="Username"
                         />
@@ -198,7 +166,6 @@ export const ViewProfile = () => {
                             <Button
                                 styleType="primary"
                                 text="Salvar"
-                                className=""
                                 small
                                 Icon={IconArrowRight}
                                 onClick={() => saveEditInfo()}
@@ -214,17 +181,25 @@ export const ViewProfile = () => {
                 {unsave && (
                     <UnsaveContainer onCancel={handleCancelUnsave} onSave={handleUpdateUser} />
                 )}
-                {/* PFP AND USER BANNER */}
+
                 <div className="relative">
-                    {userData?.banner ? (
+                    {previewUser?.banner ? (
                         <img
-                            src={userData?.banner}
+                            src={previewUser.banner as string}
                             alt="Banner"
                             className="h-40 w-full rounded-2xl object-cover md:h-60"
                         />
                     ) : (
                         <div className="h-40 w-full rounded-2xl bg-stone-300 md:h-60 dark:bg-zinc-800"></div>
                     )}
+
+                    <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        ref={fileBannerRef}
+                        onChange={(e) => handleFileChange(e, "bannerFile")}
+                    />
 
                     <figure
                         className="group absolute bottom-0 left-1/2 h-30 w-30 -translate-x-1/2 cursor-pointer rounded-3xl ring-3 ring-white md:left-10 md:h-40 md:w-40 md:translate-x-0 lg:-bottom-2 dark:ring-zinc-900"
@@ -234,7 +209,7 @@ export const ViewProfile = () => {
                     >
                         <div className="relative h-full w-full">
                             <img
-                                src={previewImage ? previewImage : userData?.image}
+                                src={previewUser?.image as string}
                                 alt="Foto de perfil"
                                 className="relative h-full w-full rounded-3xl object-cover"
                             />
@@ -244,7 +219,7 @@ export const ViewProfile = () => {
                                 accept="image/*"
                                 className="hidden"
                                 ref={fileInputRef}
-                                onChange={handleFileChange}
+                                onChange={(e) => handleFileChange(e, "imageFile")}
                             />
 
                             <div className="text-title absolute bottom-[-10px] left-[-10px] grid place-items-center rounded-full bg-white p-2 opacity-100 shadow-[0px_0px_60px_1px_rgba(0,0,0,0.1)] transition-[opacity] duration-200 group-hover:opacity-100 lg:opacity-0 dark:bg-zinc-900">
@@ -255,7 +230,6 @@ export const ViewProfile = () => {
                 </div>
 
                 <div className="mt-5 px-2 lg:px-6">
-                    {/* USER E-MAIL, NAME AND PHONE */}
                     <div className="relative my-8 rounded-2xl p-5 py-6 ring-1 ring-zinc-300 lg:p-6 lg:px-8 dark:ring-zinc-700">
                         <div className="text-title mb-2 flex h-10 items-center justify-between gap-2 text-xl font-bold">
                             <h2 className="font-title">Informações pessoais</h2>
@@ -269,18 +243,16 @@ export const ViewProfile = () => {
                         <dl className="grid grid-cols-1 gap-4 py-5 text-sm md:text-[1rem] lg:grid-cols-3">
                             <InfoField
                                 topic="Nome Inteiro"
-                                info={`${previewFName} ${previewLName}`}
+                                info={`${previewUser?.fName} ${previewUser?.lName}`}
                             />
-                            <InfoField topic="Username" info={previewUsername!} />
-                            {/* <InfoField
-                                topic="Aniversário"
-                                info={previewUsername!}
-                            /> */}
+                            <InfoField topic="Username" info={previewUser?.username!} />
                         </dl>
                     </div>
-                    {/* USER ABOUT */}
+
                     <div
-                        className={`relative my-8 mt-2 rounded-2xl p-5 py-6 ring-1 ring-zinc-300 transition-[background-color] duration-200 lg:p-6 lg:px-8 dark:ring-zinc-700 ${editAbout ? "" : "bg-blue-50 dark:bg-zinc-800"}`}
+                        className={`relative my-8 mt-2 rounded-2xl p-5 py-6 ring-1 ring-zinc-300 transition-[background-color] duration-200 lg:p-6 lg:px-8 dark:ring-zinc-700 ${
+                            editAbout ? "" : "bg-blue-50 dark:bg-zinc-800"
+                        }`}
                     >
                         <div className="text-title mb-2 flex h-10 items-center justify-between gap-2 text-xl font-bold">
                             <h2 className="font-title">Sobre Mim</h2>
@@ -302,7 +274,7 @@ export const ViewProfile = () => {
                             <Textarea
                                 className={`h-35 resize-none text-sm`}
                                 id="about"
-                                value={previewAbout}
+                                value={previewUser?.about}
                                 placeholder="Nada Informado..."
                                 disabled={editAbout}
                                 onChange={(e) => handleAboutChange(e.target.value)}
