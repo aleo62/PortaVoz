@@ -48,7 +48,7 @@ router.put(
     authenticateUser,
     authenticateOwnerOrAdmin(async (req: Request) => {
         return req.params.userId;
-    }),
+}),
     upload.fields([
         { name: "image", maxCount: 1 },
         { name: "banner", maxCount: 1 },
@@ -60,7 +60,6 @@ router.put(
         .withMessage("username is required"),
     body("fName").optional().trim().notEmpty().withMessage("fName is required"),
     body("lName").optional().trim().notEmpty().withMessage("lName is required"),
-    body("about").optional().trim().notEmpty().withMessage("about is required"),
     validationError,
     editUser
 );

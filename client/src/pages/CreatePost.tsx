@@ -19,7 +19,6 @@ export const CreatePost = () => {
     const { data: responseStage, mutate: validateStage, isSuccess } = useValidateStage();
     const [isValidating, setIsValidating] = useState(false);
 
-    // Declare report form
     const [reportForm, setReportForm] = useState<Partial<PostData>>({
         title: "",
         desc: "",
@@ -27,15 +26,11 @@ export const CreatePost = () => {
         hashtags: [],
     });
 
-    // Declare report page
     const [reportPage, setReportPage] = useState(0);
     const barPosition = ["w-1/4", "w-2/4", "w-3/4", "w-4/4"];
 
-    // Declare report sections
     const reportSections = [PostContent, PostImages, PostTags, PostLocation];
     const ReportSection = reportSections[reportPage];
-
-    // Declare sections validation
     const validatedSections = [
         false /* content */,
         false /* images */,
@@ -58,7 +53,7 @@ export const CreatePost = () => {
 
     useEffect(() => {
         if (isSuccess) {
-            setIsValidating(false); // desliga aqui
+            setIsValidating(false);
             responseStage.data.valid
                 ? setReportPage((prev) => prev + 1)
                 : errorToast(responseStage.data.errors[0]);

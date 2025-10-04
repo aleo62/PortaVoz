@@ -3,7 +3,13 @@ import { portaVozLogo, SidebarItems, SidebarSpecialItems } from "@/utils/data";
 import { useUser } from "@/contexts/UserContext";
 import { useTheme } from "@/hooks/useTheme";
 import { useIsMobile } from "@/utils/isMobile";
-import { IconChevronLeftPipe, IconChevronRightPipe, IconMoon, IconSearch, IconSun } from "@tabler/icons-react";
+import {
+    IconChevronLeftPipe,
+    IconChevronRightPipe,
+    IconMoon,
+    IconSearch,
+    IconSun,
+} from "@tabler/icons-react";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { SearchOverlay } from "../overlay/SearchOverlay";
@@ -56,8 +62,12 @@ export const Sidebar = ({
                     </div>
 
                     <ul className={`space-y-2 p-5 px-1 ${!isOpen ? "items-center" : ""}`}>
-
-                        <div onClick={() => setSearchOpen(true)} className="text-title p-3 bg-zinc-200 dark:bg-zinc-700 flex items-center justify-center"><IconSearch className="size-5"/></div>
+                        <div
+                            onClick={() => setSearchOpen(true)}
+                            className="text-title flex items-center justify-center rounded-lg bg-zinc-100 p-3 ring-1 ring-zinc-200/70 dark:bg-zinc-800 dark:ring-zinc-700/70"
+                        >
+                            <IconSearch className="size-5" />
+                        </div>
 
                         {SidebarItems.map(({ label, icon, href }, key) => (
                             <SidebarItem

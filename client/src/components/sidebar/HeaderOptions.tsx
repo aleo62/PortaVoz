@@ -60,7 +60,7 @@ export const HeaderOptions = () => {
                 </a>
             ))}
 
-            {/* {!isMobile && <Button Icon={IconPlus} text="Criar" small />} */}
+            
         </div>
     );
 };

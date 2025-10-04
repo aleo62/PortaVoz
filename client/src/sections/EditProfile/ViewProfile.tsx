@@ -8,7 +8,7 @@ import { UserData } from "@/utils/types/userDataType";
 
 import { IconArrowRight, IconEdit, IconPencil, IconUserCog } from "@tabler/icons-react";
 
-import { useEditUser } from "@/hooks/user/useEditUser";
+import { useUpdateUser } from "@/hooks/user/useUpdateUser";
 import { useUserById } from "@/hooks/user/useUser";
 import { useEffect, useRef, useState } from "react";
 
@@ -19,11 +19,10 @@ type PreviewUser = UserData & {
 
 export const ViewProfile = () => {
     const { data: userData } = useUserById();
-    const editUser = useEditUser();
+    const { mutateAsync: updateUser, isPending: isLoading } = useUpdateUser();
 
     const [editInfo, setEditInfo] = useState(false);
     const [editAbout, setEditAbout] = useState(true);
-    // const [loading, setLoading] = useState(true);
     const [unsave, setUnsave] = useState(false);
     const [previewUser, setPreviewUser] = useState<PreviewUser>();
 
@@ -33,7 +32,6 @@ export const ViewProfile = () => {
     useEffect(() => {
         if (userData) {
             setPreviewUser(userData);
-            setLoading(false);
         }
     }, [userData]);
 
@@ -75,9 +73,9 @@ export const ViewProfile = () => {
             formData.append("lName", previewUser.lName);
             formData.append("about", previewUser.about!);
 
-            await editUser.mutateAsync({ userData: formData, userId: userData._id });
+            await updateUser({ userData: formData, userId: userData._id });
         } catch (error) {
-            console.log(error);
+            setPreviewUser(userData);
         } finally {
             setUnsave(false);
             setEditAbout(true);
@@ -175,31 +173,42 @@ export const ViewProfile = () => {
                 </EditModal>
             )}
 
+            <UnsaveContainer
+                isLoading={isLoading}
+                isOpen={unsave}
+                onCancel={handleCancelUnsave}
+                onSave={handleUpdateUser}
+            />
             <div
-                className={`relative w-full max-w-4xl overflow-hidden rounded-2xl bg-white p-1 pb-10 shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] lg:mx-0 dark:bg-zinc-900`}
+                className={`w-full max-w-4xl overflow-hidden rounded-2xl bg-white p-1 pb-10 shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] lg:mx-0 dark:bg-zinc-900`}
             >
-                {unsave && (
-                    <UnsaveContainer onCancel={handleCancelUnsave} onSave={handleUpdateUser} />
-                )}
-
                 <div className="relative">
-                    {previewUser?.banner ? (
-                        <img
-                            src={previewUser.banner as string}
-                            alt="Banner"
-                            className="h-40 w-full rounded-2xl object-cover md:h-60"
-                        />
-                    ) : (
-                        <div className="h-40 w-full rounded-2xl bg-stone-300 md:h-60 dark:bg-zinc-800"></div>
-                    )}
+                    <figure
+                        className="group relative h-40 w-full cursor-pointer rounded-2xl bg-stone-300 md:h-60 dark:bg-zinc-800"
+                        onClick={() => {
+                            fileBannerRef.current?.click();
+                        }}
+                    >
+                        {previewUser?.banner && (
+                            <img
+                                src={previewUser.banner as string}
+                                alt="Banner"
+                                className="absolute h-full w-full rounded-2xl object-cover"
+                            />
+                        )}
 
-                    <input
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        ref={fileBannerRef}
-                        onChange={(e) => handleFileChange(e, "bannerFile")}
-                    />
+                        <div className="text-title absolute top-[10px] right-[10px] grid place-items-center rounded-full bg-white p-2 opacity-100 shadow-[0px_0px_60px_1px_rgba(0,0,0,0.1)] transition-[opacity] duration-200 group-hover:opacity-100 lg:opacity-0 dark:bg-zinc-900">
+                            <IconPencil className="size-5 lg:size-8" />
+                        </div>
+
+                        <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            ref={fileBannerRef}
+                            onChange={(e) => handleFileChange(e, "bannerFile")}
+                        />
+                    </figure>
 
                     <figure
                         className="group absolute bottom-0 left-1/2 h-30 w-30 -translate-x-1/2 cursor-pointer rounded-3xl ring-3 ring-white md:left-10 md:h-40 md:w-40 md:translate-x-0 lg:-bottom-2 dark:ring-zinc-900"

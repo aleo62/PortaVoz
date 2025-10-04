@@ -149,7 +149,7 @@ export class Server {
     }
 
     // PUT User
-    static async editUser(userData: FormData, userId: string, token: string) {
+    static async updateUser(userData: FormData, userId: string, token: string) {
         return axios.put(`${this.baseUrl}users/${userId}`, userData, {
             headers: { Authorization: `Bearer ${token}` },
         });
