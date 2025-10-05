@@ -225,9 +225,10 @@ export const createPost = async (
         const _id = generateId(config.SYSTEM_ID_SIZE, "P_"),
             user = uid,
             severity = "pequena",
-            hashtagsFormatted = hashtags.map((tag: string) =>
-                tag.toLowerCase()
-            );
+            hashtagsFormatted =
+                typeof hashtags === "string"
+                    ? [(hashtags as string).toLowerCase()]
+                    : hashtags.map((tag: string) => tag.toLowerCase());
 
         // Cria o novo post no banco de dados
         const newPost = await Post.create({

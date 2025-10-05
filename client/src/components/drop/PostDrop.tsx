@@ -1,5 +1,5 @@
 import { useToast } from "@/contexts/ToastContext";
-import { copyToClipboard } from "@/utils/copyClipboard";
+import { copyToClipboard } from "@/utils/functions/copyToClipboard";
 import { IconAlertTriangle, IconLink, IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
 import { SpinnerCircular } from "spinners-react";

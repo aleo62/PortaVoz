@@ -4,7 +4,7 @@ import { PostPreviewSkeleton } from "@/components/ui/PostPreviewSkeleton";
 import { PostReflected } from "@/components/ui/PostReflected";
 import { PostSkeleton } from "@/components/ui/PostSkeleton";
 import { useDeletePost } from "@/hooks/posts/useDeletePost";
-import { useIsMobile } from "@/utils/isMobile";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { usePosts } from "@hooks/posts/usePosts";
 import { IconPlus } from "@tabler/icons-react";
 import { PostData } from "@utils/types/postDataType";
@@ -52,7 +52,7 @@ export const Posts = () => {
 
     return (
         <>
-            <div className="w-full h-fit pb-5">
+            <div className="h-fit w-full pb-5">
                 {!useIsMobile() && <HeaderSidebar />}
                 <div className="mx-auto w-full max-w-6xl gap-3 space-y-1 border-b-1 border-b-zinc-200 pb-8 lg:px-5 dark:border-b-zinc-700">
                     <h2 className="text-title font-title text-md font-medium">Repercutidos</h2>
@@ -75,7 +75,14 @@ export const Posts = () => {
                                     className="w-full"
                                 >
                                     {reflectedPosts.map(
-                                        ({ _id, title, desc, images, upvotesCount, commentsCount }) => (
+                                        ({
+                                            _id,
+                                            title,
+                                            desc,
+                                            images,
+                                            upvotesCount,
+                                            commentsCount,
+                                        }) => (
                                             <SwiperSlide key={_id} className="!w-auto py-2">
                                                 <PostReflected
                                                     title={title}
@@ -94,10 +101,10 @@ export const Posts = () => {
                 </div>
 
                 <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-5 pt-8 lg:px-6">
-                    <div className="flex items-center gap-1 text-[.7rem] lg:text-xs lg:mb-5">
+                    <div className="flex items-center gap-1 text-[.7rem] lg:mb-5 lg:text-xs">
                         <button
                             onClick={() => (setDateFilter("asc"), feedRefetch())}
-                            className={`text-title rounded-lg px-5 p-3 lg:px-7 ${dateFilter === "asc" ? "bg-white ring-1 ring-zinc-200 dark:bg-zinc-900/30 dark:ring-zinc-800" : "hover:bg-zinc-100 hover:dark:bg-zinc-800"} font-medium`}
+                            className={`text-title rounded-lg p-3 px-5 lg:px-7 ${dateFilter === "asc" ? "bg-white ring-1 ring-zinc-200 dark:bg-zinc-900/30 dark:ring-zinc-800" : "hover:bg-zinc-100 hover:dark:bg-zinc-800"} font-medium`}
                         >
                             Mais antigos
                         </button>

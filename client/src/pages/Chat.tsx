@@ -5,7 +5,7 @@ import { InputChat } from "@/components/ui/InputChat";
 import { Message } from "@/components/ui/Message";
 import { useChats } from "@/hooks/chat/useChats";
 import { useMessages } from "@/hooks/messages/useMessages";
-import { useUserById } from "@/hooks/user/useUser";
+import { useStoreUser } from "@/stores/userStore";
 import { ChatData } from "@/utils/types/chatDataType";
 import { MessageData } from "@/utils/types/messageDataType";
 import { FormEvent, useEffect, useRef, useState } from "react";
@@ -18,7 +18,7 @@ export const Chat = () => {
     const chatRef = useRef<HTMLDivElement | null>(null);
     const [chatId, setChatId] = useState<string>("");
     const [inputText, setInputText] = useState<string>("");
-    const { data: userData } = useUserById();
+    const { user: userData } = useStoreUser();
     const userId = userData?._id;
     const socketRef = useRef<Socket | null>(null);
     const [messages, setMessages] = useState<MessageData[]>([]);
@@ -83,7 +83,7 @@ export const Chat = () => {
     return (
         <>
             <div
-                className={`flex w-full h-full items-center divide-zinc-300 lg:divide-x-1 dark:divide-zinc-700 ${chatId && "max-lg:h-[97dvh] max-lg:py-1"}`}
+                className={`flex h-full w-full items-center divide-zinc-300 lg:divide-x-1 dark:divide-zinc-700 ${chatId && "max-lg:h-[97dvh] max-lg:py-1"}`}
             >
                 <aside
                     className={`text-title mr-auto h-full w-full lg:max-w-89 lg:p-3 lg:py-8 ${chatId && "max-lg:hidden"}`}
@@ -128,7 +128,7 @@ export const Chat = () => {
                             <Message
                                 key={message._id ?? index}
                                 message={message}
-                                userId={userId}
+                                userId={userId!}
                                 ownNext={
                                     index < messages.length - 1 &&
                                     messages[index + 1]?.senderId === message.senderId

@@ -1,12 +1,12 @@
 import { auth } from "@/firebase";
+import { useStoreUser } from "@/stores/userStore";
 import { Server } from "@api/Server";
-import { useUser } from "@contexts/UserContext";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 export function useNotifications(userIdProp?: string) {
-    const { userDecoded } = useUser();
-    const token = userDecoded?.token;
+    const { user } = useStoreUser();
+    const token = user?.token;
 
     const [userId, setUserId] = useState<string | null>(null);
 

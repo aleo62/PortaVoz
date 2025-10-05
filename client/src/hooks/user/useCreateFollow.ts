@@ -1,10 +1,10 @@
+import { useStoreUser } from "@/stores/userStore";
 import { Server } from "@api/Server";
-import { useUser } from "@contexts/UserContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useCreateFollow() {
-    const { userDecoded } = useUser();
-    const token = userDecoded?.token;
+    const { user } = useStoreUser();
+    const token = user?.token;
 
     const queryClient = useQueryClient();
 

@@ -1,6 +1,6 @@
-import { useUserById } from "@/hooks/user/useUser";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { useStoreUser } from "@/stores/userStore";
 import { SidebarConfig } from "@/utils/data";
-import { useIsMobile } from "@/utils/isMobile";
 import { IconSelector } from "@tabler/icons-react";
 import { useState } from "react";
 import { NotificationDrop } from "../drop/NotificationDrop";
@@ -8,7 +8,7 @@ import { UserDrop } from "../drop/UserDrop";
 
 export const HeaderOptions = () => {
     const isMobile = useIsMobile();
-    const { data: userData } = useUserById();
+    const userData = useStoreUser((state) => state.user);
     const [activeUserDrop, setActiveUserDrop] = useState(false);
     const [activeNotificationDrop, setActiveNotificationDrop] = useState(false);
 
@@ -28,7 +28,7 @@ export const HeaderOptions = () => {
 
                 <a href="/profile" className="mr-1">
                     <figure className="tansiton-[box-shadow] mx-auto h-10 w-10 cursor-pointer overflow-clip rounded-xl shadow-md duration-300 hover:shadow-lg">
-                        <img src={userData?.image} width={100} alt="" />
+                        <img src={userData?.image as string} width={100} alt="" />
                     </figure>
                 </a>
                 <div onClick={() => setActiveUserDrop(!activeUserDrop)}>
@@ -47,7 +47,7 @@ export const HeaderOptions = () => {
                     onClick={() => setActiveNotificationDrop(!activeNotificationDrop)}
                 >
                     <Icon key={key} className="size-6 fill-zinc-200 dark:fill-zinc-800" />
-                    {userData?.meta.counters.unreadNotifications > 0 && (
+                    {userData?.meta.counters.unreadNotifications! > 0 && (
                         <span className="ring-body-background absolute top-[-2px] left-[-5px] flex h-3.5 w-3.5 items-center justify-center rounded-full bg-red-500 text-[.7rem] text-white ring-2 content-['']">
                             {userData?.meta.counters.unreadNotifications}
                         </span>
@@ -59,8 +59,6 @@ export const HeaderOptions = () => {
                     />
                 </a>
             ))}
-
-            
         </div>
     );
 };

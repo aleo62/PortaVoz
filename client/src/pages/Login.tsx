@@ -10,9 +10,8 @@ import { Loader } from "@/components/ui/Loader";
 import { Widgets } from "@/components/ui/Widgets";
 import { useToast } from "@/contexts/ToastContext";
 import { auth } from "@/firebase";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { portaVozLogo } from "@/utils/data";
-import { useIsMobile } from "@/utils/isMobile";
-import facebook from "@assets/images/icons/facebook.png";
 import { IconArrowLeft, IconArrowUpRight } from "@tabler/icons-react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { AnimatePresence } from "framer-motion";
@@ -155,7 +154,13 @@ export const Login = () => {
                                 <GoogleButton />
 
                                 <Widgets>
-                                    <img src={facebook} alt="" width={isMobile ? 20 : 25} />
+                                    <img
+                                        src={
+                                            "https://res.cloudinary.com/di5bma0gm/image/upload/v1759595924/facebook_ry41ii.png"
+                                        }
+                                        alt=""
+                                        width={isMobile ? 20 : 25}
+                                    />
                                     <p className="text-sm">Entrar com a FaceBook</p>
                                 </Widgets>
                             </div>

@@ -1,4 +1,4 @@
-import { useUserById } from "@/hooks/user/useUser";
+import { useStoreUser } from "@/stores/userStore";
 import { NavItems } from "@/utils/data";
 import { IconArrowRight } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +7,8 @@ import { Button } from "../ui/Button";
 
 export const HeaderDrop = ({ isOpen, orientation, onClose }: DropdownTemplateProps) => {
     const navigate = useNavigate();
-    const { data: user } = useUserById();
+    const { user } = useStoreUser();
+
     return (
         <DropdownTemplate isOpen={isOpen} onClose={onClose} orientation={orientation}>
             <nav className="divide-y-1 divide-zinc-100 p-1 dark:divide-zinc-700">

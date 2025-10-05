@@ -1,10 +1,10 @@
+import { useStoreUser } from "@/stores/userStore";
 import { Server } from "@api/Server";
-import { useUser } from "@contexts/UserContext";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 export function useMessages(chatId: string | null) {
-    const { userDecoded } = useUser();
-    const token = userDecoded?.token;
+    const { user } = useStoreUser();
+    const token = user?.token;
 
     return useInfiniteQuery({
         queryKey: ["messages", chatId],
@@ -13,6 +13,5 @@ export function useMessages(chatId: string | null) {
             lastPage.hasMore ? allPages.length + 1 : undefined,
         initialPageParam: 1,
         enabled: !!token && !!chatId,
-        
     });
 }

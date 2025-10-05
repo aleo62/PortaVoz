@@ -4,11 +4,10 @@ import { useEffect, useState } from "react";
 import { useComments } from "@/hooks/comments/useComments";
 import { useCreateComment } from "@/hooks/comments/useCreateComment";
 import { useDeleteComment } from "@/hooks/comments/useDeleteComment";
-import { useUserById } from "@/hooks/user/useUser";
-import { useIsMobile } from "@/utils/isMobile";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { useStoreUser } from "@/stores/userStore";
 import { CommentData } from "@/utils/types/commentDataType";
 import { PostData } from "@/utils/types/postDataType";
-import { UserData } from "@/utils/types/userDataType";
 import { useInView } from "react-intersection-observer";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { OverlayTemplate, OverlayTemplateProps } from "../templates/OverlayTemplate";
@@ -21,13 +20,13 @@ type SearchOverlayProps = OverlayTemplateProps & {
 export const PostOverlay = ({ isOpen, onClose, post }: SearchOverlayProps) => {
     const isMobile = useIsMobile();
     const [commentInput, setCommentInput] = useState("");
-    const { data: userData } = useUserById();
+    const { user: userData } = useStoreUser();
 
     // COMMENT MANAGEMENT
     const { data, isLoading, fetchNextPage, hasNextPage } = useComments(post._id);
     let comments: CommentData[] = data?.pages.flatMap((page) => page.comments) ?? [];
 
-    const createComment = useCreateComment(userData as UserData);
+    const createComment = useCreateComment();
     const handleCreateComment = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -124,7 +123,12 @@ export const PostOverlay = ({ isOpen, onClose, post }: SearchOverlayProps) => {
                         className="mt-2 flex items-center gap-3 border-t border-zinc-200 pt-2 dark:border-zinc-700"
                         onSubmit={(e) => handleCreateComment(e)}
                     >
-                        <img src={userData.image} alt="" className="h-10 w-10 rounded-full" />
+                        <img
+                            src={userData?.image as string}
+                            alt=""
+                            className="h-10 w-10 rounded-full"
+                        />
+
                         <input
                             type="text"
                             placeholder="Adicione um comentário"

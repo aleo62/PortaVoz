@@ -24,7 +24,7 @@ export const Mobile = () => {
                 <div className="flex h-full flex-col justify-between">
                     <div>
                         <motion.h2
-                            className="title !text-white"
+                            className="title !text-white mb-2"
                             variants={headline}
                             initial="hidden"
                             whileInView="show"

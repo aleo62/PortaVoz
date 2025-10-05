@@ -21,8 +21,6 @@ const validateByStage: Record<string, any[]> = {
         body("hashtags")
             .notEmpty()
             .withMessage("hashtags is required")
-            .isArray()
-            .withMessage("hashtags must be an array"),
     ],
 };
 

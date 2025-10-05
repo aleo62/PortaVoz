@@ -1,14 +1,13 @@
 import { SearchOverlay } from "@/components/overlay/SearchOverlay";
 import { Button } from "@/components/ui/Button";
 import { Navbar } from "@/components/ui/Navbar";
-import { useUser } from "@/contexts/UserContext";
 import { useTheme } from "@/hooks/useTheme";
 import { portaVozLogo } from "@/utils/data";
 import { IconLogin, IconMoon, IconSearch, IconTrendingUp } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 
 export const Header = ({ search = true }: { search?: boolean }) => {
-    const { userDecoded } = useUser();
+    const { user } = useStoreUser();
     const [hidden, setHidden] = useState(false);
     const [outside, setOutside] = useState(false);
     const [lastScrollY, setLastScrollY] = useState(0);

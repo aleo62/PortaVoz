@@ -1,7 +1,7 @@
 import { Sidebar } from "@/components/sidebar/Sidebar";
 import { SidebarMobileHeader } from "@/components/sidebar/SidebarMobileHeader";
 import { useState } from "react";
-import { useIsMobile } from "../isMobile";
+import { useIsMobile } from "../../hooks/useIsMobile";
 export const SidebarLayout = ({
     children,
     noHeader,

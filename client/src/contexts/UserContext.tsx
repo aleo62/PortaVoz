@@ -1,52 +1,32 @@
-import { getAuth, onAuthStateChanged, User } from "firebase/auth";
-import { createContext, useContext, useEffect, useState } from "react";
-
-type UserDecoded = {
-    uid: string;
-    token: string;
-    claims: Record<string, any>;
-    isVerified: boolean;
-};
-
-type UserContextType = {
-    userDecoded: UserDecoded | null;
-};
-
-const UserContext = createContext<UserContextType | undefined>(undefined);
+import { Server } from "@/api/Server";
+import { useStoreUser } from "@/stores/userStore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useEffect } from "react";
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-    const [userDecoded, setUserDecoded] = useState<UserDecoded | null>(null);
-
-    const fetchUserDecoded = async (userAuth: User) => {
-        const tokenResult = await userAuth.getIdTokenResult(true);
-        return {
-            uid: userAuth.uid,
-            token: tokenResult.token,
-            claims: tokenResult.claims,
-            isVerified: userAuth.emailVerified
-        };
-    };
+    const { setUser } = useStoreUser();
 
     useEffect(() => {
         const auth = getAuth();
         const unsubscribe = onAuthStateChanged(auth, async (userAuth) => {
             if (userAuth) {
-                setUserDecoded(await fetchUserDecoded(userAuth));
-            } else {
-                setUserDecoded(null);
+                try {
+                    const decoded = await userAuth.getIdTokenResult(true);
+                    const userData = await Server.getUserById(userAuth.uid, decoded.token);
+                    setUser({
+                        ...userData,
+                        token: decoded.token,
+                        claims: decoded.claims,
+                        isVerified: userAuth.emailVerified,
+                    });
+                } catch (err) {
+                    console.error("Erro ao buscar usuário:", err);
+                }
             }
         });
 
         return () => unsubscribe();
-    }, []);
+    }, [setUser]);
 
-    return <UserContext.Provider value={{ userDecoded }}>{children}</UserContext.Provider>;
-};
-
-export const useUser = () => {
-    const context = useContext(UserContext);
-    if (context === undefined) {
-        throw new Error("useUser must be used within a UserProvider");
-    }
-    return context;
+    return <>{children}</>;
 };

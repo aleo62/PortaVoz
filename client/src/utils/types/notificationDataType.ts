@@ -2,7 +2,7 @@ export interface NotificationData {
     _id: string,
     userId: string;
     senderId: string;
-    senderPhoto: string;
+    senderImage: string;
     title: string;
     content: string;
     href: string;

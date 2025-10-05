@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { useTheme } from "@/hooks/useTheme";
 
-import { useAutoLogout } from "@utils/useLogoutTime";
+import { useAutoLogout } from "@/hooks/useLogoutTime";
 import { Providers } from "./app/Providers";
 import { AppRoutes } from "./app/Routes";
 function App() {

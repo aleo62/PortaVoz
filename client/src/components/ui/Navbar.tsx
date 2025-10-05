@@ -1,4 +1,4 @@
-import { useIsMobile } from "@/utils/isMobile";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { IconMenu, IconX } from "@tabler/icons-react";
 import { NavItems } from "@utils/data";
 import { useState } from "react";

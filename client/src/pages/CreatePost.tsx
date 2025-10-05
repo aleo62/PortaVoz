@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 
 export const CreatePost = () => {
     const { errorToast } = useToast();
-    const createPost = useCreatePost();
+    const { mutateAsync: createPost, isSuccess: created, isError } = useCreatePost();
     const navigate = useNavigate();
     const { data: responseStage, mutate: validateStage, isSuccess } = useValidateStage();
     const [isValidating, setIsValidating] = useState(false);
@@ -64,7 +64,7 @@ export const CreatePost = () => {
         const registerPost = async () => {
             if (reportPage !== reportSections.length) return;
 
-            await createPost.mutate({ formData: reportForm });
+            await createPost({ formData: reportForm });
         };
 
         registerPost();
@@ -179,7 +179,13 @@ export const CreatePost = () => {
                     </>
                 ) : (
                     <div className="mx-auto mt-40 w-fit">
-                        <h1 className="text-title mt-5 text-2xl font-bold">Registrando...</h1>
+                        <h1 className="text-title mt-5 text-2xl font-bold">
+                            {isError
+                                ? "Error aaaaaa"
+                            : created
+                                  ? "Registrado!"
+                                  : "Registrando..."}
+                        </h1>
                     </div>
                 )}
             </main>

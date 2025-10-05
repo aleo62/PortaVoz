@@ -1,30 +1,30 @@
-import { useUser } from "@/contexts/UserContext";
+import { useStoreUser } from "@/stores/userStore";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 type ProtectedLayoutProps = {
-  children: React.ReactNode;
-  onlyGuest?: boolean;
-  onlyAdmin?: boolean;
+    children: React.ReactNode;
+    onlyGuest?: boolean;
+    onlyAdmin?: boolean;
 };
 
 export const ProtectedLayout = ({ children, onlyGuest, onlyAdmin }: ProtectedLayoutProps) => {
-  const { userDecoded } = useUser();
-  const navigate = useNavigate();
+    const { user } = useStoreUser();
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    if (onlyGuest && userDecoded) {
-      navigate("/feed");
-    }
+    useEffect(() => {
+        if (onlyGuest && user) {
+            navigate("/feed");
+        }
 
-    if (!onlyGuest && !userDecoded) {
-      navigate("/auth/login");
-    }
+        if (!onlyGuest && !user) {
+            navigate("/auth/login");
+        }
 
-    if (onlyAdmin && userDecoded && !userDecoded.claims?.admin) {
-      navigate("/");
-    }
-  }, [userDecoded, onlyGuest, onlyAdmin, navigate]);
+        if (onlyAdmin && user && !user.claims?.admin) {
+            navigate("/");
+        }
+    }, [user, onlyGuest, onlyAdmin, navigate]);
 
-  return <>{children}</>;
+    return <>{children}</>;
 };

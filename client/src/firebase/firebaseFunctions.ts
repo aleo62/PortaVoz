@@ -1,11 +1,11 @@
-import { createUserService } from "@/services/users/createUser";
+import { Server } from "@/api/Server";
+import { useUserById } from "@/hooks/user/useUserById";
 import {
     createUserWithEmailAndPassword,
     sendEmailVerification,
     signInWithPopup,
 } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
-import { auth, db, googleProvider } from ".";
+import { auth, googleProvider } from ".";
 
 type registerUserEmailAndPasswordProps = {
     email: string;
@@ -25,7 +25,7 @@ export const registerUserEmailAndPassword = async ({
         const user = (await createUserWithEmailAndPassword(auth, email, password)).user;
         const token = await user.getIdToken();
 
-        await createUserService({ fName, lName }, token);
+        await Server.createUser({ fName, lName }, token);
 
         await sendEmailVerification(user);
     } catch (err) {
@@ -37,13 +37,11 @@ export const registerUserGoogle = async () => {
     try {
         const googleUser = await signInWithPopup(auth, googleProvider);
         const user = googleUser.user;
+        const exists = await useUserById(user.uid);
 
-        const userRef = doc(db, "Users", user.uid);
-        const userSnap = await getDoc(userRef);
-
-        if (!userSnap.exists()) {
+        if (!exists) {
             const token = await user.getIdToken();
-            await createUserService(
+            await await Server.createUser(
                 {
                     fName: user.displayName?.split(" ")[0]!,
                     lName: user.displayName?.split(" ")[1]!,

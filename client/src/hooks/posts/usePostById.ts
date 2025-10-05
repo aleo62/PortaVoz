@@ -1,15 +1,14 @@
-import { useQuery } from "@tanstack/react-query";
+import { useStoreUser } from "@/stores/userStore";
 import { Server } from "@api/Server";
-import { useUser } from "@contexts/UserContext";
+import { useQuery } from "@tanstack/react-query";
 
 export function usePostById(id: string, enabled: boolean) {
-    const { userDecoded } = useUser();
-    const token = userDecoded?.token;
+    const { user } = useStoreUser();
+    const token = user?.token;
 
     return useQuery({
         queryKey: ["posts", id],
         queryFn: () => Server.getPostById(id, token!),
-        enabled: !!token && !!id && enabled
-        
+        enabled: !!token && !!id && enabled,
     });
 }

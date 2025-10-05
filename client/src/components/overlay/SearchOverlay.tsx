@@ -5,7 +5,7 @@ import { usePosts } from "@/hooks/posts/usePosts";
 import { useUsersByName } from "@/hooks/user/useUsersByName";
 import { PostData } from "@/utils/types/postDataType";
 import { UserData } from "@/utils/types/userDataType";
-import { SetStateAction, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { SpinnerCircular } from "spinners-react";
 import { OverlayTemplate, OverlayTemplateProps } from "../templates/OverlayTemplate";
 import { PostPreview } from "../ui/PostPreview";
@@ -20,6 +20,8 @@ export const SearchOverlay = ({ isOpen, onClose }: OverlayTemplateProps) => {
     const [activeTopic, setActiveTopic] = useState<1 | 2 | 3>(1);
 
     const [search, setSearch] = useState<string>("");
+    const [searchInput, setSearchInput] = useState<string>("");
+    const [isTyping, setIsTyping] = useState<boolean>(false);
     const { data: feedData, isLoading: feedLoading } = usePosts(
         { search },
         isOpen && activeTopic == 1,
@@ -32,6 +34,19 @@ export const SearchOverlay = ({ isOpen, onClose }: OverlayTemplateProps) => {
 
     let posts: PostData[] = (feedData?.pages.flatMap((page) => page.posts) as PostData[]) || [];
     let users: UserData[] = (usersData?.pages.flatMap((page) => page.users) as UserData[]) || [];
+
+    useEffect(() => {
+        if (!isOpen) return;
+
+        setIsTyping(true);
+
+        const timeout = setTimeout(() => {
+            setSearch(searchInput);
+            setIsTyping(false);
+        }, 1500);
+
+        return () => clearTimeout(timeout);
+    }, [searchInput]);
     return (
         <OverlayTemplate isOpen={isOpen} onClose={onClose}>
             <motion.div
@@ -47,14 +62,8 @@ export const SearchOverlay = ({ isOpen, onClose }: OverlayTemplateProps) => {
                         type="text"
                         placeholder="Pesquisar por denúncias, comunidade, etc..."
                         className="text-title flex-1 border-0 px-2 py-5 text-sm outline-0"
-                        onChange={(e) => setSearch(e.target.value)}
+                        onChange={(e) => setSearchInput(e.target.value)}
                     />
-                    <button
-                        onClick={onClose}
-                        className="h-fit rounded-sm bg-gradient-to-br from-stone-100 to-stone-300/50 to-125% p-1 px-3 text-sm shadow-[0px_3px_0px_0px_rgba(0,_0,_0,_0.3)] inset-ring-1 inset-ring-zinc-300 focus:translate-y-[3px] focus:shadow-[0px_1px_0px_0px_rgba(0,_0,_0,_0.3)] dark:from-stone-600 dark:to-stone-800 dark:text-white dark:inset-ring-zinc-900"
-                    >
-                        esc
-                    </button>
                 </header>
                 <main className="py-2">
                     <ul className="flex items-center border-b-1 border-zinc-200 px-2 text-zinc-400 lg:px-5 dark:border-zinc-800 dark:text-zinc-600">
@@ -70,38 +79,51 @@ export const SearchOverlay = ({ isOpen, onClose }: OverlayTemplateProps) => {
                             </li>
                         ))}
                     </ul>
-                    <div className="text-subtitle w-full p-2 lg:p-4">
-                        {activeTopic === 1 &&
-                            (posts.length > 0 ? (
-                                posts.map((post) => <PostPreview post={post} />)
-                            ) : feedLoading ? (
-                                <SpinnerCircular
-                                    size={10}
-                                    thickness={180}
-                                    speed={100}
-                                    color="#3d69d8"
-                                    secondaryColor="rgba(0, 0, 0, 0)"
-                                    className="ml-auto"
-                                />
-                            ) : (
-                                "Nada encontrado ;("
-                            ))}
+                    <div className="text-subtitle w-full space-y-1.5 p-2 lg:p-4">
+                        {isTyping ? (
+                            <SpinnerCircular
+                                size={30}
+                                thickness={180}
+                                speed={100}
+                                color="#3d69d8"
+                                secondaryColor="rgba(0, 0, 0, 0)"
+                                className="mx-auto"
+                            />
+                        ) : (
+                            <>
+                                {activeTopic === 1 &&
+                                    (posts.length > 0 ? (
+                                        posts.map((post) => <PostPreview post={post} />)
+                                    ) : feedLoading ? (
+                                        <SpinnerCircular
+                                            size={30}
+                                            thickness={180}
+                                            speed={100}
+                                            color="#3d69d8"
+                                            secondaryColor="rgba(0, 0, 0, 0)"
+                                            className="mx-auto"
+                                        />
+                                    ) : (
+                                        "Nada encontrado ;("
+                                    ))}
 
-                        {activeTopic === 2 &&
-                            (users.length > 0 ? (
-                                users.map((user) => <UserPreview user={user} />)
-                            ) : usersLoading ? (
-                                <SpinnerCircular
-                                    size={10}
-                                    thickness={180}
-                                    speed={100}
-                                    color="#3d69d8"
-                                    secondaryColor="rgba(0, 0, 0, 0)"
-                                    className="ml-auto"
-                                />
-                            ) : (
-                                "Nada encontrado ;("
-                            ))}
+                                {activeTopic === 2 &&
+                                    (users.length > 0 ? (
+                                        users.map((user) => <UserPreview user={user} />)
+                                    ) : usersLoading ? (
+                                        <SpinnerCircular
+                                            size={30}
+                                            thickness={180}
+                                            speed={100}
+                                            color="#3d69d8"
+                                            secondaryColor="rgba(0, 0, 0, 0)"
+                                            className="mx-auto"
+                                        />
+                                    ) : (
+                                        "Nada encontrado ;("
+                                    ))}
+                            </>
+                        )}
                     </div>
                 </main>
             </motion.div>

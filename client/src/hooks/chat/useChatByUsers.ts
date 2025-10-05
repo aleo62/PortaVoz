@@ -1,14 +1,14 @@
+import { useStoreUser } from "@/stores/userStore";
 import { Server } from "@api/Server";
-import { useUser } from "@contexts/UserContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useChatByUsers() {
-    const { userDecoded } = useUser();
-    const token = userDecoded?.token;
+    const { user } = useStoreUser();
+    const token = user?.token;
 
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: ({ otherUserId }: { otherUserId: string }) => 
+        mutationFn: ({ otherUserId }: { otherUserId: string }) =>
             Server.getChatByUserId(token!, otherUserId),
 
         onError: (error) => {
@@ -18,6 +18,5 @@ export function useChatByUsers() {
         onSettled: (_data, _err, { otherUserId }) => {
             queryClient.invalidateQueries({ queryKey: ["chats", otherUserId] });
         },
-       
     });
 }

@@ -1,11 +1,11 @@
 import { HeaderSidebar } from "@/components/sidebar/HeaderSidebar";
 import { ProfileSkeleton } from "@/components/ui/ProfileSkeleton";
-import { useUser } from "@/contexts/UserContext";
 import { useChatByUsers } from "@/hooks/chat/useChatByUsers";
 import { useCreateFollow } from "@/hooks/user/useCreateFollow";
 import { useDeleteFollow } from "@/hooks/user/useDeleteFollow";
 import { useFollow } from "@/hooks/user/useFollow";
-import { useUserById } from "@/hooks/user/useUser";
+import { useUserById } from "@/hooks/user/useUserById";
+import { useStoreUser } from "@/stores/userStore";
 import { IconMessage2 } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -14,7 +14,7 @@ export const Profile = () => {
     const { userId } = useParams();
     const { data, isLoading } = useFollow(userId!);
 
-    const { userDecoded } = useUser();
+    const { user: userData } = useStoreUser();
     const { data: user } = useUserById(userId!);
 
     const createFollow = useCreateFollow();
@@ -57,8 +57,8 @@ export const Profile = () => {
         <div className="w-full">
             <HeaderSidebar linkBack />
 
-            <section className="mx-auto w-full max-w-4xl rounded-2xl bg-white pb-12 shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] lg:rounded-3xl lg:p-2 lg:pb-14 dark:bg-zinc-900">
-                <header>
+            <section className="mx-auto w-full max-w-4xl">
+                <header className="rounded-2xl bg-white pb-12 shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] lg:rounded-3xl lg:p-2 lg:pb-14 dark:bg-zinc-900">
                     <div className="text-title relative h-full w-full">
                         {user?.banner ? (
                             <img
@@ -88,7 +88,7 @@ export const Profile = () => {
                         </div>
 
                         <div className="flex w-fit items-center gap-2 text-white max-lg:mx-auto">
-                            {userId && userDecoded?.uid !== user._id ? (
+                            {userId && userData?._id !== user._id ? (
                                 <>
                                     <button
                                         onClick={() => handleFollow()}
@@ -126,6 +126,8 @@ export const Profile = () => {
                         </p>
                     </div>
                 </header>
+
+                <main></main>
             </section>
         </div>
     );

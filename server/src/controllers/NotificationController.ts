@@ -2,10 +2,10 @@ import config from "@/config";
 import Notification from "@/models/Notification.model";
 import { formatError } from "@/utils/formatError";
 import { Request, Response } from "express";
+
 /**
  * GET - Controller responsável por pegar as notificações
  */
-
 export const getNotifications = async (
     req: Request,
     res: Response
@@ -23,6 +23,8 @@ export const getNotifications = async (
             .skip((page - 1) * limit)
             .limit(limit);
         const count = await Notification.countDocuments({ userId });
+
+        
 
         // Sending response
         res.status(200).json({

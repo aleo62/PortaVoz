@@ -1,18 +1,13 @@
 import React, { useState } from "react";
 
-import facebook from "@assets/images/icons/facebook.png";
-
 import { IconArrowRight } from "@tabler/icons-react";
 
 import { Button } from "@/components/ui/Button";
 import { Widgets } from "@/components/ui/Widgets";
 
-import blob from "@assets/images/illustrations/register/blob-scene-haikei.png";
-import workspace from "@assets/images/illustrations/register/workspace.png";
-
 import { FormInput } from "@/components/ui/FormInput";
-import { useIsMobile } from "@/utils/isMobile";
-import { validateEmail, validateName, validatePassword } from "@/utils/validations";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { validateEmail, validateName, validatePassword } from "@/utils/functions/validations";
 
 import { GoogleButton } from "@/components/ui/GoogleButton";
 import { useToast } from "@/contexts/ToastContext";
@@ -82,14 +77,18 @@ export const Register = () => {
                     </div>
 
                     <img
-                        src={workspace}
+                        src={
+                            "https://res.cloudinary.com/di5bma0gm/image/upload/v1759595950/workspace_udtzrr.png"
+                        }
                         alt="Workspace"
                         className="absolute right-[-100px] bottom-3 z-10 max-w-none drop-shadow-2xl lg:w-[600px] xl:right-[-200px] xl:w-[680px]"
                     />
                     <div className="absolute top-0 left-0 z-[0] h-full w-full overflow-x-clip">
                         <div className="relative h-full w-full">
                             <img
-                                src={blob}
+                                src={
+                                    "https://res.cloudinary.com/di5bma0gm/image/upload/v1759595925/pattern_sg8sxc.png"
+                                }
                                 alt=""
                                 className="absolute top-0 left-0 h-full w-full opacity-[0.05]"
                             />
@@ -161,7 +160,9 @@ export const Register = () => {
 
                         <div className="mt-10 flex items-center justify-center gap-2">
                             <span className="flex-1 border-t border-zinc-300 dark:border-zinc-700"></span>
-                            <p className="text-sm text-zinc-500 dark:text-zinc-600">Ou cadastre-se com</p>
+                            <p className="text-sm text-zinc-500 dark:text-zinc-600">
+                                Ou cadastre-se com
+                            </p>
                             <span className="flex-1 border-t border-zinc-300 dark:border-zinc-700"></span>
                         </div>
 
@@ -169,7 +170,13 @@ export const Register = () => {
                             <div className="flex flex-col gap-3 md:grid md:grid-cols-2">
                                 <GoogleButton />
                                 <Widgets>
-                                    <img src={facebook} alt="" width={isMobile ? 20 : 25} />
+                                    <img
+                                        src={
+                                            "https://res.cloudinary.com/di5bma0gm/image/upload/v1759595924/facebook_ry41ii.png"
+                                        }
+                                        alt=""
+                                        width={isMobile ? 20 : 25}
+                                    />
                                     <p className="text-sm">Entrar com FaceBook</p>
                                 </Widgets>
                             </div>

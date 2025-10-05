@@ -1,9 +1,9 @@
 import { HeaderSidebar } from "@/components/sidebar/HeaderSidebar";
 import { SidebarProfile } from "@/components/sidebar/SidebarProfile";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { ViewDanger } from "@/sections/EditProfile/ViewDanger";
 import { ViewProfile } from "@/sections/EditProfile/ViewProfile";
 import { ViewSecurity } from "@/sections/EditProfile/ViewSecurity";
-import { useIsMobile } from "@/utils/isMobile";
 import { JSX, useState } from "react";
 
 export const EditProfile = () => {
@@ -25,7 +25,7 @@ export const EditProfile = () => {
 
     return (
         <>
-            <div className="w-full relative">
+            <div className="relative w-full">
                 {!isMobile && <HeaderSidebar />}
 
                 <div className="flex justify-center gap-5 max-lg:flex-col">

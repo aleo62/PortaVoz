@@ -1,9 +1,8 @@
-import { useUser } from "@/contexts/UserContext";
-import { useUserById } from "@/hooks/user/useUser";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { useCreateVote } from "@/hooks/vote/useCreateVote";
 import { useDeleteVote } from "@/hooks/vote/useDeleteVote";
-import { formatDate } from "@/utils/formatHour";
-import { useIsMobile } from "@/utils/isMobile";
+import { useStoreUser } from "@/stores/userStore";
+import { formatDate } from "@/utils/functions/formatDate";
 import { PostData } from "@/utils/types/postDataType";
 import { IconArrowBigUp, IconDotsVertical, IconMap, IconMessageDots } from "@tabler/icons-react";
 import { InvalidateQueryFilters, QueryClient } from "@tanstack/react-query";
@@ -18,8 +17,8 @@ import { PostMap } from "./PostMap";
 export const Post = ({ post, onDeletePost }: { post: PostData; onDeletePost: () => void }) => {
     const navigate = useNavigate();
 
-    const { userDecoded } = useUser();
-    const { data: userData } = useUserById();
+    const { user } = useStoreUser();
+    const { user: userData } = useStoreUser();
     const isMobile = useIsMobile();
     const queryClient = new QueryClient();
 
@@ -79,7 +78,7 @@ export const Post = ({ post, onDeletePost }: { post: PostData; onDeletePost: () 
             )}
 
             <article
-                className={`relative w-full max-w-[620px] rounded-xl bg-white shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] transition-all max-lg:pb-3 ${!isMobile && locationOpen && "translate-x-[-25%]"} dark:bg-zinc-900`}
+                className={`relative w-full max-w-[620px] rounded-xl bg-white shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] transition-all max-lg:pb-3 ${!isMobile && locationOpen && "translate-x-[-50%]"} dark:bg-zinc-900`}
             >
                 <header className="relative flex items-center gap-3 p-3 py-5 lg:p-6 lg:py-6">
                     <div
@@ -113,7 +112,7 @@ export const Post = ({ post, onDeletePost }: { post: PostData; onDeletePost: () 
                             onClose={() => {
                                 setOptionsDropOpen(false);
                             }}
-                            isOwner={post.user._id == userData?._id || !!userDecoded?.claims.admin}
+                            isOwner={post.user._id == userData?._id || !!user?.claims!.admin}
                             onDeletePost={onDeletePost}
                         />
                     </div>

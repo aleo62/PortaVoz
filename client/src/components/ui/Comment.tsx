@@ -1,16 +1,14 @@
-import { useUser } from "@/contexts/UserContext";
 import { useComments } from "@/hooks/comments/useComments";
+import { useCreateComment } from "@/hooks/comments/useCreateComment";
 import { useDeleteComment } from "@/hooks/comments/useDeleteComment";
-import { useUserById } from "@/hooks/user/useUser";
 import { useCreateVote } from "@/hooks/vote/useCreateVote";
 import { useDeleteVote } from "@/hooks/vote/useDeleteVote";
-import { formatDate } from "@/utils/formatHour";
+import { useStoreUser } from "@/stores/userStore";
+import { formatDate } from "@/utils/functions/formatDate";
 import { CommentData } from "@/utils/types/commentDataType";
 import { IconChevronDown, IconChevronUp, IconDotsVertical, IconThumbUp } from "@tabler/icons-react";
 import { useRef, useState } from "react";
 import { CommentDrop } from "../drop/CommentDrop";
-import { useCreateComment } from "@/hooks/comments/useCreateComment";
-import { UserData } from "@/utils/types/userDataType";
 
 export const Comment = ({
     comment,
@@ -21,15 +19,14 @@ export const Comment = ({
     onDeleteComment: () => void;
     reply?: boolean;
 }) => {
-    const { userDecoded } = useUser();
     const date = formatDate(new Date(comment.createdAt));
     const [isUpvoted, setIsUpvoted] = useState(comment.isUpvoted);
     const [optionsContainerOpen, setOptionsContainerOpen] = useState(false);
     const [replyInputOpen, setReplyInputOpen] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
 
-    const { data: userData } = useUserById();
-    const createComment = useCreateComment(userData as UserData);
+    const { user: userData } = useStoreUser();
+    const createComment = useCreateComment();
     const [commentInput, setCommentInput] = useState("");
     const [repliesOpen, setRepliesOpen] = useState(false);
     const { data: repliesData, hasNextPage } = useComments(comment._id);
@@ -88,7 +85,9 @@ export const Comment = ({
 
                 <main className="flex-1 pt-[.5rem]">
                     <div className="flex items-center gap-2">
-                        <h3 className="text-title text-[.92rem] font-medium">{comment.user.username}</h3>
+                        <h3 className="text-title text-[.92rem] font-medium">
+                            {comment.user.username}
+                        </h3>
                         <span className="text-xs text-zinc-500 dark:text-zinc-400">{date}</span>
                         <div className="relative ml-auto">
                             <IconDotsVertical
@@ -100,7 +99,7 @@ export const Comment = ({
                                 orientation="top"
                                 onClose={() => setOptionsContainerOpen(false)}
                                 isOwner={
-                                    comment.user._id == userData?._id || !!userDecoded?.claims.admin
+                                    comment.user._id == userData?._id || !!userData?.claims!.admin
                                 }
                                 onDeleteComment={onDeleteComment}
                             />

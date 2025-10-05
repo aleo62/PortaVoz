@@ -1,10 +1,10 @@
+import { useStoreUser } from "@/stores/userStore";
 import { Server } from "@api/Server";
-import { useUser } from "@contexts/UserContext";
 import { useQuery } from "@tanstack/react-query";
 
 export function useFollow(followingId: string) {
-    const { userDecoded } = useUser();
-    const token = userDecoded?.token;
+    const { user } = useStoreUser();
+    const token = user?.token;
 
     return useQuery({
         queryKey: ["follows", followingId],

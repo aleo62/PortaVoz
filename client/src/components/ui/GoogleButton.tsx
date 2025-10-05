@@ -1,6 +1,5 @@
 import { registerUserGoogle } from "@/firebase/firebaseFunctions";
-import { useIsMobile } from "@/utils/isMobile";
-import google from "@assets/images/icons/google.png";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { Widgets } from "./Widgets";
 
 export const GoogleButton = () => {
@@ -13,7 +12,13 @@ export const GoogleButton = () => {
 
     return (
         <Widgets onClick={() => handleGoogleLogin()}>
-            <img src={google} alt="" width={isMobile ? 20 : 25} />
+            <img
+                src={
+                    "https://res.cloudinary.com/di5bma0gm/image/upload/v1759595925/google_siwzjm.png"
+                }
+                alt=""
+                width={isMobile ? 20 : 25}
+            />
             <p className="text-sm">Entrar com Google</p>
         </Widgets>
     );

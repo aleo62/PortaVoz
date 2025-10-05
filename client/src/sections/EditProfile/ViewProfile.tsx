@@ -9,7 +9,7 @@ import { UserData } from "@/utils/types/userDataType";
 import { IconArrowRight, IconEdit, IconPencil, IconUserCog } from "@tabler/icons-react";
 
 import { useUpdateUser } from "@/hooks/user/useUpdateUser";
-import { useUserById } from "@/hooks/user/useUser";
+import { useUserById } from "@/hooks/user/useUserById";
 import { useEffect, useRef, useState } from "react";
 
 type PreviewUser = UserData & {
