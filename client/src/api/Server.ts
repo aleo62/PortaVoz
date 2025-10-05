@@ -27,6 +27,16 @@ export class Server {
         ).data;
     }
 
+    // GET Post by ID
+    static async getPostsByUser(userId: string, token: string, pageParam: number) {
+        return (
+            await axios.get(`${this.baseUrl}posts/user/${userId}`, {
+                params: { page: pageParam },
+                headers: { authorization: `Bearer ${token}` },
+            })
+        ).data;
+    }
+
     // POST Post
     static async createPost(reportForm: Partial<PostData>, token: string) {
         const formData = new FormData();

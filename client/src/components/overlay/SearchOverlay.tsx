@@ -8,8 +8,8 @@ import { UserData } from "@/utils/types/userDataType";
 import { SetStateAction, useEffect, useState } from "react";
 import { SpinnerCircular } from "spinners-react";
 import { OverlayTemplate, OverlayTemplateProps } from "../templates/OverlayTemplate";
-import { PostPreview } from "../ui/PostPreview";
-import { UserPreview } from "../ui/UserPreview";
+import { PostSearchPreview } from "../ui/PostSearchPreview";
+import { UserSearchPreview } from "../ui/UserSearchPreview";
 
 export const SearchOverlay = ({ isOpen, onClose }: OverlayTemplateProps) => {
     const searchTopics = [
@@ -93,7 +93,7 @@ export const SearchOverlay = ({ isOpen, onClose }: OverlayTemplateProps) => {
                             <>
                                 {activeTopic === 1 &&
                                     (posts.length > 0 ? (
-                                        posts.map((post) => <PostPreview post={post} />)
+                                        posts.map((post) => <PostSearchPreview post={post} />)
                                     ) : feedLoading ? (
                                         <SpinnerCircular
                                             size={30}
@@ -109,7 +109,7 @@ export const SearchOverlay = ({ isOpen, onClose }: OverlayTemplateProps) => {
 
                                 {activeTopic === 2 &&
                                     (users.length > 0 ? (
-                                        users.map((user) => <UserPreview user={user} />)
+                                        users.map((user) => <UserSearchPreview user={user} />)
                                     ) : usersLoading ? (
                                         <SpinnerCircular
                                             size={30}

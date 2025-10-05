@@ -1,6 +1,6 @@
 import { HeaderSidebar } from "@/components/sidebar/HeaderSidebar";
 import { Post } from "@/components/ui/Post";
-import { PostPreviewSkeleton } from "@/components/ui/PostPreviewSkeleton";
+import { PostReflectedSkeleton } from "@/components/ui/PostReflectedSkeleton";
 import { PostReflected } from "@/components/ui/PostReflected";
 import { PostSkeleton } from "@/components/ui/PostSkeleton";
 import { useDeletePost } from "@/hooks/posts/useDeletePost";
@@ -8,7 +8,7 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 import { usePosts } from "@hooks/posts/usePosts";
 import { IconPlus } from "@tabler/icons-react";
 import { PostData } from "@utils/types/postDataType";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { useNavigate } from "react-router-dom";
 import { Navigation } from "swiper/modules";
@@ -17,15 +17,13 @@ import { Swiper, SwiperSlide } from "swiper/react";
 export const Posts = () => {
     const navigate = useNavigate();
     const deletePost = useDeletePost();
-    const [dateFilter, setDateFilter] = useState<"asc" | "desc">("asc");
 
     const {
         data: feedData,
         isLoading: feedLoading,
         fetchNextPage: fetchFeedNextPage,
         hasNextPage: feedHasNextPage,
-        refetch: feedRefetch,
-    } = usePosts({ date: dateFilter }, true);
+    } = usePosts({ date: "desc" }, true);
     const {
         data: reflectedData,
         isLoading: reflectedLoading,
@@ -54,16 +52,16 @@ export const Posts = () => {
         <>
             <div className="h-fit w-full pb-5">
                 {!useIsMobile() && <HeaderSidebar />}
-                <div className="mx-auto w-full max-w-6xl gap-3 space-y-1 border-b-1 border-b-zinc-200 pb-8 lg:px-5 dark:border-b-zinc-700">
+                <div className="mx-auto w-full max-w-6xl gap-3 space-y-1 border-b-1 border-b-zinc-200 pb-10 lg:px-5 dark:border-b-zinc-700">
                     <h2 className="text-title font-title text-md font-medium">Repercutidos</h2>
 
                     {reflectedLoading ? (
                         <div className="w-auto px-1 py-2">
-                            <PostPreviewSkeleton />
+                            <PostReflectedSkeleton />
                         </div>
                     ) : (
                         <>
-                            {!posts.length ? (
+                            {!reflectedPosts.length ? (
                                 <div className="mx-auto my-6 text-center text-zinc-500">
                                     <p className="text-md">Nada por aqui também</p>
                                 </div>
@@ -100,22 +98,7 @@ export const Posts = () => {
                     )}
                 </div>
 
-                <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-5 pt-8 lg:px-6">
-                    <div className="flex items-center gap-1 text-[.7rem] lg:mb-5 lg:text-xs">
-                        <button
-                            onClick={() => (setDateFilter("asc"), feedRefetch())}
-                            className={`text-title rounded-lg p-3 px-5 lg:px-7 ${dateFilter === "asc" ? "bg-white ring-1 ring-zinc-200 dark:bg-zinc-900/30 dark:ring-zinc-800" : "hover:bg-zinc-100 hover:dark:bg-zinc-800"} font-medium`}
-                        >
-                            Mais antigos
-                        </button>
-                        <button
-                            onClick={() => (setDateFilter("desc"), feedRefetch())}
-                            className={`text-title rounded-lg p-3 px-7 ${dateFilter === "desc" ? "bg-white ring-1 ring-zinc-200 dark:bg-zinc-900/30 dark:ring-zinc-800" : "hover:bg-zinc-100 hover:dark:bg-zinc-800"} font-medium`}
-                        >
-                            Mais recentes
-                        </button>
-                    </div>
-
+                <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-5 pt-10 lg:px-6">
                     {feedLoading ? (
                         <PostSkeleton />
                     ) : (

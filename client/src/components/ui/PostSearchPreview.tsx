@@ -1,7 +1,7 @@
 import { PostData } from "@/utils/types/postDataType";
 import { useNavigate } from "react-router-dom";
 
-export const PostPreview = ({ post }: { post: PostData }) => {
+export const PostSearchPreview = ({ post }: { post: PostData }) => {
     const navigate = useNavigate();
 
     return (
@@ -10,8 +10,8 @@ export const PostPreview = ({ post }: { post: PostData }) => {
             <p className="truncate text-xs text-subtitle">{post.desc}</p>
 
             <div className="mt-3 h-fit space-x-1 ml-auto w-fit">
-                {post.hashtags.map((hashtag) => (
-                    <span className="text-xs text-accent">{`#${hashtag}`}</span>
+                {post.hashtags.map((hashtag, key) => (
+                    <span key={key} className="text-xs text-accent">{`#${hashtag}`}</span>
                 ))}
             </div>
         </article>

@@ -205,8 +205,9 @@ export const Post = ({ post, onDeletePost }: { post: PostData; onDeletePost: () 
                             Localização
                         </h3>
 
-                        {post?.location?.latitude != null && post?.location?.longitude != null && (
+                        {!isMobile && locationOpen && post.location && (
                             <PostMap
+                                key={post._id}
                                 latitude={Number(post.location.latitude)}
                                 longitude={Number(post.location.longitude)}
                             />

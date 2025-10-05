@@ -147,7 +147,7 @@ export const getPostByUser = async (req: Request, res: Response) => {
         if (!req.params.userId) throw new Error("No User ID provided");
         const userId = req.params.userId;
 
-        const postsData = await Post.find({ userId }).populate(
+        const postsData = await Post.find({ user: userId }).populate(
             "user",
             "username image"
         );

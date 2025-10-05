@@ -60,6 +60,7 @@ export const PostTags = ({
                     placeholder="Tag"
                     className="flex-1"
                     onChange={(e) => setTag(e.target.value)}
+                    maxLength={10}
                 />
                 <button className="text-title bg-accent flex h-full items-center justify-center rounded-xl p-3">
                     <IconPlus />

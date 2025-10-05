@@ -11,6 +11,7 @@ const customIcon = new L.Icon({
 export function PostMap({ latitude, longitude }: { latitude: number; longitude: number }) {
     return (
         <MapContainer
+            key={`${latitude}-${longitude}`}
             center={[latitude, longitude]}
             zoom={15}
             style={{ height: "250px", width: "100%", borderRadius: "10px", zIndex: 1 }}

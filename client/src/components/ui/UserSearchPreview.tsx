@@ -1,7 +1,7 @@
 import { UserData } from "@/utils/types/userDataType";
 import { useNavigate } from "react-router-dom";
 
-export const UserPreview = ({ user }: { user: UserData }) => {
+export const UserSearchPreview = ({ user }: { user: UserData }) => {
     const navigate = useNavigate();
 
     return (

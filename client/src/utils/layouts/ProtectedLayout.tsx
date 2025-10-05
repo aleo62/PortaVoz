@@ -1,3 +1,4 @@
+import { Loader } from "@/components/ui/Loader";
 import { useStoreUser } from "@/stores/userStore";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -9,22 +10,21 @@ type ProtectedLayoutProps = {
 };
 
 export const ProtectedLayout = ({ children, onlyGuest, onlyAdmin }: ProtectedLayoutProps) => {
-    const { user } = useStoreUser();
+    const { user, isLoadingUser } = useStoreUser();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (onlyGuest && user) {
-            navigate("/feed");
-        }
+        if (isLoadingUser) return;
 
-        if (!onlyGuest && !user) {
-            navigate("/auth/login");
-        }
+        if (onlyGuest && user) navigate("/feed");
+        if (!onlyGuest && !user) navigate("/auth/login");
+        if (onlyAdmin && user && !user.claims?.admin) navigate("/");
+    }, [user, isLoadingUser, onlyGuest, onlyAdmin, navigate]);
 
-        if (onlyAdmin && user && !user.claims?.admin) {
-            navigate("/");
-        }
-    }, [user, onlyGuest, onlyAdmin, navigate]);
-
-    return <>{children}</>;
+    return (
+        <>
+            <Loader isLoading={isLoadingUser} />
+            {children}
+        </>
+    );
 };

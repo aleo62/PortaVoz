@@ -1,22 +1,28 @@
 import { HeaderSidebar } from "@/components/sidebar/HeaderSidebar";
+import { PostProfilePreview } from "@/components/ui/PostProfilePreview";
 import { ProfileSkeleton } from "@/components/ui/ProfileSkeleton";
 import { useChatByUsers } from "@/hooks/chat/useChatByUsers";
+import { usePostsByUser } from "@/hooks/posts/usePostsByUser";
 import { useCreateFollow } from "@/hooks/user/useCreateFollow";
 import { useDeleteFollow } from "@/hooks/user/useDeleteFollow";
 import { useFollow } from "@/hooks/user/useFollow";
 import { useUserById } from "@/hooks/user/useUserById";
 import { useStoreUser } from "@/stores/userStore";
+import { PostData } from "@/utils/types/postDataType";
 import { IconMessage2 } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 export const Profile = () => {
     const { userId } = useParams();
-    const { data, isLoading } = useFollow(userId!);
-
-    const { user: userData } = useStoreUser();
+    const { data: follow, isLoading } = useFollow(userId!);
     const { data: user } = useUserById(userId!);
 
+    const { user: userData } = useStoreUser();
+    const { data: postsData } = usePostsByUser(userId!);
+    let posts: PostData[] = (postsData?.pages.flatMap((page) => page.posts) as PostData[]) || [];
+
+    console.log(posts);
     const createFollow = useCreateFollow();
     const deleteFollow = useDeleteFollow();
     const [isFollowing, setIsFollowing] = useState(false);
@@ -29,8 +35,8 @@ export const Profile = () => {
     }, [user]);
 
     useEffect(() => {
-        if (!isLoading) setIsFollowing(Boolean(data?.following));
-    }, [data, isLoading]);
+        if (!isLoading) setIsFollowing(Boolean(follow?.following));
+    }, [follow, isLoading]);
 
     const handleFollow = async () => {
         setIsFollowing(!isFollowing);
@@ -54,10 +60,10 @@ export const Profile = () => {
     }
 
     return (
-        <div className="w-full">
+        <div className="h-fit w-full">
             <HeaderSidebar linkBack />
 
-            <section className="mx-auto w-full max-w-4xl">
+            <section className="mx-auto w-full max-w-4xl pb-5">
                 <header className="rounded-2xl bg-white pb-12 shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] lg:rounded-3xl lg:p-2 lg:pb-14 dark:bg-zinc-900">
                     <div className="text-title relative h-full w-full">
                         {user?.banner ? (
@@ -127,7 +133,17 @@ export const Profile = () => {
                     </div>
                 </header>
 
-                <main></main>
+                <main className="mt-5 space-y-2">
+                    <h2 className="text-title mt-2 text-2xl">Posts</h2>
+
+                    <div className="w-ful grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
+                        {posts.map((post) => (
+                            <>
+                                <PostProfilePreview key={post._id} post={post} />
+                            </>
+                        ))}
+                    </div>
+                </main>
             </section>
         </div>
     );

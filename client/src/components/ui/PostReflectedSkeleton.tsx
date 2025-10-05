@@ -1,4 +1,4 @@
-export const PostPreviewSkeleton = () => {
+export const PostReflectedSkeleton = () => {
     return (
         <div className="flex w-[368px] animate-pulse items-center gap-2 rounded-xl bg-white p-2 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-700">
             <div className="flex h-28 lg:h-30 flex-col justify-between p-3">

@@ -64,10 +64,10 @@ export const Sidebar = ({
                     <ul className={`space-y-2 p-5 px-1 ${!isOpen ? "items-center" : ""}`}>
                         <div
                             onClick={() => setSearchOpen(true)}
-                            className="text-title flex rounded-lg bg-zinc-100 px-5 py-2.5 ring-1 ring-zinc-200/70 dark:bg-zinc-800 dark:ring-zinc-700/70 mb-6"
+                            className="text-title flex items-center rounded-lg bg-zinc-100 px-4 py-2.5 ring-1 ring-zinc-200/70 dark:bg-zinc-800 dark:ring-zinc-700/70 mb-6"
                         >
-                            <IconSearch className="size-5" />
-                            <span className={`${isOpen ? "ml-3 w-38 opacity-100" : "ml-0 w-0 opacity-0"} transition-all text-zinc-400 dark:text-zinc-600`}>Pesquisar...</span>
+                            <IconSearch className="size-5.5" />
+                            <span className={`${isOpen ? "ml-3 w-38 opacity-100" : "ml-0 w-0 opacity-0"} transition-all text-sm text-zinc-400 dark:text-zinc-600`}>Pesquisar...</span>
                         </div>
 
                         {SidebarItems.map(({ label, icon, href }, key) => (

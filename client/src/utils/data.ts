@@ -14,7 +14,7 @@ import {
     IconReport,
     IconSparkles,
     IconSword,
-    IconTimeline,
+    IconTable,
     IconUser,
 } from "@tabler/icons-react";
 
@@ -30,7 +30,7 @@ export const portaVozLogo =
         : "https://res.cloudinary.com/di5bma0gm/image/upload/v1754164869/Title_black_Grad._bd392t.png";
 
 export const SidebarItems = [
-    { label: "Feed", icon: IconTimeline, href: "/feed" },
+    { label: "Feed", icon: IconTable, href: "/feed" },
     { label: "Chat", icon: IconMessage, href: "/chat" },
     { label: "Ajuda", icon: IconEarScan, href: "/help" },
 ];
