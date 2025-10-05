@@ -9,7 +9,11 @@ type ProtectedLayoutProps = {
     onlyAdmin?: boolean;
 };
 
-export const ProtectedLayout = ({ children, onlyGuest, onlyAdmin }: ProtectedLayoutProps) => {
+export const ProtectedLayout = ({
+    children,
+    onlyGuest = false,
+    onlyAdmin,
+}: ProtectedLayoutProps) => {
     const { user, isLoadingUser } = useStoreUser();
     const navigate = useNavigate();
 
@@ -23,7 +27,7 @@ export const ProtectedLayout = ({ children, onlyGuest, onlyAdmin }: ProtectedLay
 
     return (
         <>
-            <Loader isLoading={isLoadingUser} />
+            <Loader isLoading={!!user && isLoadingUser} />
             {children}
         </>
     );

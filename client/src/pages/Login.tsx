@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/Button";
 import { FormInput } from "@/components/ui/FormInput";
 import { GoogleButton } from "@/components/ui/GoogleButton";
 import { InfoFooter } from "@/components/ui/InfoFooter";
-import { Loader } from "@/components/ui/Loader";
 import { Widgets } from "@/components/ui/Widgets";
 import { useToast } from "@/contexts/ToastContext";
 import { auth } from "@/firebase";
@@ -14,7 +13,6 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 import { portaVozLogo } from "@/utils/data";
 import { IconArrowLeft, IconArrowUpRight } from "@tabler/icons-react";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -23,7 +21,6 @@ export const Login = () => {
     const [password, setPassword] = useState("");
 
     const [loginEmail, setLoginEmail] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
 
     const isMobile = useIsMobile();
     const navigate = useNavigate();
@@ -32,8 +29,6 @@ export const Login = () => {
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         let errorMessage = "";
-
-        setIsLoading(true);
 
         try {
             await signInWithEmailAndPassword(auth, email, password);
@@ -46,17 +41,12 @@ export const Login = () => {
             )
                 errorMessage = "E-mail ou Senha Inválidos";
             errorToast("Erro ao logar: " + errorMessage);
-        } finally {
-            setIsLoading(false);
         }
     };
 
     const handleChange = () => {
-        setIsLoading(true);
-
         setTimeout(() => {
             setLoginEmail(!loginEmail);
-            setIsLoading(false);
         }, 500);
     };
 
@@ -66,7 +56,6 @@ export const Login = () => {
             <Border className="top-[230px] right-[70px] z-[-1] h-45 w-45 max-md:hidden lg:h-60 lg:w-60" />
             <Circle className="top-[430px] left-[5px] h-35 w-35 rotate-[-105deg] max-md:hidden lg:left-[160px] lg:h-50 lg:w-50" />
 
-            <AnimatePresence>{isLoading && <Loader />}</AnimatePresence>
             <div className="min-h-screen space-y-60 pt-5">
                 <div className="mx-auto grid w-full max-w-sm items-center gap-5">
                     <div className="flex flex-col items-center justify-center">
@@ -117,7 +106,7 @@ export const Login = () => {
                                 </form>
                                 <div className="flex items-center justify-center">
                                     <p className="text-title text-sm">
-                                        Não tem uma conta?{" "}
+                                        Não tem uma conta?
                                         <a href="/auth/register" className="link text-sm">
                                             Criar conta
                                         </a>
