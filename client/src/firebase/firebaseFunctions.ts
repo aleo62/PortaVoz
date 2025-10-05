@@ -1,5 +1,5 @@
 import { Server } from "@/api/Server";
-import { useUserById } from "@/hooks/user/useUserById";
+import { useStoreUser } from "@/stores/userStore";
 import {
     createUserWithEmailAndPassword,
     sendEmailVerification,
@@ -34,14 +34,21 @@ export const registerUserEmailAndPassword = async ({
 };
 
 export const registerUserGoogle = async () => {
+    const { setIsLoadingUser } = useStoreUser.getState();
     try {
         const googleUser = await signInWithPopup(auth, googleProvider);
+
+        if (!googleUser) return;
+
+        setIsLoadingUser(true);
         const user = googleUser.user;
-        const exists = await useUserById(user.uid);
+
+        const token = await user.getIdToken(true);
+        const exists = await Server.getUserById(user.uid, token);
 
         if (!exists) {
             const token = await user.getIdToken();
-            await await Server.createUser(
+            await Server.createUser(
                 {
                     fName: user.displayName?.split(" ")[0]!,
                     lName: user.displayName?.split(" ")[1]!,
@@ -52,5 +59,7 @@ export const registerUserGoogle = async () => {
         }
     } catch (err) {
         throw err;
+    } finally {
+        setIsLoadingUser(false);
     }
 };

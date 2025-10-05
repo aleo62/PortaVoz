@@ -1,4 +1,3 @@
-// src/pages/Login.tsx
 import { Border } from "@/components/deco/Border";
 import { Circle } from "@/components/deco/Circle";
 import { Ret } from "@/components/deco/Ret";
@@ -10,6 +9,7 @@ import { Widgets } from "@/components/ui/Widgets";
 import { useToast } from "@/contexts/ToastContext";
 import { auth } from "@/firebase";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { useStoreUser } from "@/stores/userStore";
 import { portaVozLogo } from "@/utils/data";
 import { IconArrowLeft, IconArrowUpRight } from "@tabler/icons-react";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -17,6 +17,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
+    const { setIsLoadingUser } = useStoreUser();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -28,6 +29,7 @@ export const Login = () => {
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
+        setIsLoadingUser(true);
         let errorMessage = "";
 
         try {
@@ -35,12 +37,15 @@ export const Login = () => {
             successToast("Usuário logado com sucesso!");
         } catch (error: any) {
             if (
-                error.code == "auth/invalid-email" ||
-                "auth/missing-password" ||
-                "auth/invalid-credential"
-            )
+                error.code === "auth/invalid-email" ||
+                error.code === "auth/missing-password" ||
+                error.code === "auth/invalid-credential"
+            ) {
                 errorMessage = "E-mail ou Senha Inválidos";
+            }
             errorToast("Erro ao logar: " + errorMessage);
+        } finally {
+            setIsLoadingUser(false);
         }
     };
 

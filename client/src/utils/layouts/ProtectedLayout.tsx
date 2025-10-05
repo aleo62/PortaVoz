@@ -24,10 +24,9 @@ export const ProtectedLayout = ({
         if (!onlyGuest && !user) navigate("/auth/login");
         if (onlyAdmin && user && !user.claims?.admin) navigate("/");
     }, [user, isLoadingUser, onlyGuest, onlyAdmin, navigate]);
-
     return (
         <>
-            <Loader isLoading={!!user && isLoadingUser} />
+            <Loader isLoading={isLoadingUser} />
             {children}
         </>
     );

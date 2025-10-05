@@ -21,7 +21,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
                         claims: decoded.claims,
                         isVerified: userAuth.emailVerified,
                     });
-                    
                 } catch (err) {
                     console.error("Erro ao buscar usuário:", err);
                 } finally {
@@ -29,6 +28,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
                 }
             } else {
                 setUser(null);
+                setIsLoadingUser(false);
             }
         });
 
