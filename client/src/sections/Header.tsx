@@ -4,10 +4,10 @@ import { Navbar } from "@/components/ui/Navbar";
 import { useTheme } from "@/hooks/useTheme";
 import { useStoreUser } from "@/stores/userStore";
 import { portaVozLogo } from "@/utils/data";
-import { IconLogin, IconMoon, IconSearch, IconTrendingUp } from "@tabler/icons-react";
+import { IconLogin, IconMoon, IconTrendingUp } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 
-export const Header = ({ search = true }: { search?: boolean }) => {
+export const Header = () => {
     const { user } = useStoreUser();
     const [hidden, setHidden] = useState(false);
     const [outside, setOutside] = useState(false);
@@ -62,16 +62,6 @@ export const Header = ({ search = true }: { search?: boolean }) => {
                         {/* BUTTONS AND SEARCH/LANGUAGE */}
                         <div className="flex items-center justify-end">
                             <div className="relative flex items-center gap-4 border-r-2 border-zinc-200 pr-4 dark:border-zinc-700">
-                                {search && (
-                                    <>
-                                        <button
-                                            className="text-title hover:dark:text-subtitle hover:text-zinc-900"
-                                            onClick={() => setIsSearchOpen(true)}
-                                        >
-                                            <IconSearch className="" />
-                                        </button>
-                                    </>
-                                )}
                                 <button
                                     className="text-title hover:dark:text-subtitle hover:text-zinc-900"
                                     onClick={() => setIsDarkTheme(!isDarkTheme)}
