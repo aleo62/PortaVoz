@@ -2,6 +2,7 @@ import { SearchOverlay } from "@/components/overlay/SearchOverlay";
 import { Button } from "@/components/ui/Button";
 import { Navbar } from "@/components/ui/Navbar";
 import { useTheme } from "@/hooks/useTheme";
+import { useStoreUser } from "@/stores/userStore";
 import { portaVozLogo } from "@/utils/data";
 import { IconLogin, IconMoon, IconSearch, IconTrendingUp } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
@@ -80,7 +81,7 @@ export const Header = ({ search = true }: { search?: boolean }) => {
                             </div>
 
                             <div className="flex items-center gap-2 pl-4 max-lg:hidden md:justify-self-end">
-                                {!userDecoded ? (
+                                {!user ? (
                                     <>
                                         <Button
                                             styleType="primary"
