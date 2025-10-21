@@ -1,5 +1,5 @@
 import { FiltersType } from "@/utils/types/filtersDataType";
-import { PostData, RequestPostData } from "@/utils/types/postDataType";
+import { RequestPostData } from "@/utils/types/postDataType";
 import { UserData } from "@/utils/types/userDataType";
 import axios from "axios";
 
@@ -276,5 +276,4 @@ export class Server {
         });
         return res.data;
     }
-
 }

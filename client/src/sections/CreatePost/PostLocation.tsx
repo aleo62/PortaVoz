@@ -1,5 +1,5 @@
 import { FormInput } from "@/components/ui/FormInput";
-import { PostData } from "@/utils/types/postDataType";
+import { RequestPostData } from "@/utils/types/postDataType";
 import React, { useEffect, useRef, useState } from "react";
 
 export const PostLocation = ({
@@ -8,8 +8,8 @@ export const PostLocation = ({
     setReportForm,
 }: {
     validate: () => void;
-    reportForm: PostData;
-    setReportForm: React.Dispatch<React.SetStateAction<PostData>>;
+    reportForm: RequestPostData;
+    setReportForm: React.Dispatch<React.SetStateAction<RequestPostData>>;
 }) => {
     const [suggestions, setSuggestions] = useState<any[]>([]);
     const [query, setQuery] = useState("");

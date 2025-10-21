@@ -6,7 +6,7 @@ import { PostContent } from "@/sections/CreatePost/PostContent";
 import { PostImages } from "@/sections/CreatePost/PostImages";
 import { PostLocation } from "@/sections/CreatePost/PostLocation";
 import { PostTags } from "@/sections/CreatePost/PostTags";
-import { PostData } from "@/utils/types/postDataType";
+import { PostData, RequestPostData } from "@/utils/types/postDataType";
 import { IconArrowLeft, IconArrowRight, IconHome2 } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
@@ -19,7 +19,7 @@ export const CreatePost = () => {
     const { data: responseStage, mutate: validateStage, isSuccess } = useValidateStage();
     const [isValidating, setIsValidating] = useState(false);
 
-    const [reportForm, setReportForm] = useState<Partial<PostData>>({
+    const [reportForm, setReportForm] = useState<Partial<RequestPostData>>({
         title: "",
         desc: "",
         images: [],
@@ -133,17 +133,17 @@ export const CreatePost = () => {
                                         }}
                                         setReportForm={
                                             setReportForm as React.Dispatch<
-                                                React.SetStateAction<PostData>
+                                                React.SetStateAction<RequestPostData>
                                             >
                                         }
-                                        reportForm={reportForm as PostData}
+                                        reportForm={reportForm as RequestPostData}
                                     />
                                 </motion.div>
                             </AnimatePresence>
                             <div className="flex items-center">
                                 {reportPage > 0 && (
                                     <div
-                                        className="transition-background lg:absolute lg:transform-x-[-50%] lg:top-1/2 lg:left-[-20%] bg-body-background hover:bg-accent group ring-accent relative h-15 w-15 overflow-clip rounded-full ring-2 duration-200"
+                                        className="transition-background lg:transform-x-[-50%] bg-body-background hover:bg-accent group ring-accent relative h-15 w-15 overflow-clip rounded-full ring-2 duration-200 lg:absolute lg:top-1/2 lg:left-[-20%]"
                                         onClick={() => setReportPage((prev) => prev - 1)}
                                     >
                                         <IconArrowLeft

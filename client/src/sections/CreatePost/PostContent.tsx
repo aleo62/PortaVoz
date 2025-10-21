@@ -1,5 +1,5 @@
 import { FormInput } from "@/components/ui/FormInput";
-import { PostData } from "@/utils/types/postDataType";
+import { RequestPostData } from "@/utils/types/postDataType";
 import React, { useEffect } from "react";
 
 export const PostContent = ({
@@ -8,8 +8,8 @@ export const PostContent = ({
     setReportForm,
 }: {
     validate: () => void;
-    reportForm: PostData;
-    setReportForm: React.Dispatch<React.SetStateAction<PostData>>;
+    reportForm: RequestPostData;
+    setReportForm: React.Dispatch<React.SetStateAction<RequestPostData>>;
 }) => {
     useEffect(() => {
         if (!reportForm) return;
@@ -33,7 +33,7 @@ export const PostContent = ({
                     required: true,
                     onChange: (e) => setReportForm({ ...reportForm, title: e.target.value }),
                     maxLength: 50,
-                    value: reportForm.title
+                    value: reportForm.title,
                 }}
             />
             <FormInput
@@ -46,7 +46,7 @@ export const PostContent = ({
                     rows: 7,
                     onChange: (e) => setReportForm({ ...reportForm, desc: e.target.value }),
                     maxLength: 500,
-                    value: reportForm.desc
+                    value: reportForm.desc,
                 }}
             />
         </div>

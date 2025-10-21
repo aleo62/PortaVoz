@@ -1,5 +1,5 @@
 import { useStoreUser } from "@/stores/userStore";
-import { PostData } from "@/utils/types/postDataType";
+import { RequestPostData } from "@/utils/types/postDataType";
 import { Server } from "@api/Server";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -10,7 +10,7 @@ export function useCreatePost() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ({ formData }: { formData: Partial<PostData> }) =>
+        mutationFn: ({ formData }: { formData: Partial<RequestPostData> }) =>
             Server.createPost(formData, token!),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["posts"] });

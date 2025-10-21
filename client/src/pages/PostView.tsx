@@ -1,6 +1,6 @@
 import { HeaderSidebar } from "@/components/sidebar/HeaderSidebar";
 import { HeaderPost } from "@/components/ui/HeaderPost";
-import { MainPost } from "@/components/ui/MainPOst";
+import { MainPost } from "@/components/ui/MainPost";
 import { PostMap } from "@/components/ui/PostMap";
 import { usePostById } from "@/hooks/posts/usePostById";
 import { useIsMobile } from "@/hooks/useIsMobile";
@@ -13,7 +13,6 @@ export const Post = () => {
     const { data, isLoading, isError } = usePostById(postId!, true);
     const isMobile = useIsMobile();
     const [optionsDropOpen, setOptionsDropOpen] = useState(false);
-    
 
     if (isLoading) return <div>Carregando...</div>;
     if (isError || !data?.post) return <div>Erro ao carregar post</div>;
@@ -34,7 +33,7 @@ export const Post = () => {
                             viewMode
                         />
 
-                        <MainPost post={post} viewMode/>
+                        <MainPost post={post} viewMode />
                     </div>
 
                     <div className={`w-full space-y-5 transition-all lg:max-w-md`}>

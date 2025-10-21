@@ -21,7 +21,7 @@ export const PostProfilePreview = ({ post }: { post: PostData }) => {
                 <h3 className="text-title text-md w-[90%] truncate">{post.title}</h3>
                 <div className="text-accent text-sm space-x-1">
                     {post.hashtags.map((hashtag) => (
-                        <span>#{hashtag}</span>
+                        <span>#{hashtag.content}</span>
                     ))}
                 </div>
 

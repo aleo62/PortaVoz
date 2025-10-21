@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/Input";
 
-import { PostData } from "@/utils/types/postDataType";
+import { RequestPostData } from "@/utils/types/postDataType";
 import { IconPlus, IconX } from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
 
@@ -10,8 +10,8 @@ export const PostTags = ({
     setReportForm,
 }: {
     validate: () => void;
-    reportForm: PostData;
-    setReportForm: React.Dispatch<React.SetStateAction<PostData>>;
+    reportForm: RequestPostData;
+    setReportForm: React.Dispatch<React.SetStateAction<RequestPostData>>;
 }) => {
     const [tag, setTag] = useState<string>();
 

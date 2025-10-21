@@ -1,4 +1,4 @@
-import { PostData } from "@/utils/types/postDataType";
+import { RequestPostData } from "@/utils/types/postDataType";
 import { IconCloudUpload } from "@tabler/icons-react";
 import React, { useEffect, useRef, useState } from "react";
 
@@ -8,8 +8,8 @@ export const PostImages = ({
     setReportForm,
 }: {
     validate: () => void;
-    reportForm: PostData;
-    setReportForm: React.Dispatch<React.SetStateAction<PostData>>;
+    reportForm: RequestPostData;
+    setReportForm: React.Dispatch<React.SetStateAction<RequestPostData>>;
 }) => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [previewImages, setPreviewImages] = useState<string[]>([]);
