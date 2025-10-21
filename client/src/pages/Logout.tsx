@@ -8,7 +8,6 @@ export const Logout = () => {
     const auth = getAuth();
 
     signOut(auth).then(() => {
-        queryClient.invalidateQueries(["user"] as InvalidateQueryFilters);
         queryClient.invalidateQueries(["chats"] as InvalidateQueryFilters);
 
         navigate("/auth/login");

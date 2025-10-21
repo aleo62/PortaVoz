@@ -10,7 +10,6 @@ import { useUserById } from "@/hooks/user/useUserById";
 import { useStoreUser } from "@/stores/userStore";
 import { PostData } from "@/utils/types/postDataType";
 import { IconMessage2 } from "@tabler/icons-react";
-import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 export const Profile = () => {
@@ -22,29 +21,19 @@ export const Profile = () => {
     const { data: postsData } = usePostsByUser(userId!);
     let posts: PostData[] = (postsData?.pages.flatMap((page) => page.posts) as PostData[]) || [];
 
-    console.log(posts);
     const createFollow = useCreateFollow();
     const deleteFollow = useDeleteFollow();
-    const [isFollowing, setIsFollowing] = useState(false);
-    const [followers, setFollowers] = useState(0);
     const navigate = useNavigate();
     const getChatByUser = useChatByUsers();
 
-    useEffect(() => {
-        setFollowers(user?.meta.counters.followers!);
-    }, [user]);
-
-    useEffect(() => {
-        if (!isLoading) setIsFollowing(Boolean(follow?.following));
-    }, [follow, isLoading]);
-
     const handleFollow = async () => {
-        setIsFollowing(!isFollowing);
-        if (isFollowing) {
-            setFollowers(followers! - 1);
+        if (Boolean(follow?.following)) {
+            follow.following = false;
+            user.meta.counters.followers--;
             await deleteFollow.mutateAsync(userId!);
         } else {
-            setFollowers(followers! + 1);
+            follow.following = true;
+            user.meta.counters.followers++;
             await createFollow.mutateAsync(userId!);
         }
     };
@@ -98,9 +87,9 @@ export const Profile = () => {
                                 <>
                                     <button
                                         onClick={() => handleFollow()}
-                                        className={`p-2 px-5 ${isFollowing ? "text-accent bg-transparent" : "bg-accent"} ring-accent rounded-full text-sm ring-1 transition-all`}
+                                        className={`p-2 px-5 ${Boolean(follow?.following) ? "text-accent bg-transparent" : "bg-accent"} ring-accent rounded-full text-sm ring-1 transition-all`}
                                     >
-                                        {isFollowing ? "Seguindo" : "Seguir"}
+                                        {Boolean(follow?.following) ? "Seguindo" : "Seguir"}
                                     </button>
                                     <button
                                         className="text-title rounded-full p-3 ring-1 ring-zinc-300 hover:bg-zinc-100 dark:ring-zinc-700 hover:dark:bg-zinc-800"
@@ -120,8 +109,8 @@ export const Profile = () => {
                         </div>
                     </div>
 
-                    <div className="text-title mb-5 flex items-center justify-center divide-x-1 divide-zinc-300 px-2 text-sm font-semibold lg:justify-start lg:px-8 dark:divide-zinc-700">
-                        <p className="pr-4">Seguidores {followers}</p>
+                    <div className="text-title mb-5 flex items-center justify-center divide-x-1 divide-zinc-300 px-2 text-sm lg:justify-start lg:px-8 dark:divide-zinc-700">
+                        <p className="pr-4">Seguidores {user?.meta.counters.followers}</p>
                         <p className="pl-4">Seguindo {user?.meta.counters.following}</p>
                     </div>
 
@@ -133,9 +122,8 @@ export const Profile = () => {
                     </div>
                 </header>
 
+                {}
                 <main className="mt-5 space-y-2">
-                    <h2 className="text-title mt-2 text-2xl">Posts</h2>
-
                     <div className="w-ful grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
                         {posts.map((post) => (
                             <>

@@ -141,7 +141,7 @@ export const unfollowUser = async (
 
         const unfollow = await Follow.findOneAndDelete({
             userId: unfollowData._id,
-            followerId: userData._id,
+            follower: userData._id,
         });
         if (!unfollow) throw new Error("Not following this User.");
         // Updating who is following
@@ -152,7 +152,7 @@ export const unfollowUser = async (
 
         // Updating who is being followed
         await User.updateOne(
-            { _id: req.params.followingId },
+            { _id: unfollowData._id },
             { $inc: { "meta.counters.followers": -1 } }
         );
 

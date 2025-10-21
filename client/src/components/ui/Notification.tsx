@@ -7,7 +7,7 @@ export const Notification = ({ notification }: { notification: NotificationData 
 
     return (
         <ul key={notification._id} className="" onClick={() => navigate(notification.href)}>
-            <div className="grid cursor-pointer grid-cols-[auto_1fr] items-start gap-2 rounded-lg px-3 py-4 hover:bg-zinc-100 hover:dark:bg-zinc-800">
+            <div className="grid cursor-pointer grid-cols-[auto_1fr] items-start gap-2 rounded-xl px-3 py-4 hover:bg-zinc-100 hover:dark:bg-zinc-800">
                 <header>
                     <img src={notification.senderImage} alt="" className="h-9 w-9 rounded-full" />
                 </header>

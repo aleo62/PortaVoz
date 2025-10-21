@@ -21,7 +21,6 @@ export interface PostData extends Document {
     upvotesCount: number;
     commentsCount: number;
     status: "ativo" | "resolvido" | "oculto";
-    severity: "pequena" | "média" | "urgente" | "super urgente";
     isUpvoted?: boolean;
 }
 
@@ -89,6 +88,7 @@ const PostSchema: Schema = new Schema(
         },
         hashtags: {
             type: [String],
+            ref: "Hashtag",
             required: true,
             validate: [
                 (val: string[]) => val.length >= 1 && val.length <= 3,
@@ -118,14 +118,6 @@ const PostSchema: Schema = new Schema(
                 message: ["{VALUE} is not supported"],
             },
             default: "ativo",
-        },
-        severity: {
-            type: String,
-            enum: {
-                values: ["pequena", "média", "urgente", "super urgente"],
-                message: ["{VALUE} is not supported"],
-            },
-            required: [true, "Severity is required"],
         },
     },
     { timestamps: true }

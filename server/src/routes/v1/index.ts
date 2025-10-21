@@ -1,10 +1,11 @@
 /**
  * Arquivo principal de rotas da API v1.
  * Define as rotas raiz, de posts e de imagens.
- */
+*/
+import userRouter from "@/routes/v1/user";
 import chatRouter from "@/routes/v1/chat";
 import postRouter from "@/routes/v1/post";
-import userRouter from "@/routes/v1/user";
+import hashtagRouter from "@/routes/v1/hashtag";
 import validateRouter from "@/routes/v1/validate";
 import { Router } from "express";
 
@@ -32,5 +33,7 @@ router.use("/users", userRouter);
 router.use("/validate", validateRouter);
 // Rotas das mensagens
 router.use("/chats", chatRouter);
+// Rotas das hashtags
+router.use("/hashtags", hashtagRouter);
 
 export default router;

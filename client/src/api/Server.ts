@@ -1,5 +1,5 @@
 import { FiltersType } from "@/utils/types/filtersDataType";
-import { PostData } from "@/utils/types/postDataType";
+import { PostData, RequestPostData } from "@/utils/types/postDataType";
 import { UserData } from "@/utils/types/userDataType";
 import axios from "axios";
 
@@ -38,7 +38,7 @@ export class Server {
     }
 
     // POST Post
-    static async createPost(reportForm: Partial<PostData>, token: string) {
+    static async createPost(reportForm: Partial<RequestPostData>, token: string) {
         const formData = new FormData();
         formData.append("title", reportForm.title!);
         formData.append("desc", reportForm.desc!);
@@ -151,6 +151,14 @@ export class Server {
         return res.data;
     }
 
+    // GET Remaining Reports
+    static async getRemainingReports(userId: string, token: string) {
+        const res = await axios.get(`${this.baseUrl}users/${userId}/remaining-reports`, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        return res.data;
+    }
+
     // POST User
     static async createUser(userData: Partial<UserData>, token: string) {
         return axios.post(`${this.baseUrl}users/auth`, userData, {
@@ -197,7 +205,7 @@ export class Server {
 
     /* VALIDATOR ENDPOINTS -----------> */
     // POST Validates
-    static async validateStage(reportForm: Partial<PostData>, stage: string) {
+    static async validateStage(reportForm: Partial<RequestPostData>, stage: string) {
         const formData = new FormData();
         formData.append("title", reportForm.title!);
         formData.append("desc", reportForm.desc!);
@@ -257,4 +265,16 @@ export class Server {
         );
         return res.data;
     }
+
+    /* HASHTAGS ENDPOINTS -----------> */
+
+    // GET Hashtags
+    static async getHashtags(token: string, pageParam: number) {
+        const res = await axios.get(`${this.baseUrl}hashtags`, {
+            params: { page: pageParam },
+            headers: { authorization: `Bearer ${token}` },
+        });
+        return res.data;
+    }
+
 }

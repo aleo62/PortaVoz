@@ -9,7 +9,7 @@ export const PostSkeleton = () => {
             {[1, 2, 3].map((i) => (
                 <article
                     key={i}
-                    className="relative w-full max-w-[590px] rounded-xl bg-white shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] dark:bg-zinc-900"
+                    className="relative w-full max-w-[620px] rounded-xl bg-white shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] dark:bg-zinc-900"
                 >
                     {/* Header */}
                     <header className="flex items-center gap-3 p-3 py-5 lg:p-5 lg:py-6">

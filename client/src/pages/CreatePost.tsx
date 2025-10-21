@@ -7,7 +7,7 @@ import { PostImages } from "@/sections/CreatePost/PostImages";
 import { PostLocation } from "@/sections/CreatePost/PostLocation";
 import { PostTags } from "@/sections/CreatePost/PostTags";
 import { PostData } from "@/utils/types/postDataType";
-import { IconArrowRight, IconHome2 } from "@tabler/icons-react";
+import { IconArrowLeft, IconArrowRight, IconHome2 } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -70,56 +70,30 @@ export const CreatePost = () => {
         registerPost();
     }, [reportPage]);
 
-    const pageVariants =
-        reportPage !== 0
-            ? {
-                  initial: {
-                      x: "100%",
-                      opacity: 0,
-                  },
-                  animate: {
-                      x: "0%",
-                      opacity: 1,
-                      transition: {
-                          type: "tween",
-                          ease: "easeOut",
-                          duration: 0.3,
-                      },
-                  },
-                  exit: {
-                      x: "-100%",
-                      opacity: 0,
-                      transition: {
-                          type: "tween",
-                          ease: "easeIn",
-                          duration: 0.3,
-                      },
-                  },
-              }
-            : {
-                  initial: {
-                      x: "0%",
-                      opacity: 100,
-                  },
-                  animate: {
-                      x: "0%",
-                      opacity: 1,
-                      transition: {
-                          type: "tween",
-                          ease: "easeOut",
-                          duration: 0.3,
-                      },
-                  },
-                  exit: {
-                      x: "-100%",
-                      opacity: 0,
-                      transition: {
-                          type: "tween",
-                          ease: "easeIn",
-                          duration: 0.3,
-                      },
-                  },
-              };
+    const pageVariants = {
+        initial: {
+            x: "100%",
+            opacity: 0,
+        },
+        animate: {
+            x: "0%",
+            opacity: 1,
+            transition: {
+                type: "tween",
+                ease: "easeOut",
+                duration: 0.3,
+            },
+        },
+        exit: {
+            x: "-100%",
+            opacity: 0,
+            transition: {
+                type: "tween",
+                ease: "easeIn",
+                duration: 0.3,
+            },
+        },
+    };
 
     return (
         <>
@@ -142,7 +116,8 @@ export const CreatePost = () => {
                                 className={`h-full ${barPosition[reportPage]} bg-accent rounded-full transition-[width]`}
                             ></div>
                         </div>
-                        <div className="relative mx-auto mt-17 mb-10 h-50 min-h-95 w-full max-w-xl rounded-xl">
+
+                        <div className="relative mx-auto max-w-150 py-20">
                             <AnimatePresence mode="wait">
                                 <motion.div
                                     key={reportPage}
@@ -150,7 +125,7 @@ export const CreatePost = () => {
                                     initial="initial"
                                     animate="animate"
                                     exit="exit"
-                                    style={{ position: "absolute", width: "100%" }}
+                                    className="h-120 lg:h-150"
                                 >
                                     <ReportSection
                                         validate={() => {
@@ -165,26 +140,38 @@ export const CreatePost = () => {
                                     />
                                 </motion.div>
                             </AnimatePresence>
-                        </div>
-                        <div className="mx-auto w-full max-w-xl">
-                            <Button
-                                className="mb-20 ml-auto"
-                                text="Proximo"
-                                onClick={() => handleNext()}
-                                Icon={IconArrowRight}
-                                small
-                                isLoading={isValidating}
-                            />
+                            <div className="flex items-center">
+                                {reportPage > 0 && (
+                                    <div
+                                        className="transition-background lg:absolute lg:transform-x-[-50%] lg:top-1/2 lg:left-[-20%] bg-body-background hover:bg-accent group ring-accent relative h-15 w-15 overflow-clip rounded-full ring-2 duration-200"
+                                        onClick={() => setReportPage((prev) => prev - 1)}
+                                    >
+                                        <IconArrowLeft
+                                            className="transition-color text-accent group-hover:text-body-background absolute top-[50%] left-[50%] size-8 translate-x-[-50%] translate-y-[-50%] stroke-[2] duration-200 group-hover:left-[-15px]"
+                                            title="Voltar"
+                                        />
+                                        <IconArrowLeft
+                                            className="transition-color text-accent group-hover:text-body-background absolute top-[50%] right-[-15px] size-8 translate-x-[50%] translate-y-[-50%] stroke-[2] duration-200 group-hover:right-[50%]"
+                                            title="Voltar"
+                                        />
+                                    </div>
+                                )}
+
+                                <Button
+                                    className="ml-auto"
+                                    text="Proximo"
+                                    onClick={() => handleNext()}
+                                    Icon={IconArrowRight}
+                                    small
+                                    isLoading={isValidating}
+                                />
+                            </div>
                         </div>
                     </>
                 ) : (
                     <div className="mx-auto mt-40 w-fit">
                         <h1 className="text-title mt-5 text-2xl font-bold">
-                            {isError
-                                ? "Error aaaaaa"
-                            : created
-                                  ? "Registrado!"
-                                  : "Registrando..."}
+                            {isError ? "Error aaaaaa" : created ? "Registrado!" : "Registrando..."}
                         </h1>
                     </div>
                 )}

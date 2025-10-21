@@ -2,7 +2,7 @@ import config from "@/config";
 import Follow from "@/models/Follow.model";
 import User from "@/models/User.model";
 import { updateImageService } from "@/services/ImageService";
-import { fetchUser } from "@/services/UserService";
+import { fetchUser, verifyRemainingReports } from "@/services/UserService";
 import { formatError } from "@/utils/formatError";
 import { Request, Response } from "express";
 
@@ -81,6 +81,36 @@ export const getUserById = async (
         }));
 
         res.status(200).json({ user, isFollowing });
+    } catch (err) {
+        if (!(err instanceof Error)) throw err;
+
+        const errors = formatError(err.message);
+
+        res.status(500).json({
+            code: "ServerError",
+            message: "Internal Server Error",
+            errors: errors,
+        });
+    }
+};
+
+/**
+ * GET - Controller responsável por ver se o usuário pelo id possui posts restantes
+ */
+export const getRemainingReports = async (
+    req: Request,
+    res: Response
+): Promise<void> => {
+    try {
+        const { canReport, remaining, resetAt } = await verifyRemainingReports(
+            req.params.userId,
+            req.user!.isAdmin
+        );
+        res.status(200).json({
+            canReport,
+            remaining,
+            resetAt,
+        });
     } catch (err) {
         if (!(err instanceof Error)) throw err;
 

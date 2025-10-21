@@ -6,6 +6,7 @@ import { FormInput } from "@/components/ui/FormInput";
 import { InfoFooter } from "@/components/ui/InfoFooter";
 import { useToast } from "@/contexts/ToastContext";
 import { auth } from "@/firebase";
+import { useStoreUser } from "@/stores/userStore";
 import { portaVozLogo } from "@/utils/data";
 import { IconArrowLeft, IconArrowUpRight, IconCheck } from "@tabler/icons-react";
 import { applyActionCode, confirmPasswordReset, reload } from "firebase/auth";
@@ -13,7 +14,9 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 export const Verify = () => {
-    const user = auth.currentUser;
+    const userAuth = auth.currentUser;
+    const { updateUser } = useStoreUser();
+
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -30,14 +33,16 @@ export const Verify = () => {
             navigate("/auth/login");
         }
         const verifyEmail = async () => {
-            if (user && mode == "verifyEmail") {
-                await reload(user!);
+            if (userAuth && mode == "verifyEmail") {
+                await reload(userAuth!);
                 await applyActionCode(auth, oobCode!);
+
+                await updateUser({ isVerified: true });
             }
         };
 
         verifyEmail();
-    }, [user]);
+    }, [userAuth]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

@@ -7,6 +7,7 @@ import { getNotifications } from "@/controllers/NotificationController";
 import {
     createUser,
     editUser,
+    getRemainingReports,
     getUserById,
     getUsersByName,
 } from "@/controllers/UserController";
@@ -24,6 +25,17 @@ router.get("/", authenticateUser, validationError, getUsersByName);
 
 // GET - Rota para pegar usuario por id
 router.get("/:userId", authenticateUser, validationError, getUserById);
+
+// GET - Rota para pegar o remaining reports
+router.get(
+    "/:userId/remaining-reports",
+    authenticateUser,
+    authenticateOwnerOrAdmin(async (req: Request) => {
+        return req.params.userId;
+    }),
+    validationError,
+    getRemainingReports
+);
 
 /*
  ++
@@ -48,7 +60,7 @@ router.put(
     authenticateUser,
     authenticateOwnerOrAdmin(async (req: Request) => {
         return req.params.userId;
-}),
+    }),
     upload.fields([
         { name: "image", maxCount: 1 },
         { name: "banner", maxCount: 1 },

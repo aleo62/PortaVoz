@@ -13,7 +13,7 @@ export const HeaderOptions = () => {
     const [activeNotificationDrop, setActiveNotificationDrop] = useState(false);
 
     return (
-        <div className="ml-auto flex items-center lg:gap-3">
+        <div className="ml-auto flex items-center lg:gap-3 w-fit">
             <div className="relative flex items-center px-2.5">
                 <div
                     className={`${!isMobile && "mr-2"} hidden h-fit flex-col items-end overflow-hidden transition-all lg:flex`}

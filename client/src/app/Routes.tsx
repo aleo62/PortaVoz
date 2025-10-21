@@ -3,6 +3,7 @@ import { CreatePost } from "@/pages/CreatePost";
 import { Posts } from "@/pages/Feed";
 import { ForgotPassword } from "@/pages/ForgotPassword";
 import { NotFound } from "@/pages/NotFound";
+import { NotVerified } from "@/pages/NotVerified";
 import { Post } from "@/pages/PostView";
 import { Profile } from "@/pages/Profile";
 import { Verify } from "@/pages/Verify";
@@ -51,6 +52,14 @@ export const AppRoutes = () => {
                     element={
                         <ProtectedLayout>
                             <Verify />
+                        </ProtectedLayout>
+                    }
+                />
+                <Route
+                    path="/auth/not-verified"
+                    element={
+                        <ProtectedLayout>
+                            <NotVerified />
                         </ProtectedLayout>
                     }
                 />
