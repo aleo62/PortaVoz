@@ -6,7 +6,7 @@ import { PostContent } from "@/sections/CreatePost/PostContent";
 import { PostImages } from "@/sections/CreatePost/PostImages";
 import { PostLocation } from "@/sections/CreatePost/PostLocation";
 import { PostTags } from "@/sections/CreatePost/PostTags";
-import { PostData, RequestPostData } from "@/utils/types/postDataType";
+import { RequestPostData } from "@/utils/types/postDataType";
 import { IconArrowLeft, IconArrowRight, IconHome2 } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
