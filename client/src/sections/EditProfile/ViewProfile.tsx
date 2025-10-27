@@ -158,13 +158,13 @@ export const ViewProfile = () => {
                             <Button
                                 styleType="outlined"
                                 text="Cancelar"
-                                small
+                                size="small"
                                 onClick={() => cancelEditInfo()}
                             />
                             <Button
                                 styleType="primary"
                                 text="Salvar"
-                                small
+                                size="small"
                                 Icon={IconArrowRight}
                                 onClick={() => saveEditInfo()}
                             />

@@ -1,15 +1,14 @@
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { ReactNode, useEffect, useState } from "react";
+import { IconChevronLeftPipe, IconChevronRightPipe } from "@tabler/icons-react";
+import { ReactNode, useEffect } from "react";
 import { LinkBack } from "../ui/LinkBack";
 import { HeaderOptions } from "./HeaderOptions";
-import { IconChevronLeftPipe, IconChevronRightPipe } from "@tabler/icons-react";
 
 export const HeaderSidebar = ({
-    children,
     linkBack,
     noHeader,
     isOpen,
-    onClick
+    onClick,
 }: {
     children?: ReactNode;
     linkBack?: boolean;
@@ -18,7 +17,6 @@ export const HeaderSidebar = ({
     onClick?: () => void;
 }) => {
     const isMobile = useIsMobile();
-    const [isScrolling, setIsScrolling] = useState(false);
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -31,7 +29,7 @@ export const HeaderSidebar = ({
     return (
         !noHeader && (
             <header
-                className={`bg-body-background sticky top-0 z-100 mx-auto mb-3 flex h-full max-h-20 w-full items-center gap-6 py-5 lg:gap-3 lg:px-10 ${isScrolling && "border-b-1 border-b-zinc-200 dark:border-b-zinc-100"}`}
+                className={`bg-body-background sticky top-0 z-100 mx-auto mb-3 flex h-full max-h-20 w-full items-center gap-6 border-b-1 border-b-zinc-200 py-5 lg:gap-3 lg:px-10 dark:border-b-zinc-100`}
             >
                 <div className="mx-auto flex w-full max-w-7xl items-center">
                     {isMobile && !linkBack && (
@@ -43,7 +41,7 @@ export const HeaderSidebar = ({
                         </button>
                     )}
                     {linkBack && <LinkBack />}
-                    
+
                     <HeaderOptions />
                 </div>
             </header>

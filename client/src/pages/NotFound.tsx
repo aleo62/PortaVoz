@@ -22,7 +22,7 @@ export const NotFound = () => {
                     path="/"
                     className="mt-5"
                     Icon={IconArrowRight}
-                    small
+                    size="small"
                 />
             </div>
         </div>

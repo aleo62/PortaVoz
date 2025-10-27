@@ -30,7 +30,7 @@ export const HeaderDrop = ({ isOpen, orientation, onClose }: DropdownTemplatePro
                         text={!!user ? "Começar" : "Entrar"}
                         onClick={() => navigate("/auth/login")}
                         Icon={IconArrowRight}
-                        small
+                        size="small"
                     />
                 </ul>
             </nav>

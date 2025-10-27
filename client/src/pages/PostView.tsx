@@ -2,7 +2,6 @@ import { HeaderPost } from "@/components/ui/HeaderPost";
 import { MainPost } from "@/components/ui/MainPost";
 import { PostMap } from "@/components/ui/PostMap";
 import { usePostById } from "@/hooks/posts/usePostById";
-import { useIsMobile } from "@/hooks/useIsMobile";
 import { PostData } from "@/utils/types/postDataType";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
@@ -10,7 +9,6 @@ import { useParams } from "react-router-dom";
 export const PostView = () => {
     const { postId } = useParams();
     const { data, isLoading, isError } = usePostById(postId!, true);
-    const isMobile = useIsMobile();
     const [optionsDropOpen, setOptionsDropOpen] = useState(false);
 
     if (isLoading) return <div>Carregando...</div>;

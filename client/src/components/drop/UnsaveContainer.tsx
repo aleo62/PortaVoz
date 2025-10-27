@@ -22,8 +22,8 @@ export const UnsaveContainer = ({ isOpen, isLoading, onCancel, onSave }: UnsaveP
                             Deseja salvar as alterações?
                         </p>
                         <div className="flex items-center gap-2">
-                            <Button text="Salvar" onClick={onSave} small isLoading={isLoading} />
-                            <Button styleType="outlined" text="Cancelar" onClick={onCancel} small />
+                            <Button text="Salvar" onClick={onSave} size="small" isLoading={isLoading} />
+                            <Button styleType="outlined" text="Cancelar" onClick={onCancel} size="small" />
                         </div>
                     </div>
                 </motion.div>

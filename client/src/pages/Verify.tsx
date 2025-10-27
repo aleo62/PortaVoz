@@ -4,7 +4,6 @@ import { Ret } from "@/components/deco/Ret";
 import { Button } from "@/components/ui/Button";
 import { FormInput } from "@/components/ui/FormInput";
 import { useToast } from "@/contexts/ToastContext";
-import { portaVozLogo } from "@/data/data";
 import { auth } from "@/firebase";
 import { useStoreUser } from "@/stores/userStore";
 import { IconArrowLeft, IconArrowUpRight, IconCheck } from "@tabler/icons-react";
@@ -77,7 +76,6 @@ export const Verify = () => {
             <div className="min-h-screen space-y-60 pt-5">
                 <div className="mx-auto grid w-full max-w-sm items-center gap-5">
                     <div className="flex flex-col items-center justify-center">
-                        <img src={portaVozLogo} alt="PortaVoz" width={150} />
                         <h2 className="font-title text-title mt-3 mb-12 text-center text-xl font-normal md:text-2xl">
                             {mode == "resetPassword" ? (
                                 <>

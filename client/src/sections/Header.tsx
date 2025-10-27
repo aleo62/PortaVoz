@@ -49,7 +49,7 @@ export const Header = () => {
                     {/* LOGO */}
                     <h1 className="font-title flex items-center font-bold">
                         <a href="/" className="logo">
-                            <img src={portaVozLogo} width={90} alt="PortaVoz" />
+                            <img src={portaVozLogo(isDarkTheme)} width={90} alt="PortaVoz" />
                         </a>
                     </h1>
 
@@ -79,13 +79,13 @@ export const Header = () => {
                                     <>
                                         <Button
                                             styleType="secondary"
-                                            small={true}
+                                            size="small"
                                             text="Cadastrar"
                                             path="/auth/register"
                                         />
                                         <Button
                                             styleType="primary"
-                                            small={true}
+                                            size="small"
                                             text="Entrar"
                                             Icon={IconLogin}
                                             path="/auth/login"
@@ -95,7 +95,7 @@ export const Header = () => {
                                     <>
                                         <Button
                                             styleType="primary"
-                                            small={true}
+                                            size="small"
                                             text="Começar"
                                             Icon={IconTrendingUp}
                                             path="/auth/login"

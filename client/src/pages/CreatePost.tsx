@@ -106,7 +106,7 @@ export const CreatePost = () => {
                             className="top-5 left-5 max-lg:mt-5 lg:absolute"
                             iconLeft
                             Icon={IconHome2}
-                            small
+                            size="small"
                             onClick={() => navigate("/feed")}
                         />
                         <div
@@ -162,7 +162,7 @@ export const CreatePost = () => {
                                     text="Proximo"
                                     onClick={() => handleNext()}
                                     Icon={IconArrowRight}
-                                    small
+                                    size="small"
                                     isLoading={isValidating}
                                 />
                             </div>
