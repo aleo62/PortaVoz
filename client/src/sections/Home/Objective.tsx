@@ -8,7 +8,7 @@ import { AnimatedSubtitle } from "@components/animations/AnimatedSubtitle";
 import { AnimatedTitle } from "@components/animations/AnimatedTitle";
 
 import { Topic } from "@/components/ui/Topic";
-import { topics } from "@/utils/data";
+import { Topics } from "@data/home";
 import { IconArrowNarrowRight } from "@tabler/icons-react";
 
 export const Objective = () => {
@@ -58,7 +58,7 @@ export const Objective = () => {
                         whileInView="show"
                         viewport={{ once: true }}
                     >
-                        {topics.map(({ body, icon: Icon }, key) => (
+                        {Topics.map(({ body, icon: Icon }, key) => (
                             <Topic Icon={Icon} body={body} key={key} />
                         ))}
                     </motion.div>

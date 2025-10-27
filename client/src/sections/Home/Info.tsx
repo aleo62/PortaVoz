@@ -3,9 +3,9 @@ import { AnimatedCaption } from "@components/animations/AnimatedCaption";
 import { AnimatedSubtitle } from "@components/animations/AnimatedSubtitle";
 import { AnimatedTitle } from "@components/animations/AnimatedTitle";
 
-import { Card } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Cards } from "@utils/data";
+import { Button } from "@components/ui/Button";
+import { Card } from "@components/ui/Card";
+import { Cards } from "@data/home";
 import { motion } from "framer-motion";
 
 import { Border } from "@components/deco/Border";

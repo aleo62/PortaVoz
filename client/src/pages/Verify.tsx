@@ -3,11 +3,10 @@ import { Circle } from "@/components/deco/Circle";
 import { Ret } from "@/components/deco/Ret";
 import { Button } from "@/components/ui/Button";
 import { FormInput } from "@/components/ui/FormInput";
-import { InfoFooter } from "@/components/ui/InfoFooter";
 import { useToast } from "@/contexts/ToastContext";
+import { portaVozLogo } from "@/data/data";
 import { auth } from "@/firebase";
 import { useStoreUser } from "@/stores/userStore";
-import { portaVozLogo } from "@/utils/data";
 import { IconArrowLeft, IconArrowUpRight, IconCheck } from "@tabler/icons-react";
 import { applyActionCode, confirmPasswordReset, reload } from "firebase/auth";
 import { useEffect, useState } from "react";
@@ -138,7 +137,6 @@ export const Verify = () => {
                         </>
                     )}
                 </div>
-                <InfoFooter />
             </div>
         </>
     );

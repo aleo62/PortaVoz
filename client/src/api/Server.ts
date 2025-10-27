@@ -276,4 +276,26 @@ export class Server {
         });
         return res.data;
     }
+    /* Auth ENDPOINTS -----------> */
+
+    // POST Code
+    static async sendVerificationCode(token: string) {
+        return (
+            await axios.post(
+                `${this.baseUrl}users/code/send`,
+                {},
+                { headers: { Authorization: `Bearer ${token}` } },
+            )
+        ).data;
+    }
+
+    // POST Code
+    static async verifyVerificationCode(token: string, code: string) {
+        console.log(code)
+        return (await axios.post(
+            `${this.baseUrl}users/code/verify`,
+            { code },
+            { headers: { Authorization: `Bearer ${token}` } },
+        )).data;
+    }
 }

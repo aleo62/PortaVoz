@@ -1,12 +1,8 @@
 import { registerUserGoogle } from "@/firebase/firebaseFunctions";
-import { useIsMobile } from "@/hooks/useIsMobile";
 import { Widgets } from "./Widgets";
 
-export const GoogleButton = () => {
-    const isMobile = useIsMobile();
-
+export const GoogleButton = ({ small }: { small?: boolean }) => {
     const handleGoogleLogin = async () => {
-        // Login with google
         await registerUserGoogle();
     };
 
@@ -17,9 +13,9 @@ export const GoogleButton = () => {
                     "https://res.cloudinary.com/di5bma0gm/image/upload/v1759595925/google_siwzjm.png"
                 }
                 alt=""
-                width={isMobile ? 20 : 25}
+                width={27}
             />
-            <p className="text-sm">Entrar com Google</p>
+            {!small && "Entrar com o Google"}
         </Widgets>
     );
 };

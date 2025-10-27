@@ -3,10 +3,9 @@ import { Circle } from "@/components/deco/Circle";
 import { Ret } from "@/components/deco/Ret";
 import { Button } from "@/components/ui/Button";
 import { FormInput } from "@/components/ui/FormInput";
-import { InfoFooter } from "@/components/ui/InfoFooter";
 import { useToast } from "@/contexts/ToastContext";
+import { portaVozLogo } from "@/data/data";
 import { auth } from "@/firebase";
-import { portaVozLogo } from "@/utils/data";
 import { IconArrowLeft, IconArrowUpRight } from "@tabler/icons-react";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { useState } from "react";
@@ -83,8 +82,6 @@ export const ForgotPassword = () => {
                         </div>
                     </form>
                 </div>
-
-                <InfoFooter />
             </div>
         </>
     );

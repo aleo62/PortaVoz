@@ -52,7 +52,6 @@ export const PostOverlay = ({ isOpen, onClose, post }: SearchOverlayProps) => {
     return (
         <>
             <OverlayTemplate isOpen={isOpen} onClose={onClose}>
-                {/* LEFT SIDE ---------------> */}
                 <motion.div
                     initial={{ scale: 0.95 }}
                     animate={{ scale: 1 }}
@@ -72,8 +71,7 @@ export const PostOverlay = ({ isOpen, onClose, post }: SearchOverlayProps) => {
                         ))}
                     </Swiper>
                 </motion.div>
-
-                {/* RIGHT SIDE ---------------> */}
+                
                 <motion.div
                     initial={isMobile && { transform: "translateY(100px)" }}
                     animate={isMobile && { transform: "translateY(0px)" }}
@@ -81,7 +79,6 @@ export const PostOverlay = ({ isOpen, onClose, post }: SearchOverlayProps) => {
                     transition={{ duration: 0.1 }}
                     className="bg-body-background text-title relative flex h-full w-full flex-col rounded-t-xl p-4 py-7 lg:max-w-md lg:rounded-b-xl"
                 >
-                    {/* HEADER */}
                     <header className="flex items-center gap-2">
                         <img
                             src={post.user.image}
@@ -93,10 +90,9 @@ export const PostOverlay = ({ isOpen, onClose, post }: SearchOverlayProps) => {
                             <p className="text-subtitle text-sm">{post._id}</p>
                         </div>
                     </header>
-
-                    {/* CONTENT */}
+                    
                     <main className="mt-7">
-                        <h1 className="font-title text-xl font-semibold">{post.title}</h1>
+                        <h1 className="font-title text-xl font-medium">{post.title}</h1>
                         <p className="text-subtitle mt-3 mb-7 text-sm">{post.desc}</p>
                     </main>
 

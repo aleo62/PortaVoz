@@ -1,4 +1,4 @@
-import { portaVozLogo, SidebarItems, SidebarSpecialItems } from "@/utils/data";
+import { portaVozLogo, SidebarItems, SidebarSpecialItems } from "@/data/data";
 
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useTheme } from "@/hooks/useTheme";
@@ -46,7 +46,7 @@ export const Sidebar = ({
                         <h1>
                             <a href="/" className="logo">
                                 <img
-                                    src={portaVozLogo}
+                                    src={portaVozLogo(isDarkTheme)}
                                     className={`origin-top transition-[opacity,width] duration-300 ease-in-out ${isOpen ? "w-23 opacity-100" : "w-0 opacity-0"}`}
                                     alt="PortaVoz"
                                 />
@@ -64,10 +64,14 @@ export const Sidebar = ({
                     <ul className={`space-y-2 p-5 px-1 ${!isOpen ? "items-center" : ""}`}>
                         <div
                             onClick={() => setSearchOpen(true)}
-                            className="text-title flex items-center rounded-lg bg-zinc-100 px-4 py-2.5 ring-1 ring-zinc-200/70 dark:bg-zinc-800 dark:ring-zinc-700/70 mb-6"
+                            className="text-title mb-6 flex items-center rounded-lg bg-zinc-100 px-4 py-2.5 ring-1 ring-zinc-200/70 dark:bg-zinc-800 dark:ring-zinc-700/70"
                         >
                             <IconSearch className="size-5.5" />
-                            <span className={`${isOpen ? "ml-3 w-38 opacity-100" : "ml-0 w-0 opacity-0"} transition-all text-sm text-zinc-400 dark:text-zinc-600`}>Pesquisar...</span>
+                            <span
+                                className={`${isOpen ? "ml-3 w-38 opacity-100" : "ml-0 w-0 opacity-0"} text-sm text-zinc-400 transition-all dark:text-zinc-600`}
+                            >
+                                Pesquisar...
+                            </span>
                         </div>
 
                         {SidebarItems.map(({ label, icon, href }, key) => (

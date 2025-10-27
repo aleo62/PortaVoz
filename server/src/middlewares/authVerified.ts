@@ -1,4 +1,3 @@
-import {admin} from "@/firebase";
 import { NextFunction, Request, Response } from "express";
 
 export const authenticateVerified = async (
@@ -7,7 +6,8 @@ export const authenticateVerified = async (
     next: NextFunction
 ): Promise<void> => {
     try {
-        if(!req.user?.isVerified) throw new Error("User not verified for this action.");
+        if (!req.user?.isVerified)
+            throw new Error("User not verified for this action.");
 
         next();
     } catch (err) {

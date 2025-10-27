@@ -2,7 +2,7 @@ import { auth } from "@/firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useEffect } from "react";
 
-const SESSION_DURATION = 3 * 1000 * 60 * 60; ; // 3 horas
+const SESSION_DURATION = 3 * 1000 * 60 * 60; ; 
 
 export const useAutoLogout = () => {
     useEffect(() => {

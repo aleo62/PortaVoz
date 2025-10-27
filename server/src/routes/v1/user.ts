@@ -1,3 +1,4 @@
+import { sendCode, verifyCode } from "@/controllers/AuthCodeController";
 import {
     followUser,
     getFollowing,
@@ -20,13 +21,10 @@ import { body } from "express-validator";
 
 const router = Router();
 
-// GET - Rota para pegar usuarios pelo nome
 router.get("/", authenticateUser, validationError, getUsersByName);
 
-// GET - Rota para pegar usuario por id
 router.get("/:userId", authenticateUser, validationError, getUserById);
 
-// GET - Rota para pegar o remaining reports
 router.get(
     "/:userId/remaining-reports",
     authenticateUser,
@@ -43,7 +41,6 @@ router.get(
  ++
 */
 
-// POST - Rota para criar usuario
 router.post(
     "/auth/",
     authenticateUser,
@@ -54,7 +51,6 @@ router.post(
     createUser
 );
 
-// PUT - Rota para editar usuario
 router.put(
     "/:userId",
     authenticateUser,
@@ -82,7 +78,6 @@ router.put(
  ++
 */
 
-// GET - Rota para ver se segue
 router.get(
     "/:followingId/following",
     authenticateUser,
@@ -90,7 +85,6 @@ router.get(
     getFollowing
 );
 
-// POST - Rota para adicionar seguidor
 router.post(
     "/:followingId/follow",
     authenticateUser,
@@ -98,7 +92,6 @@ router.post(
     followUser
 );
 
-// DELETE - Rota para remover seguidor
 router.delete(
     "/:unfollowId/unfollow",
     authenticateUser,
@@ -112,7 +105,6 @@ router.delete(
  ++
 */
 
-// GET - Rota para notificações
 router.get(
     "/:userId/notifications",
     authenticateUser,
@@ -121,6 +113,28 @@ router.get(
     }),
     validationError,
     getNotifications
+);
+
+/*
+ ++
+ ======= Routes to Code Auth events =======
+ ++
+*/
+
+// POST
+router.post(
+    "/code/send",
+    authenticateUser,
+    validationError,
+    sendCode
+);
+
+// POST
+router.post(
+    "/code/verify",
+    authenticateUser,
+    validationError,
+    verifyCode
 );
 
 export default router;

@@ -1,5 +1,5 @@
+import { NavItems } from "@/data/data";
 import { useStoreUser } from "@/stores/userStore";
-import { NavItems } from "@/utils/data";
 import { IconArrowRight } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import { DropdownTemplate, DropdownTemplateProps } from "../templates/DropdownTemplate";

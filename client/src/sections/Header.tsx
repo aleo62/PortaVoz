@@ -1,10 +1,10 @@
 import { SearchOverlay } from "@/components/overlay/SearchOverlay";
 import { Button } from "@/components/ui/Button";
 import { Navbar } from "@/components/ui/Navbar";
+import { portaVozLogo } from "@/data/data";
 import { useTheme } from "@/hooks/useTheme";
 import { useStoreUser } from "@/stores/userStore";
-import { portaVozLogo } from "@/utils/data";
-import { IconLogin, IconMoon, IconTrendingUp } from "@tabler/icons-react";
+import { IconLogin, IconMoon, IconSun, IconTrendingUp } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 
 export const Header = () => {
@@ -66,22 +66,16 @@ export const Header = () => {
                                     className="text-title hover:dark:text-subtitle hover:text-zinc-900"
                                     onClick={() => setIsDarkTheme(!isDarkTheme)}
                                 >
-                                    <IconMoon className="" />
+                                    {isDarkTheme ? (
+                                        <IconSun className="" />
+                                    ) : (
+                                        <IconMoon className="" />
+                                    )}
                                 </button>
                             </div>
 
                             <div className="flex items-center gap-2 pl-4 max-lg:hidden md:justify-self-end">
                                 {!user ? (
-                                    <>
-                                        <Button
-                                            styleType="primary"
-                                            small={true}
-                                            text="Começar"
-                                            Icon={IconTrendingUp}
-                                            path="/auth/login"
-                                        />
-                                    </>
-                                ) : (
                                     <>
                                         <Button
                                             styleType="secondary"
@@ -94,6 +88,16 @@ export const Header = () => {
                                             small={true}
                                             text="Entrar"
                                             Icon={IconLogin}
+                                            path="/auth/login"
+                                        />
+                                    </>
+                                ) : (
+                                    <>
+                                        <Button
+                                            styleType="primary"
+                                            small={true}
+                                            text="Começar"
+                                            Icon={IconTrendingUp}
                                             path="/auth/login"
                                         />
                                     </>

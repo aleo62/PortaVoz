@@ -19,11 +19,11 @@ export const ProtectedLayout = ({
     const location = useLocation();
 
     useEffect(() => {
-        if (isLoadingUser) return;
+        if (isLoadingUser || location.pathname === "/auth/verify") return;
 
         if (onlyGuest && user) navigate("/feed");
-        if (user && !user.isVerified && location.pathname !== "/auth/verify")
-            navigate("/auth/not-verified");
+        if (user && !user.isVerified)
+            navigate("/not-verified");
         if (!onlyGuest && !user) navigate("/auth/login");
         if (onlyAdmin && user && !user.claims?.admin) navigate("/");
     }, [user, isLoadingUser, onlyGuest, onlyAdmin, navigate]);

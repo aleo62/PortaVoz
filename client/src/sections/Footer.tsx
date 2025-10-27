@@ -1,4 +1,4 @@
-import { NavItems } from "@/utils/data";
+import { NavItems } from "@/data/data";
 import logo from "@assets/images/logo/logo-light.png";
 import { IconSearch } from "@tabler/icons-react";
 export const Footer = () => {

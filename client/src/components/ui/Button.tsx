@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import { SpinnerCircular } from "spinners-react";
 
@@ -6,25 +5,32 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
     text?: string;
     Icon?: React.ElementType;
     path?: string;
-    small?: boolean;
+    size?: "small" | "medium" | "large";
     styleType?: "primary" | "secondary" | "outlined";
     iconLeft?: boolean;
     isLoading?: boolean;
 };
 
 const baseClass =
-    "button flex items-center justify-center gap-2 overflow-hidden rounded-[.7rem] px-[2rem] py-[.700rem] font-medium tracking-wider transition-transform duration-200 active:scale-95 disabled:opacity-90 lg:px-[1.4rem] ";
+    "button flex items-center justify-center whitespace-nowrap gap-2 rounded-xl transition-all duration-150 active:scale-95 disabled:opacity-60 overflow-hidden";
+
+const sizeClasses = {
+    small: "h-[45px] text-[14px] px-[20px]",
+    medium: "lg:h-[49px] lg:text-[15px] px-[24px] text-[14px] h-[45px]",
+    large: "h-[56px] text-[20px] px-[32px]",
+};
 
 const styleTypeClass = {
     primary:
-        "bg-gradient-to-r from-primary/95 to-[#005ca2]/95 text-white shadow-[0px_4px_54px_0px_rgba(0,0,0,0.2)] transition-all duration-200 hover:from-[#3d69d8] hover:to-[#005ca2] hover:translate-y-[-3px]",
+        "bg-accent text-white  hover:translate-y-[-2px] ring-2 shadow-[inset_0px_0px_6px_2px_rgba(255,_255,_255,_0.1)] ring-blue-700/80",
     secondary: "bg-secondary text-accent dark:text-stone-200 hover:bg-secondary-lighter",
-    outlined: "bg-transparent text-accent ring-1 ring-accent hover:bg-accent/10",
+    outlined:
+        "ring-[.8px] ring-zinc-300 shadow-sm text-zinc-600 dark:ring-zinc-600 dark:text-zinc-300 hover:bg-zinc-800/5 dark:hover:bg-zinc-200/10",
 };
 
 export const Button = ({
     text,
-    small,
+    size = "medium",
     path,
     className = "",
     Icon,
@@ -33,44 +39,32 @@ export const Button = ({
     isLoading = false,
     ...rest
 }: ButtonProps) => {
+    const finalClass = [baseClass, sizeClasses[size], styleTypeClass[styleType], className].join(
+        " ",
+    );
+
     const navigate = useNavigate();
-
-    const finalClass = [
-        baseClass,
-        styleTypeClass[styleType],
-        small ? "text-[0.9rem] px-3 py-1" : "text-[14px] lg:text-[15px] md:text-[14px]",
-        className,
-    ]
-        .filter(Boolean)
-        .join(" ");
-
-    const handleClick = path ? () => navigate(path) : rest.onClick;
-
-    const buttonContent = (
-        <button className={finalClass} {...rest} disabled={isLoading || rest.disabled} onClick={handleClick}>
+    return (
+        <button
+            className={`${finalClass} ${iconLeft && "flex-row-reverse"}`}
+            {...rest}
+            disabled={isLoading || rest.disabled}
+            onClick={path ? () => navigate(path) : rest.onClick}
+        >
             {isLoading ? (
-                <SpinnerCircular
-                    size={20}
-                    thickness={180}
-                    speed={100}
-                    color="#ffffff"
-                    secondaryColor="rgba(0, 0, 0, 0)"
-                />
+                <SpinnerCircular size={20} thickness={180} speed={100} />
             ) : (
-                <div
-                    className={`${iconLeft && "flex-row-reverse"} inline-flex items-center justify-center gap-2 whitespace-nowrap`}
-                >
-                    <p>{text}</p>
+                <>
+                    {text}
                     {Icon && (
                         <Icon
-                            className={` ${small ? "size-5.5" : "size-6"} ${
+                            className={`${size === "small" ? "size-5" : "size-6"} ${
                                 styleType === "outlined" ? "stroke-[1.5]" : "stroke-[2.2]"
-                            } `}
+                            }`}
                         />
                     )}
-                </div>
+                </>
             )}
         </button>
     );
-    return buttonContent;
 };

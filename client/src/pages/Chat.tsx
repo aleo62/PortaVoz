@@ -83,14 +83,16 @@ export const Chat = () => {
     return (
         <>
             <div
-                className={`flex h-full w-full items-center divide-zinc-300 lg:divide-x-1 dark:divide-zinc-700 ${chatId && "max-lg:h-[97dvh] max-lg:py-1"}`}
+                className={`flex h-full w-full items-center divide-zinc-300 lg:divide-x-1 dark:divide-zinc-700 ${chatId && "max-lg:h-[96dvh] max-lg:py-1"}`}
             >
                 <aside
-                    className={`text-title mr-auto h-full w-full lg:max-w-89 lg:p-3 lg:py-8 ${chatId && "max-lg:hidden"}`}
+                    className={`text-title mr-auto h-full w-full lg:max-w-89 ${chatId && "max-lg:hidden"}`}
                 >
-                    <h1 className="mb-4 px-1 text-2xl font-medium lg:mb-7">Chats</h1>
+                    <h1 className="flex h-15 items-center px-3 text-xl">Chats</h1>
 
-                    <div className={`w-full space-y-3`}>
+                    <div
+                        className={`w-full space-y-3 divide-y-1 divide-zinc-200 border-y-1 border-zinc-200 dark:divide-zinc-700 dark:border-zinc-700`}
+                    >
                         {chatsLoading ? (
                             <ChatContainerSkeleton />
                         ) : (

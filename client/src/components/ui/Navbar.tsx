@@ -1,6 +1,6 @@
+import { NavItems } from "@/data/data";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { IconMenu, IconX } from "@tabler/icons-react";
-import { NavItems } from "@utils/data";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { HeaderDrop } from "../drop/HeaderDrop";

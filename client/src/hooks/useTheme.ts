@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 
-export const useTheme = () => { 
-    const [isDarkTheme, setIsDarkTheme]= useState(localStorage.theme === "dark");
+export const useTheme = () => {
+    const [isDarkTheme, setIsDarkTheme] = useState(localStorage.theme === "dark");
 
     useEffect(() => {
         localStorage.theme = isDarkTheme ? "dark" : "light";
         verifyTheme();
-    }, [isDarkTheme])
+    }, [isDarkTheme]);
 
-    const verifyTheme =() => {
+    const verifyTheme = () => {
         document.documentElement.classList.toggle(
             "dark",
             localStorage.theme === "dark" ||

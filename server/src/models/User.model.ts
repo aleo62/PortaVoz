@@ -20,6 +20,12 @@ export interface UserData extends Document {
             remainingReports: number;
             reportsResetAt: Date;
         };
+        authCode?: {
+            codeHash?: string;
+            codeExpiresAt?: Date;
+            attemptsRemaining?: number;
+            attemptsResetAt?: Date;
+        };
     };
 }
 
@@ -67,6 +73,12 @@ const UserSchema: Schema = new Schema(
             limits: {
                 remainingReports: { type: Number, default: 2 },
                 reportsResetAt: { type: Date, default: new Date(0) },
+            },
+            authCode: {
+                codeHash: { type: String },
+                codeExpiresAt: { type: Date },
+                attemptsRemaining: { type: Number, default: 3 },
+                attemptsResetAt: { type: Date },
             },
         },
     },

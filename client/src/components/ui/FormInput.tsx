@@ -21,7 +21,7 @@ export const FormInput = ({
 }: FormInputProps) => {
     return (
         <div className={className}>
-            <label {...labelProps} className="label">
+            <label {...labelProps} className="text-[13px] font-medium text-zinc-500 mb-1">
                 {label}
             </label>
             {textArea ? <Textarea {...textAreaProps} /> : <Input {...inputProps} />}

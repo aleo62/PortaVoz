@@ -165,10 +165,6 @@ button {
     @apply font-semibold;
 }
 
-.label {
-    @apply text-[13px] font-semibold text-zinc-500;
-}
-
 .link {
     @apply text-accent cursor-pointer font-medium hover:text-blue-700;
 }

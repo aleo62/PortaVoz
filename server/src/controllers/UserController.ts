@@ -1,6 +1,7 @@
 import config from "@/config";
 import Follow from "@/models/Follow.model";
 import User from "@/models/User.model";
+import { sendVerificationCode } from "@/services/AuthCodeService";
 import { updateImageService } from "@/services/ImageService";
 import { fetchUser, verifyRemainingReports } from "@/services/UserService";
 import { formatError } from "@/utils/formatError";
@@ -146,6 +147,8 @@ export const createUser = async (
                 image: req.body.image,
             });
         }
+
+        if(!req.user?.isVerified) await sendVerificationCode(req.user?.uid!, req.user?.email!);
 
         res.status(200).json({ user });
     } catch (err) {

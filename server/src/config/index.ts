@@ -34,7 +34,13 @@ const config = {
     SYSTEM_MESSAGES_PER_PAGE: parseInt(
         process.env.SYSTEM_MESSAGES_PER_PAGE || "50"
     ),
-    GEMINI_API_KEY: process.env.GEMINI_API_KEY
+    SYSTEM_CODE_VERIFICATION_LENGTH: parseInt(
+        process.env.SYSTEM_CODE_VERIFICATION_LENGTH || "4"
+    ),
+    GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+    GMAIL_HOST: process.env.GMAIL_HOST,
+    GMAIL_USER: process.env.GMAIL_USER,
+    GMAIL_PASS: process.env.GMAIL_PASS,
 };
 
 export default config;

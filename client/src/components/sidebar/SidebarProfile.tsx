@@ -1,5 +1,5 @@
+import { SidebarProfileItems } from "@/data/data";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { SidebarProfileItems } from "@/utils/data";
 import { SidebarProfileItem } from "./SidebarProfileItem";
 
 export const SidebarProfile = ({

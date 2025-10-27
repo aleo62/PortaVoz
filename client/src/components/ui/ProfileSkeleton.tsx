@@ -1,10 +1,6 @@
-import { HeaderSidebar } from "@/components/sidebar/HeaderSidebar";
-
 export const ProfileSkeleton = () => {
     return (
         <div className="w-full">
-            <HeaderSidebar linkBack />
-
             <section className="mx-auto w-full max-w-4xl rounded-2xl bg-white pb-9 shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] lg:rounded-3xl lg:p-2 lg:pb-10 dark:bg-zinc-900">
                 <header>
                     {/* Banner + avatar area */}

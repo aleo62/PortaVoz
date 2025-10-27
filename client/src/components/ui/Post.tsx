@@ -46,14 +46,12 @@ export const Post = ({ post }: { post: PostData }) => {
                     post={post}
                     optionsDropOpen={optionsDropOpen}
                     setOptionsDropOpen={setOptionsDropOpen}
-                    key={post._id}
                 />
 
                 <MainPost
                     post={post}
                     setIsOverlayOpen={setIsOverlayOpen}
                     setLocationOpen={setLocationOpen}
-                    key={post._id}
                 />
 
                 {!isMobile && (
@@ -72,7 +70,6 @@ export const Post = ({ post }: { post: PostData }) => {
 
                         {!isMobile && locationOpen && post.location && (
                             <PostMap
-                                key={post._id}
                                 latitude={Number(post.location.latitude)}
                                 longitude={Number(post.location.longitude)}
                             />
