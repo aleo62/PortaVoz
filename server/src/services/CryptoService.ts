@@ -1,13 +1,10 @@
-const bcrypt = require("bcrypt");
+import crypto from "crypto";
 
-export const makeHash = async (content: string) => {
-    const salt = await bcrypt.genSalt(10);
-    const hashContent = await bcrypt.hash(content, salt);
-
-    return hashContent;
+export const makeHash = async (value: string) => {
+    return crypto.createHash("sha256").update(value).digest("hex");
 };
 
-export const verifyHash = async (userInput: string, hash: string) => {
-    const result = await bcrypt.compare(String(userInput), hash);
-    return result;
+export const verifyHash = async (value: string, hash: string) => {
+    const valueHash = await makeHash(value);
+    return valueHash === hash;
 };
