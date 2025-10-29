@@ -44,7 +44,7 @@ export const NotVerified = () => {
                 </p>
             </div>
 
-            <p className="text-md mt-8">
+            <p className="text-md text-title mt-8">
                 Não recebeu?{" "}
                 <a className="link" onClick={() => sendMail()}>
                     Clique aqui para enviar
