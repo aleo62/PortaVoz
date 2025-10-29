@@ -1,10 +1,11 @@
 import { useStoreUser } from "@/stores/userStore";
 import { IconAlertCircle } from "@tabler/icons-react";
 import { getAuth, onAuthStateChanged, sendEmailVerification } from "firebase/auth";
-import { useEffect } from "react";
+import { useEffect, useNavigate } from "react";
 
 export const NotVerified = () => {
     const { user } = useStoreUser();
+    const navigate = useNavigate();
 
     const sendMail = () => {
         const auth = getAuth();
@@ -19,6 +20,7 @@ export const NotVerified = () => {
         });
     };
     useEffect(() => {
+        if(user?.isVerified) navigate("/feed")
         sendMail();
     }, []);
 
