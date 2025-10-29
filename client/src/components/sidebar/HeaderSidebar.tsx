@@ -29,7 +29,7 @@ export const HeaderSidebar = ({
     return (
         !noHeader && (
             <header
-                className={`bg-body-background sticky top-0 z-100 mx-auto mb-3 flex h-full max-h-20 w-full items-center gap-6 border-b-1 border-b-zinc-200 py-5 lg:gap-3 lg:px-10 dark:border-b-zinc-100`}
+                className={`bg-body-background sticky top-0 z-100 mx-auto mb-3 flex h-full max-h-20 w-full items-center gap-6  py-5 lg:gap-3 lg:px-10`}
             >
                 <div className="mx-auto flex w-full max-w-7xl items-center">
                     {isMobile && !linkBack && (
