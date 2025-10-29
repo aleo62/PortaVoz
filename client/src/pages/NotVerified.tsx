@@ -1,7 +1,8 @@
 import { useStoreUser } from "@/stores/userStore";
 import { IconAlertCircle } from "@tabler/icons-react";
 import { getAuth, onAuthStateChanged, sendEmailVerification } from "firebase/auth";
-import { useEffect, useNavigate } from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
 
 export const NotVerified = () => {
     const { user } = useStoreUser();
