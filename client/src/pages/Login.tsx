@@ -47,14 +47,14 @@ export const Login = () => {
                 title="Bem Vindo de Volta"
                 subtitle="Que bom te ver aqui de novo! Insira seus dados."
             >
-                <div className="relative z-100 grid grid-cols-2 gap-3">
+                <div className="relative z-100 grid grid-cols-2 gap-3 mt-10">
                     <GoogleButton small />
                     <FacebookButton small />
                 </div>
 
                 <DivideLine label="Ou" />
 
-                <form action="" onSubmit={handleLogin} className="flex flex-col">
+                <form action="" onSubmit={handleLogin} className="flex flex-col ">
                     <FormInput
                         inputProps={{
                             type: "text",
@@ -84,12 +84,12 @@ export const Login = () => {
                     <Button
                         styleType="primary"
                         text="Entrar com Email"
-                        className="mt-15 ml-auto w-full"
+                        className="mt-12 ml-auto w-full"
                         onClick={() => handleLogin}
                     />
                 </form>
 
-                <p className="text-title mt-3 flex items-center justify-center gap-1 text-sm">
+                <p className="text-title mt-3 flex items-center justify-center gap-1 text-sm pb-3">
                     <span>Não tem uma conta ainda?</span>
                     <a onClick={() => navigate("/auth/register")} className="link text-sm">
                         Criar conta
