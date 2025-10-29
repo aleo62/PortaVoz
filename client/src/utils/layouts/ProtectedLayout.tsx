@@ -20,6 +20,7 @@ export const ProtectedLayout = ({
 
     useEffect(() => {
         if (isLoadingUser || location.pathname === "/auth/verify") return;
+        console.log(user?.isVerified);
 
         if (onlyGuest && user) navigate("/feed");
         if (user && !user.isVerified)

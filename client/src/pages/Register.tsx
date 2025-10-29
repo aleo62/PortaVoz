@@ -7,6 +7,7 @@ import { FormInput } from "@/components/ui/FormInput";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { validateEmail, validateName, validatePassword } from "@/utils/functions/validations";
 
+import { DivideLine } from "@/components/ui/DividerLine";
 import { GoogleButton } from "@/components/ui/GoogleButton";
 import { useToast } from "@/contexts/ToastContext";
 import { Slides } from "@/data/register";
@@ -15,7 +16,6 @@ import { FirebaseError } from "firebase/app";
 import { useNavigate } from "react-router-dom";
 import { A11y, Navigation, Pagination, Scrollbar } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { DivideLine } from "@/components/ui/DivideLine";
 
 export const Register = () => {
     const navigate = useNavigate();
@@ -88,7 +88,7 @@ export const Register = () => {
 
                 <div className="flex h-full flex-6 flex-col justify-center bg-white p-0 xl:p-7 dark:bg-zinc-900">
                     <form
-                        className="relative z-10 w-full max-w-xl space-y-10 self-center bg-white px-3 py-10 shadow-[0px_4px_37px_-16px_rgba(0,_0,_0,_0.1)] md:rounded-3xl md:px-5 md:py-7 lg:px-13 lg:py-0 lg:shadow-none dark:bg-zinc-900"
+                        className="relative z-10 w-full max-w-xl space-y-10 self-center bg-white px-3 py-10 md:rounded-3xl md:px-5 md:py-7 lg:px-13 lg:py-0 lg:shadow-none dark:bg-zinc-900"
                         onSubmit={handleRegister}
                     >
                         <h2 className="text-title font-title text-4xl lg:text-5xl">

@@ -148,8 +148,6 @@ export const createUser = async (
             });
         }
 
-        if(!req.user?.isVerified) await sendVerificationCode(req.user?.uid!, req.user?.email!);
-
         res.status(200).json({ user });
     } catch (err) {
         if (!(err instanceof Error)) throw err;

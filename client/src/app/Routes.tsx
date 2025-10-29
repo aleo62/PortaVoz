@@ -65,13 +65,13 @@ export const AppRoutes = () => {
         },
         {
             key: "ForgotPassword",
-            path: "/forgot-password",
+            path: "/auth/forgot-password",
             Page: <ForgotPassword />,
             layouts: [{ Component: ProtectedLayout, props: { onlyGuest: true } }],
         },
         {
             key: "Verify",
-            path: "/verify",
+            path: "/auth/verify",
             Page: <Verify />,
             layouts: [{ Component: ProtectedLayout }],
         },

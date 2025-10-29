@@ -9,9 +9,9 @@ export const Input = ({ Icon, phone, type, className, ...rest }: InputProps) => 
 
     const baseClassName = clsx(
         "flex w-full items-center rounded-xl text-[15px] font-normal",
-        "transition-[box-shadow,color] duration-300 focus-within:ring-2  focus-within:ring-accent/50 focus-within:outline-none",
-        "bg-zinc-100 text-zinc-900 ring-[.7px] ring-zinc-300 placeholder-zinc-500 focus:outline-non",
-        "dark:bg-zinc-800 dark:text-white dark:ring-zinc-700",
+        "transition-[box-shadow,color] duration-300 focus-within:ring-[1.5px]  focus-within:ring-accent focus-within:outline-none",
+        " text-zinc-900 ring-1 ring-zinc-300 placeholder-zinc-500 focus:outline-non",
+        " dark:text-white dark:ring-zinc-700",
         className,
     );
 

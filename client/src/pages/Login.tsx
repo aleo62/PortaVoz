@@ -1,6 +1,6 @@
 import { AuthPageTemplate } from "@/components/templates/AuthPageTemplate";
 import { Button } from "@/components/ui/Button";
-import { DivideLine } from "@/components/ui/DivideLine";
+import { DivideLine } from "@/components/ui/DividerLine";
 import { FacebookButton } from "@/components/ui/FacebookButton";
 import { FormInput } from "@/components/ui/FormInput";
 import { GoogleButton } from "@/components/ui/GoogleButton";
@@ -43,8 +43,11 @@ export const Login = () => {
 
     return (
         <>
-            <AuthPageTemplate title="Bem Vindo de Volta" subtitle="Que bom te ver aqui de novo! Insira seus dados.">
-                <div className="grid grid-cols-2 gap-3 z-100 relative">
+            <AuthPageTemplate
+                title="Bem Vindo de Volta"
+                subtitle="Que bom te ver aqui de novo! Insira seus dados."
+            >
+                <div className="relative z-100 grid grid-cols-2 gap-3">
                     <GoogleButton small />
                     <FacebookButton small />
                 </div>
@@ -86,7 +89,7 @@ export const Login = () => {
                     />
                 </form>
 
-                <p className="text-title flex items-center justify-center gap-1 text-sm mt-3">
+                <p className="text-title mt-3 flex items-center justify-center gap-1 text-sm">
                     <span>Não tem uma conta ainda?</span>
                     <a onClick={() => navigate("/auth/register")} className="link text-sm">
                         Criar conta

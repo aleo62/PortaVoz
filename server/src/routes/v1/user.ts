@@ -117,24 +117,24 @@ router.get(
 
 /*
  ++
- ======= Routes to Code Auth events =======
+ ======= Inactive - Routes to Code Auth events =======
  ++
 */
 
-// POST
-router.post(
-    "/code/send",
-    authenticateUser,
-    validationError,
-    sendCode
-);
+// // POST
+// router.post(
+//     "/code/send",
+//     authenticateUser,
+//     validationError,
+//     sendCode
+// );
 
-// POST
-router.post(
-    "/code/verify",
-    authenticateUser,
-    validationError,
-    verifyCode
-);
+// // POST
+// router.post(
+//     "/code/verify",
+//     authenticateUser,
+//     validationError,
+//     verifyCode
+// );
 
 export default router;

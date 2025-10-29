@@ -1,99 +1,62 @@
-import { Server } from "@/api/Server";
-import { AuthPageTemplate } from "@/components/templates/AuthPageTemplate";
-import { Button } from "@/components/ui/Button";
-import { CodeInput } from "@/components/ui/CodeInput";
 import { useStoreUser } from "@/stores/userStore";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { IconAlertCircle } from "@tabler/icons-react";
+import { getAuth, onAuthStateChanged, sendEmailVerification } from "firebase/auth";
+import { useEffect } from "react";
 
 export const NotVerified = () => {
-    const navigate = useNavigate();
-    const [codeInput, setCodeInput] = useState<string[]>(["", "", "", ""]);
     const { user } = useStoreUser();
 
-    const handleResend = async () => {
-        try {
-            await Server.sendVerificationCode(user?.token!);
-        } catch (err) {
-            console.log(err);
-        }
+    const sendMail = () => {
+        const auth = getAuth();
+        return onAuthStateChanged(auth, async (userAuth) => {
+            if (userAuth) {
+                try {
+                    sendEmailVerification(userAuth);
+                } catch (err) {
+                    console.error("Erro ao enviar e-mail:", err);
+                }
+            }
+        });
     };
-
-    const handleSubmit = async () => {
-        try {
-            const data = await Server.verifyVerificationCode(
-                user?.token!,
-                codeInput.join("").substring(0, 4),
-            );
-            console.log(data);
-        } catch (err) {
-            console.log(err);
-        }
-    };
+    useEffect(() => {
+        sendMail();
+    }, []);
 
     return (
-        <AuthPageTemplate
-            title="Verificação de E-mail"
-            subtitle={
-                <>
-                    Mandandos código para{" "}
-                    <span className="text-title font-medium">{user?.email}</span>
-                </>
-            }
-        >
-            <div className="my-10 grid grid-cols-4 gap-2">
-                {[1, 2, 3, 4].map((key) => (
-                    <CodeInput
-                        id={String(key)}
-                        value={codeInput[key - 1]}
-                        onChange={(e) => {
-                            const v = e.target.value.replace(/\D/g, "");
-                            setTimeout(() => {
-                                if (v.length > 1) {
-                                    setCodeInput((prev) => {
-                                        const prevArray = [...prev];
-                                        v.split("").map((input, index) => {
-                                            const mainIndex = key - 1 + index;
-                                            prevArray[mainIndex] = input;
-                                            document.getElementById(String(mainIndex + 2))?.focus();
-                                        });
-                                        return prevArray;
-                                    });
-                                } else {
-                                    setCodeInput((prev) => {
-                                        const prevArray = [...prev];
-                                        prevArray[key - 1] = v;
-                                        return prevArray;
-                                    });
-                                }
-                                if (!codeInput[key - 1] && v)
-                                    document.getElementById(String(key + 1))?.focus();
-                            }, 20);
-                        }}
-                        onKeyDown={(e) => {
-                            setTimeout(() => {
-                                if (e.key === "Backspace" && !codeInput[key - 1]) {
-                                    document.getElementById(String(key - 1))?.focus();
-                                }
-                            }, 10);
-                        }}
-                        autoComplete="off"
-                        placeholder="-"
-                    />
-                ))}
+        <section className="relative flex h-screen flex-col items-center p-3 pt-10">
+            <img
+                src="https://res.cloudinary.com/di5bma0gm/image/upload/v1761692913/Mail_ajalpe.png"
+                alt="Mail"
+                className="drop-shadow-accent/10 mb-10 w-lg drop-shadow-xl"
+            />
+            <h1 className="font-title text-4xl tracking-tight lg:text-6xl">
+                {" "}
+                Verifique seu E-mail{" "}
+            </h1>
+            <p className="text-subtitle text-md mt-2 text-center lg:text-xl">
+                E-mail de Verificação enviado para{" "}
+                <span className="text-title font-medium">{user?.email}</span>
+            </p>
+            <div className="mt-3 flex items-center justify-center gap-2 rounded-2xl bg-red-400/30 p-3 px-5 text-xs text-red-700 ring-[.7px] ring-red-400 backdrop-blur-sm lg:text-sm">
+                <IconAlertCircle size={19} stroke={1.5} />
+                <p>
+                    Caso não encontre, verifique sua caixa de{" "}
+                    <span className="font-medium">Spam</span>
+                </p>
             </div>
 
-            <p className="mx-auto w-fit pb-8 text-sm">
-                Não recebeu o código?{" "}
-                <a onClick={() => handleResend()} className="link">
-                    Clique aqui.
+            <p className="text-md mt-8">
+                Não recebeu?{" "}
+                <a className="link" onClick={() => sendMail()}>
+                    Clique aqui para enviar
                 </a>
+                .
             </p>
 
-            <div className="grid grid-cols-2 gap-3 border-t-[1.7px] border-zinc-200 pt-8 pb-2 lg:gap-5">
-                <Button text="Cancelar" styleType="outlined" onClick={() => navigate("/logout")} />
-                <Button text="Verificar" onClick={() => handleSubmit()} />
-            </div>
-        </AuthPageTemplate>
+            <span className="bg-accent absolute -top-50 -left-50 -z-2 h-150 w-150 rounded-full opacity-10 blur-3xl dark:mix-blend-color"></span>
+            <span className="bg-accent absolute -right-50 bottom-0 -z-2 h-120 w-120 rounded-full opacity-10 blur-3xl dark:mix-blend-color"></span>
+            <span className="absolute inset-0 top-1/2 left-1/2 -z-1 h-170 w-170 translate-x-[-50%] translate-y-[-50%] bg-[linear-gradient(to_right,white_2px,transparent_1px),linear-gradient(to_bottom,white_2px,transparent_1px)] [mask-image:radial-gradient(circle_at_center,#000_60%,transparent_100%)] bg-[size:55px_55px] bg-[position:-15px_-1px] opacity-20 dark:bg-[linear-gradient(to_right,black_2px,transparent_1px),linear-gradient(to_bottom,black_2px,transparent_1px)] dark:opacity-5"></span>
+            <span className="bg-accent absolute top-1/2 left-1/2 -z-2 h-200 w-200 translate-x-[-50%] translate-y-[-50%] rounded-full opacity-10 blur-3xl dark:mix-blend-color"></span>
+        </section>
     );
 };
