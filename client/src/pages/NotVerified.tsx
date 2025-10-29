@@ -29,15 +29,14 @@ export const NotVerified = () => {
                 alt="Mail"
                 className="drop-shadow-accent/10 mb-10 w-lg drop-shadow-xl"
             />
-            <h1 className="font-title text-4xl tracking-tight lg:text-6xl">
-                {" "}
+            <h1 className="font-title text-title text-4xl tracking-tight lg:text-6xl">
                 Verifique seu E-mail{" "}
             </h1>
             <p className="text-subtitle text-md mt-2 text-center lg:text-xl">
                 E-mail de Verificação enviado para{" "}
                 <span className="text-title font-medium">{user?.email}</span>
             </p>
-            <div className="mt-3 flex items-center justify-center gap-2 rounded-2xl bg-red-400/30 p-3 px-5 text-xs text-red-700 ring-[.7px] ring-red-400 backdrop-blur-sm lg:text-sm">
+            <div className="mt-3 flex items-center text-title justify-center gap-2 rounded-2xl bg-red-400/30 p-3 px-5 text-xs text-red-700 dark:text-red-400 dark:bg-red-700/30 ring-[.7px] ring-red-400 backdrop-blur-sm lg:text-sm">
                 <IconAlertCircle size={19} stroke={1.5} />
                 <p>
                     Caso não encontre, verifique sua caixa de{" "}
