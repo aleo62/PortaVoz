@@ -1,11 +1,12 @@
 import { useToast } from "@/contexts/ToastContext";
+import { PostDropItems, PostDropOwnerItems } from "@/data/drop";
 import { copyToClipboard } from "@/utils/functions/copyToClipboard";
-import { IconAlertTriangle, IconLink, IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
 import { SpinnerCircular } from "spinners-react";
-import { DropdownTemplate, DropdownTemplateProps } from "../templates/DropdownTemplate";
+import { Dropdown, DropdownProps } from "../ui/Dropdown";
 
-type PostDropProps = DropdownTemplateProps & {
+type PostDropProps = DropdownProps & {
+    postId: string;
     isOwner: boolean;
     onDeletePost: () => void;
 };
@@ -14,67 +15,64 @@ export const PostDrop = ({
     isOpen,
     orientation,
     onClose,
+    postId,
     isOwner,
     onDeletePost,
 }: PostDropProps) => {
     const [isDeleting, setIsDeleting] = useState(false);
     const { successToast } = useToast();
 
+    const handleCopyLink = () => {
+        copyToClipboard(
+            `${window.location.protocol}//${window.location.hostname}/post/${postId}`,
+            "Link copiado",
+            successToast,
+        );
+    };
+
+    const handleDelete = () => {
+        onDeletePost();
+        setIsDeleting(true);
+    };
+
     return (
-        <>
-            <DropdownTemplate isOpen={isOpen} onClose={onClose} orientation={orientation}>
-                <nav className="divide-y-1 divide-zinc-100 dark:divide-zinc-700" onClick={onClose}>
-                    <ul className="flex w-46 flex-col py-1 text-sm">
-                        <li>
-                            <a
-                                onClick={() =>
-                                    copyToClipboard(
-                                        `${window.location.protocol}//${window.location.hostname}/post/P_DijdTdthJmoqVHImPn`,
-                                        "Link copiado",
-                                        successToast,
-                                    )
-                                }
-                                className="flex w-full items-center gap-2 rounded-lg p-3 px-4 font-medium hover:bg-zinc-100 hover:text-zinc-900 dark:hover:bg-zinc-800 hover:dark:text-white"
-                            >
-                                <IconLink className="size-4.5" /> Copiar Link
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="/profile"
-                                className="flex w-full items-center gap-2 rounded-lg p-3 px-4 font-medium hover:bg-zinc-100 hover:text-zinc-900 dark:hover:bg-zinc-800 hover:dark:text-white"
-                            >
-                                <IconAlertTriangle className="size-4.5" /> Denunciar Post
-                            </a>
-                        </li>
-                    </ul>
-                    {isOwner && (
-                        <ul className="flex w-46 flex-col py-1 text-sm">
-                            <li>
-                                <a
-                                    className="flex w-full items-center gap-2 rounded-lg p-3 px-4 font-medium text-red-500 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                                    onClick={() => {
-                                        onDeletePost();
-                                        setIsDeleting(true);
-                                    }}
-                                >
-                                    <IconTrash className="size-4.5" /> Deletar Post
-                                    {isDeleting && (
-                                        <SpinnerCircular
-                                            size={10}
-                                            thickness={180}
-                                            speed={100}
-                                            color="#FF0000"
-                                            secondaryColor="rgba(0, 0, 0, 0)"
-                                            className="ml-auto"
-                                        />
-                                    )}
-                                </a>
-                            </li>
-                        </ul>
-                    )}
-                </nav>
-            </DropdownTemplate>
-        </>
+        <Dropdown isOpen={isOpen} orientation={orientation} onClose={onClose}>
+            <Dropdown.Block>
+                {PostDropItems.map((item, index) => (
+                    <Dropdown.Item
+                        key={index}
+                        Icon={item.Icon}
+                        label={item.label}
+                        path={item.path}
+                        onClick={index === 0 ? handleCopyLink : undefined}
+                        alert={item?.alert}
+                    />
+                ))}
+            </Dropdown.Block>
+            {isOwner && (
+                <Dropdown.Block>
+                    {PostDropOwnerItems.map((item, index) => (
+                        <Dropdown.Item
+                            key={index}
+                            Icon={item.Icon}
+                            label={item.label}
+                            onClick={index === 0 ? handleDelete : undefined}
+                            alert={item?.alert}
+                        >
+                            {isDeleting && index === 0 && (
+                                <SpinnerCircular
+                                    size={10}
+                                    thickness={180}
+                                    speed={100}
+                                    color="#FF0000"
+                                    secondaryColor="rgba(0, 0, 0, 0)"
+                                    className="ml-auto"
+                                />
+                            )}
+                        </Dropdown.Item>
+                    ))}
+                </Dropdown.Block>
+            )}
+        </Dropdown>
     );
 };

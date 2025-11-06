@@ -1,43 +1,30 @@
-import { IconLogout, IconPencil, IconUser } from "@tabler/icons-react";
-import { useNavigate } from "react-router-dom";
-import { DropdownTemplate, DropdownTemplateProps } from "../templates/DropdownTemplate";
+import { UserDropAuthItems, UserDropItems } from "@/data/drop";
+import { Dropdown, DropdownProps } from "../ui/Dropdown";
 
-export const UserDrop = ({ isOpen, orientation, onClose }: DropdownTemplateProps) => {
-    const navigate = useNavigate();
-
+export const UserDrop = ({ isOpen, orientation, onClose }: DropdownProps) => {
     return (
-        <DropdownTemplate isOpen={isOpen} orientation={orientation} onClose={onClose}>
-            <nav className="divide-y-1 divide-zinc-100 dark:divide-zinc-700">
-                <ul className="flex w-42 flex-col py-1 text-sm">
-                    <li>
-                        <a
-                            onClick={() => navigate("/profile")}
-                            className="flex w-full cursor-pointer items-center gap-2 rounded-lg p-3 px-3 hover:bg-zinc-100 hover:text-zinc-800 dark:hover:bg-zinc-800 hover:dark:text-white"
-                        >
-                            <IconUser className="size-4.5" /> Acessar Perfil
-                        </a>
-                    </li>
-                    <li>
-                        <a
-                            onClick={() => navigate("/edit-profile")}
-                            className="flex w-full cursor-pointer items-center gap-2 rounded-lg p-3 px-3 hover:bg-zinc-100 hover:text-zinc-800 dark:hover:bg-zinc-800 hover:dark:text-white"
-                        >
-                            <IconPencil className="size-4.5" /> Editar Perfil
-                        </a>
-                    </li>
-                </ul>
-                <ul className="flex w-42 flex-col py-1 text-sm">
-                    <li>
-                        <a
-                            onClick={() => navigate("/logout")}
-                            className="flex w-full cursor-pointer items-center gap-2 rounded-lg p-3 px-3 text-red-700 hover:bg-red-200/50 hover:text-red-500 hover:dark:bg-red-600/30"
-                        >
-                            <IconLogout className="size-4.5" />
-                            Sair
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </DropdownTemplate>
+        <Dropdown isOpen={isOpen} orientation={orientation} onClose={onClose}>
+            <Dropdown.Block>
+                {UserDropItems.map((item) => (
+                    <Dropdown.Item
+                        Icon={item.Icon}
+                        label={item.label}
+                        path={item.path}
+                        alert={item?.alert}
+                    />
+                ))}
+            </Dropdown.Block>
+            <Dropdown.Block>
+                {UserDropAuthItems.map((item, index) => (
+                    <Dropdown.Item
+                        key={index}
+                        Icon={item.Icon}
+                        label={item.label}
+                        path={item.path}
+                        alert={item?.alert}
+                    />
+                ))}
+            </Dropdown.Block>
+        </Dropdown>
     );
 };

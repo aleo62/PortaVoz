@@ -1,10 +1,10 @@
-import { useEffect } from "react";
-
-import { useTheme } from "@/hooks/useTheme";
-
 import { useAutoLogout } from "@/hooks/useLogoutTime";
+import { useTheme } from "@/hooks/useTheme";
+import { useEffect } from "react";
+import { BrowserRouter as Router } from "react-router-dom";
 import { Providers } from "./app/Providers";
 import { AppRoutes } from "./app/Routes";
+
 function App() {
     const { verifyTheme } = useTheme();
 
@@ -23,9 +23,11 @@ function App() {
     }, []);
 
     return (
-        <Providers>
-            <AppRoutes />
-        </Providers>
+        <Router>
+            <Providers>
+                <AppRoutes />
+            </Providers>
+        </Router>
     );
 }
 

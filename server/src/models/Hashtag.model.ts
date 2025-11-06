@@ -1,17 +1,11 @@
 import mongoose, { Document, ObjectId, Schema } from "mongoose";
 
-/**
- * Interfaces para tipagem dos dados da Hashtag
- */
 export interface HashtagData extends Document {
     _id: ObjectId | string;
     usageCount: number;
     content: string;
 }
 
-/**
- * Schema principal do Hashtag
- */
 const HashtagSchema: Schema = new Schema(
     {
         _id: {
@@ -29,5 +23,6 @@ const HashtagSchema: Schema = new Schema(
     },
     { timestamps: true }
 );
-// Exporta o model Hashtag
-export default mongoose.model<HashtagData>("Hashtag", HashtagSchema);
+
+const Hashtag = mongoose.model<HashtagData>("Hashtag", HashtagSchema);
+export default Hashtag;

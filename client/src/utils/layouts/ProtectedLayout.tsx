@@ -20,17 +20,17 @@ export const ProtectedLayout = ({
 
     useEffect(() => {
         if (isLoadingUser || location.pathname === "/auth/verify") return;
-        console.log(user?.isVerified);
 
+        if (!onlyGuest && !user) navigate("/auth/login");
         if (onlyGuest && user) navigate("/feed");
         if (user && !user.isVerified)
             navigate("/not-verified");
-        if (!onlyGuest && !user) navigate("/auth/login");
         if (onlyAdmin && user && !user.claims?.admin) navigate("/");
-    }, [user, isLoadingUser, onlyGuest, onlyAdmin, navigate]);
+    }, [isLoadingUser]);
+
+    if(isLoadingUser) return <Loader isLoading />;
     return (
         <>
-            <Loader isLoading={isLoadingUser} />
             {children}
         </>
     );

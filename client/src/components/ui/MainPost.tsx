@@ -49,22 +49,22 @@ export const MainPost = ({ post, setIsOverlayOpen, setLocationOpen, viewMode }: 
 
     return (
         <main className="relative">
-            <div className="h-90 w-full md:h-135 px-2">
-                <Swiper className="h-full rounded-2xl">
-                    {post.images.map((image) => (
-                        <SwiperSlide>
-                            <img
-                                className={`h-full w-full transition-all duration-300 ease-in-out ${imageContain ? "object-contain" : "object-cover"}`}
-                                onClick={() => setImageContain(!imageContain)}
-                                src={image as string}
-                                alt="Representação da Cena"
-                            />
-                        </SwiperSlide>
-                    ))}
-                </Swiper>
-            </div>
+            <Swiper className="h-90 w-[98%] rounded-2xl px-2 md:h-135">
+                {post.images.map((image) => (
+                    <SwiperSlide>
+                        <img
+                            className={`h-full w-full transition-all duration-300 ease-in-out ${imageContain ? "object-contain" : "object-cover"}`}
+                            onClick={() => setImageContain(!imageContain)}
+                            src={image as string}
+                            alt="Representação da Cena"
+                        />
+                    </SwiperSlide>
+                ))}
+            </Swiper>
 
-            <div className={`${viewMode ? "px-1 py-3 pb-8" : "px-3 py-3 lg:px-6 lg:py-5"} space-y-5`}>
+            <div
+                className={`${viewMode ? "px-1 py-3 pb-8" : "p-3 lg:px-6 lg:py-5"} space-y-5`}
+            >
                 <div
                     className={`flex items-center space-x-1.5 font-semibold ${isMobile ? "text-xs" : "text-[.8rem]"} `}
                 >
@@ -105,7 +105,7 @@ export const MainPost = ({ post, setIsOverlayOpen, setLocationOpen, viewMode }: 
                         {post.title}
                     </h2>
 
-                    <p className="mb-2 w-full text-[.8rem] wrap-break-word text-zinc-800 lg:text-sm dark:text-zinc-300">
+                    <p className="mb-5 w-full text-[.8rem] wrap-break-word text-zinc-800 lg:text-sm dark:text-zinc-300">
                         {postDescription}
                     </p>
 

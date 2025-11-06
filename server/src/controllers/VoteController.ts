@@ -9,9 +9,6 @@ import { formatError } from "@/utils/formatError";
 import { generateId } from "@/utils/generateId";
 import { Request, Response } from "express";
 
-/**
- * POST - Fazer Upvote
- */
 export const createUpvote = async (
     req: Request,
     res: Response
@@ -22,9 +19,7 @@ export const createUpvote = async (
 
         if (!req.params.parentId) throw new Error("Parent Id is required");
         const parentId = req.params.parentId;
-        let notificationPreview;
 
-        // Verifying if parent exists
         let parentDoc = await Comment.findById(parentId);
         let parentType, parentHref;
 
@@ -39,7 +34,6 @@ export const createUpvote = async (
             parentHref = parentDoc.parentId;
         }
 
-        // Verifying if user exists
         const alreadyUpvoted = await Vote.find({
             parentId: parentDoc._id,
             user: uid,
@@ -49,8 +43,6 @@ export const createUpvote = async (
             throw new Error("You have already upvoted this Post");
 
         const _id = generateId(config.SYSTEM_ID_SIZE, "L_") as string;
-
-        // Creating new comment
         const newUpvote = await Vote.create({
             _id,
             parentId,
@@ -58,18 +50,12 @@ export const createUpvote = async (
             user: uid,
         });
 
-        // Incrementing the upvotes count on the parent document
         parentDoc.upvotesCount = (parentDoc.upvotesCount || 0) + 1;
         await parentDoc.save();
 
-        const senderData = await fetchUser(uid);
-        // Sending notification:
         await sendNotificationToUser({
             userId: parentDoc.user,
-            senderId: uid,
-            senderImage: senderData.image,
-            title: `${senderData.username} te deu upvote!`,
-            content: `Você conseguiu um novo upvote em seu ${ parentType === "Comment" ? "comentário" : "post" }`,
+            sender: uid,
             href: `/post/${parentHref}`,
             type: "Vote",
             preview: undefined,
@@ -89,9 +75,6 @@ export const createUpvote = async (
     }
 };
 
-/**
- * DELETE - Tirar Upvote
- */
 export const deleteUpvote = async (
     req: Request,
     res: Response

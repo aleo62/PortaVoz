@@ -11,7 +11,7 @@ import { OverlayTemplate, OverlayTemplateProps } from "../templates/OverlayTempl
 import { PostSearchPreview } from "../ui/PostSearchPreview";
 import { UserSearchPreview } from "../ui/UserSearchPreview";
 
-export const SearchOverlay = ({ isOpen, onClose }: OverlayTemplateProps) => {
+export const SearchModal = ({ isOpen, onClose }: OverlayTemplateProps) => {
     const searchTopics = [
         { id: 1, label: "Denúncias", Icon: IconTableRow },
         { id: 2, label: "Usuários", Icon: IconUser },
@@ -22,7 +22,7 @@ export const SearchOverlay = ({ isOpen, onClose }: OverlayTemplateProps) => {
     const [search, setSearch] = useState<string>("");
     const [searchInput, setSearchInput] = useState<string>("");
     const [isTyping, setIsTyping] = useState<boolean>(false);
-    
+
     const { data: feedData, isLoading: feedLoading } = usePosts(
         { search },
         isOpen && activeTopic == 1,
@@ -32,8 +32,6 @@ export const SearchOverlay = ({ isOpen, onClose }: OverlayTemplateProps) => {
         search,
         isOpen && activeTopic == 2,
     );
-
-
 
     let posts: PostData[] = (feedData?.pages.flatMap((page) => page.posts) as PostData[]) || [];
     let users: UserData[] = (usersData?.pages.flatMap((page) => page.users) as UserData[]) || [];

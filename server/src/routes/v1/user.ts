@@ -5,6 +5,7 @@ import {
     unfollowUser,
 } from "@/controllers/FollowController";
 import { getNotifications } from "@/controllers/NotificationController";
+import { getPostByUser } from "@/controllers/PostController";
 import {
     createUser,
     editUser,
@@ -23,6 +24,8 @@ const router = Router();
 
 router.get("/", authenticateUser, validationError, getUsersByName);
 
+router.get("/:userId/posts", authenticateUser, validationError, getPostByUser);
+
 router.get("/:userId", authenticateUser, validationError, getUserById);
 
 router.get(
@@ -34,12 +37,6 @@ router.get(
     validationError,
     getRemainingReports
 );
-
-/*
- ++
- ======= Routes to Auth events =======
- ++
-*/
 
 router.post(
     "/auth/",
@@ -72,11 +69,6 @@ router.put(
     editUser
 );
 
-/*
- ++
- ======= Routes to Follow events =======
- ++
-*/
 
 router.get(
     "/:followingId/following",
@@ -99,12 +91,6 @@ router.delete(
     unfollowUser
 );
 
-/*
- ++
- ======= Routes to Notifications events =======
- ++
-*/
-
 router.get(
     "/:userId/notifications",
     authenticateUser,
@@ -115,11 +101,6 @@ router.get(
     getNotifications
 );
 
-/*
- ++
- ======= Inactive - Routes to Code Auth events =======
- ++
-*/
 
 // // POST
 // router.post(

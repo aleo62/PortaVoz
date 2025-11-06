@@ -8,8 +8,6 @@ import { Card } from "@components/ui/Card";
 import { Cards } from "@data/home";
 import { motion } from "framer-motion";
 
-import { Border } from "@components/deco/Border";
-import { Ret } from "@components/deco/Ret";
 import { IconUserFilled } from "@tabler/icons-react";
 
 export const Info = () => {
@@ -23,9 +21,6 @@ export const Info = () => {
 
     return (
         <section className="relative overflow-visible pt-33 pb-33">
-            <Ret className="top-[350px] left-[-40px] h-50 w-50 rotate-[-125deg] xl:h-80 xl:w-80" />
-            <Border className="top-[30px] right-[-20px] h-45 w-45" />
-
             <div className="relative z-10 container grid items-center justify-center lg:gap-5 xl:grid-cols-2">
                 <div className="">
                     <div className="mb-[50px]">

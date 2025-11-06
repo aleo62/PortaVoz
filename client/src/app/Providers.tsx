@@ -1,3 +1,4 @@
+import { ModalProvider } from "@/contexts/ModalContext";
 import { ToastProvider } from "@/contexts/ToastContext";
 import { UserProvider } from "@/contexts/UserContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -9,7 +10,9 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
     return (
         <QueryClientProvider client={queryClient}>
             <ToastProvider>
-                <UserProvider>{children}</UserProvider>
+                <ModalProvider>
+                    <UserProvider>{children}</UserProvider>
+                </ModalProvider>
             </ToastProvider>
         </QueryClientProvider>
     );

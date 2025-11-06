@@ -1,33 +1,24 @@
 import config from "@/config";
 import Comment from "@/models/Comment.model";
 import Post from "@/models/Post.model";
-import { UserData } from "@/models/User.model";
 import Vote from "@/models/Vote.model";
 import { deleteByParentId } from "@/services/CommentService";
 import { sendNotificationToUser } from "@/services/NotificationService";
-import { fetchUser } from "@/services/UserService";
 import { formatError } from "@/utils/formatError";
 import { generateId } from "@/utils/generateId";
 import { Request, Response } from "express";
-
-/**
- * GET - Controller responsável por pegar os comentarios/replies de um Post/Comment.
- */
 
 export const getCommentsById = async (
     req: Request,
     res: Response
 ): Promise<void> => {
     try {
-        // Verifying if user is authenticated
         if (!req.user) throw new Error("No User provided");
         const { parentId } = req.params;
 
-        // Verifying if page is provided
         const page = Number(req.query.page) === 0 ? 1 : Number(req.query.page),
             limit = config.SYSTEM_COMMENTS_PER_PAGE;
 
-        // Fetching posts
         const commentsData = await Comment.find({ parentId })
             .populate("user", "username image")
             .skip((page - 1) * limit)
@@ -35,7 +26,6 @@ export const getCommentsById = async (
 
         const count = await Comment.countDocuments({ parentId });
 
-        // Adding isUpvoted to each post
         const commentsResponse = await Promise.all(
             commentsData.map(async (comment) => {
                 const isUpvoted = await Vote.findOne({
@@ -51,7 +41,6 @@ export const getCommentsById = async (
             })
         );
 
-        // Sending response
         res.status(200).json({
             comments: commentsResponse,
             hasMore: count > page * limit,
@@ -69,9 +58,6 @@ export const getCommentsById = async (
     }
 };
 
-/**
- * POST - Controller responsável por criar um novo comentario.
- */
 export const createComment = async (
     req: Request,
     res: Response
@@ -83,7 +69,6 @@ export const createComment = async (
         const { uid } = req.user;
         const { parentId, content } = req.body;
 
-        // Verifying if parent exists
         parentDoc = await Comment.findById(parentId);
 
         if (parentDoc) {
@@ -98,16 +83,14 @@ export const createComment = async (
         }
 
         const _id = generateId(config.SYSTEM_ID_SIZE, "C_");
-        // Creating new comment
         const newComment = await Comment.create({
             _id,
             parentId,
             parentType,
             content,
-            user: uid
+            user: uid,
         });
 
-        // Editing parent Id
         if (parentType === "Comment") {
             const parent = await Comment.findByIdAndUpdate(parentId, {
                 $inc: { repliesCount: 1 },
@@ -121,21 +104,12 @@ export const createComment = async (
             });
         }
 
-        const senderData = await fetchUser(uid);
-        // Sending notification:
         await sendNotificationToUser({
             userId: parentDoc.user,
-            senderId: uid,
-            senderImage: senderData.image,
-            title: `${senderData.username} comentou em ${
-                parentType === "Post" ? "sua Denúncia" : "seu Comentário"
-            }`,
-            content: `Foi comentado em ${
-                parentType === "Post" ? "sua Denúncia" : "seu Comentário"
-            }, "${content}"`,
+            sender: uid,
             href: `/post/${parentHref}`,
             type: "Comment",
-            preview: undefined,
+            preview: content,
         });
 
         res.status(201).json({
@@ -155,9 +129,6 @@ export const createComment = async (
     }
 };
 
-/**
- * DEL - Controller responsável por deletar um comentario.
- */
 export const deleteComment = async (
     req: Request,
     res: Response
@@ -171,7 +142,6 @@ export const deleteComment = async (
 
         const parentId = commentData.parentId;
 
-        // Editing parent Id
         if (commentData.parentType === "Comment") {
             const parent = await Comment.findByIdAndUpdate(parentId, {
                 $inc: { repliesCount: -1 },
@@ -199,9 +169,6 @@ export const deleteComment = async (
     }
 };
 
-/**
- * DEL - Controller responsável por deletar todos os comentarios do parent.
- */
 export const deleteCommentByParentId = async (req: Request, res: Response) => {
     try {
         const parentId = req.params.parentId;

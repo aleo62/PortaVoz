@@ -8,7 +8,7 @@ type LocationOverlayProps = OverlayTemplateProps & {
     post: PostData;
 };
 
-export const LocationOverlay = ({ isOpen, onClose, post }: LocationOverlayProps) => {
+export const LocationModal = ({ isOpen, onClose, post }: LocationOverlayProps) => {
     return (
         <>
             <OverlayTemplate isOpen={isOpen} onClose={onClose}>

@@ -3,8 +3,8 @@ import { PostData } from "@/utils/types/postDataType";
 import { InvalidateQueryFilters, QueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
-import { LocationOverlay } from "../overlay/LocationOverlay";
-import { PostOverlay } from "../overlay/PostOverlay";
+import { LocationModal } from "../modal/LocationModal";
+import { PostModal } from "../modal/PostModal";
 import { HeaderPost } from "./HeaderPost";
 import { MainPost } from "./MainPost";
 import { PostMap } from "./PostMap";
@@ -25,14 +25,10 @@ export const Post = ({ post }: { post: PostData }) => {
 
     return (
         <>
-            <PostOverlay
-                isOpen={isOverlayOpen}
-                onClose={() => setIsOverlayOpen(false)}
-                post={post}
-            />
+            <PostModal isOpen={isOverlayOpen} onClose={() => setIsOverlayOpen(false)} post={post} />
 
             {isMobile && locationOpen && (
-                <LocationOverlay
+                <LocationModal
                     isOpen={locationOpen}
                     onClose={() => setLocationOpen(false)}
                     post={post}
@@ -40,7 +36,7 @@ export const Post = ({ post }: { post: PostData }) => {
             )}
 
             <article
-                className={`relative w-full max-w-[620px] rounded-2xl bg-white pb-6 shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] transition-all max-lg:pb-4 ${!isMobile && locationOpen && "translate-x-[-50%]"} dark:bg-zinc-900`}
+                className={`relative w-full max-w-[620px] rounded-2xl bg-white pb-6 shadow-[0px_4px_10px_-19px_rgba(0,_0,_0,_0.1)] transition-all max-lg:pb-4 ${!isMobile && locationOpen && "translate-x-[-50%]"} dark:bg-zinc-900`}
             >
                 <HeaderPost
                     post={post}

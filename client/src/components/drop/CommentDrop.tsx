@@ -1,9 +1,9 @@
-import { IconAlertTriangle, IconPencilCog, IconTrash } from "@tabler/icons-react";
+import { CommentDropItems, CommentDropOwnerItems } from "@/data/drop";
 import { useState } from "react";
-import { DropdownTemplate, DropdownTemplateProps } from "../templates/DropdownTemplate";
 import { SpinnerCircular } from "spinners-react";
+import { Dropdown, DropdownProps } from "../ui/Dropdown";
 
-type CommentDropProps = DropdownTemplateProps & {
+type CommentDropProps = DropdownProps & {
     isOwner: boolean;
     onDeleteComment: () => void;
 };
@@ -17,56 +17,49 @@ export const CommentDrop = ({
 }: CommentDropProps) => {
     const [isDeleting, setIsDeleting] = useState(false);
 
+    const handleDelete = () => {
+        onDeleteComment();
+        setIsDeleting(true);
+    };
+
     return (
-        <>
-            <DropdownTemplate isOpen={isOpen} orientation={orientation} onClose={onClose}>
-                <nav className="divide-y-1 divide-zinc-100 dark:divide-zinc-700">
-                    <ul className="flex w-46 flex-col py-1 text-sm">
-                        <li>
-                            <a
-                                href="/profile"
-                                className="flex w-full items-center gap-2 rounded-lg p-3 px-4 hover:bg-zinc-100 hover:text-zinc-800 dark:hover:bg-zinc-800 hover:dark:text-white"
-                            >
-                                <IconAlertTriangle className="size-4.5" /> Denunciar
-                            </a>
-                        </li>
-                    </ul>
-                    {isOwner && (
-                        <ul className="flex w-46 flex-col py-1 text-sm">
-                            <li>
-                                <a
-                                    href="/profile"
-                                    className="flex w-full items-center gap-2 rounded-lg p-3 px-4 hover:bg-zinc-100 hover:text-zinc-800 dark:hover:bg-zinc-800 hover:dark:text-white"
-                                >
-                                    <IconPencilCog className="size-4.5" />
-                                    Editar
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    className="flex w-full items-center gap-2 rounded-lg p-3 px-4 text-red-500 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                                    onClick={() => {
-                                        onDeleteComment();
-                                        setIsDeleting(true);
-                                    }}
-                                >
-                                    <IconTrash className="size-4.5" /> Deletar
-                                    {isDeleting && (
-                                        <SpinnerCircular
-                                            size={10}
-                                            thickness={180}
-                                            speed={100}
-                                            color="#FF0000"
-                                            secondaryColor="rgba(0, 0, 0, 0)"
-                                            className="ml-auto"
-                                        />
-                                    )}
-                                </a>
-                            </li>
-                        </ul>
-                    )}
-                </nav>
-            </DropdownTemplate>
-        </>
+        <Dropdown isOpen={isOpen} orientation={orientation} onClose={onClose}>
+            <Dropdown.Block>
+                {CommentDropItems.map((item, index) => (
+                    <Dropdown.Item
+                        key={index}
+                        Icon={item.Icon}
+                        label={item.label}
+                        path={item.path}
+                        alert={item?.alert}
+                    />
+                ))}
+            </Dropdown.Block>
+            {isOwner && (
+                <Dropdown.Block>
+                    {CommentDropOwnerItems.map((item, index) => (
+                        <Dropdown.Item
+                            key={index}
+                            Icon={item.Icon}
+                            label={item.label}
+                            path={item.path}
+                            onClick={index === 1 ? handleDelete : undefined}
+                            alert={item?.alert}
+                        >
+                            {isDeleting && index === 1 && (
+                                <SpinnerCircular
+                                    size={10}
+                                    thickness={180}
+                                    speed={100}
+                                    color="#FF0000"
+                                    secondaryColor="rgba(0, 0, 0, 0)"
+                                    className="ml-auto"
+                                />
+                            )}
+                        </Dropdown.Item>
+                    ))}
+                </Dropdown.Block>
+            )}
+        </Dropdown>
     );
 };

@@ -1,39 +1,37 @@
+import { RoutesPath } from "@/app/Routes";
 import { NavItems } from "@/data/data";
 import { useStoreUser } from "@/stores/userStore";
 import { IconArrowRight } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
-import { DropdownTemplate, DropdownTemplateProps } from "../templates/DropdownTemplate";
 import { Button } from "../ui/Button";
+import { Dropdown, DropdownProps } from "../ui/Dropdown";
 
-export const HeaderDrop = ({ isOpen, orientation, onClose }: DropdownTemplateProps) => {
+export const HeaderDrop = ({ isOpen, orientation, onClose }: DropdownProps) => {
     const navigate = useNavigate();
     const { user } = useStoreUser();
 
     return (
-        <DropdownTemplate isOpen={isOpen} onClose={onClose} orientation={orientation}>
-            <nav className="divide-y-1 divide-zinc-100 p-1 dark:divide-zinc-700">
-                <ul className="text-title flex w-40 flex-col py-3 pt-2 text-sm">
-                    {NavItems.map((item) => (
-                        <li>
-                            <a
-                                className="flex w-full items-center gap-2 rounded-lg p-3 px-4 hover:bg-zinc-100 hover:text-zinc-800 dark:hover:bg-zinc-800 hover:dark:text-white"
-                                onClick={() => navigate(item.href)}
-                            >
-                                {item.label}
-                            </a>
-                        </li>
-                    ))}
-                </ul>
-                <ul className="text-title flex w-40 flex-col px-3 py-3 pt-2 text-sm">
+        <Dropdown isOpen={isOpen} orientation={orientation} onClose={onClose}>
+            <Dropdown.Block>
+                {NavItems.map((item, index) => (
+                    <Dropdown.Item
+                        key={index}
+                        label={item.label}
+                        onClick={() => navigate(item.href)}
+                    />
+                ))}
+            </Dropdown.Block>
+            <Dropdown.Block>
+                <li className="px-3 py-2">
                     <Button
                         styleType="primary"
                         text={!!user ? "Começar" : "Entrar"}
-                        onClick={() => navigate("/auth/login")}
+                        onClick={() => navigate(RoutesPath("Login")!)}
                         Icon={IconArrowRight}
                         size="small"
                     />
-                </ul>
-            </nav>
-        </DropdownTemplate>
+                </li>
+            </Dropdown.Block>
+        </Dropdown>
     );
 };

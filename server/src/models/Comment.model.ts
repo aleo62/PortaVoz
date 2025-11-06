@@ -1,9 +1,6 @@
 import config from "@/config";
 import mongoose, { Document, ObjectId, Schema } from "mongoose";
 
-/**
- * Interfaces para tipagem dos dados de comentario
- */
 export interface CommentData extends Document {
     _id: ObjectId;
     parentId: ObjectId | string;
@@ -14,9 +11,6 @@ export interface CommentData extends Document {
     repliesCount: number;
 }
 
-/**
- * Schema principal do Comentario
- */
 const CommentSchema: Schema = new Schema(
     {
         _id: {
@@ -71,5 +65,5 @@ const CommentSchema: Schema = new Schema(
     { timestamps: true }
 );
 
-// Exporta o model Comment
-export default mongoose.model<CommentData>("Comment", CommentSchema);
+const Comment = mongoose.model<CommentData>("Comment", CommentSchema);
+export default Comment;

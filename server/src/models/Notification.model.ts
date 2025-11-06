@@ -1,43 +1,23 @@
-import mongoose, { Document, ObjectId, Schema } from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 
-/**
- * Interfaces para tipagem dos dados de Seguidor
- */
 export interface NotificationData extends Document {
     userId: string;
-    senderId: string;
-    senderImage: string;
-    title: string;
-    content: string;
+    sender: string;
     href: string;
     type: "Comment" | "Vote" | "Follow";
     preview?: string;
 }
 
-/**
- * Schema principal do Seguidor
- */
 const NotificationSchema: Schema = new Schema(
     {
         userId: {
             type: String,
             required: [true, "User Id is required"],
         },
-        senderId: {
+        sender: {
             type: String,
-            required: [true, "Sender Id is required"],
-        },
-        senderImage: {
-            type: String,
-            required: [true, "Sender photo is required"],
-        },
-        title: {
-            type: String,
-            required: [true, "Title is required"],
-        },
-        content: {
-            type: String,
-            required: [true, "Content is required"],
+            required: [true, "Sender is required"],
+            ref: "User",
         },
         href: {
             type: String,
@@ -55,8 +35,8 @@ const NotificationSchema: Schema = new Schema(
     { timestamps: true }
 );
 
-// Exporta o model Notification
-export default mongoose.model<NotificationData>(
+const Notification = mongoose.model<NotificationData>(
     "Notification",
     NotificationSchema
 );
+export default Notification;

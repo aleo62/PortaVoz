@@ -3,15 +3,19 @@ import { Sidebar } from "@/components/sidebar/Sidebar";
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 
+type SidebarLayoutProps = {
+    children: React.ReactNode;
+    noHeader?: boolean;
+    linkBack?: boolean;
+    orientation: "row" | "col";
+};
+
 export const SidebarLayout = ({
     children,
     noHeader,
     linkBack = false,
-}: {
-    children: React.ReactNode;
-    noHeader?: boolean;
-    linkBack?: boolean;
-}) => {
+    orientation = "col",
+}: SidebarLayoutProps) => {
     const containerRef = useRef<HTMLElement | null>(null);
 
     const [isOpen, setIsOpen] = useState(true);
@@ -28,7 +32,7 @@ export const SidebarLayout = ({
 
             <section
                 ref={containerRef}
-                className="scrollbar-thumb-zinc-500 scrollbar-corner-zinc-950 scrollbar-thin scrollable-layout flex min-h-full flex-1 flex-col overflow-y-auto pb-6 max-lg:h-screen max-lg:px-1"
+                className={`scrollbar-thin dark:scrollbar-thumb-zinc-700 scrollbar-thumb-zinc-400 scrollbar-track-transparent flex h-32 min-h-full flex-1 ${orientation === "col" ? "flex-col" : "flex-row"} overflow-y-auto pb-6 max-lg:h-screen max-lg:px-1`}
             >
                 <HeaderSidebar
                     linkBack={linkBack}

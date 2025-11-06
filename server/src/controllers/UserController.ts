@@ -1,8 +1,7 @@
 import config from "@/config";
 import Follow from "@/models/Follow.model";
 import User from "@/models/User.model";
-import { sendVerificationCode } from "@/services/AuthCodeService";
-import { updateImageService } from "@/services/ImageService";
+import { updateImage } from "@/services/ImageService";
 import { fetchUser, verifyRemainingReports } from "@/services/UserService";
 import { formatError } from "@/utils/formatError";
 import { Request, Response } from "express";
@@ -175,7 +174,7 @@ export const editUser = async (req: Request, res: Response): Promise<void> => {
             [fieldname: string]: Express.Multer.File[];
         };
         if (files.image && files.image[0]) {
-            newImage = await updateImageService(
+            newImage = await updateImage(
                 files.image[0].path,
                 currentData.image,
                 "users_image"
@@ -183,7 +182,7 @@ export const editUser = async (req: Request, res: Response): Promise<void> => {
         }
 
         if (files.banner && files.banner[0]) {
-            newBanner = await updateImageService(
+            newBanner = await updateImage(
                 files.banner[0].path,
                 currentData.banner!,
                 "banners_image"

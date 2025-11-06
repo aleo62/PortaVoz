@@ -82,71 +82,65 @@ export const Chat = () => {
 
     return (
         <>
-            <div
-                className={`flex h-full w-full items-center divide-zinc-300 lg:divide-x-1 dark:divide-zinc-700 ${chatId && "max-lg:h-[96dvh] max-lg:py-1"}`}
+            <aside
+                className={`text-title mr-auto h-screen w-full lg:max-w-89 ${chatId && "max-lg:hidden"} border-r-1 border-r-zinc-200 dark:border-r-zinc-800`}
             >
-                <aside
-                    className={`text-title mr-auto h-full w-full lg:max-w-89 ${chatId && "max-lg:hidden"}`}
-                >
-                    <h1 className="flex h-15 items-center px-3 text-xl">Chats</h1>
-
-                    <div
-                        className={`w-full space-y-3 divide-y-1 divide-zinc-200 border-y-1 border-zinc-200 dark:divide-zinc-700 dark:border-zinc-700`}
-                    >
-                        {chatsLoading ? (
-                            <ChatContainerSkeleton />
-                        ) : (
-                            <>
-                                {!chats.length ? (
-                                    <div className="mx-auto mt-8 text-center text-zinc-500">
-                                        <p className="text-lg">Sem chats cara</p>
-                                        <p className="mt-4 text-3xl">(ㆆ_ㆆ)</p>
-                                    </div>
-                                ) : (
-                                    chats.map((chat) => (
-                                        <ChatContainer
-                                            key={chat._id}
-                                            joinChat={() => setChatId(chat._id)}
-                                            chat={chat}
-                                        />
-                                    ))
-                                )}
-                            </>
-                        )}
-                    </div>
-                </aside>
+                <h1 className="flex h-15 items-center px-3 text-xl">Coversas</h1>
 
                 <div
-                    className={`relative flex h-full w-full flex-col lg:p-5 lg:py-4 ${!chatId && "max-lg:hidden"} max-lg:my-auto`}
+                    className={`w-full space-y-3`}
                 >
-                    {chatId && currentChat && (
-                        <HeaderChat chat={currentChat} setChatId={setChatId} />
-                    )}
-                    <div
-                        className="scrollbar-thin my-2 flex-1 space-y-2 overflow-y-auto lg:px-6"
-                        ref={chatRef}
-                    >
-                        {messages.map((message, index) => (
-                            <Message
-                                key={message._id ?? index}
-                                message={message}
-                                userId={userId!}
-                                ownNext={
-                                    index < messages.length - 1 &&
-                                    messages[index + 1]?.senderId === message.senderId
-                                }
-                            />
-                        ))}
-                    </div>
-
-                    {chatId && (
-                        <InputChat
-                            handleSend={handleSend}
-                            setInputText={setInputText}
-                            inputText={inputText}
-                        />
+                    {chatsLoading ? (
+                        <ChatContainerSkeleton />
+                    ) : (
+                        <>
+                            {!chats.length ? (
+                                <div className="mx-auto mt-8 text-center text-zinc-500">
+                                    <p className="text-lg">Sem chats cara</p>
+                                    <p className="mt-4 text-3xl">(ㆆ_ㆆ)</p>
+                                </div>
+                            ) : (
+                                chats.map((chat) => (
+                                    <ChatContainer
+                                        key={chat._id}
+                                        joinChat={() => setChatId(chat._id)}
+                                        chat={chat}
+                                    />
+                                ))
+                            )}
+                        </>
                     )}
                 </div>
+            </aside>
+
+            <div
+                className={`relative flex h-full w-full flex-col lg:p-5 lg:py-4 ${!chatId && "max-lg:hidden"} max-lg:my-auto`}
+            >
+                {chatId && currentChat && <HeaderChat chat={currentChat} setChatId={setChatId} />}
+                <div
+                    className="scrollbar-thin my-2 flex-1 space-y-2 overflow-y-auto lg:px-6"
+                    ref={chatRef}
+                >
+                    {messages.map((message, index) => (
+                        <Message
+                            key={message._id ?? index}
+                            message={message}
+                            userId={userId!}
+                            ownNext={
+                                index < messages.length - 1 &&
+                                messages[index + 1]?.senderId === message.senderId
+                            }
+                        />
+                    ))}
+                </div>
+
+                {chatId && (
+                    <InputChat
+                        handleSend={handleSend}
+                        setInputText={setInputText}
+                        inputText={inputText}
+                    />
+                )}
             </div>
         </>
     );

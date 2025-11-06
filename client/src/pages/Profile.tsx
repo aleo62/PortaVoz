@@ -49,7 +49,7 @@ export const Profile = () => {
 
     return (
         <section className="mx-auto w-full max-w-4xl pb-5">
-            <header className="rounded-2xl bg-white pb-12 shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] lg:rounded-3xl lg:p-2 lg:pb-14 dark:bg-zinc-900">
+            <header className="rounded-2xl bg-white pb-12 shadow-[0px_4px_10px_-19px_rgba(0,_0,_0,_0.1)] lg:rounded-3xl lg:p-2 lg:pb-14 dark:bg-zinc-900">
                 <div className="text-title relative h-full w-full">
                     {user?.banner ? (
                         <img

@@ -1,9 +1,6 @@
 import config from "@/config";
 import mongoose, { Document, ObjectId, Schema } from "mongoose";
 
-/**
- * Interfaces para tipagem dos dados de localização e post
- */
 export interface LocationData {
     latitude: number;
     longitude: number;
@@ -24,9 +21,6 @@ export interface PostData extends Document {
     isUpvoted?: boolean;
 }
 
-/**
- * Schema de localização (latitude/longitude)
- */
 const LocationSchema: Schema = new Schema({
     latitude: {
         type: Number,
@@ -42,9 +36,6 @@ const LocationSchema: Schema = new Schema({
     },
 });
 
-/**
- * Schema principal do Post, com validações e limites
- */
 const PostSchema: Schema = new Schema(
     {
         _id: {
@@ -123,5 +114,6 @@ const PostSchema: Schema = new Schema(
     { timestamps: true }
 );
 
-// Exporta o model Post
-export default mongoose.model<PostData>("Post", PostSchema);
+
+const Post = mongoose.model<PostData>("Post", PostSchema);
+export default Post;

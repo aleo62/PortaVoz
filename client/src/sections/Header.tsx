@@ -1,4 +1,4 @@
-import { SearchOverlay } from "@/components/overlay/SearchOverlay";
+import { SearchModal } from "@/components/modal/SearchModal";
 import { Button } from "@/components/ui/Button";
 import { Navbar } from "@/components/ui/Navbar";
 import { portaVozLogo } from "@/data/data";
@@ -40,7 +40,7 @@ export const Header = () => {
 
     return (
         <>
-            <SearchOverlay isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+            <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
 
             <header
                 className={`header fixed top-0 left-0 z-40 flex h-fit w-full items-center transition-[translate] duration-300 ${hidden ? "-translate-y-[290%]" : "translate-y-0"} ${outside ? "bg-body-background shadow-[0px_4px_46px_-16px_rgba(0,_0,_0,_0.1)]" : "bg-transparent"}`}

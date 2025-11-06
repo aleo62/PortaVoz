@@ -17,7 +17,7 @@ type SearchOverlayProps = OverlayTemplateProps & {
     post: PostData;
 };
 
-export const PostOverlay = ({ isOpen, onClose, post }: SearchOverlayProps) => {
+export const PostModal = ({ isOpen, onClose, post }: SearchOverlayProps) => {
     const isMobile = useIsMobile();
     const [commentInput, setCommentInput] = useState("");
     const { user: userData } = useStoreUser();
@@ -71,13 +71,13 @@ export const PostOverlay = ({ isOpen, onClose, post }: SearchOverlayProps) => {
                         ))}
                     </Swiper>
                 </motion.div>
-                
+
                 <motion.div
                     initial={isMobile && { transform: "translateY(100px)" }}
                     animate={isMobile && { transform: "translateY(0px)" }}
                     exit={isMobile ? { transform: "translateY(20px)" } : {}}
                     transition={{ duration: 0.1 }}
-                    className="bg-body-background text-title relative flex h-full w-full flex-col rounded-t-xl p-4 py-7 lg:max-w-md lg:rounded-b-xl"
+                    className="bg-body-background text-title relative flex h-full w-full flex-col rounded-t-xl p-4 py-7 lg:max-w-md lg:rounded-b-xl xl:max-w-lg"
                 >
                     <header className="flex items-center gap-2">
                         <img
@@ -90,7 +90,7 @@ export const PostOverlay = ({ isOpen, onClose, post }: SearchOverlayProps) => {
                             <p className="text-subtitle text-sm">{post._id}</p>
                         </div>
                     </header>
-                    
+
                     <main className="mt-7">
                         <h1 className="font-title text-xl font-medium">{post.title}</h1>
                         <p className="text-subtitle mt-3 mb-7 text-sm">{post.desc}</p>
@@ -98,11 +98,13 @@ export const PostOverlay = ({ isOpen, onClose, post }: SearchOverlayProps) => {
 
                     {/* COMMENTS */}
                     <div className="flex flex-1 flex-col overflow-hidden">
-                        <h2 className="flex items-center gap-2 text-xs text-zinc-700 dark:text-zinc-500">
-                            <p>Comentários</p>
-                            <span className="h-[1px] flex-1 rounded-full bg-zinc-400 dark:bg-zinc-500"></span>
-                        </h2>
+                        <h3 className="mb-3 flex items-center gap-2 text-sm dark:text-zinc-500">
+                            Comentários
+                        </h3>
 
+                        {comments.length <= 0 && (
+                            <div className="text-subtitle mx-auto text-xs">Nenhum comentário</div>
+                        )}
                         <div className="scrollbar-thin scrollbar-track-[#fafafa] dark:scrollbar-track-[#212121] scrollbar-thumb-zinc-200 dark:scrollbar-thumb-zinc-700 mt-3 flex-1 space-y-2 overflow-y-auto">
                             {comments.map((comment) => (
                                 <Comment
@@ -116,7 +118,7 @@ export const PostOverlay = ({ isOpen, onClose, post }: SearchOverlayProps) => {
                     </div>
                     {/* INPUT */}
                     <form
-                        className="mt-2 flex items-center gap-3 border-t border-zinc-200 pt-2 dark:border-zinc-700"
+                        className="mt-2 flex items-center gap-3 border-t border-zinc-200 pt-4 dark:border-zinc-700"
                         onSubmit={(e) => handleCreateComment(e)}
                     >
                         <img

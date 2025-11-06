@@ -1,72 +1,56 @@
-// Importa função utilitária para extrair o public_id de uma URL do Cloudinary
 import config from "@/config";
 import { getPublicId } from "@/utils/getPublicId";
-// Importa e configura o SDK do Cloudinary
 import { v2 as cloudinary } from "cloudinary";
 
-// Configuração do Cloudinary (substitua por variáveis de ambiente em produção)
 cloudinary.config({
     cloud_name: config.CLOUD_NAME,
     api_key: config.CLOUD_KEY,
     api_secret: config.CLOUD_SECRET,
 });
 
-/**
- * Faz upload de uma imagem para o Cloudinary.
- * @param filePath Caminho do arquivo local a ser enviad
- * @returns URL segura da imagem hospedada
- */
-export async function createImageService(
+export const uploadImage = async (
     filePath: string,
     folder?: string
-): Promise<string> {
-    try {
-        let response;
+): Promise<string> => {
+    let response;
 
-        if (folder) {
-            response = await cloudinary.uploader.upload(filePath, {
-                folder,
-            });
-        } else {
-            response = await cloudinary.uploader.upload(filePath);
-        }
-
-        return response.secure_url;
-    } catch (err) {
-        return err as string;
+    if (folder) {
+        response = await cloudinary.uploader.upload(filePath, {
+            folder,
+        });
+    } else {
+        response = await cloudinary.uploader.upload(filePath);
     }
+
+    return response.secure_url;
+};
+
+export async function deleteImage(url: string) {
+    const public_id = getPublicId(url);
+    await cloudinary.uploader.destroy(public_id);
+    return;
 }
 
-/**
- * Deleta uma imagem do Cloudinary a partir da URL.
- * @param url URL da imagem a ser removida
- */
-export async function deleteImageService(url: string) {
-    try {
-        // Extrai o public_id da URL para deletar a imagem
-        const public_id = getPublicId(url);
-        await cloudinary.uploader.destroy(public_id);
-        return;
-    } catch (err) {
-        // Retorna o erro (pode customizar para melhor tratamento)
-        return err;
-    }
+export async function updateImage(
+    filePath: string,
+    url: string,
+    folder?: string
+) {
+    await deleteImage(url);
+    const response = await uploadImage(filePath, folder);
+
+    return response;
 }
 
-/**
- * Deleta uma imagem do Cloudinary a partir da URL.
- * @param filePath Caminho do arquivo local a ser enviado
- * @param url URL da imagem a ser removida
- * @returns URL segura da imagem hospedada
- */
-export async function updateImageService(filePath: string, url: string, folder?: string) {
-    try {
-        await deleteImageService(url);
-        const response = await createImageService(filePath, folder);
-
-        return response;
-    } catch (err) {
-        // Retorna o erro (pode customizar para melhor tratamento)
-        return err;
-    }
-}
+export const uploadMultipleImages = async (
+    images: Array<Express.Multer.File>,
+    folder?: string
+) => {
+    const response = await Promise.all(
+        images.map(async image => {
+            return await uploadImage(image.path, folder);
+  
+        })
+    );
+    return response;
+};

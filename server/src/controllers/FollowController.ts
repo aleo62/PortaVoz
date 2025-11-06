@@ -5,23 +5,21 @@ import { fetchUser } from "@/services/UserService";
 import { formatError } from "@/utils/formatError";
 import { Request, Response } from "express";
 
-/**
- * GET - Controller responsável por ver se o User esta seguindo outro.
- */
+const decreaseFollowing = () => {}
+
+
 export const getFollowing = async (
     req: Request,
     res: Response
 ): Promise<void> => {
     try {
-        // Verifying if Following Id exists
         if (!req.params) throw new Error("No FollowingId provided.");
 
-        // Verifying if user exists.
+      
         if (!req.user) throw new Error("No User provided.");
         const { uid } = req.user;
         const userData = (await fetchUser(uid)) as UserData;
 
-        // Verifying if following user exists
         const followingData = await fetchUser(req.params.followingId);
         if (!followingData) throw new Error("Following User does not exists.");
 
@@ -48,29 +46,19 @@ export const getFollowing = async (
         });
     }
 };
-/**
- * POST - Controller responsável por seguir.
- */
+
 export const followUser = async (
     req: Request,
     res: Response
 ): Promise<void> => {
     try {
-        // Verifying if Following Id exists
-        if (!req.params) throw new Error("No FollowingId provided.");
-
-        // Verifying if user exists.
-        if (!req.user) throw new Error("No User provided.");
-        const { uid } = req.user;
+        const { uid } = req.user!;
         const userData = (await fetchUser(uid)) as UserData;
-
-        // Verifying if following user exists
         const followingData = await fetchUser(req.params.followingId);
-        if (!followingData) throw new Error("Following User does not exists.");
 
         const existing = await Follow.find({
             userId: followingData._id,
-            followingId: userData._id,
+            follower: userData._id,
         });
 
         if (existing.length > 0 || followingData._id === userData._id)
@@ -81,26 +69,20 @@ export const followUser = async (
             follower: userData._id,
         });
 
-        // Updating who is following
         await User.updateOne(
-            { _id: req.user.uid },
+            { _id: uid },
             { $inc: { "meta.counters.following": 1 } }
         );
 
-        // Updating who is being followed
         await User.updateOne(
             { _id: req.params.followingId },
             { $inc: { "meta.counters.followers": 1 } }
         );
 
-        // Sending notification
         await sendNotificationToUser({
             userId: req.params.followingId,
-            senderId: uid,
-            senderImage: userData.image,
-            title: `${userData.username} começou a te seguir!`,
-            content: `Você conseguiu um novo seguidor, ${userData.username} começou a te seguir!`,
-            href: `/profile/${userData._id}`,
+            sender: uid,
+            href: `/profile/${uid}`,
             type: "Follow",
             preview: undefined,
         });
@@ -119,23 +101,17 @@ export const followUser = async (
     }
 };
 
-/**
- * DELETE - Controller responsável por desseguir.
- */
 export const unfollowUser = async (
     req: Request,
     res: Response
 ): Promise<void> => {
     try {
-        // Verifying if Following Id exists
         if (!req.params) throw new Error("No UnfollowId provided.");
 
-        // Verifying if user exists.
         if (!req.user) throw new Error("No User provided.");
         const { uid } = req.user;
         const userData = (await fetchUser(uid)) as UserData;
 
-        // Verifying if following user exists
         const unfollowData = await fetchUser(req.params.unfollowId);
         if (!unfollowData) throw new Error("Unfollow User does not exists.");
 
@@ -144,13 +120,11 @@ export const unfollowUser = async (
             follower: userData._id,
         });
         if (!unfollow) throw new Error("Not following this User.");
-        // Updating who is following
+
         await User.updateOne(
             { _id: req.user.uid },
             { $inc: { "meta.counters.following": -1 } }
         );
-
-        // Updating who is being followed
         await User.updateOne(
             { _id: unfollowData._id },
             { $inc: { "meta.counters.followers": -1 } }

@@ -1,16 +1,17 @@
+import { useModal } from "@/contexts/ModalContext";
 import { SidebarConfig } from "@/data/data";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useStoreUser } from "@/stores/userStore";
 import { IconSelector } from "@tabler/icons-react";
 import { useState } from "react";
-import { NotificationDrop } from "../drop/NotificationDrop";
 import { UserDrop } from "../drop/UserDrop";
+import { NotificationModal } from "../modal/NotificationModal";
 
 export const HeaderOptions = () => {
     const isMobile = useIsMobile();
     const userData = useStoreUser((state) => state.user);
     const [activeUserDrop, setActiveUserDrop] = useState(false);
-    const [activeNotificationDrop, setActiveNotificationDrop] = useState(false);
+    const { openModal, closeModal } = useModal();
 
     return (
         <div className="ml-auto flex w-fit items-center lg:gap-3">
@@ -44,7 +45,7 @@ export const HeaderOptions = () => {
             {SidebarConfig.map(({ icon: Icon }, key) => (
                 <a
                     className="text-title relative"
-                    onClick={() => setActiveNotificationDrop(!activeNotificationDrop)}
+                    onClick={() => openModal(<NotificationModal onClose={closeModal} />)}
                     key={key}
                 >
                     <Icon className="size-6 fill-zinc-200 dark:fill-zinc-800" />
@@ -53,11 +54,6 @@ export const HeaderOptions = () => {
                             {userData?.meta.counters.unreadNotifications}
                         </span>
                     )}
-                    <NotificationDrop
-                        isOpen={activeNotificationDrop}
-                        orientation="top"
-                        onClose={() => setActiveNotificationDrop(false)}
-                    />
                 </a>
             ))}
         </div>

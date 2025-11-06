@@ -16,7 +16,7 @@ import { ProtectedLayout } from "@/utils/layouts/ProtectedLayout";
 import { SidebarLayout } from "@/utils/layouts/SidebarLayout";
 import { Home } from "@pages/Home";
 import React, { ReactNode } from "react";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 type RouteDataType = {
     key: string;
@@ -29,6 +29,7 @@ type RouteDataType = {
             onlyGuest?: boolean;
             noHeader?: boolean;
             linkBack?: boolean;
+            orientation?: "row" | "col";
         };
     }[];
 };
@@ -47,135 +48,132 @@ const resolveElement = ({ layouts, Page }: Omit<RouteDataType, "key" | "path">):
     return resolved;
 };
 
-export const AppRoutes = () => {
-    const RoutesArray: RouteDataType[] = [
-        { key: "Home", path: "/", Page: <Home /> },
-        { key: "Logout", path: "/logout", Page: <Logout /> },
-        {
-            key: "Login",
-            path: "/auth/login",
-            Page: <Login />,
-            layouts: [{ Component: ProtectedLayout, props: { onlyGuest: true } }],
-        },
-        {
-            key: "Register",
-            path: "/auth/register",
-            Page: <Register />,
-            layouts: [{ Component: ProtectedLayout, props: { onlyGuest: true } }],
-        },
-        {
-            key: "ForgotPassword",
-            path: "/auth/forgot-password",
-            Page: <ForgotPassword />,
-            layouts: [{ Component: ProtectedLayout, props: { onlyGuest: true } }],
-        },
-        {
-            key: "Verify",
-            path: "/auth/verify",
-            Page: <Verify />,
-            layouts: [{ Component: ProtectedLayout }],
-        },
-        {
-            key: "NotVerified",
-            path: "/not-verified",
-            Page: <NotVerified />,
-            layouts: [{ Component: ProtectedLayout }],
-        },
-        {
-            key: "EditProfile",
-            path: "/edit-profile",
-            Page: <EditProfile />,
-            layouts: [{ Component: SidebarLayout }, { Component: ProtectedLayout }],
-        },
-        {
-            key: "EditProfile",
-            path: "/edit-profile",
-            Page: <EditProfile />,
-            layouts: [{ Component: SidebarLayout }, { Component: ProtectedLayout }],
-        },
-        {
-            key: "Feed",
-            path: "/feed",
-            Page: <Feed />,
-            layouts: [{ Component: SidebarLayout }, { Component: ProtectedLayout }],
-        },
-        {
-            key: "AdminDashboard",
-            path: "/admin/dashboard",
-            Page: <Dashboard />,
-            layouts: [
-                { Component: SidebarLayout },
-                { Component: ProtectedLayout, props: { onylyAdmin: true } },
-            ],
-        },
-        {
-            key: "Chat",
-            path: "/chat",
-            Page: <Chat />,
-            layouts: [
-                { Component: SidebarLayout, props: { noHeader: true } },
-                { Component: ProtectedLayout },
-            ],
-        },
-        {
-            key: "ChatWithId",
-            path: "/chat/:chatId",
-            Page: <Chat />,
-            layouts: [
-                { Component: SidebarLayout, props: { noHeader: true } },
-                { Component: ProtectedLayout },
-            ],
-        },
-        {
-            key: "PostView",
-            path: "/post/:postId",
-            Page: <PostView />,
-            layouts: [
-                { Component: SidebarLayout, props: { linkBack: true } },
-                { Component: ProtectedLayout },
-            ],
-        },
-        {
-            key: "Profile",
-            path: "/profile",
-            Page: <Profile />,
-            layouts: [
-                { Component: SidebarLayout, props: { linkBack: true } },
-                { Component: ProtectedLayout },
-            ],
-        },
-        {
-            key: "ProfileWithId",
-            path: "/profile/:userId",
-            Page: <Profile />,
-            layouts: [
-                { Component: SidebarLayout, props: { linkBack: true } },
-                { Component: ProtectedLayout },
-            ],
-        },
-        {
-            key: "CreatePost",
-            path: "/post/create",
-            Page: <CreatePost />,
-            layouts: [
-                { Component: SidebarLayout, props: { linkBack: true } },
-                { Component: ProtectedLayout },
-            ],
-        },
-        {
-            key: "NotFound",
-            path: "*",
-            Page: <NotFound />,
-        },
-    ];
+const RoutesArray: RouteDataType[] = [
+    { key: "Home", path: "/", Page: <Home /> },
+    { key: "Logout", path: "/logout", Page: <Logout /> },
+    {
+        key: "Login",
+        path: "/auth/login",
+        Page: <Login />,
+        layouts: [{ Component: ProtectedLayout, props: { onlyGuest: true } }],
+    },
+    {
+        key: "Register",
+        path: "/auth/register",
+        Page: <Register />,
+        layouts: [{ Component: ProtectedLayout, props: { onlyGuest: true } }],
+    },
+    {
+        key: "ForgotPassword",
+        path: "/auth/forgot-password",
+        Page: <ForgotPassword />,
+        layouts: [{ Component: ProtectedLayout, props: { onlyGuest: true } }],
+    },
+    {
+        key: "Verify",
+        path: "/auth/verify",
+        Page: <Verify />,
+        layouts: [{ Component: ProtectedLayout }],
+    },
+    {
+        key: "NotVerified",
+        path: "/not-verified",
+        Page: <NotVerified />,
+        layouts: [{ Component: ProtectedLayout }],
+    },
+    {
+        key: "EditProfile",
+        path: "/edit-profile",
+        Page: <EditProfile />,
+        layouts: [{ Component: SidebarLayout }, { Component: ProtectedLayout }],
+    },
+    {
+        key: "Feed",
+        path: "/feed",
+        Page: <Feed />,
+        layouts: [{ Component: SidebarLayout }, { Component: ProtectedLayout }],
+    },
+    {
+        key: "AdminDashboard",
+        path: "/admin/dashboard",
+        Page: <Dashboard />,
+        layouts: [
+            { Component: SidebarLayout },
+            { Component: ProtectedLayout, props: { onylyAdmin: true } },
+        ],
+    },
+    {
+        key: "Chat",
+        path: "/chat",
+        Page: <Chat />,
+        layouts: [
+            { Component: SidebarLayout, props: { noHeader: true, orientation: "row" } },
+            { Component: ProtectedLayout },
+        ],
+    },
+    {
+        key: "ChatWithId",
+        path: "/chat/:chatId",
+        Page: <Chat />,
+        layouts: [
+            { Component: SidebarLayout, props: { noHeader: true } },
+            { Component: ProtectedLayout },
+        ],
+    },
+    {
+        key: "PostView",
+        path: "/post/:postId",
+        Page: <PostView />,
+        layouts: [
+            { Component: SidebarLayout, props: { linkBack: true } },
+            { Component: ProtectedLayout },
+        ],
+    },
+    {
+        key: "Profile",
+        path: "/profile",
+        Page: <Profile />,
+        layouts: [
+            { Component: SidebarLayout, props: { linkBack: true } },
+            { Component: ProtectedLayout },
+        ],
+    },
+    {
+        key: "ProfileWithId",
+        path: "/profile/:userId",
+        Page: <Profile />,
+        layouts: [
+            { Component: SidebarLayout, props: { linkBack: true } },
+            { Component: ProtectedLayout },
+        ],
+    },
+    {
+        key: "CreatePost",
+        path: "/post/create",
+        Page: <CreatePost />,
+        layouts: [
+            { Component: SidebarLayout, props: { linkBack: true } },
+            { Component: ProtectedLayout },
+        ],
+    },
+    {
+        key: "NotFound",
+        path: "*",
+        Page: <NotFound />,
+    },
+];
 
+type RouteKey = (typeof RoutesArray)[number]["key"];
+export const RoutesPath = (key: RouteKey) => {
+    return RoutesArray.find((route) => route.key === key)?.path;
+};
+
+export const AppRoutes = () => {
     return (
-        <Router>
-            <Routes>
-                {RoutesArray.map(({ path, Page, layouts }) => (
-                    <Route path={path} element={resolveElement({ layouts, Page })} />
-                ))}
-            </Routes>
-        </Router>
+        <Routes>
+            {RoutesArray.map(({ path, Page, layouts }) => (
+                <Route path={path} element={resolveElement({ layouts, Page })} />
+            ))}
+        </Routes>
     );
 };

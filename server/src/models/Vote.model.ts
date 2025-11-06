@@ -1,9 +1,6 @@
 import config from "@/config";
 import mongoose, { Document, ObjectId, Schema } from "mongoose";
 
-/**
- * Interfaces para tipagem dos dados dos votes
- */
 export interface VoteData extends Document {
     _id: ObjectId;
     parentId: ObjectId | string;
@@ -11,9 +8,6 @@ export interface VoteData extends Document {
     user: string;
 }
 
-/**
- * Schema principal do Vote
- */
 const VoteSchema: Schema = new Schema(
     {
         _id: {
@@ -55,5 +49,5 @@ const VoteSchema: Schema = new Schema(
     { timestamps: true }
 );
 
-// Exporta o model Vote
-export default mongoose.model<VoteData>("Vote", VoteSchema);
+const Vote = mongoose.model<VoteData>("Vote", VoteSchema);
+export default Vote;

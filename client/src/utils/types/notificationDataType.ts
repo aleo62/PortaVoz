@@ -1,11 +1,13 @@
 export interface NotificationData {
     _id: string,
     userId: string;
-    senderId: string;
-    senderImage: string;
-    title: string;
-    content: string;
+    sender: {
+        image: string,
+        user: string
+    }
+    message: string;
     href: string;
     type: "Comment" | "Vote" | "Follow";
     preview?: string;
+    createdAt: Date;
 }

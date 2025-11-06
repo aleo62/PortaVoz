@@ -180,7 +180,7 @@ export const ViewProfile = () => {
                 onSave={handleUpdateUser}
             />
             <div
-                className={`w-full max-w-4xl overflow-hidden rounded-2xl bg-white p-1 pb-10 shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] lg:mx-0 dark:bg-zinc-900`}
+                className={`w-full max-w-4xl overflow-hidden rounded-2xl bg-white p-1 pb-10 shadow-[0px_4px_10px_-19px_rgba(0,_0,_0,_0.1)] lg:mx-0 dark:bg-zinc-900`}
             >
                 <div className="relative">
                     <figure
@@ -239,12 +239,12 @@ export const ViewProfile = () => {
                 </div>
 
                 <div className="mt-5 px-2 lg:px-6">
-                    <div className="relative my-8 rounded-2xl p-5 py-6 ring-1 ring-zinc-300 lg:p-6 lg:px-8 dark:ring-zinc-700">
+                    <div className="relative my-8 rounded-2xl p-5 py-6 ring-[.7px] ring-zinc-200 lg:p-6 lg:px-8 dark:ring-zinc-700">
                         <div className="text-title mb-2 flex h-10 items-center justify-between gap-2 text-xl font-bold">
                             <h2 className="font-title">Informações pessoais</h2>
                             <button
                                 onClick={() => setEditInfo(true)}
-                                className="flex cursor-pointer items-center gap-2 rounded-lg p-2 text-sm font-semibold ring-1 ring-zinc-300 transition-[background-color] duration-200 hover:bg-zinc-300/40 dark:ring-zinc-700"
+                                className="flex cursor-pointer items-center gap-2 rounded-lg p-2 text-sm font-semibold ring-[.7px] ring-zinc-300 transition-[background-color] duration-200 hover:bg-zinc-300/40 dark:ring-zinc-700"
                             >
                                 <IconEdit /> Editar
                             </button>
@@ -259,7 +259,7 @@ export const ViewProfile = () => {
                     </div>
 
                     <div
-                        className={`relative my-8 mt-2 rounded-2xl p-5 py-6 ring-1 ring-zinc-300 transition-[background-color] duration-200 lg:p-6 lg:px-8 dark:ring-zinc-700 ${
+                        className={`relative my-8 mt-2 rounded-2xl p-5 py-6 ring-[.7px] ring-zinc-300 transition-[background-color] duration-200 lg:p-6 lg:px-8 dark:ring-zinc-700 ${
                             editAbout ? "" : "bg-blue-50 dark:bg-zinc-800"
                         }`}
                     >

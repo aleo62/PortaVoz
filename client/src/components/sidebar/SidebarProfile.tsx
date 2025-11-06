@@ -18,7 +18,7 @@ export const SidebarProfile = ({
     return (
         <nav className="scrollbar-thin scrollbar-thumb-zinc-300 scrollbar-track-transparent sticky top-0 z-10 h-fit w-full overflow-x-auto rounded-xl bg-white p-2 ring-1 ring-zinc-200 lg:w-full lg:max-w-60 dark:bg-zinc-900 dark:ring-zinc-800">
             <ul
-                className={`${positionClasses[activeItem]} before:bg-accent relative z-10 flex w-max flex-nowrap gap-1 shadow-[0px_4px_59px_-28px_rgba(0,_0,_0,_0.1)] before:absolute before:z-[-1] before:h-11 before:w-40 before:rounded-md before:transition-all before:content-[''] lg:w-full lg:flex-col lg:before:w-full`}
+                className={`${positionClasses[activeItem]} before:bg-accent relative z-10 flex w-max flex-nowrap gap-1 before:absolute before:z-[-1] before:h-11 before:w-40 before:rounded-md before:transition-all before:content-[''] lg:w-full lg:flex-col lg:before:w-full`}
             >
                 {SidebarProfileItems.map(({ label, icon }, key) => (
                     <SidebarProfileItem

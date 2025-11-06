@@ -28,7 +28,7 @@ export const HeaderPost = ({
 
     return (
         <header
-            className={`relative flex items-center gap-3 ${viewMode ? "py-5 px-2" : "p-3 py-5 lg:px-5 lg:py-6"}`}
+            className={`relative flex items-center gap-3 ${viewMode ? "px-2 py-5" : "p-3 py-5 lg:px-5 lg:py-6"}`}
         >
             <div
                 onClick={() => navigate(`/profile/${post.user._id}`)}
@@ -63,6 +63,7 @@ export const HeaderPost = ({
                     onClose={() => {
                         setOptionsDropOpen(false);
                     }}
+                    postId={post._id}
                     isOwner={post.user._id == user?._id || !!user?.claims!.admin}
                     onDeletePost={() => handleDeletePost()}
                 />

@@ -8,7 +8,7 @@ import {
     updateComment,
 } from "@/controllers/CommentController";
 import {
-    createPost,
+    createNewPost,
     deletePost,
     getAllPosts,
     getPostById,
@@ -28,14 +28,7 @@ import { body } from "express-validator";
 
 const router = Router();
 
-// * POSTS ROUTES -----------------------------------------------------------------------------------
-// GET - Rota para ver todos os posts
 router.get("/", authenticateUser, validationError, getAllPosts);
-
-// GET - Rota para ver todos os posts de um user
-router.get("/user/:userId", authenticateUser, validationError, getPostByUser);
-
-// GET - Rota para ver todos o post pelo ID
 router.get("/:postId", authenticateUser, validationError, getPostById);
 
 // POST - Rota para criar um novo post
@@ -64,7 +57,7 @@ router.post(
         .isIn(["ativo", "resolvido", "oculto"])
         .withMessage("status not supported"),
     validationError,
-    createPost
+    createNewPost
 );
 
 // DEL - Rota para deletar um post

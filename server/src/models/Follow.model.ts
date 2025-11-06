@@ -1,16 +1,10 @@
 import mongoose, { Document, Schema } from "mongoose";
 
-/**
- * Interfaces para tipagem dos dados de Seguidor
- */
 export interface FollowData extends Document {
     userId: string;
     follower: string;
 }
 
-/**
- * Schema principal do Seguidor
- */
 const FollowSchema: Schema = new Schema(
     {
         userId: {
@@ -26,5 +20,5 @@ const FollowSchema: Schema = new Schema(
     { timestamps: true }
 );
 
-// Exporta o model Follow
-export default mongoose.model<FollowData>("Follow", FollowSchema);
+const Follow = mongoose.model<FollowData>("Follow", FollowSchema);
+export default Follow;

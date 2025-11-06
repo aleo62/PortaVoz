@@ -84,52 +84,17 @@
     --toastify-font-family: "Poppins", sans-serif;
 }
 
-/* Modo dark: sobrescreva as variáveis */
 .dark {
     --color-secondary: #334155;
     --color-secondary-lighter: #2f3a4a;
-    --color-accent: #2075f5;
     --color-body-background: #212121;
 
     --color-title: #f1f5f9;
     --color-subtitle: #cbd5e1;
 }
 
-html {
-    scroll-behavior: scroll-smooth;
-    @apply overflow-x-hidden;
-}
-
-body {
-    @apply bg-body-background overflow-x-hidden font-(family-name:--font-common);
-}
-
 button {
     @apply cursor-pointer border-0 outline-0;
-}
-
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-/** COMPONENTS */
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-
-/* ? SWIPER */
-
-.swiper {
-    touch-action: pan-y;
-    overscroll-behavior: contain;
-}
-
-.swiper-pagination-bullet {
-    transition: all 0.3s ease;
-}
-
-.swiper-pagination-bullet-active {
-    @apply w-4 rounded-2xl bg-blue-500 opacity-100;
-}
-
-.custom-prev,
-.custom-next {
-    @apply text-accent z-10 grid h-15 w-15 items-center justify-center rounded-full bg-white shadow-[0px_4px_57px_1px_rgba(0,_0,_0,_0.1)] ring-2 ring-zinc-700 dark:bg-zinc-900;
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
