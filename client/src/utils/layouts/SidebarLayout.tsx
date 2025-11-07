@@ -6,14 +6,14 @@ import { useLocation } from "react-router-dom";
 type SidebarLayoutProps = {
     children: React.ReactNode;
     noHeader?: boolean;
-    linkBack?: boolean;
+    linkBack?: string;
     orientation: "row" | "col";
 };
 
 export const SidebarLayout = ({
     children,
     noHeader,
-    linkBack = false,
+    linkBack,
     orientation = "col",
 }: SidebarLayoutProps) => {
     const containerRef = useRef<HTMLElement | null>(null);
@@ -32,7 +32,7 @@ export const SidebarLayout = ({
 
             <section
                 ref={containerRef}
-                className={`scrollbar-thin dark:scrollbar-thumb-zinc-700 scrollbar-thumb-zinc-400 scrollbar-track-transparent flex h-32 min-h-full flex-1 ${orientation === "col" ? "flex-col" : "flex-row"} overflow-y-auto pb-6 max-lg:h-screen max-lg:px-1`}
+                className={`scrollbar-thin dark:scrollbar-thumb-zinc-700 scrollbar-thumb-zinc-400 scrollbar-track-transparent flex h-32 min-h-full flex-1 ${orientation === "col" ? "flex-col pb-6" : "flex-row"} overflow-y-auto max-lg:h-screen max-lg:px-1`}
             >
                 <HeaderSidebar
                     linkBack={linkBack}

@@ -1,18 +1,17 @@
 import { UnsaveContainer } from "@/components/drop/UnsaveContainer";
-import { Button } from "@/components/ui/Button";
-import { EditModal } from "@/components/ui/EditModal";
-import { FormInput } from "@/components/ui/FormInput";
 import { InfoField } from "@/components/ui/InfoField";
 import { Textarea } from "@/components/ui/Textarea";
 import { UserData } from "@/utils/types/userDataType";
 
-import { IconArrowRight, IconEdit, IconPencil, IconUserCog } from "@tabler/icons-react";
+import { IconEdit, IconPencil } from "@tabler/icons-react";
 
+import { useModal } from "@/contexts/ModalContext";
 import { useUpdateUser } from "@/hooks/user/useUpdateUser";
 import { useUserById } from "@/hooks/user/useUserById";
-import { useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { ModalEdit } from "./ModalEdit";
 
-type PreviewUser = UserData & {
+export type PreviewUser = UserData & {
     imageFile?: File;
     bannerFile?: File;
 };
@@ -20,8 +19,8 @@ type PreviewUser = UserData & {
 export const ViewProfile = () => {
     const { data: userData } = useUserById();
     const { mutateAsync: updateUser, isPending: isLoading } = useUpdateUser();
+    const { openModal, closeModal } = useModal();
 
-    const [editInfo, setEditInfo] = useState(false);
     const [editAbout, setEditAbout] = useState(true);
     const [unsave, setUnsave] = useState(false);
     const [previewUser, setPreviewUser] = useState<PreviewUser>();
@@ -94,7 +93,7 @@ export const ViewProfile = () => {
     };
 
     const saveEditInfo = () => {
-        setEditInfo(false);
+        closeModal();
 
         if (
             userData?.fName === previewUser?.fName &&
@@ -109,7 +108,8 @@ export const ViewProfile = () => {
     };
 
     const cancelEditInfo = () => {
-        setEditInfo(false);
+        closeModal();
+
         if (userData) {
             setPreviewUser(userData);
         }
@@ -117,68 +117,13 @@ export const ViewProfile = () => {
 
     return (
         <>
-            {editInfo && (
-                <EditModal
-                    onClose={() => cancelEditInfo()}
-                    title="Editar Perfil"
-                    Icon={IconUserCog}
-                >
-                    <div className="space-y-5 p-5">
-                        <FormInput
-                            inputProps={{
-                                placeholder: "Nome",
-                                type: "text",
-                                value: previewUser?.fName,
-                                onChange: (e) =>
-                                    setPreviewUser({ ...previewUser!, fName: e.target.value }),
-                            }}
-                            label="Nome"
-                        />
-                        <FormInput
-                            inputProps={{
-                                placeholder: "Sobrenome",
-                                type: "text",
-                                value: previewUser?.lName,
-                                onChange: (e) =>
-                                    setPreviewUser({ ...previewUser!, lName: e.target.value }),
-                            }}
-                            label="Sobrenome"
-                        />
-                        <FormInput
-                            inputProps={{
-                                placeholder: "Username",
-                                type: "text",
-                                value: previewUser?.username,
-                                onChange: (e) =>
-                                    setPreviewUser({ ...previewUser!, username: e.target.value }),
-                            }}
-                            label="Username"
-                        />
-                        <div className="mt-20 flex flex-col-reverse items-start gap-2 lg:flex-row lg:items-center lg:justify-end">
-                            <Button
-                                styleType="outlined"
-                                text="Cancelar"
-                                size="small"
-                                onClick={() => cancelEditInfo()}
-                            />
-                            <Button
-                                styleType="primary"
-                                text="Salvar"
-                                size="small"
-                                Icon={IconArrowRight}
-                                onClick={() => saveEditInfo()}
-                            />
-                        </div>
-                    </div>
-                </EditModal>
-            )}
-
             <UnsaveContainer
                 isLoading={isLoading}
                 isOpen={unsave}
                 onCancel={handleCancelUnsave}
                 onSave={handleUpdateUser}
             />
+
             <div
                 className={`w-full max-w-4xl overflow-hidden rounded-2xl bg-white p-1 pb-10 shadow-[0px_4px_10px_-19px_rgba(0,_0,_0,_0.1)] lg:mx-0 dark:bg-zinc-900`}
             >
@@ -243,7 +188,20 @@ export const ViewProfile = () => {
                         <div className="text-title mb-2 flex h-10 items-center justify-between gap-2 text-xl font-bold">
                             <h2 className="font-title">Informações pessoais</h2>
                             <button
-                                onClick={() => setEditInfo(true)}
+                                onClick={() =>
+                                    openModal(
+                                        <ModalEdit
+                                            previewUser={previewUser!}
+                                            setPreviewUser={
+                                                setPreviewUser as Dispatch<
+                                                    SetStateAction<PreviewUser>
+                                                >
+                                            }
+                                            cancel={cancelEditInfo}
+                                            save={saveEditInfo}
+                                        />,
+                                    )
+                                }
                                 className="flex cursor-pointer items-center gap-2 rounded-lg p-2 text-sm font-semibold ring-[.7px] ring-zinc-300 transition-[background-color] duration-200 hover:bg-zinc-300/40 dark:ring-zinc-700"
                             >
                                 <IconEdit /> Editar

@@ -106,10 +106,7 @@ export const createPost = async (req: Request) => {
     const { title, desc, hashtags, location, address, status } =
         req.body as PostData;
 
-    if (!req.files || !Array.isArray(req.files))
-        throw new Error("Image required");
-
-    const images = await uploadMultipleImages(req.files, "posts_images");
+    const images = await uploadMultipleImages(req.files as Express.Multer.File[], "posts_images");
 
     const { canReport } = await verifyRemainingReports(uid, isAdmin);
     if (!canReport) throw new Error("User has no remaining reports");

@@ -3,25 +3,20 @@ import { useStoreUser } from "@/stores/userStore";
 import { formatDate } from "@/utils/functions/formatDate";
 import { PostData } from "@/utils/types/postDataType";
 import { IconDotsVertical } from "@tabler/icons-react";
-import { Dispatch, SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
 import { PostDrop } from "../drop/PostDrop";
+import { useState } from "react";
 
-export const HeaderPost = ({
-    post,
-    optionsDropOpen,
-    setOptionsDropOpen,
-    viewMode,
-}: {
-    post: PostData;
-    optionsDropOpen: boolean;
-    setOptionsDropOpen: Dispatch<SetStateAction<boolean>>;
-    viewMode?: boolean;
-}) => {
-    const navigate = useNavigate();
+type HeaderPostProps = { post: PostData; viewMode?: boolean };
+
+
+
+export const HeaderPost = ({ post, viewMode }: HeaderPostProps) => {
     const { user } = useStoreUser();
-    const deletePost = useDeletePost();
+    const navigate = useNavigate();
+    const [optionsDropOpen, setOptionsDropOpen] = useState(false);
 
+    const deletePost = useDeletePost();
     const handleDeletePost = async () => {
         await deletePost.mutate(post._id);
     };

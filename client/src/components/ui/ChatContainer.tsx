@@ -13,10 +13,10 @@ export const ChatContainer = ({
         <div
             onClick={() => joinChat(chat._id)}
             key={chat._id}
-            className=" flex w-full cursor-pointer items-center gap-5 p-5 py-4 "
+            className=" flex w-full cursor-pointer rounded-xl items-center gap-3 py-3 px-3 hover:bg-zinc-100 dark:hover:bg-zinc-800"
         >
-            <img src={chat.participants[0]?.image} alt="" className="h-12 w-12 rounded-full" />
-            <p className="text-lg">{chat.participants[0]?.username}</p>
+            <img src={chat.participants[0]?.image} alt="" className="h-11 w-11 rounded-full" />
+            <p className="text-md font-medium">{chat.participants[0]?.username}</p>
         </div>
     );
 };

@@ -28,7 +28,7 @@ type RouteDataType = {
             onylyAdmin?: boolean;
             onlyGuest?: boolean;
             noHeader?: boolean;
-            linkBack?: boolean;
+            linkBack?: string;
             orientation?: "row" | "col";
         };
     }[];
@@ -116,7 +116,7 @@ const RoutesArray: RouteDataType[] = [
         path: "/chat/:chatId",
         Page: <Chat />,
         layouts: [
-            { Component: SidebarLayout, props: { noHeader: true } },
+            { Component: SidebarLayout, props: { noHeader: true, orientation: "row" } },
             { Component: ProtectedLayout },
         ],
     },
@@ -125,7 +125,7 @@ const RoutesArray: RouteDataType[] = [
         path: "/post/:postId",
         Page: <PostView />,
         layouts: [
-            { Component: SidebarLayout, props: { linkBack: true } },
+            { Component: SidebarLayout, props: { linkBack: "Feed" } },
             { Component: ProtectedLayout },
         ],
     },
@@ -134,7 +134,7 @@ const RoutesArray: RouteDataType[] = [
         path: "/profile",
         Page: <Profile />,
         layouts: [
-            { Component: SidebarLayout, props: { linkBack: true } },
+            { Component: SidebarLayout },
             { Component: ProtectedLayout },
         ],
     },
@@ -143,7 +143,7 @@ const RoutesArray: RouteDataType[] = [
         path: "/profile/:userId",
         Page: <Profile />,
         layouts: [
-            { Component: SidebarLayout, props: { linkBack: true } },
+            { Component: SidebarLayout },
             { Component: ProtectedLayout },
         ],
     },
@@ -152,7 +152,6 @@ const RoutesArray: RouteDataType[] = [
         path: "/post/create",
         Page: <CreatePost />,
         layouts: [
-            { Component: SidebarLayout, props: { linkBack: true } },
             { Component: ProtectedLayout },
         ],
     },

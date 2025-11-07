@@ -86,7 +86,7 @@ export const deletePost = async (req: Request, res: Response) => {
             postData.hashtags.map(
                 async (hashtag) =>
                     await Hashtag.findByIdAndUpdate(hashtag, {
-                        usageCount: { $inc: -1 },
+                        $inc: {  usageCount: -1 },
                     })
             )
         );

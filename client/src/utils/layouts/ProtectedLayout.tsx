@@ -26,7 +26,7 @@ export const ProtectedLayout = ({
         if (user && !user.isVerified)
             navigate("/not-verified");
         if (onlyAdmin && user && !user.claims?.admin) navigate("/");
-    }, [isLoadingUser]);
+    }, [isLoadingUser, user, onlyAdmin, onlyGuest]);
 
     if(isLoadingUser) return <Loader isLoading />;
     return (

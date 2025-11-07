@@ -11,7 +11,7 @@ export const HeaderOptions = () => {
     const isMobile = useIsMobile();
     const userData = useStoreUser((state) => state.user);
     const [activeUserDrop, setActiveUserDrop] = useState(false);
-    const { openModal, closeModal } = useModal();
+    const { openModal } = useModal();
 
     return (
         <div className="ml-auto flex w-fit items-center lg:gap-3">
@@ -27,11 +27,14 @@ export const HeaderOptions = () => {
                     </span>
                 </div>
 
-                <a href="/profile" className="mr-1">
-                    <figure className="tansiton-[box-shadow] mx-auto h-10 w-10 cursor-pointer overflow-clip rounded-xl shadow-md duration-300 hover:shadow-lg">
-                        <img src={userData?.image as string} width={100} alt="" />
-                    </figure>
-                </a>
+                <figure className="tansiton-[box-shadow] mx-auto h-10 w-10 cursor-pointer overflow-clip rounded-xl shadow-md duration-300 hover:shadow-lg">
+                    <img
+                        src={userData?.image as string}
+ 
+                        alt=""
+                        className="object-cover w-full h-full"
+                    />
+                </figure>
                 <div onClick={() => setActiveUserDrop(!activeUserDrop)}>
                     <IconSelector className={`text-subtitle size-4.5`} />
                     <UserDrop
@@ -45,7 +48,7 @@ export const HeaderOptions = () => {
             {SidebarConfig.map(({ icon: Icon }, key) => (
                 <a
                     className="text-title relative"
-                    onClick={() => openModal(<NotificationModal onClose={closeModal} />)}
+                    onClick={() => openModal(<NotificationModal />)}
                     key={key}
                 >
                     <Icon className="size-6 fill-zinc-200 dark:fill-zinc-800" />

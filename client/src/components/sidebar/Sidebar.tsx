@@ -1,5 +1,6 @@
 import { portaVozLogo, SidebarItems, SidebarSpecialItems } from "@/data/data";
 
+import { useModal } from "@/contexts/ModalContext";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useTheme } from "@/hooks/useTheme";
 import { useStoreUser } from "@/stores/userStore";
@@ -10,7 +11,6 @@ import {
     IconSearch,
     IconSun,
 } from "@tabler/icons-react";
-import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { SearchModal } from "../modal/SearchModal";
 import { SidebarItem } from "./SidebarItem";
@@ -28,20 +28,18 @@ export const Sidebar = ({
     const isMobile = useIsMobile();
     const { isDarkTheme, setIsDarkTheme } = useTheme();
     const { user } = useStoreUser();
-    const [searchOpen, setSearchOpen] = useState(false);
+    const { openModal } = useModal();
 
     const IconBar = isOpen ? IconChevronLeftPipe : IconChevronRightPipe;
 
     return (
         <>
-            <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
             <aside
                 className={`fixed top-0 left-0 z-120 h-screen flex-shrink-0 transition-all duration-100 ease-in-out lg:relative ${isMobile && (!isOpen ? "pointer-events-none -translate-x-full" : "translate-x-0")} ${className}`}
             >
                 <nav
                     className={`grid h-full grid-rows-[1.5fr_6fr_1fr] justify-center border-zinc-200 bg-white px-3.5 shadow-[0px_4px_10px_-19px_rgba(0,_0,_0,_0.1)] duration-100 dark:border-zinc-700 dark:bg-zinc-900 ${isMobile && !isOpen ? "pointer-events-none" : ""}`}
                 >
-                    {/* LOGO */}
                     <div className={`flex items-center justify-between px-2 pb-2.5`}>
                         <h1>
                             <a href="/" className="logo">
@@ -63,7 +61,7 @@ export const Sidebar = ({
 
                     <ul className={`space-y-2 p-5 px-1 ${!isOpen ? "items-center" : ""}`}>
                         <div
-                            onClick={() => setSearchOpen(true)}
+                            onClick={() => openModal(<SearchModal />, "search")}
                             className="text-title mb-6 flex items-center rounded-lg bg-zinc-100 px-4 py-2.5 ring-1 ring-zinc-200/70 dark:bg-zinc-800 dark:ring-zinc-700/70"
                         >
                             <IconSearch className="size-5.5" />

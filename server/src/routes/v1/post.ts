@@ -12,7 +12,6 @@ import {
     deletePost,
     getAllPosts,
     getPostById,
-    getPostByUser,
     updatePost,
 } from "@/controllers/PostController";
 import { createUpvote, deleteUpvote } from "@/controllers/VoteController";
@@ -21,6 +20,7 @@ import { authenticateOwnerOrAdmin } from "@/middlewares/authOwnerOrAdmin";
 import { authenticateUser } from "@/middlewares/authUser";
 import { authenticateVerified } from "@/middlewares/authVerified";
 import { validationError } from "@/middlewares/validationError";
+import { validationFile } from "@/middlewares/validationFile";
 import Comment from "@/models/Comment.model";
 import Post from "@/models/Post.model";
 import { Request, Router } from "express";
@@ -31,7 +31,6 @@ const router = Router();
 router.get("/", authenticateUser, validationError, getAllPosts);
 router.get("/:postId", authenticateUser, validationError, getPostById);
 
-// POST - Rota para criar um novo post
 router.post(
     "/",
     authenticateUser,
@@ -56,11 +55,11 @@ router.post(
         .optional()
         .isIn(["ativo", "resolvido", "oculto"])
         .withMessage("status not supported"),
+    validationFile(3, 1 * 1024 * 1920, /jpeg|jpg|png/),
     validationError,
     createNewPost
 );
 
-// DEL - Rota para deletar um post
 router.delete(
     "/:postId",
     authenticateUser,
@@ -73,7 +72,6 @@ router.delete(
     deletePost
 );
 
-// PUT - Rota para atualizar um post
 router.put(
     "/:postId",
     authenticateUser,
@@ -109,9 +107,6 @@ router.put(
     updatePost
 );
 
-// * COMMENTS ROUTES -----------------------------------------------------------------------------------
-
-// GET - Rota para ver todos os comentarios de um post
 router.get(
     "/:parentId/comments",
     authenticateUser,
@@ -119,7 +114,6 @@ router.get(
     getCommentsById
 );
 
-// POST - Rota para adicionar comentario
 router.post(
     "/comments",
     authenticateUser,
@@ -137,7 +131,6 @@ router.post(
     createComment
 );
 
-// DEL - Rota para deletar um comentario
 router.delete(
     "/comments/:commentId",
     authenticateUser,
@@ -150,7 +143,6 @@ router.delete(
     deleteComment
 );
 
-// DEL - Rota para deletar todos os comentarios/respostas de um Post/Comentario
 router.delete(
     "/comments/parent/:parentId",
     authenticateUser,
@@ -163,7 +155,6 @@ router.delete(
     deleteCommentByParentId
 );
 
-// PUT - Rota para atualizar um comentario
 router.put(
     "/comments/:commentId",
     authenticateUser,
@@ -192,9 +183,6 @@ router.put(
 
 export default router;
 
-// * VOTESS ROUTES -----------------------------------------------------------------------------------
-
-// POST - Rota para adicionar um upvote
 router.post(
     "/:parentId/upvote",
     authenticateUser,

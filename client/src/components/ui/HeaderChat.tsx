@@ -13,7 +13,7 @@ export const HeaderChat = ({
     const navigate = useNavigate();
 
     return (
-        <div className="text-title z-100 flex h-fit items-center rounded-xl bg-white p-3 px-4 ring-1 ring-zinc-200 lg:p-4 lg:px-7 dark:bg-zinc-900 dark:ring-zinc-800">
+        <div className="text-title z-100 flex h-fit items-center border-b-1 border-b-zinc-200 bg-white p-3 px-4 lg:p-4 lg:px-7 dark:border-b-zinc-800 dark:bg-zinc-900">
             <IconChevronLeft
                 className="mr-1 size-4 lg:hidden"
                 onClick={() => {

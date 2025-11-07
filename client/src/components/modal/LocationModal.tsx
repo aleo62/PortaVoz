@@ -1,46 +1,56 @@
 import { motion } from "framer-motion";
 
+import { useModal } from "@/contexts/ModalContext";
 import { PostData } from "@/utils/types/postDataType";
-import { OverlayTemplate, OverlayTemplateProps } from "../templates/OverlayTemplate";
+import { IconX } from "@tabler/icons-react";
 import { PostMap } from "../ui/PostMap";
 
-type LocationOverlayProps = OverlayTemplateProps & {
+type LocationOverlayProps = {
     post: PostData;
 };
 
-export const LocationModal = ({ isOpen, onClose, post }: LocationOverlayProps) => {
+export const LocationModal = ({ post }: LocationOverlayProps) => {
+    const { closeModal } = useModal();
+
+    console.log(post.location);
+
     return (
         <>
-            <OverlayTemplate isOpen={isOpen} onClose={onClose}>
-                <motion.div
-                    initial={{ scale: 0.95 }}
-                    animate={{ scale: 1 }}
-                    exit={{ scale: 0.95 }}
-                    transition={{ duration: 0.1 }}
-                    className="bg-body-background h-fit w-full max-w-[97%] space-y-5 rounded-xl p-5 px-3 lg:max-w-xl"
-                >
+            <motion.div
+                initial={{ scale: 0.95 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0.95 }}
+                transition={{ duration: 0.1 }}
+                className="bg-white dark:bg-zinc-900 h-fit w-full max-w-[97%] space-y-5 rounded-2xl p-6 px-4 lg:max-w-xl my-auto"
+            >
+                <header className="flex justify-between items-start">
                     <div>
                         <h3 className="text-title font-title mb-2 text-lg font-medium">Endereço</h3>
 
-                        <p className="border-l-2 border-zinc-700/70 pl-2 text-sm text-zinc-800 dark:text-zinc-200">
+                        <p className="border-l-2 border-zinc-400/70 pl-2 text-sm text-zinc-800 dark:border-zinc-700/70 dark:text-zinc-200">
                             {post?.address}
                         </p>
                     </div>
 
-                    <div>
-                        <h3 className="text-title font-title mb-2 text-lg font-medium">
-                            Localização
-                        </h3>
+                    <span
+                        className="ml-auto cursor-pointer rounded-full bg-zinc-200 p-2 dark:bg-zinc-800"
+                        onClick={closeModal}
+                    >
+                        <IconX className="text-subtitle size-4" />
+                    </span>
+                </header>
 
-                        {post?.location?.latitude != null && post?.location?.longitude != null && (
-                            <PostMap
-                                latitude={Number(post.location.latitude)}
-                                longitude={Number(post.location.longitude)}
-                            />
-                        )}
-                    </div>
-                </motion.div>
-            </OverlayTemplate>
+                <main>
+                    <h3 className="text-title font-title mb-2 text-lg font-medium">Localização</h3>
+
+                    {post?.location?.latitude != null && post?.location?.longitude != null && (
+                        <PostMap
+                            latitude={Number(post.location.latitude)}
+                            longitude={Number(post.location.longitude)}
+                        />
+                    )}
+                </main>
+            </motion.div>
         </>
     );
 };

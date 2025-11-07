@@ -1,3 +1,4 @@
+import { useModal } from "@/contexts/ModalContext";
 import { formatDate } from "@/utils/functions/formatDate";
 import { NotificationData } from "@/utils/types/notificationDataType";
 import { ReactElement, useEffect, useState } from "react";
@@ -6,17 +7,33 @@ import { useNavigate } from "react-router-dom";
 export const Notification = ({ notification }: { notification: NotificationData }) => {
     const navigate = useNavigate();
     const [Preview, setPreview] = useState<ReactElement | undefined>(undefined);
+    const { closeModal } = useModal();
 
     useEffect(() => {
         switch (notification.type) {
             case "Vote":
                 setPreview(<p>{formatDate(notification.createdAt)}</p>);
+                break;
+            case "Comment":
+                setPreview(
+                    <p>
+                        {formatDate(notification.createdAt)} &#x2022; "{notification.preview}"
+                    </p>,
+                );
+                break;
         }
     }, [notification]);
 
     return (
-        <ul key={notification._id} className="" onClick={() => navigate(notification.href)}>
-            <div className="grid cursor-pointer grid-cols-[auto_1fr] items-start justify-center gap-5 rounded-xl px-3 py-4 hover:bg-zinc-100 hover:dark:bg-zinc-800">
+        <ul
+            key={notification._id}
+            className=""
+            onClick={() => {
+                closeModal();
+                navigate(notification.href);
+            }}
+        >
+            <div className="flex cursor-pointer items-center justify-center gap-3 rounded-xl px-3 py-4 hover:bg-zinc-100 hover:dark:bg-zinc-800">
                 <header>
                     <img
                         src={notification.sender.image}
@@ -25,8 +42,8 @@ export const Notification = ({ notification }: { notification: NotificationData 
                     />
                 </header>
 
-                <main className="min-w-0">
-                    <h3 className="text-title truncate text-md font-medium lg:text-lg">
+                <main className="flex-1">
+                    <h3 className="text-title text-md truncate font-medium">
                         {notification.message}
                     </h3>
                     <p className="text-subtitle text-xs">{Preview}</p>
