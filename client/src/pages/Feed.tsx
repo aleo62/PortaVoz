@@ -1,8 +1,8 @@
+import { PostReflected } from "@/components/features/post/PostReflected";
+import { PostReflectedSkeleton } from "@/components/features/post/PostReflectedSkeleton";
+import { PostSkeleton } from "@/components/features/post/PostSkeleton";
 import { ButtonCreatePost } from "@/components/ui/ButtonCreatePost";
-import { Post } from "@/components/ui/Post";
-import { PostReflected } from "@/components/ui/PostReflected";
-import { PostReflectedSkeleton } from "@/components/ui/PostReflectedSkeleton";
-import { PostSkeleton } from "@/components/ui/PostSkeleton";
+import { Post } from "@components/features/post/Post";
 import { usePosts } from "@hooks/posts/usePosts";
 import { PostData } from "@utils/types/postDataType";
 import { useEffect } from "react";
@@ -57,7 +57,7 @@ export const Feed = () => {
                 )}
             </div>
 
-            <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-5 lg:px-6 lg:mt-10">
+            <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-5 lg:mt-10 lg:px-6">
                 {feedLoading && <PostSkeleton />}
 
                 {!feedLoading && !posts.length && (

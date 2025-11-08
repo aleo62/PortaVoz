@@ -1,3 +1,5 @@
+import { LandingLayout } from "@/components/layouts/LandingLayout";
+import { SidebarLayout } from "@/components/layouts/SidebarLayout";
 import { Dashboard } from "@/pages/admin/Dashboard";
 import { Chat } from "@/pages/Chat";
 import { CreatePost } from "@/pages/CreatePost";
@@ -13,7 +15,6 @@ import { Profile } from "@/pages/Profile";
 import { Register } from "@/pages/Register";
 import { Verify } from "@/pages/Verify";
 import { ProtectedLayout } from "@/utils/layouts/ProtectedLayout";
-import { SidebarLayout } from "@/utils/layouts/SidebarLayout";
 import { Home } from "@pages/Home";
 import React, { ReactNode } from "react";
 import { Route, Routes } from "react-router-dom";
@@ -49,7 +50,7 @@ const resolveElement = ({ layouts, Page }: Omit<RouteDataType, "key" | "path">):
 };
 
 const RoutesArray: RouteDataType[] = [
-    { key: "Home", path: "/", Page: <Home /> },
+    { key: "Home", path: "/", Page: <Home />, layouts: [{ Component: LandingLayout }] },
     { key: "Logout", path: "/logout", Page: <Logout /> },
     {
         key: "Login",
@@ -133,27 +134,19 @@ const RoutesArray: RouteDataType[] = [
         key: "Profile",
         path: "/profile",
         Page: <Profile />,
-        layouts: [
-            { Component: SidebarLayout },
-            { Component: ProtectedLayout },
-        ],
+        layouts: [{ Component: SidebarLayout }, { Component: ProtectedLayout }],
     },
     {
         key: "ProfileWithId",
         path: "/profile/:userId",
         Page: <Profile />,
-        layouts: [
-            { Component: SidebarLayout },
-            { Component: ProtectedLayout },
-        ],
+        layouts: [{ Component: SidebarLayout }, { Component: ProtectedLayout }],
     },
     {
         key: "CreatePost",
         path: "/post/create",
         Page: <CreatePost />,
-        layouts: [
-            { Component: ProtectedLayout },
-        ],
+        layouts: [{ Component: ProtectedLayout }],
     },
     {
         key: "NotFound",

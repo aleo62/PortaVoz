@@ -4,10 +4,12 @@ import { useEffect } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Providers } from "./app/Providers";
 import { AppRoutes } from "./app/Routes";
+import { useInitUser } from "./hooks/useInitUser";
 
 function App() {
     const { verifyTheme } = useTheme();
 
+    useInitUser();
     useAutoLogout();
     verifyTheme();
 

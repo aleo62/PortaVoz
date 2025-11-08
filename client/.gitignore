@@ -23,5 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 .env
+.prettierrc
 
 *storybook.log

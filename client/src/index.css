@@ -87,7 +87,7 @@
 .dark {
     --color-secondary: #334155;
     --color-secondary-lighter: #2f3a4a;
-    --color-body-background: #212121;
+    --color-body-background: #1C1C1C;
 
     --color-title: #f1f5f9;
     --color-subtitle: #cbd5e1;
@@ -134,9 +134,6 @@ button {
     @apply text-accent cursor-pointer font-medium hover:text-blue-700;
 }
 
-.topic {
-    @apply text-title flex items-center justify-center gap-2 rounded-3xl bg-gradient-to-br from-zinc-300/10 to-zinc-300/50 px-3 py-2 font-medium inset-ring-2 inset-ring-zinc-300/20 backdrop-blur-3xl;
-}
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 /** SECTION */

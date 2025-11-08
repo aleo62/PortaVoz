@@ -13,7 +13,10 @@ export const Topic = ({ body, Icon }: TopicProps) => {
     };
 
     return (
-        <motion.div className="topic" variants={item}>
+        <motion.div
+            className="text-title flex items-center justify-center gap-2 rounded-3xl bg-gradient-to-br from-zinc-300/10 to-zinc-300/50 px-3 py-2 font-medium inset-ring-2 inset-ring-zinc-300/20 backdrop-blur-3xl"
+            variants={item}
+        >
             <Icon />
             <p>{body}</p>
         </motion.div>

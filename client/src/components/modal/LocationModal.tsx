@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useModal } from "@/contexts/ModalContext";
 import { PostData } from "@/utils/types/postDataType";
 import { IconX } from "@tabler/icons-react";
-import { PostMap } from "../ui/PostMap";
+import { PostMap } from "../features/post/PostMap";
 
 type LocationOverlayProps = {
     post: PostData;
@@ -12,8 +12,6 @@ type LocationOverlayProps = {
 export const LocationModal = ({ post }: LocationOverlayProps) => {
     const { closeModal } = useModal();
 
-    console.log(post.location);
-
     return (
         <>
             <motion.div
@@ -21,9 +19,9 @@ export const LocationModal = ({ post }: LocationOverlayProps) => {
                 animate={{ scale: 1 }}
                 exit={{ scale: 0.95 }}
                 transition={{ duration: 0.1 }}
-                className="bg-white dark:bg-zinc-900 h-fit w-full max-w-[97%] space-y-5 rounded-2xl p-6 px-4 lg:max-w-xl my-auto"
+                className="bg-body-background my-auto h-fit w-full max-w-[97%] space-y-5 rounded-2xl p-6 px-4 lg:max-w-xl"
             >
-                <header className="flex justify-between items-start">
+                <header className="flex items-start justify-between">
                     <div>
                         <h3 className="text-title font-title mb-2 text-lg font-medium">Endereço</h3>
 

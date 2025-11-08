@@ -14,19 +14,19 @@ export const ProtectedLayout = ({
     onlyGuest = false,
     onlyAdmin,
 }: ProtectedLayoutProps) => {
-    const { user, isLoadingUser } = useStoreUser();
+    const { auth, user, isLoadingUser } = useStoreUser();
     const navigate = useNavigate();
     const location = useLocation();
 
     useEffect(() => {
         if (isLoadingUser || location.pathname === "/auth/verify") return;
 
-        if (!onlyGuest && !user) navigate("/auth/login");
-        if (onlyGuest && user) navigate("/feed");
-        if (user && !user.isVerified)
+        if (!onlyGuest && !auth) navigate("/auth/login");
+        if (onlyGuest && auth) navigate("/feed");
+        if (auth && user && !user.isVerified)
             navigate("/not-verified");
-        if (onlyAdmin && user && !user.claims?.admin) navigate("/");
-    }, [isLoadingUser, user, onlyAdmin, onlyGuest]);
+        if (onlyAdmin && auth && user && !user.claims?.admin) navigate("/");
+    }, [isLoadingUser, auth, onlyAdmin, onlyGuest]);
 
     if(isLoadingUser) return <Loader isLoading />;
     return (

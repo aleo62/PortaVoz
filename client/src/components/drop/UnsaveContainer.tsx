@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { Button } from "../ui/Button";
+import { Button } from "@components/ui/Button";
 
 type UnsaveProps = {
     isOpen: boolean;

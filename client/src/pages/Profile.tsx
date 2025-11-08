@@ -1,4 +1,4 @@
-import { PostProfilePreview } from "@/components/ui/PostProfilePreview";
+import { PostProfilePreview } from "@/components/features/post/PostProfilePreview";
 import { ProfileSkeleton } from "@/components/ui/ProfileSkeleton";
 import { useChatByUsers } from "@/hooks/chat/useChatByUsers";
 import { usePostsByUser } from "@/hooks/posts/usePostsByUser";

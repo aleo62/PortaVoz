@@ -1,7 +1,7 @@
-import { SidebarProfile } from "@/components/sidebar/SidebarProfile";
-import { ViewDanger } from "@/sections/EditProfile/ViewDanger";
-import { ViewProfile } from "@/sections/EditProfile/ViewProfile";
-import { ViewSecurity } from "@/sections/EditProfile/ViewSecurity";
+import { SidebarProfile } from "@components/features/sidebar/SidebarProfile";
+import { ViewDanger } from "@/components/sections/EditProfile/ViewDanger";
+import { ViewProfile } from "@/components/sections/EditProfile/ViewProfile";
+import { ViewSecurity } from "@/components/sections/EditProfile/ViewSecurity";
 import { JSX, useState } from "react";
 
 export const EditProfile = () => {

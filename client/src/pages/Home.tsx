@@ -1,13 +1,11 @@
-import { Mobile } from "@/sections/Home/Mobile";
-import { Header } from "@/sections/Header";
-import { Hero } from "@/sections/Home/Hero";
-import { Info } from "@/sections/Home/Info";
-import { Objective } from "@/sections/Home/Objective";
+import { Hero } from "@/components/features/landing/home/HomeHero";
+import { Info } from "@/components/features/landing/home/homeInfo";
+import { Mobile } from "@/components/features/landing/home/HomeMobile";
+import { Objective } from "@/components/features/landing/home/HomeObjective";
 
 export const Home = () => {
     return (
         <>
-            <Header />
             <Hero />
             <Info />
             <Objective />
