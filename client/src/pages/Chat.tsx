@@ -6,7 +6,6 @@ import { InputChat } from "@/components/ui/ChatInput";
 import { ToggleSidebar } from "@/components/ui/ToggleSidebar";
 import { useChats } from "@/hooks/chat/useChats";
 import { useMessages } from "@/hooks/messages/useMessages";
-import { useIsMobile } from "@/hooks/useIsMobile";
 import { useStoreUser } from "@/stores/userStore";
 import { ChatData } from "@/utils/types/chatDataType";
 import { MessageData } from "@/utils/types/messageDataType";
