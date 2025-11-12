@@ -146,7 +146,7 @@ const RoutesArray: RouteDataType[] = [
         key: "CreatePost",
         path: "/post/create",
         Page: <CreatePost />,
-        layouts: [{ Component: ProtectedLayout }],
+        layouts: [{ Component: SidebarLayout }, { Component: ProtectedLayout }],
     },
     {
         key: "NotFound",

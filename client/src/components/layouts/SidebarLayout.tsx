@@ -1,6 +1,6 @@
 import { Sidebar } from "@components/features/sidebar/Sidebar";
 import { SidebarHeader } from "@components/features/sidebar/SidebarHeader";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 
 type SidebarLayoutProps = {
@@ -17,8 +17,6 @@ export const SidebarLayout = ({
     orientation = "col",
 }: SidebarLayoutProps) => {
     const containerRef = useRef<HTMLElement | null>(null);
-
-    const [isOpen, setIsOpen] = useState(true);
     const location = useLocation();
 
     useEffect(() => {
@@ -27,19 +25,16 @@ export const SidebarLayout = ({
     }, [location.pathname]);
 
     return (
-        <div className="relative flex overflow-hidden lg:h-screen">
-            <Sidebar isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} className="flex-shrink-0" />
+        <div className="relative flex lg:h-screen">
+            <Sidebar />
 
             <section
                 ref={containerRef}
-                className={`scrollbar-thin dark:scrollbar-thumb-zinc-700 scrollbar-thumb-zinc-400 scrollbar-track-transparent flex h-32 min-h-full flex-1 ${orientation === "col" ? "flex-col pb-6" : "flex-row"} overflow-y-auto max-lg:h-screen max-lg:px-1`}
+                className={`scrollbar-thin dark:scrollbar-thumb-zinc-700 scrollbar-thumb-zinc-400 scrollbar-track-transparent flex min-h-screen flex-1 ${
+                    orientation === "col" ? "flex-col pb-6" : "flex-row"
+                } overflow-y-auto max-lg:h-screen max-lg:px-1`}
             >
-                <SidebarHeader
-                    linkBack={linkBack}
-                    noHeader={noHeader}
-                    isOpen={isOpen}
-                    onClick={() => setIsOpen(!isOpen)}
-                />
+                <SidebarHeader linkBack={linkBack} noHeader={noHeader} />
                 {children}
             </section>
         </div>

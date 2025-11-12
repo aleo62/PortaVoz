@@ -8,7 +8,7 @@ export const Input = ({ Icon, phone, type, className, ...rest }: InputProps) => 
     const isPassword = type === "password";
 
     const baseClassName = clsx(
-        "flex w-full items-center rounded-xl text-[15px] font-normal",
+        "flex w-full items-center rounded-xl text-[15px] font-normal bg-zinc-100 dark:bg-zinc-800",
         "transition-[box-shadow,color] duration-300 focus-within:ring-[1.5px]  focus-within:ring-accent focus-within:outline-none",
         " text-zinc-900 ring-1 ring-zinc-300 placeholder-zinc-500 focus:outline-non",
         " dark:text-white dark:ring-zinc-700",
@@ -19,11 +19,11 @@ export const Input = ({ Icon, phone, type, className, ...rest }: InputProps) => 
         const IconEyePassword = newType === "password" ? IconEye : IconEyeOff;
 
         return (
-            <div className={baseClassName + " pr-3"}>
+            <div className={baseClassName + " pr-4"}>
                 {Icon && <Icon className="mr-2 h-5 w-5 text-zinc-400" />}
                 <input
                     type={newType}
-                    className="flex-1 bg-transparent pl-3 py-4 placeholder-zinc-400 focus:outline-none"
+                    className="flex-1 pl-4 py-4 placeholder-zinc-400 focus:outline-none"
                     {...rest}
                 />
                 <button
@@ -43,7 +43,7 @@ export const Input = ({ Icon, phone, type, className, ...rest }: InputProps) => 
             {Icon && <Icon className="mr-2 h-5 w-5 text-zinc-400" />}
             <input
                 type={type}
-                className="flex-1 bg-transparent py-4 px-3 placeholder-zinc-400 focus:outline-none"
+                className="flex-1 py-4 px-4 placeholder-zinc-400 focus:outline-none"
                 {...rest}
             />
         </div>

@@ -20,8 +20,8 @@ export const FormInput = ({
     textAreaProps,
 }: FormInputProps) => {
     return (
-        <div className={className}>
-            <label {...labelProps} className="text-[13px] font-medium text-zinc-500 mb-1">
+        <div className={`${className} flex flex-col gap-1`}>
+            <label {...labelProps} className="text-[13px] font-medium text-zinc-500">
                 {label}
             </label>
             {textArea ? <Textarea {...textAreaProps} /> : <Input {...inputProps} />}

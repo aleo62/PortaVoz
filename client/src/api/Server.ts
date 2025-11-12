@@ -38,7 +38,7 @@ export class Server {
     }
 
     // POST Post
-    static async createPost(reportForm: Partial<RequestPostData>, token: string) {
+    static async createPost(reportForm: RequestPostData, token: string) {
         const formData = new FormData();
         formData.append("title", reportForm.title!);
         formData.append("desc", reportForm.desc!);

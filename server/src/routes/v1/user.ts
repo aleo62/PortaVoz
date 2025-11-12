@@ -22,6 +22,7 @@ import { body } from "express-validator";
 
 const router = Router();
 
+
 router.get("/", authenticateUser, validationError, getUsersByName);
 
 router.get("/:userId/posts", authenticateUser, validationError, getPostByUser);

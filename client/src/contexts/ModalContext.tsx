@@ -35,7 +35,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="fixed top-0 left-0 z-[250] flex h-full w-full justify-center gap-2 bg-gradient-to-b from-transparent dark:to-white/5  to-black/5  backdrop-blur-[1px] lg:px-3 lg:py-5"
+                        className="fixed top-0 left-0 z-[250] flex h-full w-full justify-center gap-2 bg-gradient-to-b from-transparent dark:to-white/10  to-black/10  backdrop-blur-[1px] lg:px-3 lg:py-5"
                     >
                         {content}
                         <span

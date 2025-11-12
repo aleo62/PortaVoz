@@ -8,10 +8,10 @@ export const PostReflected = ({ post }: { post: PostData }) => {
     return (
         <article
             onClick={() => navigate(`/post/${post._id}`)}
-            className="flex cursor-pointer items-center gap-2 rounded-2xl bg-white p-1 dark:bg-zinc-900 shadow-[0px_4px_15px_-29px_rgba(0,_0,_0,_0.1)]"
+            className="flex w-fit cursor-pointer items-center gap-4 rounded-xl  p-1 shadow-[0px_4px_15px_-29px_rgba(0,_0,_0,_0.1)] "
         >
-        <div className="w-50 p-3 py-4 pl-4 lg:w-55">
-                <h3 className="lg:text-md text-title font-title mb-0.5 truncate text-[1.01rem]">
+            <div className="">
+                <h3 className="lg:text-md text-title font-title mb-0.5 truncate text-[1.01rem] lg:max-w-35 max-xl::max-w-45">
                     {post.title}
                 </h3>
                 <p className="text-subtitle line-clamp-2 max-w-45 text-xs">{post.desc}</p>
@@ -28,7 +28,7 @@ export const PostReflected = ({ post }: { post: PostData }) => {
 
             <img
                 src={post.images?.[0] as string}
-                className="h-28 w-28 rounded-xl object-cover lg:h-30 lg:w-30"
+                className="h-25 w-25 rounded-xl object-cover lg:h-25 lg:w-25"
                 alt=""
             />
         </article>

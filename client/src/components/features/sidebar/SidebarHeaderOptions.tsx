@@ -1,21 +1,28 @@
-import { useModal } from "@/contexts/ModalContext";
-import { SidebarConfig } from "@/data/data";
-import { useIsMobile } from "@/hooks/useIsMobile";
-import { useStoreUser } from "@/stores/userStore";
-import { NotificationModal } from "@components/features/notification/NotificationModal";
-import { IconSelector } from "@tabler/icons-react";
-import { useState } from "react";
-import { SidebarHeaderDrop } from "./SidebarHeaderDrop";
+// import { useModal } from "@/contexts/ModalContext";
+// import { SidebarConfig } from "@/data/data";
+// import { useIsMobile } from "@/hooks/useIsMobile";
+// import { useStoreUser } from "@/stores/userStore";
+// import { NotificationModal } from "@components/features/notification/NotificationModal";
+// import { IconSelector } from "@tabler/icons-react";
+// import { useState } from "react";
+// import { SidebarHeaderDrop } from "./SidebarHeaderDrop";
+
+import { IconSearch } from "@tabler/icons-react";
 
 export const HeaderOptions = () => {
-    const isMobile = useIsMobile();
-    const userData = useStoreUser((state) => state.user);
-    const [activeUserDrop, setActiveUserDrop] = useState(false);
-    const { openModal } = useModal();
+    // const isMobile = useIsMobile();
+    // const userData = useStoreUser((state) => state.user);
+    // const [activeUserDrop, setActiveUserDrop] = useState(false);
+    // const { openModal } = useModal();
 
     return (
-        <div className="ml-auto flex w-fit items-center lg:gap-3">
-            <div className="relative flex items-center px-2.5">
+        <div className="ml-auto flex items-center lg:gap-3 ">
+            <div className="bg-body-background w-[300px] flex items-center gap-1 rounded-xl px-3 py-2 ">
+                <IconSearch className="size-5 mr-2"/>
+                <input placeholder="Pesquisar" className="outline-none border-none text-sm"></input>
+            </div>
+
+            {/* <div className="relative flex items-center px-2.5">
                 <div
                     className={`${!isMobile && "mr-2"} hidden h-fit flex-col items-end overflow-hidden transition-all lg:flex`}
                 >
@@ -45,19 +52,19 @@ export const HeaderOptions = () => {
             </div>
 
             {SidebarConfig.map(({ icon: Icon }, key) => (
-                <a
-                    className="text-title relative"
+                <button
+                    className="text-title relative cursor-pointer p-2 bg-white rounded-full ring-1 ring-zinc-300"
                     onClick={() => openModal(<NotificationModal />)}
                     key={key}
                 >
                     <Icon className="size-6 fill-zinc-200 dark:fill-zinc-800" />
                     {userData?.meta.counters.unreadNotifications! > 0 && (
-                        <span className="ring-body-background absolute top-[-2px] left-[-5px] flex h-3.5 w-3.5 items-center justify-center rounded-full bg-red-500 text-[.7rem] text-white ring-2 content-['']">
+                        <span className="ring-body-background absolute top-[-2px] left-[-5px] flex h-4.5 w-4.5 items-center justify-center rounded-full bg-red-500 text-[.7rem] text-white ring-2 content-['']">
                             {userData?.meta.counters.unreadNotifications}
                         </span>
                     )}
-                </a>
-            ))}
+                </button>
+            ))} */}
         </div>
     );
 };

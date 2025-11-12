@@ -4,9 +4,9 @@ export interface UserData {
     email: string;
     fName: string;
     lName: string;
-    image: string | File;
+    image: string;
     about?: string;
-    banner?: string | File;
+    banner?: string;
     meta: {
         counters: {
             followers: number;

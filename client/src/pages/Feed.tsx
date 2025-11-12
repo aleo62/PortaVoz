@@ -1,28 +1,25 @@
-import { PostReflected } from "@/components/features/post/PostReflected";
-import { PostReflectedSkeleton } from "@/components/features/post/PostReflectedSkeleton";
+import { FeedReflected } from "@/components/features/post/FeedReflected";
+import { Post } from "@/components/features/post/Post";
 import { PostSkeleton } from "@/components/features/post/PostSkeleton";
 import { ButtonCreatePost } from "@/components/ui/ButtonCreatePost";
-import { Post } from "@components/features/post/Post";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { usePosts } from "@hooks/posts/usePosts";
 import { PostData } from "@utils/types/postDataType";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
-import { Navigation } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
 
 export const Feed = () => {
+    const isMobile = useIsMobile();
+
     const {
         data: feedData,
         isLoading: feedLoading,
         fetchNextPage: fetchFeedNextPage,
         hasNextPage: feedHasNextPage,
     } = usePosts({ date: "desc" }, true);
-    const { data: reflectedData, isLoading: reflectedLoading } = usePosts({ vote: "desc" }, true);
 
     const { ref, inView } = useInView({});
-    let posts: PostData[] = (feedData?.pages.flatMap((page) => page.posts) as PostData[]) || [];
-    let reflectedPosts: PostData[] =
-        (reflectedData?.pages.flatMap((page) => page.posts) as PostData[]) || [];
+    const posts: PostData[] = (feedData?.pages.flatMap((page) => page.posts) as PostData[]) || [];
 
     useEffect(() => {
         if (inView && !feedLoading && feedHasNextPage) {
@@ -31,33 +28,10 @@ export const Feed = () => {
     }, [inView]);
 
     return (
-        <>
-            <div className="mx-auto w-full max-w-6xl gap-3 space-y-1 border-b-zinc-200/50 lg:px-5 dark:border-b-zinc-700/50">
-                {reflectedLoading && <PostReflectedSkeleton />}
-
-                {!reflectedLoading && !reflectedPosts.length && (
-                    <div className="mx-auto my-8 text-center text-zinc-500">
-                        <p className="text-base italic">Nada por aqui também 💤</p>
-                    </div>
-                )}
-
-                {!reflectedLoading && reflectedPosts.length > 0 && (
-                    <Swiper
-                        modules={[Navigation]}
-                        spaceBetween={8}
-                        slidesPerView="auto"
-                        className="animate-fade-in w-full"
-                    >
-                        {reflectedPosts.map((post) => (
-                            <SwiperSlide key={post._id + "_reflected"} className="!w-auto py-2">
-                                <PostReflected post={post} />
-                            </SwiperSlide>
-                        ))}
-                    </Swiper>
-                )}
-            </div>
-
-            <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-5 lg:mt-10 lg:px-6">
+        <main
+            className={`xxl:gap-10 grid lg:gap-2 ${!isMobile ? "grid-cols-[1.8fr_1fr]" : "grid-cols-0"} relative max-w-7xl mx-auto w-full lg:px-10`}
+        >
+            <section className="flex w-full flex-col items-center gap-5 overflow-x-hidden mt-5">
                 {feedLoading && <PostSkeleton />}
 
                 {!feedLoading && !posts.length && (
@@ -68,17 +42,19 @@ export const Feed = () => {
                 )}
 
                 {!feedLoading && posts.length > 0 && (
-                    <section className="flex w-full flex-col items-center space-y-3">
+                    <>
                         {posts.map((post: PostData) => (
                             <Post post={post} key={post._id} />
                         ))}
 
                         {feedHasNextPage && <div ref={ref}>carregando...</div>}
-                    </section>
+                    </>
                 )}
-            </div>
+            </section>
 
             <ButtonCreatePost />
-        </>
+
+            {!isMobile && <FeedReflected />}
+        </main>
     );
 };

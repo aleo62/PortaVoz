@@ -3,8 +3,10 @@ import { ChatItem } from "@/components/features/chat/ChatItem";
 import { ChatItemSkeleton } from "@/components/features/chat/ChatItemSkeleton";
 import { ChatMessage } from "@/components/features/chat/ChatMessage";
 import { InputChat } from "@/components/ui/ChatInput";
+import { ToggleSidebar } from "@/components/ui/ToggleSidebar";
 import { useChats } from "@/hooks/chat/useChats";
 import { useMessages } from "@/hooks/messages/useMessages";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { useStoreUser } from "@/stores/userStore";
 import { ChatData } from "@/utils/types/chatDataType";
 import { MessageData } from "@/utils/types/messageDataType";
@@ -25,7 +27,6 @@ export const Chat = () => {
     const [messages, setMessages] = useState<MessageData[]>([]);
 
     useEffect(() => {
-        // SOCKET EVENTS
         socketRef.current = io(String(import.meta.env.VITE_API_BASEURL).replace("/api/v1/", ""));
         socketRef.current.emit("register_user", {
             userId,
@@ -40,11 +41,9 @@ export const Chat = () => {
         };
     }, []);
 
-    // HANDLE FETCH CHATS
     const { data: chatsData, isLoading: chatsLoading } = useChats();
     const chats: ChatData[] = chatsData?.pages.flatMap((page) => page.chats) ?? [];
 
-    // HANDLE JOIN CHAT
     useEffect(() => {
         if (chatId) {
             socketRef?.current?.emit("join_chat", chatId);
@@ -70,8 +69,6 @@ export const Chat = () => {
 
         setInputText("");
     };
-
-    // HANDLE FETCH MESSAGES
     const { data: messagesData } = useMessages(chatId);
 
     useEffect(() => {
@@ -87,7 +84,9 @@ export const Chat = () => {
                 className={`text-title mr-auto h-screen w-full bg-white lg:max-w-89 dark:bg-zinc-900 ${chatId && "max-lg:hidden"} divide-y-1 divide-zinc-200 border-x-1 border-x-zinc-200 dark:divide-zinc-800 dark:border-x-zinc-800 dark:border-r-zinc-800`}
             >
                 <header className="px-5 py-6">
-                    <h1 className="text-title flex items-center text-xl font-medium">Conversas</h1>
+                    
+
+                    <h1 className="text-title flex items-center text-xl font-medium space-x-2"><ToggleSidebar /> <p>Conversas</p></h1>
                     <div className="mt-4 flex items-center gap-1 rounded-lg pl-3 shadow-sm ring-1 ring-zinc-200 dark:ring-zinc-800">
                         <IconSearch className="size-4" />
                         <input
@@ -98,7 +97,7 @@ export const Chat = () => {
                     </div>
                 </header>
 
-                <div className={`w-full space-y-3 px-2 pt-6`}>
+                <div className={`w-full space-y-3 px-5 pt-6`}>
                     {chatsLoading ? (
                         <ChatItemSkeleton />
                     ) : (

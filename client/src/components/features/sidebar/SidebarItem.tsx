@@ -1,38 +1,38 @@
+import { useStoreSidebar } from "@/stores/sidebarStore";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 type SidebarItemProps = {
     label: string;
     Icon: React.ElementType;
+    IconSelected: React.ElementType;
     active: boolean;
     href: string;
-    isOpen?: boolean;
-    isMobile?: boolean;
 };
 
-export const SidebarItem = ({ label, Icon, active, href, isOpen, isMobile }: SidebarItemProps) => {
+export const SidebarItem = ({ label, Icon, active, href, IconSelected }: SidebarItemProps) => {
     const [isOver, setIsOver] = useState(false);
     const navigate = useNavigate();
+    const { isOpen } = useStoreSidebar();
 
     return (
-        <a
+        <button
             onClick={() => navigate(href)}
-            className={`transition-[color, background-color] before:text-accent before:bg-secondary/30 before:transition-[transform, opacity] items-centerrounded-lg relative flex rounded-xl p-[.9rem] px-4 font-medium duration-200 before:absolute before:z-50 before:overflow-hidden before:rounded-sm before:p-2 before:px-3 before:text-sm before:font-semibold before:text-ellipsis before:whitespace-nowrap before:backdrop-blur-lg before:duration-300 before:content-[attr(data-label)] 
-                ${active ? "ring-2 ring-accent text-accent font-medium" : "hover:text-title text-zinc-600 hover:bg-stone-100 dark:text-zinc-300 dark:hover:bg-zinc-800"} 
-                ${isOver ? "before:left-[70px] before:opacity-100" : "before:left-[-50px] before:opacity-0"} 
-                ${!isOpen && isMobile ? "cursor-default" : "cursor-pointer"}`}
             data-label={label}
-            onMouseOver={() => !isOpen && !isMobile && setIsOver(true)}
-            onMouseLeave={() => !isOpen && !isMobile && setIsOver(false)}
+            onMouseOver={() => !isOpen && setIsOver(true)}
+            onMouseLeave={() => !isOpen && setIsOver(false)}
+            className={`flex w-full items-center p-[.7rem] ${active ? "bg-secondary/50 text-accent" : "text-zinc-800 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-300 hover:dark:bg-zinc-800 hover:dark:text-zinc-200"} rounded-lg transition-all`}
         >
-            <Icon
-                className={`size-6 fill-zinc-200 dark:fill-zinc-800 ${active ? "stroke-primary" : "stroke-[1.7]"}`}
-            />
+            {active ? (
+                <IconSelected className={`size-6 stroke-[.8]`} />
+            ) : (
+                <Icon className={`size-6 stroke-[.8]`} />
+            )}
             <span
-                className={`text-md origin-left overflow-hidden transition-all duration-300 ${isOpen ? "ml-3 w-38 opacity-100" : "ml-0 w-0 opacity-0"}`}
+                className={`${isOpen ? "w-45 pl-3" : "w-0"} text-md overflow-hidden text-start transition-[width,padding]`}
             >
                 {label}
             </span>
-        </a>
+        </button>
     );
 };

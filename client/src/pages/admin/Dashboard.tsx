@@ -1,7 +1,6 @@
 import { useStoreUser } from "@/stores/userStore";
 export const Dashboard = () => {
     const { user } = useStoreUser();
-
     console.log(user?.token);
 
     return (

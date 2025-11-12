@@ -18,23 +18,12 @@ export interface PostData {
     createdAt: string;
 }
 export interface RequestPostData {
-    _id: string;
-    user: {
-        _id: string;
-        username: string;
-        image: string;
-    }
     title: string;
     desc: string;
-    images: string[] | File[];
+    images: File[];
     hashtags: string[];
     location: LocationData;
     address: string;
-    upvotesCount: number;
-    commentsCount: number;
-    status: "ativo" | "resolvido" | "oculto";
-    isUpvoted: boolean;
-    createdAt: string;
 }
 
 

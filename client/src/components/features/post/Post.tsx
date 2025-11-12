@@ -19,7 +19,7 @@ export const Post = ({ post }: { post: PostData }) => {
     return (
         <>
             <article
-                className={`relative w-full max-w-[620px] rounded-2xl bg-white pb-6 shadow-[0px_4px_10px_-19px_rgba(0,_0,_0,_0.1)] transition-all max-lg:pb-4 dark:bg-zinc-900`}
+                className={`w-full max-w-[620px] rounded-2xl bg-white pb-6 transition-all max-lg:pb-4 dark:bg-zinc-900`}
             >
                 <PostHeader post={post} />
                 <PostMain post={post} />

@@ -1,4 +1,5 @@
 import { Server } from "@/api/Server";
+import { RoutesPath } from "@/app/Routes";
 import { useStoreUser } from "@/stores/userStore";
 import { IconPlus } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +10,7 @@ export const ButtonCreatePost = () => {
 
     const verifyRemainReports = async () => {
         const data = await Server.getRemainingReports(user?._id!, user?.token!);
-        if (data.canReport) navigate("/create-post");
+        if (data.canReport) navigate(RoutesPath("CreatePost")!);
     };
 
     return (

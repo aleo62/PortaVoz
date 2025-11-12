@@ -10,7 +10,7 @@ export function useCreatePost() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ({ formData }: { formData: Partial<RequestPostData> }) =>
+        mutationFn: ({ formData }: { formData: RequestPostData }) =>
             Server.createPost(formData, token!),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["posts"] });

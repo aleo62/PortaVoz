@@ -34,6 +34,9 @@ const config = {
     SYSTEM_MESSAGES_PER_PAGE: parseInt(
         process.env.SYSTEM_MESSAGES_PER_PAGE || "50"
     ),
+    SYSTEM_USERS_PER_PAGE: parseInt(
+        process.env.SYSTEM_MESSAGES_PER_PAGE || "20"
+    ),
     SYSTEM_CODE_VERIFICATION_LENGTH: parseInt(
         process.env.SYSTEM_CODE_VERIFICATION_LENGTH || "4"
     ),

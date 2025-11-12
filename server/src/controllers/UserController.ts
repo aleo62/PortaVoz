@@ -6,9 +6,6 @@ import { fetchUser, verifyRemainingReports } from "@/services/UserService";
 import { formatError } from "@/utils/formatError";
 import { Request, Response } from "express";
 
-/**
- * GET - Controller responsável por pegar usuários pelo nome
- */
 export const getUsersByName = async (
     req: Request,
     res: Response
@@ -16,14 +13,13 @@ export const getUsersByName = async (
     try {
         const { uid } = req.user!;
 
-        // Verifying if page is provided
-        const page = Number(req.query.page) === 0 ? 1 : Number(req.query.page),
-            limit = config.SYSTEM_POSTS_PER_PAGE;
+        const page = Number(req.query.page) || 1,
+            limit = config.SYSTEM_USERS_PER_PAGE;
 
         const users = await User.find(
             {
                 _id: { $ne: uid },
-                username: { $regex: `${req.query.name}`, $options: "i" },
+                username: { $regex: req.query.name || "", $options: "i" },
             },
             { username: 1, fName: 1, lName: 1, image: 1 }
         )
@@ -32,10 +28,10 @@ export const getUsersByName = async (
 
         const count = await User.countDocuments({
             _id: { $ne: uid },
-            username: { $regex: req.query.name },
+            username: { $regex: req.query.name || "" },
         });
 
-        res.status(200).json({ users, hasMore: count > page * limit });
+        res.status(200).json({ users, hasMore: count > page * limit, count });
     } catch (err) {
         if (!(err instanceof Error)) throw err;
 
