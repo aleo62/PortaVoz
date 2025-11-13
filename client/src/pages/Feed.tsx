@@ -31,7 +31,7 @@ export const Feed = () => {
         <main
             className={`xxl:gap-10 grid lg:gap-2 ${!isMobile ? "grid-cols-[1.8fr_1fr]" : "grid-cols-0"} relative max-w-7xl mx-auto w-full lg:px-10`}
         >
-            <section className="flex w-full flex-col items-center gap-5 overflow-x-hidden mt-5">
+            <section className="flex w-full flex-col items-center gap-5 overflow-x-hidden">
                 {feedLoading && <PostSkeleton />}
 
                 {!feedLoading && !posts.length && (

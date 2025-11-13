@@ -12,7 +12,7 @@ export const FeedReflected = () => {
         (reflectedData?.pages.flatMap((page) => page.posts) as PostData[]) || [];
 
     return (
-        <section className="sticky top-21 hidden h-fit w-fit gap-3 space-y-1 rounded-2xl pb-4 bg-white dark:bg-zinc-900 py-1  lg:block">
+        <section className="sticky top-23 hidden h-fit w-fit gap-3 space-y-1 rounded-2xl pb-4 bg-white dark:bg-zinc-900 py-1  lg:block">
             <h2 className="text-title xxl:px-4 mb-3 px-3 py-3 text-lg font-medium">
                 Repercutidos
             </h2>

@@ -31,7 +31,7 @@ export const SidebarLayout = ({
             <section
                 ref={containerRef}
                 className={`scrollbar-thin dark:scrollbar-thumb-zinc-700 scrollbar-thumb-zinc-400 scrollbar-track-transparent flex min-h-screen flex-1 ${
-                    orientation === "col" ? "flex-col pb-6" : "flex-row"
+                    orientation === "col" ? "flex-col pb-6 gap-5" : "flex-row"
                 } overflow-y-auto max-lg:h-screen max-lg:px-1`}
             >
                 <SidebarHeader linkBack={linkBack} noHeader={noHeader} />

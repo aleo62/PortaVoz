@@ -1,3 +1,4 @@
+import { NotificationModal } from "@/components/features/notification/NotificationModal";
 import {
     RiChat1Fill,
     RiChat1Line,
@@ -5,6 +6,7 @@ import {
     RiCustomerService2Line,
     RiHome6Fill,
     RiHome6Line,
+    RiInbox2Line,
 } from "@remixicon/react";
 
 export const SidebarItems = [
@@ -15,5 +17,14 @@ export const SidebarItems = [
         icon: RiCustomerService2Line,
         iconSelected: RiCustomerService2Fill,
         href: "/help",
+    },
+];
+
+export const SidebarClientItems = [
+    {
+        label: "Notificações",
+        icon: RiInbox2Line,
+        iconSelected: RiHome6Fill,
+        modal: NotificationModal,
     },
 ];

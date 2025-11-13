@@ -1,5 +1,5 @@
 import { portaVozLogo } from "@/data/data";
-import { SidebarItems } from "@/data/sidebar";
+import { SidebarClientItems, SidebarItems } from "@/data/sidebar";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useTheme } from "@/hooks/useTheme";
 import { useStoreSidebar } from "@/stores/sidebarStore";
@@ -51,6 +51,15 @@ export const Sidebar = () => {
                 </div>
 
                 <div className="flex flex-col justify-center">
+                    {SidebarClientItems.map((item) => (
+                        <SidebarItem
+                            Icon={item.icon}
+                            IconSelected={item.iconSelected!}
+                            label={item.label}
+                            modal={<item.modal />}
+                        />
+                    ))}
+
                     <div
                         className="bg-body-background mx-auto mt-2 flex w-[100%] items-center gap-2 rounded-xl p-[4px] text-sm font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
                         onClick={() => !isOpen && setIsDarkTheme(!isDarkTheme)}
@@ -76,7 +85,7 @@ export const Sidebar = () => {
                     <div
                         className={`mt-2 flex items-center rounded-xl py-2 ${isOpen ? "px-2 ring-1 ring-zinc-200 dark:ring-zinc-800" : ""} w-full transition-all`}
                     >
-                        <figure className="relative h-11 w-11 overflow-hidden rounded-full mx-auto">
+                        <figure className="relative mx-auto h-11 w-11 overflow-hidden rounded-full">
                             <img
                                 src={user?.image}
                                 className="absolute ml-auto h-full w-full object-cover"
@@ -84,7 +93,9 @@ export const Sidebar = () => {
                             />
                         </figure>
 
-                        <div className={`${isOpen ? "ml-2" : "ml-0"} leading-4 transition-all flex-1`}>
+                        <div
+                            className={`${isOpen ? "ml-2" : "ml-0"} flex-1 leading-4 transition-all`}
+                        >
                             <h3
                                 className={`text-title font-title truncate overflow-hidden transition-all ${isOpen ? "w-25" : "w-0"}`}
                             >
