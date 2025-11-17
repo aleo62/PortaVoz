@@ -14,13 +14,15 @@ import {
     getPostById,
     updatePost,
 } from "@/controllers/PostController";
+import { createRepost } from "@/controllers/RepostController";
 import { createUpvote, deleteUpvote } from "@/controllers/VoteController";
 import upload from "@/lib/multer";
-import { authenticateOwnerOrAdmin } from "@/middlewares/authOwnerOrAdmin";
-import { authenticateUser } from "@/middlewares/authUser";
-import { authenticateVerified } from "@/middlewares/authVerified";
-import { validationError } from "@/middlewares/validationError";
-import { validationFile } from "@/middlewares/validationFile";
+import { authenticateOwnerOrAdmin } from "@/middlewares/auth/authOwnerOrAdmin";
+import { authenticateUser } from "@/middlewares/auth/authUser";
+import { authenticateVerified } from "@/middlewares/auth/authVerified";
+import { validatePost } from "@/middlewares/validation/validatePost";
+import { validationError } from "@/middlewares/validation/validationError";
+import { validationFile } from "@/middlewares/validation/validationFile";
 import Comment from "@/models/Comment.model";
 import Post from "@/models/Post.model";
 import { Request, Router } from "express";
@@ -181,8 +183,6 @@ router.put(
     updateComment
 );
 
-export default router;
-
 router.post(
     "/:parentId/upvote",
     authenticateUser,
@@ -191,7 +191,6 @@ router.post(
     createUpvote
 );
 
-// DEL - Rota para deletar um upvote
 router.delete(
     "/:parentId/desupvote",
     authenticateUser,
@@ -199,3 +198,15 @@ router.delete(
     validationError,
     deleteUpvote
 );
+
+router.post(
+    "/:postId/repost",
+    authenticateUser,
+    authenticateVerified,
+    validatePost(async (req: Request) => {
+        return req.params.postId;
+    }),
+    validationError,
+    createRepost
+);
+export default router;

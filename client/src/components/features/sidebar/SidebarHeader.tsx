@@ -23,11 +23,11 @@ export const SidebarHeader = ({
     return (
         !noHeader && (
             <header
-                className={`sticky top-0 z-[100] border-b-1 border-zinc-200 bg-white transition dark:border-zinc-800 dark:bg-zinc-900`}
+                className={`border-b-1 border-zinc-200 bg-white transition dark:border-zinc-800 dark:bg-zinc-900`}
             >
-                <nav className="text-title mx-auto flex max-h-20 w-full max-w-7xl items-center gap-6 px-1 py-3 lg:max-h-20 lg:gap-3 lg:px-10">
+                <nav className="text-title mx-auto flex max-h-20 w-full max-w-7xl items-center gap-6 py-3 lg:max-h-20 lg:gap-3 px-1">
                     {!!linkBack && <LinkBack href={linkBack} />}
-                    <h3 className="font-title flex items-center gap-2 text-lg font-light">
+                    <h3 className="font-title flex items-center gap-2 text-lg font-light max-lg:hidden">
                         {" "}
                         Olá, tudo bem?{" "}
                         <figure className="relative h-9 w-9 overflow-hidden rounded-full">

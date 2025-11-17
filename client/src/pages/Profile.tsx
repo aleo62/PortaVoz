@@ -1,132 +1,118 @@
-import { PostProfilePreview } from "@/components/features/post/PostProfilePreview";
+import { FeedPosts } from "@/components/features/post/FeedPosts";
+import { ImageModal } from "@/components/modal/ImageModal";
 import { ProfileSkeleton } from "@/components/ui/ProfileSkeleton";
-import { useChatByUsers } from "@/hooks/chat/useChatByUsers";
+import { useModal } from "@/contexts/ModalContext";
 import { usePostsByUser } from "@/hooks/posts/usePostsByUser";
-import { useCreateFollow } from "@/hooks/user/useCreateFollow";
-import { useDeleteFollow } from "@/hooks/user/useDeleteFollow";
 import { useFollow } from "@/hooks/user/useFollow";
 import { useUserById } from "@/hooks/user/useUserById";
-import { useStoreUser } from "@/stores/userStore";
 import { PostData } from "@/utils/types/postDataType";
-import { IconMessage2 } from "@tabler/icons-react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 export const Profile = () => {
+    const { openModal } = useModal();
+
     const { userId } = useParams();
     const { data: follow, isLoading } = useFollow(userId!);
     const { data: user } = useUserById(userId!);
 
-    const { user: userData } = useStoreUser();
-    const { data: postsData } = usePostsByUser(userId!);
-    let posts: PostData[] = (postsData?.pages.flatMap((page) => page.posts) as PostData[]) || [];
+    const {
+        data: feedData,
+        isLoading: feedLoading,
+        fetchNextPage: fetchFeedNextPage,
+        hasNextPage: feedHasNextPage,
+    } = usePostsByUser(userId!);
 
-    const createFollow = useCreateFollow();
-    const deleteFollow = useDeleteFollow();
-    const navigate = useNavigate();
-    const getChatByUser = useChatByUsers();
+    const posts: PostData[] = (feedData?.pages.flatMap((page) => page.posts) as PostData[]) || [];
 
-    const handleFollow = async () => {
-        if (Boolean(follow?.following)) {
-            follow.following = false;
-            user.meta.counters.followers--;
-            await deleteFollow.mutateAsync(userId!);
-        } else {
-            follow.following = true;
-            user.meta.counters.followers++;
-            await createFollow.mutateAsync(userId!);
-        }
-    };
+    // const { user: userData } = useStoreUser();
 
-    const fetchChat = async () => {
-        getChatByUser.mutateAsync({ otherUserId: userId! }).then((response) => {
-            navigate(`/chat/${response.chatId}`);
-        });
-    };
+    // const createFollow = useCreateFollow();
+    // const deleteFollow = useDeleteFollow();
+    // const navigate = useNavigate();
+
+    // const handleFollow = async () => {
+    //     if (Boolean(follow?.following)) {
+    //         follow.following = false;
+    //         user.meta.counters.followers--;
+    //         await deleteFollow.mutateAsync(userId!);
+    //     } else {
+    //         follow.following = true;
+    //         user.meta.counters.followers++;
+    //         await createFollow.mutateAsync(userId!);
+    //     }
+    // };
+
+    // const getChatByUser = useChatByUsers();
+    // const fetchChat = async () => {
+    //     getChatByUser.mutateAsync({ otherUserId: userId! }).then((response) => {
+    //         navigate(`/chat/${response.chatId}`);
+    //     });
+    // };
 
     if (isLoading || !user || (userId && !userId)) {
         return <ProfileSkeleton />;
     }
 
+    console.log(posts);
+
     return (
-        <section className="mx-auto w-full max-w-4xl pb-5">
-            <header className="rounded-2xl bg-white pb-12 shadow-[0px_4px_10px_-19px_rgba(0,_0,_0,_0.1)] lg:rounded-3xl lg:p-2 lg:pb-14 dark:bg-zinc-900">
-                <div className="text-title relative h-full w-full">
-                    {user?.banner ? (
-                        <img
-                            src={user.banner}
-                            alt="Banner"
-                            className="h-40 w-full rounded-t-2xl object-cover md:h-60 lg:rounded-2xl"
-                        />
-                    ) : (
-                        <div className="h-40 w-full rounded-t-2xl bg-stone-300 md:h-60 lg:rounded-2xl dark:bg-zinc-800"></div>
-                    )}
+        <>
+            <main className="w-full grid grid-cols-1">
+                <section className="mx-auto mt-5 mb-10 w-full max-w-7xl border-b-1 border-zinc-200 lg:px-1 dark:border-zinc-800">
+                    <header className="relative pb-10">
+                        <div className="0 h-40 w-full overflow-hidden rounded-3xl bg-zinc-300 md:h-85 dark:bg-zinc-800">
+                            {user?.banner && (
+                                <img
+                                    src={user.banner}
+                                    alt="Banner"
+                                    className="h-full w-full object-cover"
+                                />
+                            )}
 
-                    <img
-                        src={user?.image}
-                        alt="Foto de perfil"
-                        className="absolute top-[50%] left-[50%] h-30 w-30 rounded-full object-cover ring-3 ring-white max-lg:translate-x-[-50%] lg:left-5 lg:h-40 lg:w-40 dark:ring-zinc-900"
-                    />
-                </div>
+                            <figure className="">
+                                <img
+                                    src={user?.image}
+                                    alt="Foto de perfil"
+                                    className="ring-body-background absolute top-[25%] left-[50%] h-35 w-35 rounded-full object-cover ring-3 max-lg:translate-x-[-50%] lg:top-[45%] lg:left-15 lg:h-60 lg:w-60 dark:ring-zinc-900"
+                                    onClick={() => openModal(<ImageModal image={user.image} />)}
+                                />
+                            </figure>
+                        </div>
+                    </header>
 
-                <div className="text-title mt-14 mb-4 flex w-full flex-col justify-between gap-3 px-2 text-center lg:mt-15 lg:flex-row lg:items-center lg:px-8 lg:text-start">
-                    <div>
-                        <h2 className="text-2xl font-semibold lg:text-3xl">
-                            {user?.username ?? user?.fName}
-                        </h2>
-                        <p className="text-subtitle text-md">
-                            {user?.fName} {user?.lName}
-                        </p>
-                    </div>
+                    <main className="mb-10 grid lg:px-7 w-full lg:grid-cols-[270px_auto]">
+                        <div></div>
+                        <div>
+                            <div className="py-5">
+                                <h1 className="font-title text-title text-3xl font-medium max-lg:text-center lg:text-5xl">
+                                    {user.username}
+                                </h1>
 
-                    <div className="flex w-fit items-center gap-2 text-white max-lg:mx-auto">
-                        {userId && userData?._id !== user._id ? (
-                            <>
-                                <button
-                                    onClick={() => handleFollow()}
-                                    className={`p-2 px-5 ${Boolean(follow?.following) ? "text-accent bg-transparent" : "bg-accent"} ring-accent rounded-full text-sm ring-1 transition-all`}
-                                >
-                                    {Boolean(follow?.following) ? "Seguindo" : "Seguir"}
-                                </button>
-                                <button
-                                    className="text-title rounded-full p-3 ring-1 ring-zinc-300 hover:bg-zinc-100 dark:ring-zinc-700 hover:dark:bg-zinc-800"
-                                    onClick={() => fetchChat()}
-                                >
-                                    <IconMessage2 className="size-5" />
-                                </button>
-                            </>
-                        ) : (
-                            <button
-                                onClick={() => navigate("/edit-profile")}
-                                className={`bg-accent ring-accent rounded-full p-2 px-5 text-sm ring-1 transition-all`}
-                            >
-                                Editar Perfil
-                            </button>
-                        )}
-                    </div>
-                </div>
+                                <p className="text-subtitle text-md mt-3 divide-x-1 divide-zinc-200 max-lg:text-center dark:divide-zinc-800">
+                                    <span className="pr-3 font-medium">
+                                        Seguidores: {user.meta.counters.followers}
+                                    </span>
 
-                <div className="text-title mb-5 flex items-center justify-center divide-x-1 divide-zinc-300 px-2 text-sm lg:justify-start lg:px-8 dark:divide-zinc-700">
-                    <p className="pr-4">Seguidores {user?.meta.counters.followers}</p>
-                    <p className="pl-4">Seguindo {user?.meta.counters.following}</p>
-                </div>
+                                    <span className="pl-3 font-medium">
+                                        Seguidores: {user.meta.counters.followers}
+                                    </span>
+                                </p>
+                            </div>
 
-                <div className="mt-12 px-5 lg:px-8">
-                    <h2 className="text-title mb-3 text-xl font-medium">Sobre Mim</h2>
-                    <p className="text-subtitle text-xs lg:text-sm">
-                        {user?.about ? user?.about : "Nada dito ainda :/"}
-                    </p>
-                </div>
-            </header>
-
-            <main className="mt-5 space-y-2">
-                <div className="w-ful grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
-                    {posts.map((post) => (
-                        <>
-                            <PostProfilePreview key={post._id} post={post} />
-                        </>
-                    ))}
-                </div>
+                            <div className="dark:ring-zinc-80 rounded-xl p-5 ring-1 ring-zinc-200">
+                                <h2 className="text-title text-xl lg:text-2xl">Sobre Mim</h2>
+                                <p className="text-subtitle mt-2 text-md lg:text-lg">{user.about}</p>
+                            </div>
+                        </div>
+                    </main>
+                </section>
+                <FeedPosts
+                    posts={posts}
+                    feedLoading={feedLoading}
+                    feedHasNextPage={feedHasNextPage}
+                    fetchFeedNextPage={fetchFeedNextPage}
+                />
             </main>
-        </section>
+        </>
     );
 };

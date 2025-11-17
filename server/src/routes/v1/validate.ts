@@ -1,6 +1,6 @@
 import { validateStages } from "@/controllers/ValidateController";
 import upload from "@/lib/multer";
-import { validationError } from "@/middlewares/validationError";
+import { validationError } from "@/middlewares/validation/validationError";
 import { Router } from "express";
 import { body } from "express-validator";
 
@@ -18,9 +18,7 @@ const validateByStage: Record<string, any[]> = {
     hashtags: [
         body("title").trim().notEmpty().withMessage("title is required"),
         body("desc").trim().notEmpty().withMessage("desc is required"),
-        body("hashtags")
-            .notEmpty()
-            .withMessage("hashtags is required")
+        body("hashtags").notEmpty().withMessage("hashtags is required"),
     ],
 };
 

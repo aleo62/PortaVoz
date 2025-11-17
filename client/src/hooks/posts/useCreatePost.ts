@@ -1,22 +1,17 @@
-import { useStoreUser } from "@/stores/userStore";
 import { RequestPostData } from "@/utils/types/postDataType";
 import { Server } from "@api/Server";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useCreatePost() {
-    const { user } = useStoreUser();
-    const token = user?.token;
-
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ({ formData }: { formData: RequestPostData }) =>
-            Server.createPost(formData, token!),
+        mutationFn: ({ formData }: { formData: RequestPostData }) => Server.createPost(formData),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["posts"] });
         },
         onError: (error) => {
-            console.error("❌ Erro na mutation:", error, token);
+            console.error("❌ Erro na mutation:", error);
         },
     });
 }

@@ -15,7 +15,7 @@ export const ButtonCreatePost = () => {
 
     return (
         <button
-            className="bg-accent fixed right-10 bottom-10 z-100 flex h-12 w-12 items-center justify-center rounded-full text-white"
+            className="bg-accent fixed right-10 bottom-10 z-100 flex h-12 w-12 items-center justify-center rounded-full text-white hover:shadow-2xl shadow-accent transition-all hover:scale-105"
             onClick={() => verifyRemainReports()}
         >
             <IconPlus size={25} />

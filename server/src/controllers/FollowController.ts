@@ -1,38 +1,22 @@
 import Follow from "@/models/Follow.model";
 import User, { UserData } from "@/models/User.model";
-import { sendNotificationToUser } from "@/services/NotificationService";
+import { followService, getFollowingService } from "@/services/FollowService";
 import { fetchUser } from "@/services/UserService";
 import { formatError } from "@/utils/formatError";
 import { Request, Response } from "express";
-
-const decreaseFollowing = () => {}
-
 
 export const getFollowing = async (
     req: Request,
     res: Response
 ): Promise<void> => {
     try {
-        if (!req.params) throw new Error("No FollowingId provided.");
+        const { followingId } = req.params;
+        const { uid: followerId } = req.user!;
 
-      
-        if (!req.user) throw new Error("No User provided.");
-        const { uid } = req.user;
-        const userData = (await fetchUser(uid)) as UserData;
-
-        const followingData = await fetchUser(req.params.followingId);
-        if (!followingData) throw new Error("Following User does not exists.");
-
-        const following = await Follow.findOne({
-            userId: followingData._id,
-            follower: userData._id,
-        })
-            .populate("follower", "username image")
-            .exec();
+        const { isFollowing } = await getFollowingService(followingId, followerId);
 
         res.status(200).json({
-            following,
-            isFollowing: !!following,
+            isFollowing,
         });
     } catch (err) {
         if (!(err instanceof Error)) throw err;
@@ -52,42 +36,11 @@ export const followUser = async (
     res: Response
 ): Promise<void> => {
     try {
-        const { uid } = req.user!;
-        const userData = (await fetchUser(uid)) as UserData;
-        const followingData = await fetchUser(req.params.followingId);
+        const { followingId } = req.params;
+        const { uid: followerId } = req.user!;
+        await followService(followingId, followerId);
 
-        const existing = await Follow.find({
-            userId: followingData._id,
-            follower: userData._id,
-        });
-
-        if (existing.length > 0 || followingData._id === userData._id)
-            throw new Error("Already following.");
-
-        const newFollow = await Follow.create({
-            userId: followingData._id,
-            follower: userData._id,
-        });
-
-        await User.updateOne(
-            { _id: uid },
-            { $inc: { "meta.counters.following": 1 } }
-        );
-
-        await User.updateOne(
-            { _id: req.params.followingId },
-            { $inc: { "meta.counters.followers": 1 } }
-        );
-
-        await sendNotificationToUser({
-            userId: req.params.followingId,
-            sender: uid,
-            href: `/profile/${uid}`,
-            type: "Follow",
-            preview: undefined,
-        });
-
-        res.status(201).json({ data: newFollow });
+        await res.status(201).json({ ok: true });
     } catch (err) {
         if (!(err instanceof Error)) throw err;
 
@@ -130,16 +83,13 @@ export const unfollowUser = async (
             { $inc: { "meta.counters.followers": -1 } }
         );
 
-        res.status(200).json({ data: unfollow });
+        res.status(200).json({ ok: true });
     } catch (err) {
         if (!(err instanceof Error)) throw err;
-
-        const errors = formatError(err.message);
-
         res.status(500).json({
             code: "ServerError",
             message: "Internal Server Error",
-            errors: errors,
+            errors: err.message,
         });
     }
 };

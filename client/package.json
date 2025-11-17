@@ -15,7 +15,6 @@
         "@cloudinary/react": "^1.14.1",
         "@cloudinary/url-gen": "^1.21.0",
         "@emailjs/browser": "^4.4.1",
-        "@remixicon/react": "^4.7.0",
         "@tabler/icons-react": "^3.31.0",
         "@tailwindcss/vite": "^4.0.9",
         "@tanstack/react-query": "^5.83.0",

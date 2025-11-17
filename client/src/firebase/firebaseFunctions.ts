@@ -21,7 +21,7 @@ export const registerUserEmailAndPassword = async ({
         const user = (await createUserWithEmailAndPassword(auth, email, password)).user;
         const token = await user.getIdToken();
 
-        await Server.createUser({ fName, lName }, token);
+        await Server.createUser({ fName, lName });
     } catch (err) {
         throw err;
     }
@@ -37,7 +37,7 @@ export const registerUserGoogle = async () => {
         const user = googleUser.user;
 
         const token = await user.getIdToken(true);
-        const exists = await Server.getUserById(user.uid, token);
+        const exists = await Server.getUserById(user.uid);
 
         if (!exists) {
             const token = await user.getIdToken();
@@ -67,7 +67,7 @@ export const registerUserFacebook = async () => {
         const user = facebookUser.user;
 
         const token = await user.getIdToken(true);
-        const exists = await Server.getUserById(user.uid, token);
+        const exists = await Server.getUserById(user.uid);
 
         if (!exists) {
             const token = await user.getIdToken();

@@ -19,7 +19,6 @@ export interface UserData {
             totalReports: number;
         };
     };
-    token?: string;
     claims?: Record<string, any>;
     isVerified?: boolean;
 }

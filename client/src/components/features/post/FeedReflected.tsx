@@ -4,6 +4,7 @@ import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { PostReflected } from "./PostReflected";
 import { PostReflectedSkeleton } from "./PostReflectedSkeleton";
+import { IconDotsVertical } from "@tabler/icons-react";
 
 export const FeedReflected = () => {
     const { data: reflectedData, isLoading: reflectedLoading } = usePosts({ vote: "desc" }, true);
@@ -12,10 +13,11 @@ export const FeedReflected = () => {
         (reflectedData?.pages.flatMap((page) => page.posts) as PostData[]) || [];
 
     return (
-        <section className="sticky top-23 hidden h-fit w-fit gap-3 space-y-1 rounded-2xl pb-4 bg-white dark:bg-zinc-900 py-1  lg:block">
-            <h2 className="text-title xxl:px-4 mb-3 px-3 py-3 text-lg font-medium">
-                Repercutidos
-            </h2>
+        <section className="sticky top-10 hidden h-fit w-fit gap-3 space-y-1 rounded-2xl ring-1 ring-zinc-200 dark:ring-zinc-800  py-1 pb-4 shadow-[0px_4px_16px_-15px_rgba(0,_0,_0,_0.1)] lg:block">
+            <div className="xxl:px-4 mb-3 px-3 py-4 flex items-center justify-between">
+                <h2 className="text-title text-lg">Repercutidos</h2>
+                <IconDotsVertical className="size-4 mr-2"/>
+            </div>
 
             {reflectedLoading && <PostReflectedSkeleton />}
 

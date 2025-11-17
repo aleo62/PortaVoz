@@ -1,98 +1,55 @@
 import config from "@/config";
-import Follow from "@/models/Follow.model";
 import User from "@/models/User.model";
 import { updateImage } from "@/services/ImageService";
-import { fetchUser, verifyRemainingReports } from "@/services/UserService";
-import { formatError } from "@/utils/formatError";
+import {
+    createUserService,
+    fetchUser,
+    getUserByIdService,
+    getUsersService,
+    verifyRemainingReports,
+} from "@/services/UserService";
 import { Request, Response } from "express";
 
-export const getUsersByName = async (
-    req: Request,
-    res: Response
-): Promise<void> => {
+export const getUsers = async (req: Request, res: Response): Promise<void> => {
     try {
         const { uid } = req.user!;
-
+        const { name } = req.query;
         const page = Number(req.query.page) || 1,
             limit = config.SYSTEM_USERS_PER_PAGE;
 
-        const users = await User.find(
-            {
-                _id: { $ne: uid },
-                username: { $regex: req.query.name || "", $options: "i" },
-            },
-            { username: 1, fName: 1, lName: 1, image: 1 }
-        )
-            .skip((page - 1) * limit)
-            .limit(limit);
-
-        const count = await User.countDocuments({
-            _id: { $ne: uid },
-            username: { $regex: req.query.name || "" },
-        });
+        const { users, count } = await getUsersService(uid, name as string || "", page, limit);
 
         res.status(200).json({ users, hasMore: count > page * limit, count });
     } catch (err) {
         if (!(err instanceof Error)) throw err;
-
-        const errors = formatError(err.message);
-
         res.status(500).json({
             code: "ServerError",
             message: "Internal Server Error",
-            errors: errors,
+            errors: err.message,
         });
     }
 };
 
-/**
- * GET - Controller responsável por pegar um usuário pelo seu id
- */
 export const getUserById = async (
     req: Request,
     res: Response
 ): Promise<void> => {
     try {
         const { uid } = req.user!;
-
-        const user = await User.findById(
-            req.params.userId,
-            req.params.userId !== uid
-                ? {
-                      username: 1,
-                      fName: 1,
-                      lName: 1,
-                      image: 1,
-                      banner: 1,
-                      about: 1,
-                      "meta.counters.following": 1,
-                      "meta.counters.followers": 1,
-                  }
-                : {}
-        );
-
-        const isFollowing = !!(await Follow.findOne({
-            userId: req.params.userId,
-            followerId: req.user?.uid,
-        }));
+        const { userId } = req.params;
+        const { user, isFollowing } = await getUserByIdService(userId, uid);
 
         res.status(200).json({ user, isFollowing });
     } catch (err) {
         if (!(err instanceof Error)) throw err;
-
-        const errors = formatError(err.message);
-
         res.status(500).json({
             code: "ServerError",
             message: "Internal Server Error",
-            errors: errors,
+            errors: err.message,
         });
     }
 };
 
-/**
- * GET - Controller responsável por ver se o usuário pelo id possui posts restantes
- */
 export const getRemainingReports = async (
     req: Request,
     res: Response
@@ -109,57 +66,33 @@ export const getRemainingReports = async (
         });
     } catch (err) {
         if (!(err instanceof Error)) throw err;
-
-        const errors = formatError(err.message);
-
         res.status(500).json({
             code: "ServerError",
             message: "Internal Server Error",
-            errors: errors,
+            errors: err.message,
         });
     }
 };
 
-/**
- * POST - Controller responsável por criar um usuário
- */
 export const createUser = async (
     req: Request,
     res: Response
 ): Promise<void> => {
     try {
-        let user;
-        const exists = await User.findById(req.user?.uid);
-        if (exists) {
-            user = exists;
-        } else {
-            user = await User.create({
-                _id: req.user?.uid,
-                email: req.user?.email,
-                username: req.body.fName,
-                fName: req.body.fName,
-                lName: req.body.lName,
-                image: req.body.image,
-            });
-        }
+        const { uid, email } = req.user!;
+        const { user } = await createUserService(uid, email, req.body);
 
         res.status(200).json({ user });
     } catch (err) {
         if (!(err instanceof Error)) throw err;
-
-        const errors = formatError(err.message);
-
         res.status(500).json({
             code: "ServerError",
             message: "Internal Server Error",
-            errors: errors,
+            errors: err.message,
         });
     }
 };
 
-/**
- * PUT - Controller responsável por editar um usuário
- */
 export const editUser = async (req: Request, res: Response): Promise<void> => {
     try {
         const { uid } = req.user!;
@@ -201,13 +134,10 @@ export const editUser = async (req: Request, res: Response): Promise<void> => {
         res.status(200).json({ user });
     } catch (err) {
         if (!(err instanceof Error)) throw err;
-
-        const errors = formatError(err.message);
-
         res.status(500).json({
             code: "ServerError",
             message: "Internal Server Error",
-            errors: errors,
+            errors: err.message,
         });
     }
 };

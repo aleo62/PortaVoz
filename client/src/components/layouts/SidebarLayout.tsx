@@ -1,6 +1,6 @@
 import { Sidebar } from "@components/features/sidebar/Sidebar";
 import { SidebarHeader } from "@components/features/sidebar/SidebarHeader";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 type SidebarLayoutProps = {
@@ -16,7 +16,6 @@ export const SidebarLayout = ({
     linkBack,
     orientation = "col",
 }: SidebarLayoutProps) => {
-    const containerRef = useRef<HTMLElement | null>(null);
     const location = useLocation();
 
     useEffect(() => {
@@ -28,14 +27,16 @@ export const SidebarLayout = ({
         <div className="relative flex lg:h-screen">
             <Sidebar />
 
-            <section
-                ref={containerRef}
-                className={`scrollbar-thin dark:scrollbar-thumb-zinc-700 scrollbar-thumb-zinc-400 scrollbar-track-transparent flex min-h-screen flex-1 ${
-                    orientation === "col" ? "flex-col pb-6 gap-5" : "flex-row"
-                } overflow-y-auto max-lg:h-screen max-lg:px-1`}
-            >
+            <section className="flex flex-1 flex-col">
                 <SidebarHeader linkBack={linkBack} noHeader={noHeader} />
-                {children}
+
+                <div
+                    className={`scrollbar-thin dark:scrollbar-thumb-zinc-700 scrollbar-thumb-zinc-400 scrollbar-track-transparent flex flex-1 overflow-y-auto ${
+                        orientation === "col" ? "flex-col" : "flex-row"
+                    } max-lg:px-1`}
+                >
+                    {children}
+                </div>
             </section>
         </div>
     );

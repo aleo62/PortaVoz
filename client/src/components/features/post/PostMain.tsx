@@ -3,8 +3,18 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 import { useCreateVote } from "@/hooks/vote/useCreateVote";
 import { useDeleteVote } from "@/hooks/vote/useDeleteVote";
 import { PostData } from "@/utils/types/postDataType";
-import { IconArrowBigUp, IconMap, IconMessageDots } from "@tabler/icons-react";
-import { useState } from "react";
+import {
+    IconArrowBigUp,
+    IconArrowBigUpFilled,
+    IconBookmark,
+    IconBookmarkFilled,
+    IconMap,
+    IconMapPin,
+    IconMapPinFilled,
+    IconMessage,
+    IconRepeat,
+} from "@tabler/icons-react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { LocationModal } from "../../modal/LocationModal";
@@ -49,6 +59,36 @@ export const PostMain = ({ post, viewMode }: MainPostProps) => {
                   .join(" ") + "..."
             : post.desc;
 
+    const PostActionButton = ({
+        Icon,
+        count,
+        onClick,
+        isActive,
+        classActive,
+        IconActive,
+    }: {
+        Icon: React.ElementType;
+        onClick: () => void;
+        count?: number;
+        isActive?: boolean;
+        classActive?: string;
+        IconActive?: React.ElementType;
+    }) => {
+        return (
+            <button
+                className={`${isActive ? classActive : "text-zinc-500 dark:text-zinc-600"} flex cursor-pointer items-center justify-center gap-1 rounded-full rounded-l-full transition-all hover:scale-105`}
+                onClick={onClick}
+            >
+                {isActive && IconActive ? (
+                    <IconActive className={`size-6`} />
+                ) : (
+                    <Icon className={`size-6`} />
+                )}
+                {(count === 0 || !!count) && <span className="w-4 text-center">{count}</span>}
+            </button>
+        );
+    };
+
     return (
         <main className="relative">
             <Swiper className="h-100 w-[97.5%] rounded-2xl px-2 md:h-155">
@@ -64,38 +104,55 @@ export const PostMain = ({ post, viewMode }: MainPostProps) => {
                 ))}
             </Swiper>
 
-            <div className={`${viewMode ? "px-1 py-3 pb-8" : "p-3 lg:px-6 lg:py-5"} space-y-5`}>
-                <div
-                    className={`flex items-center space-x-1.5 text-xs font-semibold lg:text-[.8rem]`}
-                >
-                    <button
-                        className={`${isUpvoted ? "text-orange-500 dark:text-orange-300" : "text-subtitle"} flex cursor-pointer items-center justify-center gap-1 rounded-full rounded-l-full p-2 px-4 ring-1 ring-zinc-300 hover:bg-zinc-100 dark:ring-zinc-700 dark:hover:bg-zinc-800`}
+            <div className={`${viewMode ? "px-1 py-3 pb-8" : "p-3 lg:px-6 lg:py-5"} space-y-7`}>
+                <div className={`flex items-center gap-8 text-xs font-semibold lg:text-[.8rem]`}>
+                    <PostActionButton
+                        Icon={IconArrowBigUp}
+                        IconActive={IconArrowBigUpFilled}
+                        count={post.upvotesCount}
                         onClick={() => (isUpvoted ? deleteUpvote() : addUpvote())}
-                    >
-                        <IconArrowBigUp
-                            className={`${isUpvoted && "fill-orange-500 dark:fill-orange-300"} size-4 lg:size-5`}
-                        />
-                        <span className="w-4 text-center">{post.upvotesCount}</span>
-                    </button>
+                        isActive={isUpvoted}
+                        classActive="text-orange-500 dark:text-orange-300"
+                    />
 
                     {!viewMode && (
                         <>
-                            <button
-                                className="text-subtitle flex cursor-pointer items-center justify-center gap-1 rounded-full rounded-r-full p-2 px-4 ring-1 ring-zinc-300 hover:bg-zinc-100 dark:ring-zinc-700 dark:hover:bg-zinc-800"
+                            <PostActionButton
+                                Icon={IconMessage}
+                                count={post.commentsCount}
                                 onClick={() => openModal(<PostModal post={post} key={post._id} />)}
-                            >
-                                <IconMessageDots className={`size-4 lg:size-5`} />
-                                <span className="w-4 text-center">{post.commentsCount}</span>
-                            </button>
-
-                            <button
-                                onClick={() => openModal(<LocationModal post={post} />)}
-                                className="text-accent text-md ml-auto flex items-center gap-1 font-medium underline"
-                            >
-                                <IconMap size={25} />
-                            </button>
+                            />
                         </>
                     )}
+
+                    <PostActionButton
+                        Icon={IconRepeat}
+                        onClick={() => (isUpvoted ? deleteUpvote() : addUpvote())}
+                        isActive={isUpvoted}
+                        classActive="text-green-500 dark:text-green-600"
+                        count={post.upvotesCount}
+                    />
+
+                    <div className="ml-auto flex items-center gap-2">
+                        <PostActionButton
+                            Icon={IconBookmark}
+                            IconActive={IconBookmarkFilled}
+                            onClick={() => (isUpvoted ? deleteUpvote() : addUpvote())}
+                            isActive={isUpvoted}
+                            classActive="text-blue-500 dark:text-blue-600"
+                        />
+                        {!viewMode && (
+                            <>
+                                <PostActionButton
+                                    Icon={IconMapPin}
+                                    IconActive={IconMapPin}
+                                    onClick={() => openModal(<LocationModal post={post} />)}
+                                    isActive={true}
+                                    classActive="text-blue-500 dark:text-blue-600"
+                                />
+                            </>
+                        )}
+                    </div>
                 </div>
 
                 <div>

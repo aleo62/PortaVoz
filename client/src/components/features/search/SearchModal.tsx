@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 import { useModal } from "@/contexts/ModalContext";
 import { usePosts } from "@/hooks/posts/usePosts";
-import { useUsersByName } from "@/hooks/user/useUsersByName";
+import { useUsers } from "@/hooks/user/useUsers";
 import { PostData } from "@/utils/types/postDataType";
 import { UserData } from "@/utils/types/userDataType";
 import { SetStateAction, useEffect, useState } from "react";
@@ -27,12 +27,12 @@ export const SearchModal = () => {
 
     const { data: feedData, isLoading: feedLoading } = usePosts(
         { search },
-        modalOpen && modalKey === "search" && activeTopic == 1,
+        modalOpen && activeTopic == 1,
     );
 
-    const { data: usersData, isLoading: usersLoading } = useUsersByName(
+    const { data: usersData, isLoading: usersLoading } = useUsers(
+        modalOpen && activeTopic == 2,
         search,
-        modalOpen && modalKey === "search" && activeTopic == 2,
     );
 
     let posts: PostData[] = (feedData?.pages.flatMap((page) => page.posts) as PostData[]) || [];
@@ -50,6 +50,8 @@ export const SearchModal = () => {
 
         return () => clearTimeout(timeout);
     }, [searchInput]);
+
+    console.log(feedData);
     return (
         <motion.div
             initial={{ scale: 0.95 }}

@@ -1,13 +1,9 @@
 import { auth } from "@/firebase";
-import { useStoreUser } from "@/stores/userStore";
 import { Server } from "@api/Server";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 export function useNotifications(userIdProp?: string) {
-    const { user } = useStoreUser();
-    const token = user?.token;
-
     const [userId, setUserId] = useState<string | null>(null);
 
     useEffect(() => {
@@ -22,11 +18,11 @@ export function useNotifications(userIdProp?: string) {
     }, []);
 
     return useInfiniteQuery({
-        queryKey: ["notification", token],
-        queryFn: ({ pageParam }) => Server.getNotifications(token!, pageParam, userId!),
+        queryKey: ["notification"],
+        queryFn: ({ pageParam }) => Server.getNotifications(pageParam, userId!),
         getNextPageParam: (lastPage, allPages) =>
             lastPage.hasMore ? allPages.length + 1 : undefined,
         initialPageParam: 1,
-        enabled: !!token && !!userId,
+        enabled: !!userId,
     });
 }

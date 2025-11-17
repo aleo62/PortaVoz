@@ -5,10 +5,10 @@ import {
     getChats,
     getMessagesByChatId,
 } from "@/controllers/ChatController";
-import { authenticateOwnerOrAdmin } from "@/middlewares/authOwnerOrAdmin";
-import { authenticateUser } from "@/middlewares/authUser";
-import { authenticateVerified } from "@/middlewares/authVerified";
-import { validationError } from "@/middlewares/validationError";
+import { authenticateOwnerOrAdmin } from "@/middlewares/auth/authOwnerOrAdmin";
+import { authenticateUser } from "@/middlewares/auth/authUser";
+import { authenticateVerified } from "@/middlewares/auth/authVerified";
+import { validationError } from "@/middlewares/validation/validationError";
 import Chat from "@/models/Chat.model";
 import { Request, Router } from "express";
 import { body } from "express-validator";
@@ -16,7 +16,13 @@ import { body } from "express-validator";
 const router = Router();
 
 // GET - Rota para pegar chats dos users
-router.get("/", authenticateUser, authenticateVerified, validationError, getChats);
+router.get(
+    "/",
+    authenticateUser,
+    authenticateVerified,
+    validationError,
+    getChats
+);
 // GET - Rota para pegar chats dos users
 router.get(
     "/:chatId/messages",

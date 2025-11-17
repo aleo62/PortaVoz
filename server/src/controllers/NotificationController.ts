@@ -1,5 +1,5 @@
 import config from "@/config";
-import { getNotificationsByUserId } from "@/services/NotificationService";
+import { getNotificationsService } from "@/services/NotificationService";
 import { formatError } from "@/utils/formatError";
 import { Request, Response } from "express";
 
@@ -11,7 +11,7 @@ export const getNotifications = async (
         const page = Number(req.query.page) || 1,
             limit = config.SYSTEM_COMMENTS_PER_PAGE;
 
-        const { notifications, count } = await getNotificationsByUserId(
+        const { notifications, count } = await getNotificationsService(
             req.params.userId,
             page,
             limit

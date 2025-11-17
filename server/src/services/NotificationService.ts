@@ -34,7 +34,7 @@ export const sendNotificationToUser = async ({
     }
 };
 
-export const getNotificationsByUserId = async (
+export const getNotificationsService = async (
     userId: string,
     page: number,
     limit: number

@@ -1,44 +1,32 @@
 import { FiltersType } from "@/utils/types/filtersDataType";
 import { RequestPostData } from "@/utils/types/postDataType";
 import { UserData } from "@/utils/types/userDataType";
-import axios from "axios";
+import { api } from ".";
 
 export class Server {
-    // BASE URL
-    private static baseUrl = String(import.meta.env.VITE_API_BASEURL);
-
     /* POSTS ENDPOINTS -----------> */
 
-    // GET all Posts
-    static async getAllPosts(token: string, pageParam: number, filters: Partial<FiltersType>) {
-        const res = await axios.get(`${this.baseUrl}posts`, {
-            params: { page: pageParam, ...filters },
-            headers: { authorization: `Bearer ${token}` },
-        });
-        return res.data;
-    }
-
-    // GET Post by ID
-    static async getPostById(id: string, token: string) {
+    static async getAllPosts(filters: Partial<FiltersType>, pageParam: number) {
         return (
-            await axios.get(`${this.baseUrl}posts/${id}`, {
-                headers: { authorization: `Bearer ${token}` },
+            await api.get(`/posts`, {
+                params: { page: pageParam, ...filters },
             })
         ).data;
     }
 
-    // GET Post by ID
-    static async getPostsByUser(userId: string, token: string, pageParam: number) {
+    static async getPostById(id: string) {
+        return (await api.get(`/posts/${id}`)).data;
+    }
+
+    static async getPostsByUser(userId: string, pageParam: number) {
         return (
-            await axios.get(`${this.baseUrl}posts/user/${userId}`, {
+            await api.get(`/users/${userId}/posts`, {
                 params: { page: pageParam },
-                headers: { authorization: `Bearer ${token}` },
             })
         ).data;
     }
 
-    // POST Post
-    static async createPost(reportForm: RequestPostData, token: string) {
+    static async createPost(reportForm: RequestPostData) {
         const formData = new FormData();
         formData.append("title", reportForm.title!);
         formData.append("desc", reportForm.desc!);
@@ -57,154 +45,109 @@ export class Server {
             });
         }
 
-        return axios.post(`${this.baseUrl}posts`, formData, {
-            headers: { Authorization: `Bearer ${token}` },
-        });
+        return api.post(`/posts`, formData);
     }
 
-    // DELETE Post by ID
-    static async deletePostById(id: string, token: string) {
+    static async deletePostById(id: string, ) {
         return (
-            await axios.delete(`${this.baseUrl}posts/${id}`, {
-                headers: { authorization: `Bearer ${token}` },
-            })
+            await api.delete(`/posts/${id}`)
         ).data;
     }
 
     /* COMMENT ENDPOINTS -----------> */
 
-    // GET all Posts
-    static async getCommentsByParentId(token: string, pageParam: number, parentId: string) {
-        const res = await axios.get(`${this.baseUrl}posts/${parentId}/comments`, {
+    static async getCommentsByParentId(parentId: string, pageParam: number) {
+        const res = await api.get(`/posts/${parentId}/comments`, {
             params: { page: pageParam },
-            headers: { authorization: `Bearer ${token}` },
+            
         });
         return res.data;
     }
 
-    // POST Comment
-    static async createComment(content: string, parentId: string, token: string) {
-        return axios.post(
-            `${this.baseUrl}posts/comments`,
-            { content, parentId },
-            { headers: { Authorization: `Bearer ${token}` } },
+    static async createComment(content: string, parentId: string) {
+        return api.post(
+            `/posts/comments`,
+            { content, parentId }
         );
     }
 
-    // DELETE Comment by ID
-    static async deleteCommentById(id: string, token: string) {
+    static async deleteCommentById(id: string) {
         return (
-            await axios.delete(`${this.baseUrl}posts/comments/${id}`, {
-                headers: { authorization: `Bearer ${token}` },
-            })
+            await api.delete(`/posts/comments/${id}`)
         ).data;
     }
 
     /* VOTES ENDPOINTS -----------> */
 
-    // POST Vote
-    static async createVote(id: string, token: string) {
-        return axios.post(
-            `${this.baseUrl}posts/${id}/upvote`,
-            {},
-            { headers: { Authorization: `Bearer ${token}` } },
+    static async createVote(id: string) {
+        return api.post(
+            `/posts/${id}/upvote`,
+            {}
         );
     }
-    // DELETE Vote by ID
-    static async deleteVoteById(id: string, token: string) {
+
+    static async deleteVoteById(id: string, ) {
         return (
-            await axios.delete(`${this.baseUrl}posts/${id}/desupvote`, {
-                headers: { authorization: `Bearer ${token}` },
-            })
+            await api.delete(`/posts/${id}/desupvote`)
         ).data;
-    }
-
-    /* IMAGES ENDPOINTS -----------> */
-
-    // PUT Image
-    static async changeImage(newImage: File, token: string, folder?: string) {
-        const formData = new FormData();
-        formData.append("image", newImage);
-        if (folder) formData.append("folder", folder);
-
-        return axios.put(`${this.baseUrl}images`, formData, {
-            headers: { Authorization: `Bearer ${token}` },
-        });
     }
 
     /* USER ENDPOINTS -----------> */
 
-    // GET User
-    static async getUserById(userId: string, token: string) {
-        const res = await axios.get(`${this.baseUrl}users/${userId}`, {
-            headers: { Authorization: `Bearer ${token}` },
-        });
+    static async getUserById(userId: string, ) {
+        const res = await api.get(`/users/${userId}`);
         return res.data.user;
     }
 
-    // GET Users by Name
-    static async getUsersByName(name: string, token: string, pageParam: number) {
-        const res = await axios.get(`${this.baseUrl}users`, {
-            params: { name: name, page: pageParam },
-            headers: { Authorization: `Bearer ${token}` },
+    static async getUsers(pageParam: number, name?: string) {
+        const res = await api.get(`/users`, {
+            params: {
+                name: name,
+                page: pageParam,
+            }
         });
+
+        console.log(res);
         return res.data;
     }
 
-    // GET Remaining Reports
-    static async getRemainingReports(userId: string, token: string) {
-        const res = await axios.get(`${this.baseUrl}users/${userId}/remaining-reports`, {
-            headers: { Authorization: `Bearer ${token}` },
-        });
+    static async getRemainingReports(userId: string, ) {
+        const res = await api.get(`/users/${userId}/remaining-reports`);
         return res.data;
     }
 
-    // POST User
-    static async createUser(userData: Partial<UserData>, token: string) {
-        return axios.post(`${this.baseUrl}users/auth`, userData, {
-            headers: { Authorization: `Bearer ${token}` },
-        });
+    static async createUser(userData: Partial<UserData>, ) {
+        return api.post(`/users/auth`, userData);
     }
 
-    // PUT User
-    static async updateUser(userData: FormData, userId: string, token: string) {
+    static async updateUser(userData: FormData, userId: string, ) {
         return (
-            await axios.put(`${this.baseUrl}users/${userId}`, userData, {
-                headers: { Authorization: `Bearer ${token}` },
-            })
+            await api.put(`/users/${userId}`, userData, )
         ).data;
     }
 
     /* Follow ENDPOINTS -----------> */
 
-    // GET Follow
-    static async getFollowingById(token: string, followingId: string) {
-        const res = await axios.get(`${this.baseUrl}users/${followingId}/following`, {
-            headers: { authorization: `Bearer ${token}` },
-        });
+    static async getFollowingById(followingId: string) {
+        const res = await api.get(`/users/${followingId}/following`);
         return res.data;
     }
 
-    // POST Follow
-    static async createFollow(token: string, followingId: string) {
-        return axios.post(
-            `${this.baseUrl}users/${followingId}/follow`,
-            {},
-            { headers: { Authorization: `Bearer ${token}` } },
+    static async createFollow(followingId: string) {
+        return api.post(
+            `/users/${followingId}/follow`,
+            {}
         );
     }
 
-    // DELETE Follow
-    static async deleteFollow(token: string, followingId: string) {
+    static async deleteFollow(followingId: string) {
         return (
-            await axios.delete(`${this.baseUrl}users/${followingId}/unfollow`, {
-                headers: { authorization: `Bearer ${token}` },
-            })
+            await api.delete(`/users/${followingId}/unfollow`)
         ).data;
     }
 
     /* VALIDATOR ENDPOINTS -----------> */
-    // POST Validates
+
     static async validateStage(reportForm: Partial<RequestPostData>, stage: string) {
         const formData = new FormData();
         formData.append("title", reportForm.title!);
@@ -221,81 +164,74 @@ export class Server {
             });
         }
 
-        return axios.post(`${this.baseUrl}validate/${stage}`, formData);
+        return api.post(`/validate/${stage}`, formData);
     }
 
     /* NOTIFICATIONS ENDPOINTS -----------> */
-    // GET all Notifications
-    static async getNotifications(token: string, pageParam: number, userId: string) {
-        const res = await axios.get(`${this.baseUrl}users/${userId}/notifications`, {
+
+    static async getNotifications(pageParam: number, userId: string) {
+        const res = await api.get(`/users/${userId}/notifications`, {
             params: { page: pageParam },
-            headers: { authorization: `Bearer ${token}` },
+            
         });
         return res.data;
     }
 
     /* CHATS ENDPOINTS -----------> */
 
-    // GET Chats
-    static async getChats(token: string, pageParam: number) {
-        const res = await axios.get(`${this.baseUrl}chats`, {
+    static async getChats(pageParam: number) {
+        const res = await api.get(`/chats`, {
             params: { page: pageParam },
-            headers: { authorization: `Bearer ${token}` },
+            
         });
         return res.data;
     }
 
-    // GET Messages by chat id
-    static async getMessagesByChatId(token: string, pageParam: number, chatId: string) {
-        const res = await axios.get(`${this.baseUrl}chats/${chatId}/messages`, {
+    static async getMessagesByChatId(pageParam: number, chatId: string) {
+        const res = await api.get(`/chats/${chatId}/messages`, {
             params: { page: pageParam },
-            headers: { authorization: `Bearer ${token}` },
+            
         });
         return res.data;
     }
 
-    // POST Messages by users id
-    static async getChatByUserId(token: string, otherUserId: string) {
-        const res = await axios.post(
-            `${this.baseUrl}chats/start`,
-            { otherUserId },
-            {
-                headers: { Authorization: `Bearer ${token}` },
-            },
+    static async getChatByUserId(otherUserId: string) {
+        const res = await api.post(
+            `/chats/start`,
+            { otherUserId }
+            
         );
         return res.data;
     }
 
     /* HASHTAGS ENDPOINTS -----------> */
 
-    // GET Hashtags
-    static async getHashtags(token: string, pageParam: number) {
-        const res = await axios.get(`${this.baseUrl}hashtags`, {
+    static async getHashtags(pageParam: number) {
+        const res = await api.get(`/hashtags`, {
             params: { page: pageParam },
-            headers: { authorization: `Bearer ${token}` },
+            
         });
         return res.data;
     }
+
     /* Auth ENDPOINTS -----------> */
 
-    // POST Code
-    static async sendVerificationCode(token: string) {
-        return (
-            await axios.post(
-                `${this.baseUrl}users/code/send`,
-                {},
-                { headers: { Authorization: `Bearer ${token}` } },
-            )
-        ).data;
-    }
+    // static async sendVerificationCode() {
+    //     return (
+    //         await api.post(
+    //             `/users/code/send`,
+                
+    //         )
+    //     ).data;
+    // }
 
-    // POST Code
-    static async verifyVerificationCode(token: string, code: string) {
-        console.log(code)
-        return (await axios.post(
-            `${this.baseUrl}users/code/verify`,
-            { code },
-            { headers: { Authorization: `Bearer ${token}` } },
-        )).data;
-    }
+    // static async verifyVerificationCode(code: string) {
+    //     console.log(code);
+    //     return (
+    //         await api.post(
+    //             `/users/code/verify`,
+    //             { code },
+    //         )
+    //     ).data;
+    // }
 }

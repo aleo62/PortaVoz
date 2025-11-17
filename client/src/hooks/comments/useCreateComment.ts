@@ -1,19 +1,15 @@
-import { useStoreUser } from "@/stores/userStore";
 import { Server } from "@api/Server";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useCreateComment() {
-    const { user } = useStoreUser();
-    const token = user?.token;
-
     const queryClient = useQueryClient();
 
     return useMutation({
         mutationFn: ({ content, parentId }: { content: string; parentId: string }) =>
-            Server.createComment(content, parentId, token!),
+            Server.createComment(content, parentId),
 
         onError: (error) => {
-            console.error("❌ Erro na mutation:", error, token);
+            console.error("❌ Erro na mutation:", error);
         },
 
         onSettled: (_data, _err, { parentId }) => {

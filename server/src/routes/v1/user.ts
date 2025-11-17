@@ -1,4 +1,3 @@
-import { sendCode, verifyCode } from "@/controllers/AuthCodeController";
 import {
     followUser,
     getFollowing,
@@ -11,19 +10,18 @@ import {
     editUser,
     getRemainingReports,
     getUserById,
-    getUsersByName,
+    getUsers,
 } from "@/controllers/UserController";
 import upload from "@/lib/multer";
-import { authenticateOwnerOrAdmin } from "@/middlewares/authOwnerOrAdmin";
-import { authenticateUser } from "@/middlewares/authUser";
-import { validationError } from "@/middlewares/validationError";
+import { authenticateOwnerOrAdmin } from "@/middlewares/auth/authOwnerOrAdmin";
+import { authenticateUser } from "@/middlewares/auth/authUser";
+import { validationError } from "@/middlewares/validation/validationError";
 import { Request, Router } from "express";
 import { body } from "express-validator";
 
 const router = Router();
 
-
-router.get("/", authenticateUser, validationError, getUsersByName);
+router.get("/", authenticateUser, validationError, getUsers);
 
 router.get("/:userId/posts", authenticateUser, validationError, getPostByUser);
 
@@ -70,7 +68,6 @@ router.put(
     editUser
 );
 
-
 router.get(
     "/:followingId/following",
     authenticateUser,
@@ -101,7 +98,6 @@ router.get(
     validationError,
     getNotifications
 );
-
 
 // // POST
 // router.post(

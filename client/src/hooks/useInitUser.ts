@@ -19,11 +19,10 @@ export const useInitUser = () => {
             setAuth(userAuth);
             try {
                 const decoded = await userAuth.getIdTokenResult(true);
-                const userData = await Server.getUserById(userAuth.uid, decoded.token);
+                const userData = await Server.getUserById(userAuth.uid);
 
                 setUser({
                     ...userData,
-                    token: decoded.token,
                     claims: decoded.claims,
                     isVerified: userAuth.emailVerified,
                 });

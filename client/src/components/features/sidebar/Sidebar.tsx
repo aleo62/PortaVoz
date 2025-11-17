@@ -1,10 +1,9 @@
 import { portaVozLogo } from "@/data/data";
-import { SidebarClientItems, SidebarItems } from "@/data/sidebar";
+import { SidebarAdminItems, SidebarClientItems, SidebarItems } from "@/data/sidebar";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useTheme } from "@/hooks/useTheme";
 import { useStoreSidebar } from "@/stores/sidebarStore";
 import { useStoreUser } from "@/stores/userStore";
-import { RiExpandUpDownLine } from "@remixicon/react";
 import { IconChevronLeft, IconChevronRight, IconMoon, IconSun } from "@tabler/icons-react";
 import { SidebarItem } from "./SidebarItem";
 
@@ -50,7 +49,18 @@ export const Sidebar = () => {
                     ))}
                 </div>
 
-                <div className="flex flex-col justify-center">
+                <div className="flex flex-col justify-center space-y-2">
+                    {user?.claims!.admin &&
+                        SidebarAdminItems.map((item) => (
+                            <SidebarItem
+                                Icon={item.icon}
+                                IconSelected={item.iconSelected!}
+                                label={item.label}
+                                active={location.pathname.includes(item.href)}
+                                href={item.href}
+                            />
+                        ))}
+
                     {SidebarClientItems.map((item) => (
                         <SidebarItem
                             Icon={item.icon}
@@ -61,7 +71,7 @@ export const Sidebar = () => {
                     ))}
 
                     <div
-                        className="bg-body-background mx-auto mt-2 flex w-[100%] items-center gap-2 rounded-xl p-[4px] text-sm font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                        className="bg-body-background mx-auto flex w-[100%] items-center gap-2 rounded-xl p-[4px] text-sm font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
                         onClick={() => !isOpen && setIsDarkTheme(!isDarkTheme)}
                     >
                         <div
@@ -107,7 +117,6 @@ export const Sidebar = () => {
                                 {user?.email}
                             </p>
                         </div>
-                        {isOpen && <RiExpandUpDownLine className="ml-auto size-4" />}
                     </div>
                 </div>
             </nav>

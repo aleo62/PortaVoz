@@ -1,7 +1,11 @@
-import { InputProps } from "@/utils/types/inputDataType";
 import { IconEye, IconEyeOff } from "@tabler/icons-react";
 import clsx from "clsx";
 import { useState } from "react";
+
+export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+    Icon?: React.ElementType;
+    phone?: boolean;
+};
 
 export const Input = ({ Icon, phone, type, className, ...rest }: InputProps) => {
     const [newType, setNewType] = useState(type);
@@ -23,7 +27,7 @@ export const Input = ({ Icon, phone, type, className, ...rest }: InputProps) => 
                 {Icon && <Icon className="mr-2 h-5 w-5 text-zinc-400" />}
                 <input
                     type={newType}
-                    className="flex-1 pl-4 py-4 placeholder-zinc-400 focus:outline-none"
+                    className="flex-1 py-4 pl-4 placeholder-zinc-400 focus:outline-none"
                     {...rest}
                 />
                 <button
@@ -43,7 +47,7 @@ export const Input = ({ Icon, phone, type, className, ...rest }: InputProps) => 
             {Icon && <Icon className="mr-2 h-5 w-5 text-zinc-400" />}
             <input
                 type={type}
-                className="flex-1 py-4 px-4 placeholder-zinc-400 focus:outline-none"
+                className="flex-1 px-4 py-4 placeholder-zinc-400 focus:outline-none"
                 {...rest}
             />
         </div>

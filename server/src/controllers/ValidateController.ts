@@ -6,9 +6,7 @@ import {
 import { safeExtractJSON } from "@/utils/safeExtractJSON";
 import { Request, Response } from "express";
 
-/**
- * POST - Controller responsável por validar conteúdo
- */
+
 export const validateStages = async (
     req: Request,
     res: Response

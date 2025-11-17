@@ -96,7 +96,7 @@ const RoutesArray: RouteDataType[] = [
     },
     {
         key: "AdminDashboard",
-        path: "/admin/dashboard",
+        path: "/admin",
         Page: <Dashboard />,
         layouts: [
             { Component: SidebarLayout },
