@@ -1,9 +1,7 @@
 import { FeedPosts } from "@/components/features/post/FeedPosts";
 import { ImageModal } from "@/components/modal/ImageModal";
-import { ProfileSkeleton } from "@/components/ui/ProfileSkeleton";
 import { useModal } from "@/contexts/ModalContext";
 import { usePostsByUser } from "@/hooks/posts/usePostsByUser";
-import { useFollow } from "@/hooks/user/useFollow";
 import { useUserById } from "@/hooks/user/useUserById";
 import { PostData } from "@/utils/types/postDataType";
 import { useParams } from "react-router-dom";
@@ -12,7 +10,7 @@ export const Profile = () => {
     const { openModal } = useModal();
 
     const { userId } = useParams();
-    const { data: follow, isLoading } = useFollow(userId!);
+    // const { data: follow, isLoading } = useFollow(userId!);
     const { data: user } = useUserById(userId!);
 
     const {
@@ -49,15 +47,15 @@ export const Profile = () => {
     //     });
     // };
 
-    if (isLoading || !user || (userId && !userId)) {
-        return <ProfileSkeleton />;
-    }
+    // if (isLoading || !user || (userId && !userId)) {
+    //     return <ProfileSkeleton />;
+    // }
 
     console.log(posts);
 
     return (
         <>
-            <main className="w-full grid grid-cols-1">
+            <main className="grid w-full grid-cols-1">
                 <section className="mx-auto mt-5 mb-10 w-full max-w-7xl border-b-1 border-zinc-200 lg:px-1 dark:border-zinc-800">
                     <header className="relative pb-10">
                         <div className="0 h-40 w-full overflow-hidden rounded-3xl bg-zinc-300 md:h-85 dark:bg-zinc-800">
@@ -80,7 +78,7 @@ export const Profile = () => {
                         </div>
                     </header>
 
-                    <main className="mb-10 grid lg:px-7 w-full lg:grid-cols-[270px_auto]">
+                    <main className="mb-10 grid w-full lg:grid-cols-[270px_auto] lg:px-7">
                         <div></div>
                         <div>
                             <div className="py-5">
@@ -101,7 +99,9 @@ export const Profile = () => {
 
                             <div className="dark:ring-zinc-80 rounded-xl p-5 ring-1 ring-zinc-200">
                                 <h2 className="text-title text-xl lg:text-2xl">Sobre Mim</h2>
-                                <p className="text-subtitle mt-2 text-md lg:text-lg">{user.about}</p>
+                                <p className="text-subtitle text-md mt-2 lg:text-lg">
+                                    {user.about}
+                                </p>
                             </div>
                         </div>
                     </main>

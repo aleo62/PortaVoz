@@ -9,7 +9,7 @@ export const ButtonCreatePost = () => {
     const navigate = useNavigate();
 
     const verifyRemainReports = async () => {
-        const data = await Server.getRemainingReports(user?._id!, user?.token!);
+        const data = await Server.getRemainingReports(user?._id!);
         if (data.canReport) navigate(RoutesPath("CreatePost")!);
     };
 

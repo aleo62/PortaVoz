@@ -8,9 +8,7 @@ import {
     IconArrowBigUpFilled,
     IconBookmark,
     IconBookmarkFilled,
-    IconMap,
     IconMapPin,
-    IconMapPinFilled,
     IconMessage,
     IconRepeat,
 } from "@tabler/icons-react";

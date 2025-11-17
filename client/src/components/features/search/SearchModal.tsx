@@ -12,7 +12,7 @@ import { PostSearchItem } from "./PostSearchItem";
 import { UserSearchItem } from "./UserSearchItem";
 
 export const SearchModal = () => {
-    const { closeModal, modalOpen, modalKey } = useModal();
+    const { closeModal, modalOpen } = useModal();
 
     const searchTopics = [
         { id: 1, label: "Denúncias", Icon: IconTableRow },

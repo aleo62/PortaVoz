@@ -18,8 +18,7 @@ export const registerUserEmailAndPassword = async ({
     password,
 }: registerUserEmailAndPasswordProps) => {
     try {
-        const user = (await createUserWithEmailAndPassword(auth, email, password)).user;
-        const token = await user.getIdToken();
+        await createUserWithEmailAndPassword(auth, email, password);
 
         await Server.createUser({ fName, lName });
     } catch (err) {
@@ -35,20 +34,14 @@ export const registerUserGoogle = async () => {
 
         setIsLoadingUser(true);
         const user = googleUser.user;
-
-        const token = await user.getIdToken(true);
         const exists = await Server.getUserById(user.uid);
 
         if (!exists) {
-            const token = await user.getIdToken();
-            await Server.createUser(
-                {
-                    fName: user.displayName?.split(" ")[0]!,
-                    lName: user.displayName?.split(" ")[1]!,
-                    image: user.photoURL!,
-                },
-                token,
-            );
+            await Server.createUser({
+                fName: user.displayName?.split(" ")[0]!,
+                lName: user.displayName?.split(" ")[1]!,
+                image: user.photoURL!,
+            });
         }
     } catch (err) {
         throw err;
@@ -65,19 +58,15 @@ export const registerUserFacebook = async () => {
 
         setIsLoadingUser(true);
         const user = facebookUser.user;
-
-        const token = await user.getIdToken(true);
         const exists = await Server.getUserById(user.uid);
 
         if (!exists) {
-            const token = await user.getIdToken();
             await Server.createUser(
                 {
                     fName: user.displayName?.split(" ")[0]!,
                     lName: user.displayName?.split(" ")[1]!,
                     image: user.photoURL!,
-                },
-                token,
+                }
             );
         }
     } catch (err) {
