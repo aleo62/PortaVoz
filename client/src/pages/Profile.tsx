@@ -5,20 +5,23 @@ import { usePostsByUser } from "@/hooks/posts/usePostsByUser";
 import { useUserById } from "@/hooks/user/useUserById";
 import { PostData } from "@/utils/types/postDataType";
 import { useParams } from "react-router-dom";
+import { ProfileSkeleton } from "@/components/ui/ProfileSkeleton";
+import { useStoreUser } from "@/stores/userStore";
 
 export const Profile = () => {
     const { openModal } = useModal();
+    const { user: userData } = useStoreUser();
 
     const { userId } = useParams();
     // const { data: follow, isLoading } = useFollow(userId!);
-    const { data: user } = useUserById(userId!);
+    const { data: user } = useUserById(userId || userData!._id);
 
     const {
         data: feedData,
         isLoading: feedLoading,
         fetchNextPage: fetchFeedNextPage,
         hasNextPage: feedHasNextPage,
-    } = usePostsByUser(userId!);
+    } = usePostsByUser(userId || userData!._id);
 
     const posts: PostData[] = (feedData?.pages.flatMap((page) => page.posts) as PostData[]) || [];
 
@@ -47,11 +50,9 @@ export const Profile = () => {
     //     });
     // };
 
-    // if (isLoading || !user || (userId && !userId)) {
-    //     return <ProfileSkeleton />;
-    // }
-
-    console.log(posts);
+    if (feedLoading || !user || (userId && !userId)) {
+        return <ProfileSkeleton />;
+    }
 
     return (
         <>
@@ -78,8 +79,8 @@ export const Profile = () => {
                         </div>
                     </header>
 
-                    <main className="mb-10 grid w-full lg:grid-cols-[270px_auto] lg:px-7">
-                        <div></div>
+                    <main className="mb-10 grid w-full mt-5 lg:px-7">
+                        
                         <div>
                             <div className="py-5">
                                 <h1 className="font-title text-title text-3xl font-medium max-lg:text-center lg:text-5xl">
@@ -96,7 +97,6 @@ export const Profile = () => {
                                     </span>
                                 </p>
                             </div>
-
                             <div className="dark:ring-zinc-80 rounded-xl p-5 ring-1 ring-zinc-200">
                                 <h2 className="text-title text-xl lg:text-2xl">Sobre Mim</h2>
                                 <p className="text-subtitle text-md mt-2 lg:text-lg">

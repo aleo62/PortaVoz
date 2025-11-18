@@ -1,7 +1,7 @@
 import { UserDropAuthItems, UserDropItems } from "@/data/drop";
 import { Dropdown, DropdownProps } from "@components/ui/Dropdown";
 
-export const SidebarHeaderDrop = ({ isOpen, orientation, onClose }: DropdownProps) => {
+export const SidebarUserDrop = ({ isOpen, orientation, onClose }: DropdownProps) => {
     return (
         <Dropdown isOpen={isOpen} orientation={orientation} onClose={onClose}>
             <Dropdown.Block>

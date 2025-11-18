@@ -1,4 +1,3 @@
-import { useAutoLogout } from "@/hooks/useLogoutTime";
 import { useTheme } from "@/hooks/useTheme";
 import { useEffect } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
@@ -10,7 +9,6 @@ function App() {
     const { verifyTheme } = useTheme();
 
     useInitUser();
-    useAutoLogout();
     verifyTheme();
 
     useEffect(() => {

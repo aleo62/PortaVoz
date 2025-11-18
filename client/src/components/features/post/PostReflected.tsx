@@ -8,7 +8,7 @@ export const PostReflected = ({ post }: { post: PostData }) => {
     return (
         <article
             onClick={() => navigate(`/post/${post._id}`)}
-            className="flex w-fit cursor-pointer items-center gap-4 rounded-xl  p-1 shadow-[0px_4px_15px_-29px_rgba(0,_0,_0,_0.1)] "
+            className="flex cursor-pointer items-center gap-4 rounded-xl w-full p-1 justify-between "
         >
             <div className="">
                 <h3 className="lg:text-md text-title font-title mb-0.5 truncate text-[1.01rem] lg:max-w-35 max-xl::max-w-45">

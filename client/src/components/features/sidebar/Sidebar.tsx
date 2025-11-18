@@ -4,14 +4,24 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 import { useTheme } from "@/hooks/useTheme";
 import { useStoreSidebar } from "@/stores/sidebarStore";
 import { useStoreUser } from "@/stores/userStore";
-import { IconChevronLeft, IconChevronRight, IconMoon, IconSun } from "@tabler/icons-react";
+import {
+    IconChevronLeft,
+    IconChevronRight,
+    IconMoon,
+    IconSelector,
+    IconSun,
+} from "@tabler/icons-react";
+import { useState } from "react";
 import { SidebarItem } from "./SidebarItem";
+import { SidebarUserDrop } from "./SidebarUserDrop";
 
 export const Sidebar = () => {
+    const { user } = useStoreUser();
+
+    const [isUserOpen, setIsUserOpen] = useState<boolean>(false);
     const { isOpen, toggle } = useStoreSidebar();
     const { isDarkTheme, setIsDarkTheme } = useTheme();
     const isMobile = useIsMobile();
-    const { user } = useStoreUser();
 
     const IconMenu = isOpen ? IconChevronLeft : IconChevronRight;
 
@@ -93,8 +103,13 @@ export const Sidebar = () => {
                     </div>
 
                     <div
-                        className={`mt-2 flex items-center rounded-xl py-2 ${isOpen ? "px-2 ring-1 ring-zinc-200 dark:ring-zinc-800" : ""} w-full transition-all`}
+                        className={`mt-2 flex items-center rounded-xl py-2 ${isOpen ? "px-2 ring-1 ring-zinc-200 dark:ring-zinc-800" : ""} relative w-full transition-all`}
                     >
+                        <SidebarUserDrop
+                            isOpen={isUserOpen}
+                            onClose={() => setIsUserOpen(false)}
+                            orientation="bottom"
+                        />
                         <figure className="relative mx-auto h-11 w-11 overflow-hidden rounded-full">
                             <img
                                 src={user?.image}
@@ -117,6 +132,13 @@ export const Sidebar = () => {
                                 {user?.email}
                             </p>
                         </div>
+
+                        {isOpen && (
+                            <IconSelector
+                                className="text-title ml-auto size-4.5"
+                                onClick={() => setIsUserOpen((prev) => !prev)}
+                            />
+                        )}
                     </div>
                 </div>
             </nav>

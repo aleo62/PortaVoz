@@ -98,7 +98,7 @@ Dropdown.Item = function DropdownItem({
         <li>
             <a
                 onClick={handleClick}
-                className={`flex w-full cursor-pointer items-center gap-2 rounded-lg p-3 px-3 ${alert ? "text-red-700 hover:bg-red-200/50 hover:text-red-500 hover:dark:bg-red-600/5" : "hover:bg-zinc-100 hover:text-zinc-800 dark:hover:bg-zinc-800 hover:dark:text-white"}`}
+                className={`flex w-full cursor-pointer transition-all items-center gap-2 rounded-lg p-3 px-3 ${alert ? "text-red-700 hover:bg-red-200/50 hover:text-red-500 hover:dark:bg-red-600/5" : "hover:bg-zinc-100 hover:text-zinc-800 dark:hover:bg-zinc-800 hover:dark:text-white"}`}
             >
                 {Icon && <Icon className="size-4.5" />} {label}
                 {children}

@@ -32,11 +32,11 @@ export const FeedReflected = () => {
                     modules={[Navigation]}
                     spaceBetween={10}
                     slidesPerView="auto"
-                    className="animate-fade-in xxl:!px-4 !w-fit !px-3"
+                    className="animate-fade-in xxl:!px-4 !px-3"
                     direction={"vertical"}
                 >
                     {reflectedPosts.map((post) => (
-                        <SwiperSlide key={post._id} className="!w-fit">
+                        <SwiperSlide key={post._id} className="">
                             <PostReflected post={post} />
                         </SwiperSlide>
                     ))}
