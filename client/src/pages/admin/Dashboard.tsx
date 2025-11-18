@@ -1,8 +1,13 @@
 import { useUsers } from "@/hooks/user/useUsers";
 import { UserData } from "@/utils/types/userDataType";
+import { getAuth } from "firebase/auth";
 import { useEffect } from "react";
 export const Dashboard = () => {
     const { data: usersData } = useUsers(true);
+    const auth = getAuth();
+
+    const token = auth.currentUser?.getIdToken();
+    console.log(token);
 
     useEffect(() => {
         console.log(usersData);

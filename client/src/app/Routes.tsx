@@ -126,7 +126,7 @@ const RoutesArray: RouteDataType[] = [
         path: "/post/:postId",
         Page: <PostView />,
         layouts: [
-            { Component: SidebarLayout, props: { linkBack: "Feed" } },
+            { Component: SidebarLayout, props: { linkBack: "Feed", orientation: "row" } },
             { Component: ProtectedLayout },
         ],
     },

@@ -5,21 +5,14 @@ import { findOrCreateChat } from "@/services/ChatService";
 import { formatError } from "@/utils/formatError";
 import { Request, Response } from "express";
 
-/**
- * GET - Controller responsável por pegar os chats de um User.
- */
-
 export const getChats = async (req: Request, res: Response): Promise<void> => {
     try {
-        // Verifying if user is authenticated
         if (!req.user) throw new Error("No User provided");
         const { uid } = req.user;
 
-        // Verifying if page is provided
         const page = Number(req.query.page) === 0 ? 1 : Number(req.query.page),
             limit = config.SYSTEM_MESSAGES_PER_PAGE;
 
-        // Fetching messages
         const count = await Chat.countDocuments({ participants: uid });
         const chatsData = await Chat.find({
             participants: uid,
@@ -34,7 +27,6 @@ export const getChats = async (req: Request, res: Response): Promise<void> => {
             .limit(limit)
             .exec();
 
-        // Sending response
         res.status(200).json({
             chats: chatsData,
             hasMore: count > page * limit,
@@ -51,20 +43,15 @@ export const getChats = async (req: Request, res: Response): Promise<void> => {
         });
     }
 };
-/**
- * GET - Controller responsável por pegar os chats de um User.
- */
 
 export const getChatById = async (
     req: Request,
     res: Response
 ): Promise<void> => {
     try {
-        // Verifying if user is authenticated
         if (!req.user) throw new Error("No User provided");
         const { uid } = req.user;
 
-        // Fetching messages
         const chat = await Chat.findById(req.params.chatId)
             .populate({
                 path: "participants",
@@ -73,7 +60,6 @@ export const getChatById = async (
             })
             .exec();
 
-        // Sending response
         res.status(200).json({
             chat,
         });
@@ -90,26 +76,19 @@ export const getChatById = async (
     }
 };
 
-/**
- * GET - Controller responsável por pegar as mensagens pelo chat id
- */
 export const getMessagesByChatId = async (
     req: Request,
     res: Response
 ): Promise<void> => {
     try {
-        // Verifying if user is authenticated
         if (!req.user) throw new Error("No User provided");
 
-        // Verifying if page is provided
         const page = !req.query.page ? 1 : Number(req.query.page),
             limit = config.SYSTEM_MESSAGES_PER_PAGE;
 
-        // Fetch chat id
         const chatId = req.params.chatId;
         if (!chatId) throw new Error("chat id not informed.");
 
-        // Fetching messages
         const count = await Message.countDocuments({ chatId });
 
         const messagesData = await Message.find({ chatId })
@@ -118,7 +97,6 @@ export const getMessagesByChatId = async (
             .limit(limit)
             .lean();
 
-        // Sending response
         res.status(200).json({
             chatId,
             messages: messagesData.reverse(),
@@ -136,19 +114,14 @@ export const getMessagesByChatId = async (
         });
     }
 };
-/**
- * POST - Controller responsável por pegar as mensagens pelos usuarios
- */
 
 export const getChatByUsers = async (
     req: Request,
     res: Response
 ): Promise<void> => {
     try {
-        // Verifying if user is authenticated
         if (!req.user) throw new Error("No User provided");
 
-        // Sending response
         const chatId = (
             await findOrCreateChat(req.user.uid, req.body.otherUserId)
         )._id;

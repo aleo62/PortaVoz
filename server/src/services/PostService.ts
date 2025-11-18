@@ -5,8 +5,8 @@ import User from "@/models/User.model";
 import Vote from "@/models/Vote.model";
 import { generateId } from "@/utils/generateId";
 import { Request } from "express";
-import { findOrCreateHashtag, findOrCreateMultipleHashtags } from "./HashtagService";
-import { uploadImage, uploadMultipleImages } from "./ImageService";
+import { findOrCreateMultipleHashtags } from "./HashtagService";
+import { uploadMultipleImages } from "./ImageService";
 import { fetchUser, verifyRemainingReports } from "./UserService";
 
 const resolveFilterQuery = async (req: Request) => {
@@ -80,16 +80,15 @@ export const getPosts = async (req: Request, page: number, limit: number) => {
 
 export const getSinglePost = async (req: Request) => {
     const postId = req.params.postId;
-    const postData = await Post.findById(postId).populate(
-        "user",
-        "username image"
-    );
+    const postData = await Post.findById(postId)
+        .populate("user", "username image")
+        .populate("hashtags", "content");
     if (!postData) throw new Error("Post not found");
 
     const userData = await fetchUser(req.user!.uid);
     const postUpvoted = await Vote.findOne({
         parentId: postData._id,
-        userId: userData._id,
+        user: userData._id,
         parentType: "Post",
     });
 
@@ -106,11 +105,14 @@ export const createPost = async (req: Request) => {
     const { title, desc, hashtags, location, address, status } =
         req.body as PostData;
 
-    const images = await uploadMultipleImages(req.files as Express.Multer.File[], "posts_images");
+    const images = await uploadMultipleImages(
+        req.files as Express.Multer.File[],
+        "posts_images"
+    );
 
     const { canReport } = await verifyRemainingReports(uid, isAdmin);
     if (!canReport) throw new Error("User has no remaining reports");
-    
+
     const hashtagsId = await findOrCreateMultipleHashtags(hashtags);
 
     const newPost = await Post.create({

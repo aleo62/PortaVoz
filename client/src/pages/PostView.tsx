@@ -1,5 +1,5 @@
 import { PostHeader } from "@/components/features/post/PostHeader";
-import { PostMap } from "@/components/features/post/PostMap";
+import { PostLocationInfo } from "@/components/features/post/PostLocationInfo";
 import { usePostById } from "@/hooks/posts/usePostById";
 import { PostData } from "@/utils/types/postDataType";
 import { PostMain } from "@components/features/post/PostMain";
@@ -16,30 +16,18 @@ export const PostView = () => {
 
     return (
         <>
-            <article className="mx-auto flex w-full flex-col justify-center rounded-xl max-lg:items-center lg:flex-row lg:gap-4">
-                <div className="w-full max-w-xl">
-                    <PostHeader post={post} viewMode />
+            <article className="w-full max-w-xl ">
+                <PostHeader post={post} viewMode />
 
-                    <PostMain post={post} viewMode />
-                </div>
-
-                <div className={`w-full space-y-5 transition-all lg:max-w-md`}>
-                    <h3 className="text-title font-title mb-2 text-lg font-medium">Endereço</h3>
-
-                    <p className="border-l-2 border-zinc-400/70 pl-2 text-sm text-zinc-800 dark:border-zinc-700/70 dark:text-zinc-200">
-                        {post.address}
-                    </p>
-
-                    <h3 className="text-title font-title mb-2 text-lg font-medium">Localização</h3>
-
-                    {post.location.latitude != null && post.location.longitude != null && (
-                        <PostMap
-                            latitude={Number(post.location.latitude)}
-                            longitude={Number(post.location.longitude)}
-                        />
-                    )}
-                </div>
+                <PostMain post={post} viewMode />
             </article>
+            <div className="w-full max-w-lg mt-5 ml-4">
+                <PostLocationInfo
+                    latitude={post.location.latitude}
+                    longitude={post.location.longitude}
+                    address={post.address}
+                />
+            </div>
         </>
     );
 };

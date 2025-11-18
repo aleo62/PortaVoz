@@ -1,3 +1,4 @@
+import { PostMap } from "@/components/features/post/PostMap";
 import { Button } from "@/components/ui/Button";
 import { DropdownFiles } from "@/components/ui/DropdownFiles";
 import { FormInput } from "@/components/ui/FormInput";
@@ -83,10 +84,13 @@ export const CreatePost = () => {
                     textArea
                     textAreaProps={{ rows: 7, placeholder: "" }}
                 />
-                <InputLocation
-                    reportForm={reportForm as RequestPostData}
-                    setReportForm={setReportForm!}
-                />
+                <div className="grid lg:grid-cols-2 gap-2">
+                    <InputLocation
+                        reportForm={reportForm as RequestPostData}
+                        setReportForm={setReportForm!}
+                    />
+                    <PostMap latitude={reportForm.location?.latitude! || -22.725} longitude={reportForm.location?.longitude! || -47.6476} />
+                </div>
 
                 <Button text="Enviar Post" className="mt-20 ml-auto" />
             </form>

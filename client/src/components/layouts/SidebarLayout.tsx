@@ -32,7 +32,7 @@ export const SidebarLayout = ({
 
                 <div
                     className={`scrollbar-thin dark:scrollbar-thumb-zinc-700 scrollbar-thumb-zinc-400 scrollbar-track-transparent flex flex-1 overflow-y-auto ${
-                        orientation === "col" ? "flex-col pb-6" : "flex-row"
+                        orientation === "col" ? "flex-col pb-6" : "flex-row justify-center"
                     } max-lg:px-1`}
                 >
                     {children}
