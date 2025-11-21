@@ -30,7 +30,7 @@
             "@contexts/*": ["./src/contexts/*"],
             "@api/*": ["./src/api/*"],
             "@hooks/*": ["./src/hooks/*"],
-            "@data/*": ["./src/data/*"]
+            "@constants/*": ["./src/constants/*"]
         }
     },
     "include": ["src"]

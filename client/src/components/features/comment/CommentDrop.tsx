@@ -1,7 +1,7 @@
-import { CommentDropItems, CommentDropOwnerItems } from "@/data/drop";
+import { Dropdown, DropdownProps } from "@components/ui/Dropdown";
+import { CommentDropItems, CommentDropOwnerItems } from "@constants/drop";
 import { useState } from "react";
 import { SpinnerCircular } from "spinners-react";
-import { Dropdown, DropdownProps } from "@components/ui/Dropdown";
 
 type CommentDropProps = DropdownProps & {
     isOwner: boolean;

@@ -1,4 +1,4 @@
-import { PostData } from "@/utils/types/postDataType";
+import { PostData } from "@/types/postDataType";
 import { IconArrowBigUp, IconMessageDots } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 
@@ -9,7 +9,7 @@ export const PostProfilePreview = ({ post }: { post: PostData }) => {
         <article
             key={post._id}
             onClick={() => navigate(`/post/${post._id}`)}
-            className="w-full cursor-pointer gap-3 overflow-hidden rounded-3xl bg-white p-3 lg:p-2 inset-ring-1 inset-ring-zinc-200/60 transition-all hover:scale-101 dark:bg-zinc-900 dark:inset-ring-zinc-700/60"
+            className="w-full cursor-pointer gap-3 overflow-hidden rounded-3xl bg-white p-3 inset-ring-1 inset-ring-zinc-200/60 transition-all hover:scale-101 lg:p-2 dark:bg-zinc-900 dark:inset-ring-zinc-700/60"
         >
             <img
                 src={post.images[0] as string}
@@ -19,7 +19,7 @@ export const PostProfilePreview = ({ post }: { post: PostData }) => {
 
             <div className="mt-6 h-full w-full rounded-xl to-90% px-2 pb-5">
                 <h3 className="text-title text-md w-[90%] truncate">{post.title}</h3>
-                <div className="text-accent text-sm space-x-1">
+                <div className="text-accent space-x-1 text-sm">
                     {post.hashtags.map((hashtag) => (
                         <span>#{hashtag.content}</span>
                     ))}

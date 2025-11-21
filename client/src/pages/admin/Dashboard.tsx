@@ -1,5 +1,5 @@
 import { useUsers } from "@/hooks/user/useUsers";
-import { UserData } from "@/utils/types/userDataType";
+import { UserData } from "@/types/userDataType";
 import { getAuth } from "firebase/auth";
 import { useEffect } from "react";
 export const Dashboard = () => {

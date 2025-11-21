@@ -52,7 +52,13 @@ export const Button = ({
             onClick={path ? () => navigate(path) : rest.onClick}
         >
             {isLoading ? (
-                <SpinnerCircular size={20} thickness={180} speed={100} />
+                <SpinnerCircular
+                    size={20}
+                    thickness={180}
+                    speed={100}
+                    secondaryColor="rgba(0, 0, 0, 0)"
+                    color="#3d69d8"
+                />
             ) : (
                 <>
                     {text}

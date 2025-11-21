@@ -1,4 +1,4 @@
-export interface UserData {
+export type UserData = {
     _id: string;
     username: string;
     email: string;
@@ -21,4 +21,10 @@ export interface UserData {
     };
     claims?: Record<string, any>;
     isVerified?: boolean;
-}
+};
+
+export type PublicUser = {
+    _id: string;
+    username: string;
+    image: string;
+};

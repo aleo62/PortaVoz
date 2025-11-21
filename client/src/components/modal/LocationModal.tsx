@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-import { PostData } from "@/utils/types/postDataType";
+import { PostData } from "@/types/postDataType";
 import { PostLocationInfo } from "../features/post/PostLocationInfo";
 
 type LocationOverlayProps = {
@@ -17,8 +17,12 @@ export const LocationModal = ({ post }: LocationOverlayProps) => {
                 transition={{ duration: 0.1 }}
                 className="bg-body-background my-auto h-fit w-full max-w-[97%] space-y-5 rounded-2xl p-6 px-4 lg:max-w-xl"
             >
-                <PostLocationInfo latitude={post.location.latitude} longitude={post.location.longitude} address={post.address} isModal/>
-
+                <PostLocationInfo
+                    latitude={post.location.latitude}
+                    longitude={post.location.longitude}
+                    address={post.address}
+                    isModal
+                />
             </motion.div>
         </>
     );

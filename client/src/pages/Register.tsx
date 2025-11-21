@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 
-import { Button } from "@/components/ui/Button";
-import { Widgets } from "@/components/ui/Widgets";
+import { Button } from "@components/ui/Button";
+import { Widgets } from "@components/ui/Widgets";
 
-import { FormInput } from "@/components/ui/FormInput";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { validateEmail, validateName, validatePassword } from "@/utils/functions/validations";
+import { FormInput } from "@components/ui/FormInput";
 
-import { DivideLine } from "@/components/ui/DividerLine";
-import { GoogleButton } from "@/components/ui/GoogleButton";
 import { useToast } from "@/contexts/ToastContext";
-import { Slides } from "@/data/register";
 import { registerUserEmailAndPassword } from "@/firebase/firebaseFunctions";
+import { DivideLine } from "@components/ui/DividerLine";
+import { GoogleButton } from "@components/ui/GoogleButton";
+import { Slides } from "@constants/register";
 import { FirebaseError } from "firebase/app";
 import { useNavigate } from "react-router-dom";
 import { A11y, Navigation, Pagination, Scrollbar } from "swiper/modules";

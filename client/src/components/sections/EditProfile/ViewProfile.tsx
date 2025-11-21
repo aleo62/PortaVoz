@@ -1,7 +1,7 @@
-import { UnsaveContainer } from "@/components/drop/UnsaveContainer";
-import { InfoField } from "@/components/ui/InfoField";
-import { Textarea } from "@/components/ui/Textarea";
-import { UserData } from "@/utils/types/userDataType";
+import { UserData } from "@/types/userDataType";
+import { InfoField } from "@components/ui/InfoField";
+import { Textarea } from "@components/ui/Textarea";
+import { UnsaveContainer } from "@components/ui/UnsaveContainer";
 
 import { IconEdit, IconPencil } from "@tabler/icons-react";
 

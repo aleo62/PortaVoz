@@ -1,12 +1,12 @@
-import { AuthPageTemplate } from "@/components/templates/AuthPageTemplate";
-import { Button } from "@/components/ui/Button";
-import { DivideLine } from "@/components/ui/DividerLine";
-import { FacebookButton } from "@/components/ui/FacebookButton";
-import { FormInput } from "@/components/ui/FormInput";
-import { GoogleButton } from "@/components/ui/GoogleButton";
 import { useToast } from "@/contexts/ToastContext";
 import { auth } from "@/firebase";
 import { useStoreUser } from "@/stores/userStore";
+import { AuthPageTemplate } from "@components/templates/AuthPageTemplate";
+import { Button } from "@components/ui/Button";
+import { DivideLine } from "@components/ui/DividerLine";
+import { FacebookButton } from "@components/ui/FacebookButton";
+import { FormInput } from "@components/ui/FormInput";
+import { GoogleButton } from "@components/ui/GoogleButton";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -47,14 +47,14 @@ export const Login = () => {
                 title="Bem Vindo de Volta"
                 subtitle="Que bom te ver aqui de novo! Insira seus dados."
             >
-                <div className="relative z-100 grid grid-cols-2 gap-3 mt-10">
+                <div className="relative z-100 mt-10 grid grid-cols-2 gap-3">
                     <GoogleButton small />
                     <FacebookButton small />
                 </div>
 
                 <DivideLine label="Ou" />
 
-                <form action="" onSubmit={handleLogin} className="flex flex-col ">
+                <form action="" onSubmit={handleLogin} className="flex flex-col">
                     <FormInput
                         inputProps={{
                             type: "text",
@@ -89,7 +89,7 @@ export const Login = () => {
                     />
                 </form>
 
-                <p className="text-title mt-3 flex items-center justify-center gap-1 text-sm pb-3">
+                <p className="text-title mt-3 flex items-center justify-center gap-1 pb-3 text-sm">
                     <span>Não tem uma conta ainda?</span>
                     <a onClick={() => navigate("/auth/register")} className="link text-sm">
                         Criar conta

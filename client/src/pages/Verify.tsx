@@ -1,10 +1,10 @@
-import { AuthPageTemplate } from "@/components/templates/AuthPageTemplate";
-import { Button } from "@/components/ui/Button";
-import { DivideLine } from "@/components/ui/DividerLine";
-import { FormInput } from "@/components/ui/FormInput";
 import { useToast } from "@/contexts/ToastContext";
 import { auth } from "@/firebase";
 import { useStoreUser } from "@/stores/userStore";
+import { AuthPageTemplate } from "@components/templates/AuthPageTemplate";
+import { Button } from "@components/ui/Button";
+import { DivideLine } from "@components/ui/DividerLine";
+import { FormInput } from "@components/ui/FormInput";
 import { IconCircleCheck } from "@tabler/icons-react";
 import { applyActionCode, confirmPasswordReset, reload } from "firebase/auth";
 import { useEffect, useState } from "react";
@@ -95,7 +95,7 @@ export const Verify = () => {
                         />
                         <DivideLine></DivideLine>
 
-                        <div className=" grid grid-cols-2 gap-3 pb-2 lg:gap-5">
+                        <div className="grid grid-cols-2 gap-3 pb-2 lg:gap-5">
                             <Button
                                 text="Cancelar"
                                 styleType="outlined"

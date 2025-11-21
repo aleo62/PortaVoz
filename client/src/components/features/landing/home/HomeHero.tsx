@@ -1,6 +1,6 @@
-import { AnimatedButton } from "@/components/ui/animated/AnimatedButton";
-import { AnimatedSubtitle } from "@/components/ui/animated/AnimatedSubtitle";
-import { Button } from "@/components/ui/Button";
+import { AnimatedButton } from "@components/ui/animated/AnimatedButton";
+import { AnimatedSubtitle } from "@components/ui/animated/AnimatedSubtitle";
+import { Button } from "@components/ui/Button";
 import { IconArrowNarrowRight } from "@tabler/icons-react";
 import { motion } from "framer-motion";
 

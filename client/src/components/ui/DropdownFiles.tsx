@@ -20,7 +20,7 @@ export const DropdownFiles = ({ onUpload }: { onUpload: (file: File) => void }) 
             onDragEnter={() => setIsDragging(true)}
             onDragLeave={() => setIsDragging(false)}
         >
-            <input {...getInputProps()} />
+            <input {...getInputProps()} accept=".png" />
             <IconFileUpload className="size-20 stroke-[1.5]" />
             <p>Envie as imagens do post</p>
             <p>Clique aqui para selecionar ou arraste o arquivo</p>

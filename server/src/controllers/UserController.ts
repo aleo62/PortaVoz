@@ -3,6 +3,7 @@ import User from "@/models/User.model";
 import { updateImage } from "@/services/ImageService";
 import {
     createUserService,
+    deleteUserService,
     fetchUser,
     getUserByIdService,
     getUsersService,
@@ -37,9 +38,9 @@ export const getUserById = async (
     try {
         const { uid } = req.user!;
         const { userId } = req.params;
-        const { user, isFollowing } = await getUserByIdService(userId, uid);
+        const { user } = await getUserByIdService(userId, uid);
 
-        res.status(200).json({ user, isFollowing });
+        res.status(200).json({ user });
     } catch (err) {
         if (!(err instanceof Error)) throw err;
         res.status(500).json({
@@ -83,6 +84,21 @@ export const createUser = async (
         const { user } = await createUserService(uid, email, req.body);
 
         res.status(200).json({ user });
+    } catch (err) {
+        if (!(err instanceof Error)) throw err;
+        res.status(500).json({
+            code: "ServerError",
+            message: "Internal Server Error",
+            errors: err.message,
+        });
+    }
+};
+
+export const deleteUser = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { userId } = req.params;
+        await deleteUserService(userId);
+        res.status(200).json({ ok: true });
     } catch (err) {
         if (!(err instanceof Error)) throw err;
         res.status(500).json({

@@ -1,14 +1,14 @@
-import { ChatHeader } from "@/components/features/chat/ChatHeader";
-import { ChatItem } from "@/components/features/chat/ChatItem";
-import { ChatItemSkeleton } from "@/components/features/chat/ChatItemSkeleton";
-import { ChatMessage } from "@/components/features/chat/ChatMessage";
-import { InputChat } from "@/components/ui/ChatInput";
-import { ToggleSidebar } from "@/components/ui/ToggleSidebar";
 import { useChats } from "@/hooks/chat/useChats";
 import { useMessages } from "@/hooks/messages/useMessages";
 import { useStoreUser } from "@/stores/userStore";
-import { ChatData } from "@/utils/types/chatDataType";
-import { MessageData } from "@/utils/types/messageDataType";
+import { ChatData } from "@/types/chatDataType";
+import { MessageData } from "@/types/messageDataType";
+import { ChatHeader } from "@components/features/chat/ChatHeader";
+import { ChatItem } from "@components/features/chat/ChatItem";
+import { ChatItemSkeleton } from "@components/features/chat/ChatItemSkeleton";
+import { ChatMessage } from "@components/features/chat/ChatMessage";
+import { InputChat } from "@components/ui/ChatInput";
+import { ToggleSidebar } from "@components/ui/ToggleSidebar";
 import { IconSearch } from "@tabler/icons-react";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -83,9 +83,9 @@ export const Chat = () => {
                 className={`text-title mr-auto h-screen w-full bg-white lg:max-w-89 dark:bg-zinc-900 ${chatId && "max-lg:hidden"} divide-y-1 divide-zinc-200 border-x-1 border-x-zinc-200 dark:divide-zinc-800 dark:border-x-zinc-800 dark:border-r-zinc-800`}
             >
                 <header className="px-5 py-6">
-                    
-
-                    <h1 className="text-title flex items-center text-xl font-medium space-x-2"><ToggleSidebar /> <p>Conversas</p></h1>
+                    <h1 className="text-title flex items-center space-x-2 text-xl font-medium">
+                        <ToggleSidebar /> <p>Conversas</p>
+                    </h1>
                     <div className="mt-4 flex items-center gap-1 rounded-lg pl-3 shadow-sm ring-1 ring-zinc-200 dark:ring-zinc-800">
                         <IconSearch className="size-4" />
                         <input

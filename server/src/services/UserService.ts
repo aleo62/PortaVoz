@@ -1,6 +1,5 @@
-import Follow from "@/models/Follow.model";
+import { admin } from "@/firebase";
 import User, { UserData } from "@/models/User.model";
-import { Request } from "express";
 
 export const getUsersService = async (
     uid: string,
@@ -27,31 +26,76 @@ export const getUsersService = async (
 };
 
 export const getUserByIdService = async (userId: string, uid: string) => {
-    const user = await User.findById(
-        userId,
-        userId !== uid
-            ? {
-                  username: 1,
-                  fName: 1,
-                  lName: 1,
-                  image: 1,
-                  banner: 1,
-                  about: 1,
-                  "meta.counters.following": 1,
-                  "meta.counters.followers": 1,
-              }
-            : {}
-    );
+    const user = await User.aggregate([
+        { $match: { _id: userId } },
 
-    const isFollowing = !!(await Follow.findOne({
-        userId,
-        follower: uid,
-    }));
+        {
+            $project:
+                userId !== uid
+                    ? {
+                          username: 1,
+                          fName: 1,
+                          lName: 1,
+                          image: 1,
+                          banner: 1,
+                          about: 1,
+                          "meta.counters.following": 1,
+                          "meta.counters.followers": 1,
+                      }
+                    : {
+                          username: 1,
+                          fName: 1,
+                          lName: 1,
+                          email: 1,
+                          image: 1,
+                          banner: 1,
+                          about: 1,
+                          meta: 1,
+                      },
+        },
 
-    return { user, isFollowing };
+        {
+            $lookup: {
+                from: "follows",
+                let: { targetUser: "$_id" },
+                pipeline: [
+                    {
+                        $match: {
+                            $expr: {
+                                $and: [
+                                    { $eq: ["$userId", "$$targetUser"] },
+                                    { $eq: ["$follower", uid] },
+                                ],
+                            },
+                        },
+                    },
+                    { $limit: 1 },
+                ],
+                as: "following",
+            },
+        },
+
+        {
+            $addFields: {
+                isFollowing: { $gt: [{ $size: "$following" }, 0] },
+            },
+        },
+
+        {
+            $project: {
+                following: 0,
+            },
+        },
+    ]);
+
+    return { user: user[0] };
 };
 
-export const createUserService = async (uid: string, email: string, body: any) => {
+export const createUserService = async (
+    uid: string,
+    email: string,
+    body: any
+) => {
     let user;
     const exists = await User.findById(uid);
     if (exists) {
@@ -68,6 +112,13 @@ export const createUserService = async (uid: string, email: string, body: any) =
     }
 
     return { user };
+};
+
+export const deleteUserService = async (
+    userId: string,
+) => {
+    await User.deleteOne({ _id: userId });
+    await admin.auth().deleteUser(userId)
 };
 
 export const fetchUser = async (uid: string): Promise<UserData> => {

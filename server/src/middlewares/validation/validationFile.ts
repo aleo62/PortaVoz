@@ -4,7 +4,8 @@ import path from "path";
 export const validationFile = (
     limitFile: number,
     sizeFile: number,
-    typeFile: RegExp
+    typeFile: RegExp,
+    optional: boolean = false
 ) => {
     return async (
         req: Request,
@@ -12,6 +13,14 @@ export const validationFile = (
         next: NextFunction
     ): Promise<void> => {
         try {
+            if (!req.files || (req.files as Express.Multer.File[]).length === 0) {
+                if (optional) {
+                    next();
+                    return;
+                }
+                throw new Error("Files are required");
+            }
+
             if ((req.files?.length as number) > limitFile)
                 throw new Error(
                     `File limit exceeded. You can send only ${limitFile} files.`

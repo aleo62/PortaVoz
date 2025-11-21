@@ -1,7 +1,7 @@
 import { SidebarProfile } from "@components/features/sidebar/SidebarProfile";
-import { ViewDanger } from "@/components/sections/EditProfile/ViewDanger";
-import { ViewProfile } from "@/components/sections/EditProfile/ViewProfile";
-import { ViewSecurity } from "@/components/sections/EditProfile/ViewSecurity";
+import { ViewDanger } from "@components/sections/EditProfile/ViewDanger";
+import { ViewProfile } from "@components/sections/EditProfile/ViewProfile";
+import { ViewSecurity } from "@components/sections/EditProfile/ViewSecurity";
 import { JSX, useState } from "react";
 
 export const EditProfile = () => {
@@ -22,7 +22,7 @@ export const EditProfile = () => {
 
     return (
         <>
-            <div className="flex justify-center gap-5 max-lg:flex-col">
+            <div className="mt-5 flex justify-center gap-5 max-lg:flex-col">
                 <SidebarProfile activeItem={activeItem} setActiveItem={setActiveItem} />
                 <section className="flex w-full max-w-4xl items-start justify-center">
                     {ShowView}

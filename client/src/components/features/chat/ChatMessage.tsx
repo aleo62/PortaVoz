@@ -1,4 +1,4 @@
-import { MessageData } from "@/utils/types/messageDataType";
+import { MessageData } from "@/types/messageDataType";
 
 export const ChatMessage = ({
     message,

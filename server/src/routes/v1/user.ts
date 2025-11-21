@@ -7,6 +7,7 @@ import { getNotifications } from "@/controllers/NotificationController";
 import { getPostByUser } from "@/controllers/PostController";
 import {
     createUser,
+    deleteUser,
     editUser,
     getRemainingReports,
     getUserById,
@@ -22,20 +23,7 @@ import { body } from "express-validator";
 const router = Router();
 
 router.get("/", authenticateUser, validationError, getUsers);
-
-router.get("/:userId/posts", authenticateUser, validationError, getPostByUser);
-
 router.get("/:userId", authenticateUser, validationError, getUserById);
-
-router.get(
-    "/:userId/remaining-reports",
-    authenticateUser,
-    authenticateOwnerOrAdmin(async (req: Request) => {
-        return req.params.userId;
-    }),
-    validationError,
-    getRemainingReports
-);
 
 router.post(
     "/auth/",
@@ -45,6 +33,16 @@ router.post(
     body("image").optional().isURL().withMessage("image must be an URL"),
     validationError,
     createUser
+);
+
+router.delete(
+    "/:userId",
+    authenticateUser,
+    authenticateOwnerOrAdmin(async (req: Request) => {
+        return req.params.userId;
+    }),
+    validationError,
+    deleteUser
 );
 
 router.put(
@@ -67,6 +65,18 @@ router.put(
     validationError,
     editUser
 );
+
+router.get("/:userId/posts", authenticateUser, validationError, getPostByUser);
+router.get(
+    "/:userId/remaining-reports",
+    authenticateUser,
+    authenticateOwnerOrAdmin(async (req: Request) => {
+        return req.params.userId;
+    }),
+    validationError,
+    getRemainingReports
+);
+
 
 router.get(
     "/:followingId/following",

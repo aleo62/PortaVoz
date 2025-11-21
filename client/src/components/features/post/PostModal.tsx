@@ -7,9 +7,9 @@ import { useCreateComment } from "@/hooks/comments/useCreateComment";
 import { useDeleteComment } from "@/hooks/comments/useDeleteComment";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useStoreUser } from "@/stores/userStore";
+import { CommentData } from "@/types/commentDataType";
+import { PostData } from "@/types/postDataType";
 import { formatDate } from "@/utils/functions/formatDate";
-import { CommentData } from "@/utils/types/commentDataType";
-import { PostData } from "@/utils/types/postDataType";
 import { IconChevronDown, IconChevronUp, IconX } from "@tabler/icons-react";
 import { useInView } from "react-intersection-observer";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -78,7 +78,7 @@ export const PostModal = ({ post }: SearchOverlayProps) => {
                 animate={isMobile && { transform: "translateY(0px)" }}
                 exit={isMobile ? { transform: "translateY(50px)" } : {}}
                 transition={{ duration: 0.2 }}
-                className={`bg-white dark:bg-zinc-900 text-title relative flex ${isMobile ? "mt-auto h-[90%]" : "h-full"} w-full flex-col rounded-t-xl p-4 py-7 lg:max-w-md lg:rounded-b-xl xl:max-w-lg`}
+                className={`text-title relative flex bg-white dark:bg-zinc-900 ${isMobile ? "mt-auto h-[90%]" : "h-full"} w-full flex-col rounded-t-xl p-4 py-7 lg:max-w-md lg:rounded-b-xl xl:max-w-lg`}
             >
                 <header className="flex items-center gap-2">
                     <img
@@ -114,11 +114,11 @@ export const PostModal = ({ post }: SearchOverlayProps) => {
                         >
                             {contentHidden ? (
                                 <>
-                                    <IconChevronDown className="size-4"/> Mostrar
+                                    <IconChevronDown className="size-4" /> Mostrar
                                 </>
                             ) : (
                                 <>
-                                    <IconChevronUp className="size-4"/> Ocultar
+                                    <IconChevronUp className="size-4" /> Ocultar
                                 </>
                             )}{" "}
                             Desrição

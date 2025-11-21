@@ -1,4 +1,4 @@
-import { FiltersType } from "@/utils/types/filtersDataType";
+import { FiltersType } from "@/types/filtersDataType";
 import { Server } from "@api/Server";
 import { useInfiniteQuery } from "@tanstack/react-query";
 

@@ -1,8 +1,8 @@
-import { LandingHeaderNavbar } from "@/components/features/landing/LandingHeaderNavbar";
-import { Button } from "@/components/ui/Button";
-import { portaVozLogo } from "@/data/data";
 import { useTheme } from "@/hooks/useTheme";
 import { useStoreUser } from "@/stores/userStore";
+import { LandingHeaderNavbar } from "@components/features/landing/LandingHeaderNavbar";
+import { Button } from "@components/ui/Button";
+import { portaVozLogo } from "@constants/data";
 import { IconLogin, IconMoon, IconSun, IconTrendingUp } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 

@@ -8,13 +8,23 @@ import {
     updateComment,
 } from "@/controllers/CommentController";
 import {
+    createNewDraft,
+    deleteDraftById,
+    getUserDrafts,
+    publishDraftById,
+} from "@/controllers/DraftController";
+import {
+    createFavorite,
+    deleteFavorite,
+} from "@/controllers/FavoriteController";
+import {
     createNewPost,
     deletePost,
     getAllPosts,
     getPostById,
     updatePost,
 } from "@/controllers/PostController";
-import { createRepost } from "@/controllers/RepostController";
+import { createRepost, deleteRepost } from "@/controllers/RepostController";
 import { createUpvote, deleteUpvote } from "@/controllers/VoteController";
 import upload from "@/lib/multer";
 import { authenticateOwnerOrAdmin } from "@/middlewares/auth/authOwnerOrAdmin";
@@ -209,4 +219,109 @@ router.post(
     validationError,
     createRepost
 );
+
+router.delete(
+    "/:postId/repost",
+    authenticateUser,
+    authenticateVerified,
+    validatePost(async (req: Request) => {
+        return req.params.postId;
+    }),
+    validationError,
+    deleteRepost
+);
+
+router.post(
+    "/:postId/favorite",
+    authenticateUser,
+    authenticateVerified,
+    validatePost(async (req: Request) => {
+        return req.params.postId;
+    }),
+    validationError,
+    createFavorite
+);
+
+router.delete(
+    "/:postId/favorite",
+    authenticateUser,
+    authenticateVerified,
+    validatePost(async (req: Request) => {
+        return req.params.postId;
+    }),
+    validationError,
+    deleteFavorite
+);
+
+router.post(
+    "/drafts",
+    authenticateUser,
+    authenticateVerified,
+    upload.array("images", 3),
+    body("title")
+        .optional()
+        .trim()
+        .notEmpty()
+        .withMessage("title cannot be empty"),
+    body("desc")
+        .optional()
+        .trim()
+        .notEmpty()
+        .withMessage("desc cannot be empty"),
+    body("hashtags")
+        .optional()
+        .isArray()
+        .withMessage("hashtags must be an array"),
+    body("location")
+        .optional()
+        .isObject()
+        .withMessage("location must be an object"),
+    body("location[longitude]")
+        .optional()
+        .isFloat({ min: -180, max: 180 })
+        .withMessage("longitude must be between -180 and 180"),
+    body("location[latitude]")
+        .optional()
+        .isFloat({ min: -90, max: 90 })
+        .withMessage("latitude must be between -90 and 90"),
+    body("address")
+        .optional()
+        .trim()
+        .notEmpty()
+        .withMessage("address cannot be empty"),
+    body("status")
+        .optional()
+        .isIn(["ativo", "resolvido", "oculto"])
+        .withMessage("status not supported"),
+    validationFile(3, 1 * 1024 * 1920, /jpeg|jpg|png/, true),
+    validationError,
+    createNewDraft
+);
+
+router.get(
+    "/drafts",
+    authenticateUser,
+    authenticateVerified,
+    validationError,
+    getUserDrafts
+);
+
+router.delete(
+    "/drafts/:draftId",
+    authenticateUser,
+    authenticateVerified,
+    validationError,
+    deleteDraftById
+);
+
+router.post(
+    "/drafts/:draftId/publish",
+    authenticateUser,
+    authenticateVerified,
+    upload.array("images", 3),
+    validationFile(3, 1 * 1024 * 1920, /jpeg|jpg|png/),
+    validationError,
+    publishDraftById
+);
+
 export default router;

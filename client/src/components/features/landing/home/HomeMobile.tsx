@@ -1,4 +1,4 @@
-import { AnimatedSubtitle } from "@/components/ui/animated/AnimatedSubtitle";
+import { AnimatedSubtitle } from "@components/ui/animated/AnimatedSubtitle";
 import { IconDownload } from "@tabler/icons-react";
 import { motion } from "framer-motion";
 export const Mobile = () => {

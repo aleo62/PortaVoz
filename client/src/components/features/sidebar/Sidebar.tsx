@@ -1,9 +1,9 @@
-import { portaVozLogo } from "@/data/data";
-import { SidebarAdminItems, SidebarClientItems, SidebarItems } from "@/data/sidebar";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useTheme } from "@/hooks/useTheme";
 import { useStoreSidebar } from "@/stores/sidebarStore";
 import { useStoreUser } from "@/stores/userStore";
+import { portaVozLogo } from "@constants/data";
+import { SidebarAdminItems, SidebarClientItems, SidebarItems } from "@constants/sidebar";
 import {
     IconChevronLeft,
     IconChevronRight,
@@ -39,11 +39,11 @@ export const Sidebar = () => {
                     <IconMenu className="size-4" />
                 </span>
 
-                <figure className="relative flex items-center px-1">
+                <figure className="relative flex items-center  px-1.5">
                     <img
                         src={portaVozLogo(isDarkTheme, true)}
                         alt=""
-                        className="absolute max-w-9 rotate-15"
+                        className="absolute max-w-8 rotate-15"
                     />
                 </figure>
 

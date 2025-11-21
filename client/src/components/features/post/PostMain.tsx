@@ -1,8 +1,13 @@
 import { useModal } from "@/contexts/ModalContext";
+import { useCreateFavorite } from "@/hooks/favorite/useCreateFavorite";
+import { useDeleteFavorite } from "@/hooks/favorite/useDeleteFavorite";
+import { useCreateRepost } from "@/hooks/repost/useCreateRepost";
+import { useDeleteRepost } from "@/hooks/repost/useDeleteRepost";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useCreateVote } from "@/hooks/vote/useCreateVote";
 import { useDeleteVote } from "@/hooks/vote/useDeleteVote";
-import { PostData } from "@/utils/types/postDataType";
+import { useStoreUser } from "@/stores/userStore";
+import { PostData } from "@/types/postDataType";
 import {
     IconArrowBigUp,
     IconArrowBigUpFilled,
@@ -11,12 +16,15 @@ import {
     IconMapPin,
     IconMessage,
     IconRepeat,
+    IconShare,
 } from "@tabler/icons-react";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { LocationModal } from "../../modal/LocationModal";
+import { PostActionButton } from "./PostActionButton";
 import { PostModal } from "./PostModal";
+import { PostShareModal } from "./PostShareModal";
 
 type MainPostProps = {
     post: PostData;
@@ -27,14 +35,18 @@ export const PostMain = ({ post, viewMode }: MainPostProps) => {
     const isMobile = useIsMobile();
     const navigate = useNavigate();
     const { openModal } = useModal();
+    const { user } = useStoreUser();
 
     const [imageContain, setImageContain] = useState(false);
+
     const [isUpvoted, setIsUpvoted] = useState(post.isUpvoted);
+    const [isReposted, setIsReposted] = useState(post.isReposted);
+    const [isFavorited, setIsFavorited] = useState(post.isFavorited);
 
     const createVote = useCreateVote();
     const deleteVote = useDeleteVote();
 
-    const deleteUpvote = async () => {
+    const removeUpvote = async () => {
         setIsUpvoted(false);
         post.upvotesCount = post.upvotesCount - 1;
 
@@ -48,6 +60,36 @@ export const PostMain = ({ post, viewMode }: MainPostProps) => {
         await createVote.mutate(post._id);
     };
 
+    const createRepost = useCreateRepost();
+    const deleteRepost = useDeleteRepost();
+
+    const removeRepost = async () => {
+        setIsReposted(false);
+        post.repostsCount = post.repostsCount - 1;
+
+        await deleteRepost.mutate(post._id);
+    };
+
+    const addRepost = async () => {
+        setIsReposted(true);
+        post.repostsCount = post.repostsCount + 1;
+
+        await createRepost.mutate(post._id);
+    };
+
+    const createFavorite = useCreateFavorite();
+    const deleteFavorite = useDeleteFavorite();
+
+    const removeFavorite = async () => {
+        setIsFavorited(false);
+        await deleteFavorite.mutate(post._id);
+    };
+
+    const addFavorite = async () => {
+        setIsFavorited(true);
+        await createFavorite.mutate(post._id);
+    };
+
     const limitDescription = isMobile ? 30 : 45;
     const postDescription =
         !viewMode && post.desc.split(" ").length > limitDescription
@@ -57,39 +99,9 @@ export const PostMain = ({ post, viewMode }: MainPostProps) => {
                   .join(" ") + "..."
             : post.desc;
 
-    const PostActionButton = ({
-        Icon,
-        count,
-        onClick,
-        isActive,
-        classActive,
-        IconActive,
-    }: {
-        Icon: React.ElementType;
-        onClick: () => void;
-        count?: number;
-        isActive?: boolean;
-        classActive?: string;
-        IconActive?: React.ElementType;
-    }) => {
-        return (
-            <button
-                className={`${isActive ? classActive : "text-zinc-500 dark:text-zinc-600"} flex cursor-pointer items-center justify-center gap-1 rounded-full rounded-l-full transition-all hover:scale-105`}
-                onClick={onClick}
-            >
-                {isActive && IconActive ? (
-                    <IconActive className={`size-6`} />
-                ) : (
-                    <Icon className={`size-6`} />
-                )}
-                {(count === 0 || !!count) && <span className="w-4 text-center">{count}</span>}
-            </button>
-        );
-    };
-
     return (
-        <main className="relative">
-            <Swiper className="h-100 w-[97.5%] rounded-2xl px-2 md:h-155">
+        <main className="relative px-1 lg:px-2">
+            <Swiper className="h-100 w-full rounded-2xl px-2 md:h-155">
                 {post.images.map((image) => (
                     <SwiperSlide>
                         <img
@@ -102,13 +114,13 @@ export const PostMain = ({ post, viewMode }: MainPostProps) => {
                 ))}
             </Swiper>
 
-            <div className={`${viewMode ? "px-1 py-3 pb-8" : "p-3 lg:px-6 lg:py-5"} space-y-7`}>
+            <div className={`${viewMode ? "px-1 py-3 pb-8" : "px-3 py-6"} space-y-7`}>
                 <div className={`flex items-center gap-8 text-xs font-semibold lg:text-[.8rem]`}>
                     <PostActionButton
                         Icon={IconArrowBigUp}
                         IconActive={IconArrowBigUpFilled}
                         count={post.upvotesCount}
-                        onClick={() => (isUpvoted ? deleteUpvote() : addUpvote())}
+                        onClick={() => (isUpvoted ? removeUpvote() : addUpvote())}
                         isActive={isUpvoted}
                         classActive="text-orange-500 dark:text-orange-300"
                     />
@@ -123,21 +135,41 @@ export const PostMain = ({ post, viewMode }: MainPostProps) => {
                         </>
                     )}
 
-                    <PostActionButton
-                        Icon={IconRepeat}
-                        onClick={() => (isUpvoted ? deleteUpvote() : addUpvote())}
-                        isActive={isUpvoted}
-                        classActive="text-green-500 dark:text-green-600"
-                        count={post.upvotesCount}
-                    />
+                    {user?._id! !== post.user._id && (
+                        <PostActionButton
+                            Icon={IconRepeat}
+                            onClick={() => (isReposted ? removeRepost() : addRepost())}
+                            isActive={isReposted}
+                            classActive="text-green-500 dark:text-green-600"
+                            count={post.repostsCount}
+                        />
+                    )}
 
-                    <div className="ml-auto flex items-center gap-2">
+                    <div className="ml-auto flex items-center gap-3">
                         <PostActionButton
                             Icon={IconBookmark}
                             IconActive={IconBookmarkFilled}
-                            onClick={() => (isUpvoted ? deleteUpvote() : addUpvote())}
-                            isActive={isUpvoted}
+                            onClick={() => (isFavorited ? removeFavorite() : addFavorite())}
+                            isActive={isFavorited}
                             classActive="text-blue-500 dark:text-blue-600"
+                        />
+                        <PostActionButton
+                            Icon={IconShare}
+                            IconActive={IconShare}
+                            onClick={() =>
+                                openModal(
+                                    <PostShareModal
+                                        postLink={`${location.origin}/post/${post._id}`}
+                                        shareItems={[
+                                            {
+                                                bgColor: "bg-green-500",
+                                                Icon: <IconRepeat className="size-8" />,
+                                                onClick: () => {},
+                                            },
+                                        ]}
+                                    />,
+                                )
+                            }
                         />
                         {!viewMode && (
                             <>

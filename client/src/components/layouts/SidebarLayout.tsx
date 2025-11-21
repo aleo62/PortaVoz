@@ -8,6 +8,7 @@ type SidebarLayoutProps = {
     noHeader?: boolean;
     linkBack?: string;
     orientation: "row" | "col";
+    title?: string;
 };
 
 export const SidebarLayout = ({
@@ -15,6 +16,7 @@ export const SidebarLayout = ({
     noHeader,
     linkBack,
     orientation = "col",
+    title
 }: SidebarLayoutProps) => {
     const location = useLocation();
 
@@ -28,7 +30,7 @@ export const SidebarLayout = ({
             <Sidebar />
 
             <section className="flex flex-1 flex-col">
-                <SidebarHeader linkBack={linkBack} noHeader={noHeader} />
+                <SidebarHeader linkBack={linkBack} noHeader={noHeader} title={title}/>
 
                 <div
                     className={`scrollbar-thin dark:scrollbar-thumb-zinc-700 scrollbar-thumb-zinc-400 scrollbar-track-transparent flex flex-1 overflow-y-auto ${

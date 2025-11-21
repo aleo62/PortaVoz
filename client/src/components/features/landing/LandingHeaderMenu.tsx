@@ -1,10 +1,10 @@
 import { RoutesPath } from "@/app/Routes";
-import { NavItems } from "@/data/data";
 import { useStoreUser } from "@/stores/userStore";
-import { IconArrowRight } from "@tabler/icons-react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "@components/ui/Button";
 import { Dropdown, DropdownProps } from "@components/ui/Dropdown";
+import { NavItems } from "@constants/data";
+import { IconArrowRight } from "@tabler/icons-react";
+import { useNavigate } from "react-router-dom";
 
 export const LandingHeaderMenu = ({ isOpen, orientation, onClose }: DropdownProps) => {
     const navigate = useNavigate();

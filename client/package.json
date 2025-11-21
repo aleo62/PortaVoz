@@ -43,6 +43,7 @@
         "spinners-react": "^1.0.11",
         "swiper": "^11.2.6",
         "tailwindcss": "^4.1.11",
+        "zod": "^4.1.12",
         "zustand": "^5.0.8"
     },
     "devDependencies": {

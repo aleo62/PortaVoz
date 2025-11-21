@@ -1,16 +1,17 @@
-import { ToggleSidebar } from "@/components/ui/ToggleSidebar";
-import { useStoreUser } from "@/stores/userStore";
 import { LinkBack } from "@components/ui/LinkBack";
+import { ToggleSidebar } from "@components/ui/ToggleSidebar";
 import { ReactNode, useEffect } from "react";
 import { HeaderOptions } from "./SidebarHeaderOptions";
 
 export const SidebarHeader = ({
     linkBack,
     noHeader,
+    title,
 }: {
     children?: ReactNode;
     linkBack?: string;
     noHeader?: boolean;
+    title?: string;
 }) => {
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -18,24 +19,19 @@ export const SidebarHeader = ({
         }
     }, []);
 
-    const { user } = useStoreUser();
-
     return (
         !noHeader && (
             <header
                 className={`border-b-1 border-zinc-200 bg-white transition dark:border-zinc-800 dark:bg-zinc-900`}
             >
-                <nav className="text-title mx-auto flex max-h-20 w-full max-w-7xl items-center gap-6 py-3 lg:max-h-20 lg:gap-3 px-1">
-                    {!!linkBack && <LinkBack href={linkBack} />}
-                    <h3 className="font-title flex items-center gap-2 text-lg font-light max-lg:hidden">
-                        {" "}
-                        Olá, tudo bem?{" "}
-                        <figure className="relative h-9 w-9 overflow-hidden rounded-full">
-                            <img className="absolute h-full w-full" src={user?.image} alt="" />
-                        </figure>{" "}
-                        {user?.username}
-                    </h3>
+                <nav className="text-title mx-auto flex max-h-20 w-full max-w-7xl items-center gap-6 px-1 lg:px-3 py-3 lg:max-h-20 lg:gap-3">
                     <ToggleSidebar />
+
+                    {!!linkBack && <LinkBack href={linkBack} />}
+                    <h3 className="font-title flex items-center gap-2 text-3xl font-medium tracking-wider max-lg:hidden">
+                        {title || "PortaVoz"}
+                    </h3>
+
                     <HeaderOptions />
                 </nav>
             </header>

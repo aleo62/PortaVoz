@@ -3,7 +3,13 @@ import Hashtag from "@/models/Hashtag.model";
 import Post from "@/models/Post.model";
 import { deleteByParentId } from "@/services/CommentService";
 import { deleteImage, uploadImage } from "@/services/ImageService";
-import { createPost, getPosts, getSinglePost } from "@/services/PostService";
+import {
+    createPost,
+    getPosts,
+    getPostsByUserService,
+    getSinglePost,
+    PostListType,
+} from "@/services/PostService";
 import { formatError } from "@/utils/formatError";
 import { Request, Response } from "express";
 
@@ -11,10 +17,10 @@ export const getAllPosts = async (req: Request, res: Response) => {
     try {
         const page = Number(req.query.page) || 1;
         const limit = config.SYSTEM_POSTS_PER_PAGE;
-        const { postsResponse, count } = await getPosts(req, page, limit);
+        const { response: posts, count } = await getPosts(req, page, limit);
 
         res.status(200).json({
-            posts: postsResponse,
+            posts,
             hasMore: count > page * limit,
             count,
         });
@@ -30,8 +36,8 @@ export const getAllPosts = async (req: Request, res: Response) => {
 
 export const getPostById = async (req: Request, res: Response) => {
     try {
-        const { postResponse } = await getSinglePost(req);
-        res.status(200).json({ post: postResponse });
+        const { response: post } = await getSinglePost(req);
+        res.status(200).json({ post });
     } catch (err) {
         const message = err instanceof Error ? err.message : "Unknown error";
         res.status(500).json({
@@ -45,10 +51,11 @@ export const getPostById = async (req: Request, res: Response) => {
 export const getPostByUser = async (req: Request, res: Response) => {
     try {
         const userId = req.params.userId;
-        const posts = await Post.find({ user: userId }).populate(
-            "user",
-            "username image"
-        );
+        const uid = req.user!.uid;
+        const type = ((req.query.type as string | undefined)?.toLowerCase() ||
+            "all") as PostListType;
+
+        const { response: posts } = await getPostsByUserService(userId, type, uid);
         res.status(200).json({ posts });
     } catch (err) {
         const message = err instanceof Error ? err.message : "Unknown error";
@@ -86,7 +93,7 @@ export const deletePost = async (req: Request, res: Response) => {
             postData.hashtags.map(
                 async (hashtag) =>
                     await Hashtag.findByIdAndUpdate(hashtag, {
-                        $inc: {  usageCount: -1 },
+                        $inc: { usageCount: -1 },
                     })
             )
         );

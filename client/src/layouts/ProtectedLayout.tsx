@@ -1,5 +1,5 @@
-import { Loader } from "@/components/ui/Loader";
 import { useStoreUser } from "@/stores/userStore";
+import { Loader } from "@components/ui/Loader";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -23,15 +23,10 @@ export const ProtectedLayout = ({
 
         if (!onlyGuest && !auth) navigate("/auth/login");
         if (onlyGuest && auth) navigate("/feed");
-        if (auth && user && !user.isVerified)
-            navigate("/not-verified");
+        if (auth && user && !user.isVerified) navigate("/not-verified");
         if (onlyAdmin && auth && user && !user.claims?.admin) navigate("/");
     }, [isLoadingUser, auth, onlyAdmin, onlyGuest]);
 
-    if(isLoadingUser) return <Loader isLoading />;
-    return (
-        <>
-            {children}
-        </>
-    );
+    if (isLoadingUser) return <Loader isLoading />;
+    return <>{children}</>;
 };

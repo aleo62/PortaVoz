@@ -1,7 +1,7 @@
 import { useToast } from "@/contexts/ToastContext";
-import { PostDropItems, PostDropOwnerItems } from "@/data/drop";
 import { copyToClipboard } from "@/utils/functions/copyToClipboard";
 import { Dropdown, DropdownProps } from "@components/ui/Dropdown";
+import { PostDropItems, PostDropOwnerItems } from "@constants/drop";
 import { useState } from "react";
 import { SpinnerCircular } from "spinners-react";
 

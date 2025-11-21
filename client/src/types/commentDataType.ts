@@ -1,12 +1,10 @@
+import { PublicUser } from "./userDataType";
+
 export interface CommentData {
     _id: string;
     parentId: string;
     parentType: "Post" | "Comment";
-    user: {
-        _id: string;
-        username: string;
-        image: string;
-    }
+    user: PublicUser;
     content: string;
     upvotesCount: number;
     repliesCount: number;

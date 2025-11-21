@@ -1,5 +1,5 @@
-import { UserDropAuthItems, UserDropItems } from "@/data/drop";
 import { Dropdown, DropdownProps } from "@components/ui/Dropdown";
+import { UserDropAuthItems, UserDropItems } from "@constants/drop";
 
 export const SidebarUserDrop = ({ isOpen, orientation, onClose }: DropdownProps) => {
     return (

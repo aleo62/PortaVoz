@@ -1,14 +1,14 @@
-import { Button } from "@/components/ui/Button";
+import { Button } from "@components/ui/Button";
 
 import { motion } from "framer-motion";
 
-import { AnimatedButton } from "@/components/ui/animated/AnimatedButton";
-import { AnimatedCaption } from "@/components/ui/animated/AnimatedCaption";
-import { AnimatedSubtitle } from "@/components/ui/animated/AnimatedSubtitle";
-import { AnimatedTitle } from "@/components/ui/animated/AnimatedTitle";
+import { AnimatedButton } from "@components/ui/animated/AnimatedButton";
+import { AnimatedCaption } from "@components/ui/animated/AnimatedCaption";
+import { AnimatedSubtitle } from "@components/ui/animated/AnimatedSubtitle";
+import { AnimatedTitle } from "@components/ui/animated/AnimatedTitle";
 
-import { Topic } from "@/components/ui/Topic";
-import { Topics } from "@data/home";
+import { Topic } from "@components/ui/Topic";
+import { Topics } from "@constants/home";
 import { IconArrowNarrowRight } from "@tabler/icons-react";
 
 export const Objective = () => {

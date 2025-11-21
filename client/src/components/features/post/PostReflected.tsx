@@ -1,4 +1,4 @@
-import { PostData } from "@/utils/types/postDataType";
+import { PostData } from "@/types/postDataType";
 import { IconArrowBigUp, IconMessageDots } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 
@@ -8,10 +8,10 @@ export const PostReflected = ({ post }: { post: PostData }) => {
     return (
         <article
             onClick={() => navigate(`/post/${post._id}`)}
-            className="flex cursor-pointer items-center gap-4 rounded-xl w-full p-1 justify-between "
+            className="flex w-full cursor-pointer items-center justify-between gap-4 rounded-xl p-1"
         >
             <div className="">
-                <h3 className="lg:text-md text-title font-title mb-0.5 truncate text-[1.01rem] lg:max-w-35 max-xl::max-w-45">
+                <h3 className="lg:text-md text-title font-title mb-0.5 truncate text-[1.01rem] max-w-25">
                     {post.title}
                 </h3>
                 <p className="text-subtitle line-clamp-2 max-w-45 text-xs">{post.desc}</p>

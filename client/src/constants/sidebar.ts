@@ -1,4 +1,4 @@
-import { NotificationModal } from "@/components/features/notification/NotificationModal";
+import { NotificationModal } from "@components/features/notification/NotificationModal";
 import {
     IconHome,
     IconHomeFilled,
@@ -17,12 +17,6 @@ export const SidebarItems = [
         icon: IconMessageCircle,
         iconSelected: IconMessageCircleFilled,
         href: "/chat",
-    },
-    {
-        label: "Ajuda",
-        icon: IconLifebuoy,
-        iconSelected: IconLifebuoyFilled,
-        href: "/help",
     },
 ];
 

@@ -1,4 +1,4 @@
-import { RequestPostData } from "@/utils/types/postDataType";
+import { RequestPostData } from "@/types/postDataType";
 import { Server } from "@api/Server";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 

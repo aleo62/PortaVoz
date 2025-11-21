@@ -1,4 +1,4 @@
-import { UserData } from "@/utils/types/userDataType";
+import { UserData } from "@/types/userDataType";
 import { User } from "firebase/auth";
 import { create } from "zustand";
 
@@ -22,5 +22,5 @@ export const useStoreUser = create<Store>((set) => ({
             user: state.user ? { ...state.user, ...data } : (data as UserData),
         })),
     isLoadingUser: true,
-    setIsLoadingUser: (isLoadingUser) => set(() => ({ isLoadingUser }))
+    setIsLoadingUser: (isLoadingUser) => set(() => ({ isLoadingUser })),
 }));

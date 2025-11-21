@@ -1,4 +1,4 @@
-import { RequestPostData } from "@/utils/types/postDataType";
+import { RequestPostData } from "@/types/postDataType";
 import { useEffect, useRef, useState } from "react";
 import { FormInput } from "./FormInput";
 
@@ -61,7 +61,6 @@ export const InputLocation = ({
                     inputProps={{
                         type: "text",
                         placeholder: "Ex: Rua Alberto Breglia, Água Branca",
-                        required: true,
                         onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
                             handleChange(e.target.value),
                     }}

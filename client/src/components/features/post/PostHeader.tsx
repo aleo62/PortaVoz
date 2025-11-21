@@ -1,7 +1,7 @@
 import { useDeletePost } from "@/hooks/posts/useDeletePost";
 import { useStoreUser } from "@/stores/userStore";
+import { PostData } from "@/types/postDataType";
 import { formatDate } from "@/utils/functions/formatDate";
-import { PostData } from "@/utils/types/postDataType";
 import { IconDotsVertical } from "@tabler/icons-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";

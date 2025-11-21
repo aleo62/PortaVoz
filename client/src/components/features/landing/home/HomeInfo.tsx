@@ -1,11 +1,11 @@
-import { AnimatedButton } from "@/components/ui/animated/AnimatedButton";
-import { AnimatedCaption } from "@/components/ui/animated/AnimatedCaption";
-import { AnimatedSubtitle } from "@/components/ui/animated/AnimatedSubtitle";
-import { AnimatedTitle } from "@/components/ui/animated/AnimatedTitle";
+import { AnimatedButton } from "@components/ui/animated/AnimatedButton";
+import { AnimatedCaption } from "@components/ui/animated/AnimatedCaption";
+import { AnimatedSubtitle } from "@components/ui/animated/AnimatedSubtitle";
+import { AnimatedTitle } from "@components/ui/animated/AnimatedTitle";
 
-import { Card } from "@/components/ui/InfoCard";
 import { Button } from "@components/ui/Button";
-import { Cards } from "@data/home";
+import { Card } from "@components/ui/InfoCard";
+import { Cards } from "@constants/home";
 import { motion } from "framer-motion";
 
 import { IconUserFilled } from "@tabler/icons-react";

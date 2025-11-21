@@ -1,5 +1,4 @@
-import { LandingLayout } from "@/components/layouts/LandingLayout";
-import { SidebarLayout } from "@/components/layouts/SidebarLayout";
+import { ProtectedLayout } from "@/layouts/ProtectedLayout";
 import { Dashboard } from "@/pages/admin/Dashboard";
 import { Chat } from "@/pages/Chat";
 import { CreatePost } from "@/pages/CreatePost";
@@ -14,7 +13,8 @@ import { PostView } from "@/pages/PostView";
 import { Profile } from "@/pages/Profile";
 import { Register } from "@/pages/Register";
 import { Verify } from "@/pages/Verify";
-import { ProtectedLayout } from "@/utils/layouts/ProtectedLayout";
+import { LandingLayout } from "@components/layouts/LandingLayout";
+import { SidebarLayout } from "@components/layouts/SidebarLayout";
 import { Home } from "@pages/Home";
 import React, { ReactNode } from "react";
 import { Route, Routes } from "react-router-dom";
@@ -31,6 +31,7 @@ type RouteDataType = {
             noHeader?: boolean;
             linkBack?: string;
             orientation?: "row" | "col";
+            title?: string;
         };
     }[];
 };
@@ -86,13 +87,19 @@ const RoutesArray: RouteDataType[] = [
         key: "EditProfile",
         path: "/edit-profile",
         Page: <EditProfile />,
-        layouts: [{ Component: SidebarLayout }, { Component: ProtectedLayout }],
+        layouts: [
+            { Component: SidebarLayout, props: { title: "Editar Perfil" } },
+            { Component: ProtectedLayout },
+        ],
     },
     {
         key: "Feed",
         path: "/feed",
         Page: <Feed />,
-        layouts: [{ Component: SidebarLayout }, { Component: ProtectedLayout }],
+        layouts: [
+            { Component: SidebarLayout, props: { title: "Feed" } },
+            { Component: ProtectedLayout },
+        ],
     },
     {
         key: "AdminDashboard",
@@ -126,7 +133,10 @@ const RoutesArray: RouteDataType[] = [
         path: "/post/:postId",
         Page: <PostView />,
         layouts: [
-            { Component: SidebarLayout, props: { linkBack: "Feed", orientation: "row" } },
+            {
+                Component: SidebarLayout,
+                props: { linkBack: "Feed", orientation: "row", title: "Ver Post" },
+            },
             { Component: ProtectedLayout },
         ],
     },
@@ -134,19 +144,28 @@ const RoutesArray: RouteDataType[] = [
         key: "Profile",
         path: "/profile",
         Page: <Profile />,
-        layouts: [{ Component: SidebarLayout }, { Component: ProtectedLayout }],
+        layouts: [
+            { Component: SidebarLayout, props: { title: "Perfil" } },
+            { Component: ProtectedLayout },
+        ],
     },
     {
         key: "ProfileWithId",
         path: "/profile/:userId",
         Page: <Profile />,
-        layouts: [{ Component: SidebarLayout }, { Component: ProtectedLayout }],
+        layouts: [
+            { Component: SidebarLayout, props: { title: "Perfil" } },
+            { Component: ProtectedLayout },
+        ],
     },
     {
         key: "CreatePost",
         path: "/post/create",
         Page: <CreatePost />,
-        layouts: [{ Component: SidebarLayout }, { Component: ProtectedLayout }],
+        layouts: [
+            { Component: SidebarLayout, props: { title: "Criar Post" } },
+            { Component: ProtectedLayout },
+        ],
     },
     {
         key: "NotFound",

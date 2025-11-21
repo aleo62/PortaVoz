@@ -1,4 +1,4 @@
-import { PostData } from "@/utils/types/postDataType";
+import { PostData } from "@/types/postDataType";
 import { useNavigate } from "react-router-dom";
 
 export const PostSearchItem = ({ post }: { post: PostData }) => {

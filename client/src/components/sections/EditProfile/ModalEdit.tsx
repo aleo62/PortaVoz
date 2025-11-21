@@ -1,16 +1,16 @@
-import { EditModal } from "@/components/ui/EditModal";
-import { FormInput } from "@/components/ui/FormInput";
 import { useModal } from "@/contexts/ModalContext";
+import { Button } from "@components/ui/Button";
+import { EditModal } from "@components/ui/EditModal";
+import { FormInput } from "@components/ui/FormInput";
 import { IconArrowRight, IconEdit } from "@tabler/icons-react";
 import { Dispatch, SetStateAction } from "react";
 import { PreviewUser } from "./ViewProfile";
-import { Button } from "@/components/ui/Button";
 
 type ModalEditProps = {
     previewUser: PreviewUser;
     setPreviewUser: Dispatch<SetStateAction<PreviewUser>>;
     cancel: () => void;
-    save: () => void
+    save: () => void;
 };
 
 export const ModalEdit = ({ previewUser, setPreviewUser, cancel, save }: ModalEditProps) => {
@@ -60,12 +60,7 @@ export const ModalEdit = ({ previewUser, setPreviewUser, cancel, save }: ModalEd
                     label="Username"
                 />
                 <div className="mt-20 flex flex-col-reverse items-start gap-2 lg:flex-row lg:items-center lg:justify-end">
-                    <Button
-                        styleType="outlined"
-                        text="Cancelar"
-                        size="small"
-                        onClick={cancel}
-                    />
+                    <Button styleType="outlined" text="Cancelar" size="small" onClick={cancel} />
                     <Button
                         styleType="primary"
                         text="Salvar"

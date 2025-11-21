@@ -1,6 +1,6 @@
 import { useModal } from "@/contexts/ModalContext";
+import { NotificationData } from "@/types/notificationDataType";
 import { formatDate } from "@/utils/functions/formatDate";
-import { NotificationData } from "@/utils/types/notificationDataType";
 import { ReactElement, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 

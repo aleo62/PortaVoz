@@ -1,4 +1,4 @@
-import { ChatData } from "@/utils/types/chatDataType";
+import { ChatData } from "@/types/chatDataType";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { Dispatch, SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";

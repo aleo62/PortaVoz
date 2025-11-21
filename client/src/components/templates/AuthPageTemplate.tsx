@@ -1,5 +1,5 @@
-import { portaVozLogo } from "@/data/data";
 import { useTheme } from "@/hooks/useTheme";
+import { portaVozLogo } from "@constants/data";
 import { ReactNode } from "react";
 
 export const AuthPageTemplate = ({
@@ -31,7 +31,7 @@ export const AuthPageTemplate = ({
                             width={120}
                             className="z-20"
                         />
-                        <h2 className="font-title text-title mt-3 text-center tracking-tighter text-2xl">
+                        <h2 className="font-title text-title mt-3 text-center text-2xl tracking-tighter">
                             {title}
                         </h2>
                         <p className="text-subtitle mx-auto mt-1 max-w-[350px] text-center text-sm">

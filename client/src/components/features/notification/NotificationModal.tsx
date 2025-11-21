@@ -1,6 +1,6 @@
 import { useModal } from "@/contexts/ModalContext";
 import { useNotifications } from "@/hooks/user/useNotification";
-import { NotificationData } from "@/utils/types/notificationDataType";
+import { NotificationData } from "@/types/notificationDataType";
 import { IconChecks, IconInfinity, IconSettings, IconX } from "@tabler/icons-react";
 import { motion } from "framer-motion";
 import { NotificationItem } from "./NotificationItem";

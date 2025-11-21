@@ -1,7 +1,7 @@
 export const PostReflectedSkeleton = () => {
     return (
         <div className="py-2">
-            <div className="flex w-[368px] animate-pulse items-center gap-2 rounded-xl bg-white p-2 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-700">
+            <div className="flex w-full animate-pulse items-center gap-2 rounded-xl  p-2 ">
                 <div className="flex h-28 flex-col justify-between p-3 lg:h-30">
                     <div>
                         <div className="h-4 w-3/4 rounded bg-zinc-200 dark:bg-zinc-700"></div>

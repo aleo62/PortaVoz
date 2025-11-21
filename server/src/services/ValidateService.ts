@@ -1,5 +1,6 @@
 import { GeminiClient } from "@/ai/geminiClient";
 import { validateContentPrompt } from "@/ai/prompts/validateContent";
+import { validateFinalPostPrompt } from "@/ai/prompts/validateFinalPost";
 import { validateHashtagsPrompt } from "@/ai/prompts/validateHashtags";
 import { validateImagePrompt } from "@/ai/prompts/validateImages";
 import { safeExtractJSON } from "@/utils/safeExtractJSON";
@@ -55,7 +56,9 @@ export async function validatePostImages(
         const files = images as Express.Multer.File[];
 
         for (const image of files) {
-            const base64 = await fs.readFile(image.path, { encoding: "base64" });
+            const base64 = await fs.readFile(image.path, {
+                encoding: "base64",
+            });
 
             const raw = await geminiClient.generateTextwithImage(
                 validateImagePrompt(title, desc),
@@ -65,12 +68,59 @@ export async function validatePostImages(
             const json = JSON.parse(safeExtractJSON(raw as string));
             if (!json.valid) {
                 analyse = raw!;
-      
+
                 break;
             }
         }
 
         return analyse;
+    } catch (err) {
+        throw err;
+    }
+}
+
+type ValidationResponse = {
+    valid: boolean;
+    errors?: string[];
+    suggestion?: string;
+};
+
+export async function validateCompletePost(
+    body: any,
+    images: Express.Multer.File[]
+): Promise<ValidationResponse> {
+    try {
+        const { title, desc, hashtags } = body;
+
+        if (!images || !images.length) throw new Error("Image required");
+
+        const prompt = validateFinalPostPrompt(title, desc, hashtags);
+        let response: ValidationResponse = { valid: true };
+
+        for (const image of images) {
+            const base64 = await fs.readFile(image.path, {
+                encoding: "base64",
+            });
+
+            const raw = await geminiClient.generateTextwithImage(
+                prompt,
+                image.mimetype,
+                base64
+            );
+
+            const json = JSON.parse(safeExtractJSON(raw as string));
+
+            if (!json.valid) {
+                response = json;
+                break;
+            }
+        }
+
+        return {
+            valid: response.valid,
+            errors: response.errors ?? [],
+            suggestion: response.suggestion,
+        };
     } catch (err) {
         throw err;
     }

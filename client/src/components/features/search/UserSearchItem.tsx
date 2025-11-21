@@ -1,4 +1,4 @@
-import { UserData } from "@/utils/types/userDataType";
+import { UserData } from "@/types/userDataType";
 import { useNavigate } from "react-router-dom";
 
 export const UserSearchItem = ({ user }: { user: UserData }) => {

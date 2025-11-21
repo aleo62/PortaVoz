@@ -1,19 +1,19 @@
-import { PostData } from "@/utils/types/postDataType";
-import { Post } from "./Post";
-import { PostSkeleton } from "./PostSkeleton";
+import { PostData, UserPostData } from "@/types/postDataType";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
+import { Post } from "./Post";
+import { PostSkeleton } from "./PostSkeleton";
 
 export const FeedPosts = ({
     posts,
     feedLoading,
     feedHasNextPage,
-    fetchFeedNextPage
+    fetchFeedNextPage,
 }: {
-    posts: PostData[];
+    posts: PostData[] | UserPostData[];
     feedLoading: boolean;
     feedHasNextPage: boolean;
-    fetchFeedNextPage: () => void
+    fetchFeedNextPage: () => void;
 }) => {
     const { ref, inView } = useInView({});
 
@@ -35,8 +35,8 @@ export const FeedPosts = ({
 
             {!feedLoading && posts.length > 0 && (
                 <>
-                    {posts.map((post: PostData) => (
-                        <Post post={post} key={post._id} />
+                    {posts.map((post) => (
+                        <Post post={post as PostData} key={post._id} />
                     ))}
 
                     {feedHasNextPage && <div ref={ref}>carregando...</div>}

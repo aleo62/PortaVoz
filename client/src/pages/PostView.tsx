@@ -1,7 +1,7 @@
-import { PostHeader } from "@/components/features/post/PostHeader";
-import { PostLocationInfo } from "@/components/features/post/PostLocationInfo";
 import { usePostById } from "@/hooks/posts/usePostById";
-import { PostData } from "@/utils/types/postDataType";
+import { PostData } from "@/types/postDataType";
+import { PostHeader } from "@components/features/post/PostHeader";
+import { PostLocationInfo } from "@components/features/post/PostLocationInfo";
 import { PostMain } from "@components/features/post/PostMain";
 import { useParams } from "react-router-dom";
 
@@ -16,12 +16,12 @@ export const PostView = () => {
 
     return (
         <>
-            <article className="w-full max-w-xl ">
+            <article className="w-full max-w-xl">
                 <PostHeader post={post} viewMode />
 
                 <PostMain post={post} viewMode />
             </article>
-            <div className="w-full max-w-lg mt-5 ml-4">
+            <div className="mt-5 ml-4 w-full max-w-lg">
                 <PostLocationInfo
                     latitude={post.location.latitude}
                     longitude={post.location.longitude}

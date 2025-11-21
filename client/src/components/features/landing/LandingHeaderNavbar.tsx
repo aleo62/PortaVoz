@@ -1,5 +1,5 @@
-import { NavItems } from "@/data/data";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { NavItems } from "@constants/data";
 import { IconMenu, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";

@@ -1,6 +1,7 @@
-import { DropdownItemProps } from "@/components/ui/Dropdown";
+import { DropdownItemProps } from "@components/ui/Dropdown";
 import {
     IconAlertTriangle,
+    IconFlag,
     IconLink,
     IconLogout,
     IconPencil,
@@ -19,12 +20,11 @@ export const UserDropAuthItems: DropdownItemProps[] = [
 ];
 
 export const PostDropItems: DropdownItemProps[] = [
-    { label: "Copiar Link", Icon: IconLink },
-    { label: "Denunciar Post", Icon: IconAlertTriangle, path: "Profile" },
+    { label: "Reportar", Icon: IconFlag, path: "Profile" },
 ];
 
 export const PostDropOwnerItems: DropdownItemProps[] = [
-    { label: "Deletar Post", Icon: IconTrash, alert: true },
+    { label: "Deletar", Icon: IconTrash, alert: true },
 ];
 
 export const CommentDropItems: DropdownItemProps[] = [

@@ -1,10 +1,10 @@
 import { usePosts } from "@/hooks/posts/usePosts";
-import { PostData } from "@/utils/types/postDataType";
+import { PostData } from "@/types/postDataType";
+import { IconDotsVertical } from "@tabler/icons-react";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { PostReflected } from "./PostReflected";
 import { PostReflectedSkeleton } from "./PostReflectedSkeleton";
-import { IconDotsVertical } from "@tabler/icons-react";
 
 export const FeedReflected = () => {
     const { data: reflectedData, isLoading: reflectedLoading } = usePosts({ vote: "desc" }, true);
@@ -13,10 +13,10 @@ export const FeedReflected = () => {
         (reflectedData?.pages.flatMap((page) => page.posts) as PostData[]) || [];
 
     return (
-        <section className="sticky top-10 hidden h-fit w-fit gap-3 space-y-1 rounded-2xl ring-1 ring-zinc-200 dark:ring-zinc-800  py-1 pb-4 shadow-[0px_4px_16px_-15px_rgba(0,_0,_0,_0.1)] lg:block">
-            <div className="xxl:px-4 mb-3 px-3 py-4 flex items-center justify-between">
+        <section className="sticky top-10 w-full max-w-85 hidden h-fit gap-3 space-y-1 rounded-2xl py-1 pb-4 shadow-[0px_4px_16px_-15px_rgba(0,_0,_0,_0.1)] ring-1 ring-zinc-200 lg:block dark:ring-zinc-800">
+            <div className="xxl:px-4 mb-3 flex items-center justify-between px-3 py-4">
                 <h2 className="text-title text-lg">Repercutidos</h2>
-                <IconDotsVertical className="size-4 mr-2"/>
+                <IconDotsVertical className="mr-2 size-4" />
             </div>
 
             {reflectedLoading && <PostReflectedSkeleton />}

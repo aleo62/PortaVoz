@@ -1,7 +1,7 @@
-import { FeedPosts } from "@/components/features/post/FeedPosts";
-import { FeedReflected } from "@/components/features/post/FeedReflected";
-import { ButtonCreatePost } from "@/components/ui/ButtonCreatePost";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { FeedPosts } from "@components/features/post/FeedPosts";
+import { FeedReflected } from "@components/features/post/FeedReflected";
+import { ButtonCreatePost } from "@components/ui/ButtonCreatePost";
 import { usePosts } from "@hooks/posts/usePosts";
 import { PostData } from "@utils/types/postDataType";
 

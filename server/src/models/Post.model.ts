@@ -17,6 +17,7 @@ export interface PostData extends Document {
     address: string;
     upvotesCount: number;
     commentsCount: number;
+    repostsCount: number;
     status: "ativo" | "resolvido" | "oculto";
     isUpvoted?: boolean;
 }
@@ -102,6 +103,10 @@ const PostSchema: Schema = new Schema(
             type: Number,
             default: 0,
         },
+        repostsCount: {
+            type: Number,
+            default: 0,
+        },
         status: {
             type: String,
             enum: {
@@ -113,7 +118,6 @@ const PostSchema: Schema = new Schema(
     },
     { timestamps: true }
 );
-
 
 const Post = mongoose.model<PostData>("Post", PostSchema);
 export default Post;
