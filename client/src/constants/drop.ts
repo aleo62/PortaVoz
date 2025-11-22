@@ -2,7 +2,6 @@ import { DropdownItemProps } from "@components/ui/Dropdown";
 import {
     IconAlertTriangle,
     IconFlag,
-    IconLink,
     IconLogout,
     IconPencil,
     IconPencilCog,
