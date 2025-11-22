@@ -3,8 +3,6 @@ import {
     IconHome,
     IconHomeFilled,
     IconInbox,
-    IconLifebuoy,
-    IconLifebuoyFilled,
     IconMessageCircle,
     IconMessageCircleFilled,
     IconUserHexagon,
