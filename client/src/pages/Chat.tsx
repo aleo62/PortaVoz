@@ -26,7 +26,7 @@ export const Chat = () => {
     const [messages, setMessages] = useState<MessageData[]>([]);
 
     useEffect(() => {
-        socketRef.current = io(String(import.meta.env.VITE_API_BASE_URL).replace("/api/v1/", ""));
+        socketRef.current = io(String(import.meta.env.VITE_API_BASE_URL).replace("/api/v1", ""));
         socketRef.current.emit("register_user", {
             userId,
         });
