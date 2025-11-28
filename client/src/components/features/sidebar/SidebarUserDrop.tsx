@@ -13,7 +13,7 @@ export const SidebarUserDrop = ({
     const navigate = useNavigate();
 
     const handleItemClick = (item: DropdownItemProps) => {
-        const action = dropdownActions[item.action];
+        const action = dropdownActions[item.action!];
 
         if (!action) return;
 

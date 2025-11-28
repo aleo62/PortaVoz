@@ -8,7 +8,7 @@ export type DropdownProps = {
 };
 export type DropdownItemProps = {
     label: string;
-    action: "report" | "deletePost" | "profile" | "settings" | "logout";
+    action?: "report" | "deletePost" | "profile" | "settings" | "logout";
     Icon?: ElementType;
     alert?: boolean;
     onClick?: () => void;

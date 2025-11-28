@@ -1,10 +1,6 @@
 import { useModal } from "@/contexts/ModalContext";
-import { usePostsByUser } from "@/hooks/posts/usePostsByUser";
-import { useCreateFollow } from "@/hooks/user/useCreateFollow";
-import { useDeleteFollow } from "@/hooks/user/useDeleteFollow";
 import { useUserById } from "@/hooks/user/useUserById";
 import { useStoreUser } from "@/stores/userStore";
-import { UserPostData } from "@/types/postDataType";
 import { ProfileSkeleton } from "@components/ui/ProfileSkeleton";
 import { useParams } from "react-router-dom";
 
@@ -16,31 +12,31 @@ export const Profile = () => {
     const requestId = userId || userData?._id;
 
     const { data: user, isLoading: userLoading } = useUserById(requestId);
-    const {
-        data: feedData,
-        isLoading: feedLoading,
-        fetchNextPage: fetchFeedNextPage,
-        hasNextPage: feedHasNextPage,
-    } = usePostsByUser(requestId!);
+    // const {
+    //     data: feedData,
+    //     isLoading: feedLoading,
+    //     fetchNextPage: fetchFeedNextPage,
+    //     hasNextPage: feedHasNextPage,
+    // } = usePostsByUser(requestId!);
 
-    const posts: UserPostData[] =
-        (feedData?.pages.flatMap((page) => page.posts) as UserPostData[]) || [];
+    // const posts: UserPostData[] =
+    //     (feedData?.pages.flatMap((page) => page.posts) as UserPostData[]) || [];
 
-    const createFollow = useCreateFollow();
-    const deleteFollow = useDeleteFollow();
+    // const createFollow = useCreateFollow();
+    // const deleteFollow = useDeleteFollow();
     // const navigate = useNavigate();
 
-    const handleFollow = async () => {
-        if (Boolean(user.isFollowing)) {
-            user.isFollowing = false;
-            user.meta.counters.followers--;
-            await deleteFollow.mutateAsync(userId!);
-        } else {
-            user.isFollowing = true;
-            user.meta.counters.followers++;
-            await createFollow.mutateAsync(userId!);
-        }
-    };
+    // const handleFollow = async () => {
+    //     if (Boolean(user.isFollowing)) {
+    //         user.isFollowing = false;
+    //         user.meta.counters.followers--;
+    //         await deleteFollow.mutateAsync(userId!);
+    //     } else {
+    //         user.isFollowing = true;
+    //         user.meta.counters.followers++;
+    //         await createFollow.mutateAsync(userId!);
+    //     }
+    // };
 
     // const getChatByUser = useChatByUsers();
     // const fetchChat = async () => {
@@ -49,7 +45,7 @@ export const Profile = () => {
     //     });
     // };
 
-    if (feedLoading || userLoading || !user || (userId && !userId)) {
+    if (userLoading || !user || (userId && !userId)) {
         return <ProfileSkeleton />;
     }
 
@@ -65,17 +61,17 @@ export const Profile = () => {
                         />
                     )}
                 </figure>
-                <figure className="absolute top-[112%] left-15 translate-y-[-50%] ">
+                <figure className="absolute top-[112%] left-15 translate-y-[-50%]">
                     <img
                         src={user?.image}
                         alt="Foto de perfil"
-                        className="border-body-background h-35 w-35 rounded-full cursor-pointer border-3 object-cover shadow-md lg:h-55 lg:w-55 dark:ring-zinc-900"
+                        className="border-body-background h-35 w-35 cursor-pointer rounded-full border-3 object-cover shadow-md lg:h-55 lg:w-55 dark:ring-zinc-900"
                         onClick={() => openModal("image", { image: user.image })}
                     />
                 </figure>
             </header>
 
-            <main className="grid-cols-[250px_1fr] mx-auto grid w-full max-w-6xl space-y-5 mt-4">
+            <main className="mx-auto mt-4 grid w-full max-w-6xl grid-cols-[250px_1fr] space-y-5">
                 <div className="col-start-2 col-end-3">
                     <h1 className="font-title text-title text-2xl max-lg:text-center lg:text-6xl">
                         {user.username}
