@@ -13,7 +13,7 @@ export const PostDrop = ({ isOpen, orientation, onClose, isOwner, postId, onDele
     const { openModal } = useModal();
 
     const handleItemClick = (item: DropdownItemProps) => {
-        const action = dropdownActions[item.action];
+        const action = dropdownActions[item.action!];
 
         if (!action) return;
 

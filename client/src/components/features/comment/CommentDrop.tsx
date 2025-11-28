@@ -18,7 +18,7 @@ export const CommentDrop = ({
     const { openModal } = useModal();
 
     const handleItemClick = (item: DropdownItemProps) => {
-        const action = dropdownActions[item.action];
+        const action = dropdownActions[item.action!];
 
         if (!action) return;
 
