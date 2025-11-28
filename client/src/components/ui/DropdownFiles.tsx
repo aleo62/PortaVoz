@@ -15,7 +15,7 @@ export const DropdownFiles = ({ onUpload }: { onUpload: (file: File) => void }) 
 
     return (
         <div
-            className={`${isDragging ? "border-accent" : "border-zinc-300 dark:border-zinc-700"} transition-all flex cursor-pointer flex-col items-center rounded-2xl border-2 border-dashed bg-zinc-100 p-5 py-20 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400`}
+            className={`${isDragging ? "border-accent" : "border-zinc-300 dark:border-zinc-700"} transition-all flex cursor-pointer flex-col items-center rounded-2xl border-2 border-dashed bg-body-background p-5 py-20 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400`}
             {...getRootProps()}
             onDragEnter={() => setIsDragging(true)}
             onDragLeave={() => setIsDragging(false)}

@@ -1,7 +1,7 @@
 import { IconHash, IconSearch, IconTableRow, IconUser, IconX } from "@tabler/icons-react";
 import { motion } from "framer-motion";
 
-import { useModal } from "@/contexts/ModalContext";
+import { ModalDefaultProps } from "@/contexts/ModalContext";
 import { usePosts } from "@/hooks/posts/usePosts";
 import { useUsers } from "@/hooks/user/useUsers";
 import { PostData } from "@/types/postDataType";
@@ -11,9 +11,7 @@ import { SpinnerCircular } from "spinners-react";
 import { PostSearchItem } from "./PostSearchItem";
 import { UserSearchItem } from "./UserSearchItem";
 
-export const SearchModal = () => {
-    const { closeModal, modalOpen } = useModal();
-
+export const SearchModal = ({ zIndex, closeModal }: ModalDefaultProps) => {
     const searchTopics = [
         { id: 1, label: "Denúncias", Icon: IconTableRow },
         { id: 2, label: "Usuários", Icon: IconUser },
@@ -25,22 +23,14 @@ export const SearchModal = () => {
     const [searchInput, setSearchInput] = useState<string>("");
     const [isTyping, setIsTyping] = useState<boolean>(false);
 
-    const { data: feedData, isLoading: feedLoading } = usePosts(
-        { search },
-        modalOpen && activeTopic == 1,
-    );
+    const { data: feedData, isLoading: feedLoading } = usePosts({ search }, activeTopic == 1);
 
-    const { data: usersData, isLoading: usersLoading } = useUsers(
-        modalOpen && activeTopic == 2,
-        search,
-    );
+    const { data: usersData, isLoading: usersLoading } = useUsers(activeTopic == 2, search);
 
     let posts: PostData[] = (feedData?.pages.flatMap((page) => page.posts) as PostData[]) || [];
     let users: UserData[] = (usersData?.pages.flatMap((page) => page.users) as UserData[]) || [];
 
     useEffect(() => {
-        if (!modalOpen) return;
-
         setIsTyping(true);
 
         const timeout = setTimeout(() => {
@@ -51,7 +41,6 @@ export const SearchModal = () => {
         return () => clearTimeout(timeout);
     }, [searchInput]);
 
-    console.log(feedData);
     return (
         <motion.div
             initial={{ scale: 0.95 }}
@@ -59,6 +48,7 @@ export const SearchModal = () => {
             exit={{ scale: 0.95 }}
             transition={{ duration: 0.1 }}
             className="bg-body-background h-fit w-full max-w-xl rounded-xl"
+            style={{ zIndex }}
         >
             <header className="text-title flex items-center px-3 lg:px-5">
                 <IconSearch className="size-6 lg:size-7" />

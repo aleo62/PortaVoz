@@ -26,6 +26,13 @@ export interface UserData extends Document {
             attemptsRemaining?: number;
             attemptsResetAt?: Date;
         };
+        preferences: {
+            notifications: {
+                receiveVote: boolean;
+                receiveFollow: boolean;
+                receiveComment: boolean;
+            };
+        };
     };
 }
 
@@ -79,6 +86,13 @@ const UserSchema: Schema = new Schema(
                 codeExpiresAt: { type: Date },
                 attemptsRemaining: { type: Number, default: 3 },
                 attemptsResetAt: { type: Date },
+            },
+            preferences: {
+                notifications: {
+                    receiveVote: { type: Boolean, default: true },
+                    receiveFollow: { type: Boolean, default: true },
+                    receiveComment: { type: Boolean, default: true },
+                },
             },
         },
     },

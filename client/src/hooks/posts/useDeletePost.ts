@@ -6,8 +6,8 @@ export function useDeletePost() {
 
     return useMutation({
         mutationFn: (id: string) => Server.deletePostById(id),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["posts"] });
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({ queryKey: ["posts"] });
         },
     });
 }

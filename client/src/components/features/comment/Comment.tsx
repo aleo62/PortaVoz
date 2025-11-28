@@ -29,7 +29,7 @@ export const Comment = ({
     const createComment = useCreateComment();
     const [commentInput, setCommentInput] = useState("");
     const [repliesOpen, setRepliesOpen] = useState(false);
-    const { data: repliesData, hasNextPage } = useComments(comment._id);
+    const { data: repliesData, hasNextPage } = useComments(comment._id, repliesOpen);
 
     const replies = repliesData?.pages.flatMap((page) => page.comments) ?? [];
 

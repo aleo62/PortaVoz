@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
-import { useModal } from "@/contexts/ModalContext";
+import { ModalDefaultProps, useModal } from "@/contexts/ModalContext";
 import { useComments } from "@/hooks/comments/useComments";
 import { useCreateComment } from "@/hooks/comments/useCreateComment";
 import { useDeleteComment } from "@/hooks/comments/useDeleteComment";
@@ -15,19 +15,19 @@ import { useInView } from "react-intersection-observer";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Comment } from "../comment/Comment";
 
-type SearchOverlayProps = {
+type SearchOverlayProps = ModalDefaultProps & {
     post: PostData;
 };
 
-export const PostModal = ({ post }: SearchOverlayProps) => {
+export const PostModal = ({ post, zIndex }: SearchOverlayProps) => {
     const isMobile = useIsMobile();
     const { user: userData } = useStoreUser();
-    const { closeModal } = useModal();
+    const { modalOpen, modalKey, closeModal } = useModal();
 
     const [contentHidden, setContentHidden] = useState(false);
     const [commentInput, setCommentInput] = useState("");
 
-    const { data, isLoading, fetchNextPage, hasNextPage } = useComments(post._id);
+    const { data, isLoading, fetchNextPage, hasNextPage } = useComments(post._id, modalOpen && modalKey === "post");
     const comments: CommentData[] = data?.pages.flatMap((page) => page.comments) ?? [];
 
     const createComment = useCreateComment();
@@ -59,6 +59,7 @@ export const PostModal = ({ post }: SearchOverlayProps) => {
                 exit={{ scale: 0.95 }}
                 transition={{ duration: 0.1 }}
                 className="bg-body-background h-full w-full max-w-xl rounded-xl max-lg:hidden"
+                style={{ zIndex }}
             >
                 <Swiper className="h-full">
                     {post.images.map((image) => (
@@ -79,6 +80,7 @@ export const PostModal = ({ post }: SearchOverlayProps) => {
                 exit={isMobile ? { transform: "translateY(50px)" } : {}}
                 transition={{ duration: 0.2 }}
                 className={`text-title relative flex bg-white dark:bg-zinc-900 ${isMobile ? "mt-auto h-[90%]" : "h-full"} w-full flex-col rounded-t-xl p-4 py-7 lg:max-w-md lg:rounded-b-xl xl:max-w-lg`}
+                style={{ zIndex }}
             >
                 <header className="flex items-center gap-2">
                     <img
@@ -121,7 +123,7 @@ export const PostModal = ({ post }: SearchOverlayProps) => {
                                     <IconChevronUp className="size-4" /> Ocultar
                                 </>
                             )}{" "}
-                            Desrição
+                            Descrição
                         </button>
                     </h3>
 

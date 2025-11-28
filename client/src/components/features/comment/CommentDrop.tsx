@@ -1,7 +1,7 @@
-import { Dropdown, DropdownProps } from "@components/ui/Dropdown";
+import { dropdownActions } from "@/actions/dropdownActions";
+import { useModal } from "@/contexts/ModalContext";
+import { Dropdown, DropdownItemProps, DropdownProps } from "@components/ui/Dropdown";
 import { CommentDropItems, CommentDropOwnerItems } from "@constants/drop";
-import { useState } from "react";
-import { SpinnerCircular } from "spinners-react";
 
 type CommentDropProps = DropdownProps & {
     isOwner: boolean;
@@ -15,11 +15,20 @@ export const CommentDrop = ({
     isOwner,
     onDeleteComment,
 }: CommentDropProps) => {
-    const [isDeleting, setIsDeleting] = useState(false);
+    const { openModal } = useModal();
 
-    const handleDelete = () => {
-        onDeleteComment();
-        setIsDeleting(true);
+    const handleItemClick = (item: DropdownItemProps) => {
+        const action = dropdownActions[item.action];
+
+        if (!action) return;
+
+        action({
+            openModal,
+            context: {
+                type: "comment",
+                onDelete: isOwner ? onDeleteComment : undefined,
+            },
+        });
     };
 
     return (
@@ -30,8 +39,9 @@ export const CommentDrop = ({
                         key={index}
                         Icon={item.Icon}
                         label={item.label}
-                        path={item.path}
+                        onClick={() => handleItemClick(item)}
                         alert={item?.alert}
+                        action={item.action}
                     />
                 ))}
             </Dropdown.Block>
@@ -42,21 +52,10 @@ export const CommentDrop = ({
                             key={index}
                             Icon={item.Icon}
                             label={item.label}
-                            path={item.path}
-                            onClick={index === 1 ? handleDelete : undefined}
+                            onClick={() => handleItemClick(item)}
                             alert={item?.alert}
-                        >
-                            {isDeleting && index === 1 && (
-                                <SpinnerCircular
-                                    size={10}
-                                    thickness={180}
-                                    speed={100}
-                                    color="#FF0000"
-                                    secondaryColor="rgba(0, 0, 0, 0)"
-                                    className="ml-auto"
-                                />
-                            )}
-                        </Dropdown.Item>
+                            action={item.action}
+                        />
                     ))}
                 </Dropdown.Block>
             )}

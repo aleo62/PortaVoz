@@ -47,7 +47,6 @@ export const Register = () => {
             await registerUserEmailAndPassword({ email, fName, lName, password });
         } catch (error: unknown) {
             if (error instanceof FirebaseError && error.code === "auth/email-already-in-use") {
-                console.log(error);
                 errorToast("Este e-mail já está em uso.");
             } else {
                 errorToast("Erro ao criar usuário.");

@@ -2,19 +2,16 @@
  * Arquivo principal de rotas da API v1.
  * Define as rotas raiz, de posts e de imagens.
 */
-import userRouter from "@/routes/v1/user";
 import chatRouter from "@/routes/v1/chat";
-import postRouter from "@/routes/v1/post";
 import hashtagRouter from "@/routes/v1/hashtag";
+import postRouter from "@/routes/v1/post";
+import reportRouter from "@/routes/v1/report";
+import userRouter from "@/routes/v1/user";
 import validateRouter from "@/routes/v1/validate";
 import { Router } from "express";
 
-// Instancia o router do Express
 const router = Router();
 
-/**
- * Rota raiz para verificação de status da API
- */
 router.get("/", async (req, res) => {
     res.status(200).json({
         message: "API is running",
@@ -25,15 +22,11 @@ router.get("/", async (req, res) => {
     });
 });
 
-// Rotas de posts
 router.use("/posts", postRouter);
-// Rotas de users
 router.use("/users", userRouter);
-// Rotas de ia
 router.use("/validate", validateRouter);
-// Rotas das mensagens
 router.use("/chats", chatRouter);
-// Rotas das hashtags
 router.use("/hashtags", hashtagRouter);
+router.use("/reports", reportRouter);
 
 export default router;

@@ -1,15 +1,14 @@
-import { useModal } from "@/contexts/ModalContext";
 import { useStoreSidebar } from "@/stores/sidebarStore";
-import React, { JSX } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 
 type SidebarItemProps = {
     label: string;
     Icon: React.ElementType;
-    IconSelected: React.ElementType;
     active?: boolean;
     href?: string;
-    modal?: JSX.Element;
+    modalKey?: string;
+    openModal?: (modalKey: string, props?: Record<string, any>) => void;
 };
 
 export const SidebarItem = ({
@@ -17,25 +16,20 @@ export const SidebarItem = ({
     Icon,
     active,
     href,
-    IconSelected,
-    modal,
+    modalKey,
+    openModal,
 }: SidebarItemProps) => {
     const navigate = useNavigate();
     const { isOpen } = useStoreSidebar();
-    const { openModal } = useModal();
 
     return (
         <button
-            onClick={() => (href ? navigate(href!) : openModal(modal!))}
-            className={`flex w-full items-center p-[.7rem] ${active ? "bg-secondary/50 text-accent" : "text-zinc-800 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-300 hover:dark:bg-zinc-800 hover:dark:text-zinc-200"} rounded-lg transition-all`}
+            onClick={() => (href ? navigate(href!) : openModal!(modalKey as any, {}))}
+            className={`flex w-full items-center p-[.7rem] ${active ? "text-title bg-white shadow-[0px_2px_10px_-10px_rgba(0,_0,_0,_0.1)] ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800" : "text-zinc-800 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-300 hover:dark:bg-zinc-800 hover:dark:text-zinc-200"} rounded-lg transition-all`}
         >
-            {active ? (
-                <IconSelected className={`size-5.5 stroke-1.5`} />
-            ) : (
-                <Icon className={`size-5.5 stroke-1.5`} />
-            )}
+            <Icon className={`size-5.5 stroke-[1.9px]`} />
             <span
-                className={`${isOpen ? "w-45 pl-3" : "w-0"} text-[.95rem] overflow-hidden text-start transition-[width,padding]`}
+                className={`${isOpen ? "w-45 pl-3" : "w-0"} overflow-hidden text-start text-[.95rem] transition-[width,padding]`}
             >
                 {label}
             </span>

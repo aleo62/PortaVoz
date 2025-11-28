@@ -1,7 +1,5 @@
-import { RoutesPath } from "@/app/Routes";
 import { AnimatePresence, motion } from "framer-motion";
 import { createContext, ElementType, ReactNode, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 
 export type DropdownProps = {
     isOpen: boolean;
@@ -10,11 +8,10 @@ export type DropdownProps = {
 };
 export type DropdownItemProps = {
     label: string;
+    action: "report" | "deletePost" | "profile" | "settings" | "logout";
     Icon?: ElementType;
-    path?: string;
     alert?: boolean;
     onClick?: () => void;
-    children?: ReactNode;
 };
 
 export const DropdownContext = createContext(null);
@@ -64,9 +61,11 @@ export const Dropdown = ({
                             y: orientation === "top" ? -20 : 20,
                         }}
                         transition={{ duration: 0.15 }}
-                        className={`text-subtitle absolute z-100 bg-white dark:bg-zinc-900 ${orientation === "bottom" ? "bottom-full mb-2" : "top-full mt-2"} right-0 grid w-fit gap-2 rounded-xl font-normal ring-[.7px] ring-zinc-200 dark:ring-zinc-700`}
+                        className={`text-subtitle absolute z-100 bg-white dark:bg-zinc-900 ${orientation === "bottom" ? "bottom-full mb-2" : "top-full mt-2"} right-0 grid w-fit gap-2 rounded-xl font-normal ring-[.7px] ring-zinc-200 dark:ring-zinc-800`}
                     >
-                        <nav className="divide-y-1 divide-zinc-200 dark:divide-zinc-800 py-2">{children}</nav>
+                        <nav className="divide-y-1 divide-zinc-200 py-2 dark:divide-zinc-800">
+                            {children}
+                        </nav>
                     </motion.div>
                 )}
             </AnimatePresence>
@@ -75,33 +74,17 @@ export const Dropdown = ({
 };
 
 Dropdown.Block = function DropdownBlock({ children }: { children: ReactNode }) {
-    return <ul className="flex w-45 flex-col p-1 text-sm ">{children}</ul>;
+    return <ul className="flex w-45 flex-col p-1 text-sm">{children}</ul>;
 };
 
-Dropdown.Item = function DropdownItem({
-    label,
-    Icon,
-    path,
-    alert,
-    onClick,
-    children,
-}: DropdownItemProps) {
-    const navigate = useNavigate();
-    const handleClick = () => {
-        if (onClick) {
-            onClick();
-        } else if (path) {
-            navigate(RoutesPath(path)!);
-        }
-    };
+Dropdown.Item = function DropdownItem({ label, Icon, alert, onClick }: DropdownItemProps) {
     return (
         <li>
             <a
-                onClick={handleClick}
-                className={`flex w-full cursor-pointer transition-all items-center gap-2 rounded-lg p-3 px-3 ${alert ? "text-red-700 hover:bg-red-200/50 hover:text-red-500 hover:dark:bg-red-600/5" : "hover:bg-zinc-100 hover:text-zinc-800 dark:hover:bg-zinc-800 hover:dark:text-white"}`}
+                onClick={onClick}
+                className={`flex w-full cursor-pointer items-center gap-2 rounded-lg p-3 px-3 transition-all ${alert ? "text-red-600 hover:bg-red-200/50 hover:text-red-500 hover:dark:bg-red-700/5" : "hover:bg-zinc-100 hover:text-zinc-800 dark:hover:bg-zinc-800/50 hover:dark:text-white"}`}
             >
-                {Icon && <Icon className="size-4.5" />} {label}
-                {children}
+                {Icon && <Icon className="size-5" />} {label}
             </a>
         </li>
     );

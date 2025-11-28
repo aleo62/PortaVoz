@@ -1,9 +1,7 @@
-import { useToast } from "@/contexts/ToastContext";
-import { copyToClipboard } from "@/utils/functions/copyToClipboard";
-import { Dropdown, DropdownProps } from "@components/ui/Dropdown";
+import { dropdownActions } from "@/actions/dropdownActions";
+import { useModal } from "@/contexts/ModalContext";
+import { Dropdown, DropdownItemProps, DropdownProps } from "@components/ui/Dropdown";
 import { PostDropItems, PostDropOwnerItems } from "@constants/drop";
-import { useState } from "react";
-import { SpinnerCircular } from "spinners-react";
 
 type PostDropProps = DropdownProps & {
     postId: string;
@@ -11,28 +9,22 @@ type PostDropProps = DropdownProps & {
     onDeletePost: () => void;
 };
 
-export const PostDrop = ({
-    isOpen,
-    orientation,
-    onClose,
-    postId,
-    isOwner,
-    onDeletePost,
-}: PostDropProps) => {
-    const [isDeleting, setIsDeleting] = useState(false);
-    const { successToast } = useToast();
+export const PostDrop = ({ isOpen, orientation, onClose, isOwner, postId, onDeletePost }: PostDropProps) => {
+    const { openModal } = useModal();
 
-    const handleCopyLink = () => {
-        copyToClipboard(
-            `${window.location.protocol}//${window.location.hostname}/post/${postId}`,
-            "Link copiado",
-            successToast,
-        );
-    };
+    const handleItemClick = (item: DropdownItemProps) => {
+        const action = dropdownActions[item.action];
 
-    const handleDelete = () => {
-        onDeletePost();
-        setIsDeleting(true);
+        if (!action) return;
+
+        action({
+            openModal,
+            context: {
+                id: postId,
+                type: "post",
+                onDelete: isOwner ? onDeletePost : undefined,
+            },
+        });
     };
 
     return (
@@ -43,9 +35,9 @@ export const PostDrop = ({
                         key={index}
                         Icon={item.Icon}
                         label={item.label}
-                        path={item.path}
-                        onClick={index === 0 ? handleCopyLink : undefined}
                         alert={item?.alert}
+                        action={item.action}
+                        onClick={() => handleItemClick(item)}
                     />
                 ))}
             </Dropdown.Block>
@@ -56,20 +48,10 @@ export const PostDrop = ({
                             key={index}
                             Icon={item.Icon}
                             label={item.label}
-                            onClick={index === 0 ? handleDelete : undefined}
+                            action={item.action}
                             alert={item?.alert}
-                        >
-                            {isDeleting && index === 0 && (
-                                <SpinnerCircular
-                                    size={10}
-                                    thickness={180}
-                                    speed={100}
-                                    color="#FF0000"
-                                    secondaryColor="rgba(0, 0, 0, 0)"
-                                    className="ml-auto"
-                                />
-                            )}
-                        </Dropdown.Item>
+                            onClick={() => handleItemClick(item)}
+                        />
                     ))}
                 </Dropdown.Block>
             )}

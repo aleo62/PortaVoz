@@ -39,7 +39,7 @@ export const NotVerified = () => {
                 E-mail de Verificação enviado para{" "}
                 <span className="text-title font-medium">{user?.email}</span>
             </p>
-            <div className="mt-3 flex items-center text-title justify-center gap-2 rounded-2xl bg-red-400/30 p-3 px-5 text-xs text-red-700 dark:text-red-400 dark:bg-red-700/30 ring-[.7px] ring-red-400 backdrop-blur-sm lg:text-sm">
+            <div className="mt-3 flex items-center  justify-center gap-2 rounded-2xl bg-red-400/30 p-3 px-5 text-xs text-red-700 dark:text-red-400 dark:bg-red-700/30 ring-[.7px] ring-red-400 backdrop-blur-sm lg:text-sm">
                 <IconAlertCircle size={19} stroke={1.5} />
                 <p>
                     Caso não encontre, verifique sua caixa de{" "}

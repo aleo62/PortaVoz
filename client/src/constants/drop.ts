@@ -1,36 +1,30 @@
 import { DropdownItemProps } from "@components/ui/Dropdown";
 import {
-    IconAlertTriangle,
     IconFlag,
-    IconLogout,
-    IconPencil,
-    IconPencilCog,
+    IconLayoutSidebarRightExpandFilled,
+    IconSettings,
     IconTrash,
     IconUser,
 } from "@tabler/icons-react";
 
 export const UserDropItems: DropdownItemProps[] = [
-    { label: "Acessar Perfil", Icon: IconUser, path: "Profile" },
-    { label: "Editar Perfil", Icon: IconPencil, path: "EditProfile" },
+    { label: "Perfil", Icon: IconUser, action: "profile" },
+    { label: "Configurações", Icon: IconSettings, action: "settings" },
 ];
-
 export const UserDropAuthItems: DropdownItemProps[] = [
-    { label: "Sair", Icon: IconLogout, path: "Logout", alert: true },
+    { label: "Sair", Icon: IconLayoutSidebarRightExpandFilled, alert: true, action: "logout" },
 ];
 
 export const PostDropItems: DropdownItemProps[] = [
-    { label: "Reportar", Icon: IconFlag, path: "Profile" },
+    { label: "Reportar", Icon: IconFlag, action: "report" },
 ];
-
 export const PostDropOwnerItems: DropdownItemProps[] = [
-    { label: "Deletar", Icon: IconTrash, alert: true },
+    { label: "Deletar", Icon: IconTrash, alert: true, action: "deletePost" },
 ];
 
 export const CommentDropItems: DropdownItemProps[] = [
-    { label: "Denunciar", Icon: IconAlertTriangle, path: "Profile" },
+    { label: "Reportar", Icon: IconFlag, action: "report" },
 ];
-
 export const CommentDropOwnerItems: DropdownItemProps[] = [
-    { label: "Editar", Icon: IconPencilCog, path: "Profile" },
-    { label: "Deletar", Icon: IconTrash, alert: true },
+    { label: "Deletar", Icon: IconTrash, alert: true, action: "deletePost" },
 ];

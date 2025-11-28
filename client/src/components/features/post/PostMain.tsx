@@ -21,10 +21,7 @@ import {
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { LocationModal } from "../../modal/LocationModal";
 import { PostActionButton } from "./PostActionButton";
-import { PostModal } from "./PostModal";
-import { PostShareModal } from "./PostShareModal";
 
 type MainPostProps = {
     post: PostData;
@@ -109,6 +106,7 @@ export const PostMain = ({ post, viewMode }: MainPostProps) => {
                             onClick={() => setImageContain(!imageContain)}
                             src={image as string}
                             alt="Representação da Cena"
+                            loading="lazy"
                         />
                     </SwiperSlide>
                 ))}
@@ -130,7 +128,7 @@ export const PostMain = ({ post, viewMode }: MainPostProps) => {
                             <PostActionButton
                                 Icon={IconMessage}
                                 count={post.commentsCount}
-                                onClick={() => openModal(<PostModal post={post} key={post._id} />)}
+                                onClick={() => openModal("post", { post })}
                             />
                         </>
                     )}
@@ -157,18 +155,16 @@ export const PostMain = ({ post, viewMode }: MainPostProps) => {
                             Icon={IconShare}
                             IconActive={IconShare}
                             onClick={() =>
-                                openModal(
-                                    <PostShareModal
-                                        postLink={`${location.origin}/post/${post._id}`}
-                                        shareItems={[
-                                            {
-                                                bgColor: "bg-green-500",
-                                                Icon: <IconRepeat className="size-8" />,
-                                                onClick: () => {},
-                                            },
-                                        ]}
-                                    />,
-                                )
+                                openModal("postShare", {
+                                    postLink: `${location.origin}/post/${post._id}`,
+                                    shareItems: [
+                                        {
+                                            bgColor: "bg-green-500",
+                                            Icon: <IconRepeat className="size-8" />,
+                                            onClick: () => {},
+                                        },
+                                    ],
+                                })
                             }
                         />
                         {!viewMode && (
@@ -176,7 +172,7 @@ export const PostMain = ({ post, viewMode }: MainPostProps) => {
                                 <PostActionButton
                                     Icon={IconMapPin}
                                     IconActive={IconMapPin}
-                                    onClick={() => openModal(<LocationModal post={post} />)}
+                                    onClick={() => openModal("location", { post })}
                                     isActive={true}
                                     classActive="text-blue-500 dark:text-blue-600"
                                 />

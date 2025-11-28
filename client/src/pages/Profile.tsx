@@ -5,11 +5,7 @@ import { useDeleteFollow } from "@/hooks/user/useDeleteFollow";
 import { useUserById } from "@/hooks/user/useUserById";
 import { useStoreUser } from "@/stores/userStore";
 import { UserPostData } from "@/types/postDataType";
-import { FeedPosts } from "@components/features/post/FeedPosts";
-import { ImageModal } from "@components/modal/ImageModal";
-import { Button } from "@components/ui/Button";
 import { ProfileSkeleton } from "@components/ui/ProfileSkeleton";
-import { IconMessage2 } from "@tabler/icons-react";
 import { useParams } from "react-router-dom";
 
 export const Profile = () => {
@@ -59,70 +55,45 @@ export const Profile = () => {
 
     return (
         <>
-            <main className="grid w-full grid-cols-1">
-                <section className="mx-auto mt-5 mb-10 w-full max-w-5xl border-b-1 border-zinc-200 lg:px-1 dark:border-zinc-800">
-                    <header className="relative pb-10">
-                        <div className="h-40 w-full overflow-hidden rounded-3xl bg-zinc-300 md:h-75 dark:bg-zinc-800">
-                            {user?.banner && (
-                                <img
-                                    src={user.banner}
-                                    alt="Banner"
-                                    className="h-full w-full object-cover"
-                                />
-                            )}
+            <header className="max-xxl:px-1 relative mx-auto mt-5 h-40 w-full max-w-7xl md:h-75">
+                <figure className="relative mx-auto h-full w-full rounded-3xl bg-zinc-300 shadow-md dark:bg-zinc-800">
+                    {user?.banner && (
+                        <img
+                            src={user.banner}
+                            alt="Banner"
+                            className="h-full w-full rounded-3xl object-cover"
+                        />
+                    )}
+                </figure>
+                <figure className="absolute top-[112%] left-15 translate-y-[-50%] ">
+                    <img
+                        src={user?.image}
+                        alt="Foto de perfil"
+                        className="border-body-background h-35 w-35 rounded-full cursor-pointer border-3 object-cover shadow-md lg:h-55 lg:w-55 dark:ring-zinc-900"
+                        onClick={() => openModal("image", { image: user.image })}
+                    />
+                </figure>
+            </header>
 
-                            <figure className="">
-                                <img
-                                    src={user?.image}
-                                    alt="Foto de perfil"
-                                    className="ring-body-background absolute top-[25%] left-[50%] h-35 w-35 rounded-full object-cover ring-3 max-lg:translate-x-[-50%] lg:top-[45%] lg:left-15 lg:h-50 lg:w-50 dark:ring-zinc-900"
-                                    onClick={() => openModal(<ImageModal image={user.image} />)}
-                                />
-                            </figure>
-                        </div>
-                    </header>
+            <main className="grid-cols-[250px_1fr] mx-auto grid w-full max-w-6xl space-y-5 mt-4">
+                <div className="col-start-2 col-end-3">
+                    <h1 className="font-title text-title text-2xl max-lg:text-center lg:text-6xl">
+                        {user.username}
+                    </h1>
+                    <p className="text-subtitle text-lg max-lg:text-center lg:text-xl">
+                        {user.fName} {user.lName}
+                    </p>
+                    {/* <div className="text-subtitle text-md mt-4 flex w-full items-center gap-3 font-medium">
+                        <p>{user.meta.counters.followers} Seguidores</p>
+                        <p>{user.meta.counters.following} Seguindo</p>
+                        <p>
+                            {user.meta.counters.totalReports || 0} Postage
+                            {user.meta.counters.totalReports != 1 ? "ns" : "m"}
+                        </p>
+                    </div> */}
 
-                    <main className="mt-5 mb-10 grid w-full">
-                        <div>
-                            <div className="flex items-center justify-between gap-5 py-5">
-                                <h1 className="font-title text-title text-2xl font-medium max-lg:text-center lg:text-5xl">
-                                    {user.username}
-                                </h1>
-
-                                <p className="text-subtitle mt-3 space-x-3 text-lg font-medium max-lg:text-center">
-                                    <span>{user.meta.counters.followers} Seguidores</span>
-                                    <span>{user.meta.counters.following} Seguindo</span>
-                                    <span>
-                                        {user.meta.counters.totalReports || 0} Postage
-                                        {user.meta.counters.totalReports != 1 ? "ns" : "m"}
-                                    </span>
-                                </p>
-                            </div>
-
-                            <div className="flex items-center justify-between gap-5 py-5">
-                                <p className="text-subtitle text-md mt-5">{user.about}</p>
-                                {userId !== userData!._id && (
-                                    <span className="flex items-center gap-2">
-                                        <Button
-                                            text={user.isFollowing ? "Seguindo" : "Seguir"}
-                                            onClick={() => handleFollow()}
-                                            styleType={user.isFollowing ? "outlined" : "primary"}
-                                        />
-                                        <Button Icon={IconMessage2} styleType="outlined" />
-                                    </span>
-                                )}
-                            </div>
-                        </div>
-
-                        <div></div>
-                    </main>
-                </section>
-                <FeedPosts
-                    posts={posts}
-                    feedLoading={feedLoading}
-                    feedHasNextPage={feedHasNextPage}
-                    fetchFeedNextPage={fetchFeedNextPage}
-                />
+                    {/* <p className="text-title mt-4">{user.about}</p> */}
+                </div>
             </main>
         </>
     );

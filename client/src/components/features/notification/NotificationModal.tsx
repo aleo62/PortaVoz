@@ -1,15 +1,14 @@
-import { useModal } from "@/contexts/ModalContext";
+import { ModalDefaultProps } from "@/contexts/ModalContext";
 import { useNotifications } from "@/hooks/user/useNotification";
 import { NotificationData } from "@/types/notificationDataType";
 import { IconChecks, IconInfinity, IconSettings, IconX } from "@tabler/icons-react";
 import { motion } from "framer-motion";
 import { NotificationItem } from "./NotificationItem";
 
-export const NotificationModal = () => {
+export const NotificationModal = ({ zIndex, closeModal }: ModalDefaultProps) => {
     const { data, isLoading } = useNotifications();
     const notifications: NotificationData[] =
         data?.pages.flatMap((page) => page.notifications as NotificationData[]) || [];
-    const { closeModal } = useModal();
 
     return (
         <motion.div
@@ -18,6 +17,7 @@ export const NotificationModal = () => {
             exit={{ translateX: 50, opacity: 0 }}
             transition={{ duration: 0.2 }}
             className="ml-auto grid h-full w-full max-w-lg grid-rows-[auto_1fr_auto] bg-white shadow-[0px_0px_35px_-19px_rgba(0,_0,_0,_0.1)] lg:mr-5 lg:rounded-2xl dark:bg-zinc-900"
+            style={{ zIndex }}
         >
             <header className="mb-5 px-5 pt-6">
                 <div className="flex items-center justify-between">

@@ -23,7 +23,7 @@ export const FeedPosts = ({
         }
     }, [inView]);
     return (
-        <section className="flex w-full flex-col items-center gap-5 overflow-x-hidden">
+        <section className="flex w-full flex-col  items-center gap-5 overflow-x-hidden">
             {feedLoading && <PostSkeleton />}
 
             {!feedLoading && !posts.length && (

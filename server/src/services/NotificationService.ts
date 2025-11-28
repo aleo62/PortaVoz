@@ -14,6 +14,18 @@ export const sendNotificationToUser = async ({
         if (!userData) throw new Error("User does not exists.");
         if (userId === sender) return;
 
+        const { notifications } = userData.meta.preferences || {
+            notifications: {
+                receiveVote: true,
+                receiveFollow: true,
+                receiveComment: true,
+            },
+        };
+
+        if (type === "Vote" && !notifications.receiveVote) return;
+        if (type === "Follow" && !notifications.receiveFollow) return;
+        if (type === "Comment" && !notifications.receiveComment) return;
+
         const existing = await Notification.find({ userId, sender, type });
         if (existing.length > 0 && type !== "Comment") return;
 

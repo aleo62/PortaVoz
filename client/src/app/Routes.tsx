@@ -2,7 +2,6 @@ import { ProtectedLayout } from "@/layouts/ProtectedLayout";
 import { Dashboard } from "@/pages/admin/Dashboard";
 import { Chat } from "@/pages/Chat";
 import { CreatePost } from "@/pages/CreatePost";
-import { EditProfile } from "@/pages/EditProfile";
 import { Feed } from "@/pages/Feed";
 import { ForgotPassword } from "@/pages/ForgotPassword";
 import { Login } from "@/pages/Login";
@@ -82,16 +81,7 @@ const RoutesArray: RouteDataType[] = [
         path: "/not-verified",
         Page: <NotVerified />,
         layouts: [{ Component: ProtectedLayout }],
-    },
-    {
-        key: "EditProfile",
-        path: "/edit-profile",
-        Page: <EditProfile />,
-        layouts: [
-            { Component: SidebarLayout, props: { title: "Editar Perfil" } },
-            { Component: ProtectedLayout },
-        ],
-    },
+    }, 
     {
         key: "Feed",
         path: "/feed",

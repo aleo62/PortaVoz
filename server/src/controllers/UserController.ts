@@ -5,8 +5,12 @@ import {
     createUserService,
     deleteUserService,
     fetchUser,
+    getPreferencesByField,
+    getPreferencesByUser,
     getUserByIdService,
     getUsersService,
+    makeUserAdminService,
+    updateUserPreferenceService,
     verifyRemainingReports,
 } from "@/services/UserService";
 import { Request, Response } from "express";
@@ -18,7 +22,12 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
         const page = Number(req.query.page) || 1,
             limit = config.SYSTEM_USERS_PER_PAGE;
 
-        const { users, count } = await getUsersService(uid, name as string || "", page, limit);
+        const { users, count } = await getUsersService(
+            uid,
+            (name as string) || "",
+            page,
+            limit
+        );
 
         res.status(200).json({ users, hasMore: count > page * limit, count });
     } catch (err) {
@@ -94,7 +103,10 @@ export const createUser = async (
     }
 };
 
-export const deleteUser = async (req: Request, res: Response): Promise<void> => {
+export const deleteUser = async (
+    req: Request,
+    res: Response
+): Promise<void> => {
     try {
         const { userId } = req.params;
         await deleteUserService(userId);
@@ -148,6 +160,92 @@ export const editUser = async (req: Request, res: Response): Promise<void> => {
         });
 
         res.status(200).json({ user });
+    } catch (err) {
+        if (!(err instanceof Error)) throw err;
+        res.status(500).json({
+            code: "ServerError",
+            message: "Internal Server Error",
+            errors: err.message,
+        });
+    }
+};
+
+export const getUserPreferences = async (
+    req: Request,
+    res: Response
+): Promise<void> => {
+    try {
+        const { userId } = req.params;
+        const preferences = await getPreferencesByUser(userId);
+        res.status(200).json({ preferences });
+    } catch (err) {
+        if (!(err instanceof Error)) throw err;
+        res.status(500).json({
+            code: "ServerError",
+            message: "Internal Server Error",
+            errors: err.message,
+        });
+    }
+};
+
+export const getUserPreferencesByField = async (
+    req: Request,
+    res: Response
+): Promise<void> => {
+    try {
+        const { userId, field } = req.params;
+        if (field !== "notifications") {
+            res.status(400).json({ message: "Invalid field" });
+            return;
+        }
+        const preferences = await getPreferencesByField(userId, field);
+        res.status(200).json({ preferences });
+    } catch (err) {
+        if (!(err instanceof Error)) throw err;
+        res.status(500).json({
+            code: "ServerError",
+            message: "Internal Server Error",
+            errors: err.message,
+        });
+    }
+};
+
+export const editPreferences = async (
+    req: Request,
+    res: Response
+): Promise<void> => {
+    try {
+        const { userId } = req.params;
+        const { path, value } = req.body;
+
+        const result = await updateUserPreferenceService(userId, path, value);
+
+        if (result.modifiedCount === 0) {
+            res.status(400).json({
+                message: "Failed to update preference or value unchanged",
+            });
+            return;
+        }
+
+        res.status(200).json({ ok: true, value });
+    } catch (err) {
+        if (!(err instanceof Error)) throw err;
+        res.status(500).json({
+            code: "ServerError",
+            message: "Internal Server Error",
+            errors: err.message,
+        });
+    }
+};
+
+export const makeUserAdmin = async (
+    req: Request,
+    res: Response
+): Promise<void> => {
+    try {
+        const { userId } = req.params;
+        await makeUserAdminService(userId);
+        res.status(200).json({ ok: true });
     } catch (err) {
         if (!(err instanceof Error)) throw err;
         res.status(500).json({

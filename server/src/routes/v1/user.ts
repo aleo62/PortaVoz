@@ -12,8 +12,10 @@ import {
     getRemainingReports,
     getUserById,
     getUsers,
+    makeUserAdmin,
 } from "@/controllers/UserController";
 import upload from "@/lib/multer";
+import { authAdmin } from "@/middlewares/auth/authAdmin";
 import { authenticateOwnerOrAdmin } from "@/middlewares/auth/authOwnerOrAdmin";
 import { authenticateUser } from "@/middlewares/auth/authUser";
 import { validationError } from "@/middlewares/validation/validationError";
@@ -77,7 +79,6 @@ router.get(
     getRemainingReports
 );
 
-
 router.get(
     "/:followingId/following",
     authenticateUser,
@@ -124,5 +125,13 @@ router.get(
 //     validationError,
 //     verifyCode
 // );
+
+router.put(
+    "/:userId/admin",
+    authenticateUser,
+    authAdmin,
+    validationError,
+    makeUserAdmin
+);
 
 export default router;

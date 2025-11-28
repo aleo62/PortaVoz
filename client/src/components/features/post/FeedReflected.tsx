@@ -13,7 +13,7 @@ export const FeedReflected = () => {
         (reflectedData?.pages.flatMap((page) => page.posts) as PostData[]) || [];
 
     return (
-        <section className="sticky top-10 w-full max-w-85 hidden h-fit gap-3 space-y-1 rounded-2xl py-1 pb-4 shadow-[0px_4px_16px_-15px_rgba(0,_0,_0,_0.1)] ring-1 ring-zinc-200 lg:block dark:ring-zinc-800">
+        <section className="sticky w-full max-w-85 hidden h-fit gap-3 space-y-1 rounded-2xl lg:block ">
             <div className="xxl:px-4 mb-3 flex items-center justify-between px-3 py-4">
                 <h2 className="text-title text-lg">Repercutidos</h2>
                 <IconDotsVertical className="mr-2 size-4" />

@@ -19,7 +19,7 @@ export const getUsersService = async (
 
     const count = await User.countDocuments({
         _id: { $ne: uid },
-        username: { $regex: name },
+        username: { $regex: name }, 
     });
 
     return { count, users };
@@ -114,11 +114,9 @@ export const createUserService = async (
     return { user };
 };
 
-export const deleteUserService = async (
-    userId: string,
-) => {
+export const deleteUserService = async (userId: string) => {
     await User.deleteOne({ _id: userId });
-    await admin.auth().deleteUser(userId)
+    await admin.auth().deleteUser(userId);
 };
 
 export const fetchUser = async (uid: string): Promise<UserData> => {
@@ -157,4 +155,34 @@ export const verifyRemainingReports = async (
         return { canReport: true, remaining, resetAt };
     }
     return { canReport: false, remaining, resetAt };
+};
+
+export const getPreferencesByUser = async (userId: string) => {
+    const user = await fetchUser(userId);
+    return user.meta.preferences;
+};
+
+export const getPreferencesByField = async (
+    userId: string,
+    field: "notifications"
+) => {
+    const user = await fetchUser(userId);
+    return user.meta.preferences[field];
+};
+
+export const updateUserPreferenceService = async (
+    userId: string,
+    path: string,
+    value: any
+) => {
+    const updatePath = `meta.preferences.${path}`;
+    const result = await User.updateOne(
+        { _id: userId },
+        { $set: { [updatePath]: value } }
+    );
+    return result;
+};
+
+export const makeUserAdminService = async (userId: string) => {
+    await admin.auth().setCustomUserClaims(userId, { admin: true });
 };

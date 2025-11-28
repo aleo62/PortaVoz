@@ -1,7 +1,6 @@
 import { Sidebar } from "@components/features/sidebar/Sidebar";
-import { SidebarHeader } from "@components/features/sidebar/SidebarHeader";
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { SidebarHeader } from "../features/sidebar/SidebarHeader";
+import { useModal } from "@/contexts/ModalContext";
 
 type SidebarLayoutProps = {
     children: React.ReactNode;
@@ -16,26 +15,23 @@ export const SidebarLayout = ({
     noHeader,
     linkBack,
     orientation = "col",
-    title
+    title,
 }: SidebarLayoutProps) => {
-    const location = useLocation();
-
-    useEffect(() => {
-        const section = document.querySelector("section.scrollable-layout");
-        if (section) section.scrollTo({ top: 0, behavior: "instant" });
-    }, [location.pathname]);
+    const { openModal } = useModal();
 
     return (
-        <div className="relative flex lg:h-screen">
+        <div className="relative flex h-screen overflow-hidden">
             <Sidebar />
 
-            <section className="flex flex-1 flex-col">
-                <SidebarHeader linkBack={linkBack} noHeader={noHeader} title={title}/>
+            <section className="flex w-full flex-1 flex-col overflow-hidden my-3 mr-2 rounded-xl ring-1 ring-zinc-200 dark:ring-zinc-800 bg-white dark:bg-zinc-900">
+                <SidebarHeader linkBack={linkBack} noHeader={noHeader} title={title} openModal={openModal as any}/>
 
                 <div
-                    className={`scrollbar-thin dark:scrollbar-thumb-zinc-700 scrollbar-thumb-zinc-400 scrollbar-track-transparent flex flex-1 overflow-y-auto ${
-                        orientation === "col" ? "flex-col pb-6" : "flex-row justify-center"
-                    } max-lg:px-1`}
+                    className={`scrollbar-thin dark:scrollbar-thumb-zinc-700 scrollbar-thumb-zinc-400 scrollbar-track-transparent flex flex-1   ${
+                        orientation === "col"
+                            ? "flex-col overflow-y-auto pb-6"
+                            : "flex-row justify-center"
+                    } h-full max-lg:px-1`}
                 >
                     {children}
                 </div>

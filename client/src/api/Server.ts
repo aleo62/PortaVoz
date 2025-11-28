@@ -49,7 +49,7 @@ export class Server {
     }
 
     static async deletePostById(id: string) {
-        return (await api.delete(`/posts/${id}`));
+        return await api.delete(`/posts/${id}`);
     }
 
     /* COMMENT ENDPOINTS -----------> */
@@ -66,7 +66,7 @@ export class Server {
     }
 
     static async deleteCommentById(id: string) {
-        return (await api.delete(`/posts/comments/${id}`));
+        return await api.delete(`/posts/comments/${id}`);
     }
 
     /* VOTES ENDPOINTS -----------> */
@@ -76,7 +76,7 @@ export class Server {
     }
 
     static async deleteVoteById(id: string) {
-        return (await api.delete(`/posts/${id}/desupvote`));
+        return await api.delete(`/posts/${id}/desupvote`);
     }
 
     /* USER ENDPOINTS -----------> */
@@ -121,7 +121,7 @@ export class Server {
     }
 
     static async deleteFollow(followingId: string) {
-        return (await api.delete(`/users/${followingId}/unfollow`));
+        return await api.delete(`/users/${followingId}/unfollow`);
     }
 
     /* VALIDATOR ENDPOINTS -----------> */
@@ -191,7 +191,7 @@ export class Server {
     }
 
     static async deleteRepost(id: string) {
-        return (await api.delete(`/posts/${id}/repost`));
+        return await api.delete(`/posts/${id}/repost`);
     }
 
     /* FAVORITE ENDPOINTS -----------> */
@@ -201,7 +201,50 @@ export class Server {
     }
 
     static async deleteFavorite(id: string) {
-        return (await api.delete(`/posts/${id}/favorite`));
+        return await api.delete(`/posts/${id}/favorite`);
+    }
+
+    /* REPORT ENDPOINTS -----------> */
+
+    // static async createCategory(category: string) {
+    //     return api.post(`/posts/${id}/report`, {});
+    // }
+
+    static async getReportCategories(type?: string) {
+        return (
+            await api.get(`/reports/categories`, {
+                params: { type },
+            })
+        ).data;
+    }
+
+    static async createReportCategory(data: {
+        title: string;
+        desc: string;
+        severity: number;
+        type?: string;
+    }) {
+        return (await api.post(`/reports/categories`, data)).data;
+    }
+
+    static async updateReportCategory(
+        id: string,
+        data: { title?: string; desc?: string; severity?: number; type?: string },
+    ) {
+        return (await api.put(`/reports/categories/${id}`, data)).data;
+    }
+
+    static async deleteReportCategory(id: string) {
+        return (await api.delete(`/reports/categories/${id}`)).data;
+    }
+
+    static async createReport(data: {
+        category: string;
+        reportedItemType: string;
+        reportedItemId: string;
+        desc: string;
+    }) {
+        return (await api.post(`/reports`, data)).data;
     }
 
     /* Auth ENDPOINTS -----------> */
