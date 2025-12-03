@@ -1,4 +1,4 @@
-import { IconHome, IconInbox, IconMessageCircle, IconSmartHome, IconUserHexagon } from "@tabler/icons-react";
+import { IconInbox, IconMessageCircle, IconSmartHome, IconUserHexagon } from "@tabler/icons-react";
 
 export const SidebarItems = [
     { label: "Início", icon: IconSmartHome, href: "/feed" },

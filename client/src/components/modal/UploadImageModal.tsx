@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/Button";
 import { DropdownFiles } from "@/components/ui/DropdownFiles";
 import { ModalDefaultProps, useModal } from "@/contexts/ModalContext";
 import { ModalProvider } from "@/contexts/ModalProvider";
@@ -9,11 +8,7 @@ type UploadImageModalProps = ModalDefaultProps & {
     onUpload: (file: File) => void;
 };
 
-export const UploadImageModal = ({
-    title,
-    onUpload,
-    zIndex,
-}: UploadImageModalProps) => {
+export const UploadImageModal = ({ title, onUpload, zIndex }: UploadImageModalProps) => {
     const { closeModal } = useModal();
 
     const handleUpload = (file: File) => {
@@ -30,7 +25,7 @@ export const UploadImageModal = ({
             className="my-auto h-fit w-full max-w-[97%] rounded-2xl bg-white pb-4 lg:max-w-lg dark:bg-zinc-900"
             style={{ zIndex }}
         >
-            <header className="border-b-1 border-zinc-200 px-3 py-6 lg:px-5 dark:border-zinc-800 flex items-center justify-between">
+            <header className="flex items-center justify-between border-b-1 border-zinc-200 px-3 py-6 lg:px-5 dark:border-zinc-800">
                 <div>
                     <h3 className="font-title text-title text-xl lg:text-2xl">{title}</h3>
                     <p className="text-subtitle text-sm">Selecione uma imagem para enviar</p>

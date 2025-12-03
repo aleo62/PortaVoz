@@ -1,5 +1,4 @@
 import { SettingsPages } from "@/constants/settings";
-import { useModal } from "@/contexts/ModalContext";
 import { ModalProvider } from "@/contexts/ModalProvider";
 
 export const SettingsContent = ({

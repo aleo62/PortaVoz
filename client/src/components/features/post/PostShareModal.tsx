@@ -1,5 +1,5 @@
 import { ModalDefaultProps } from "@/contexts/ModalContext";
-import { IconX } from "@tabler/icons-react";
+import { ModalProvider } from "@/contexts/ModalProvider";
 import { motion } from "framer-motion";
 import { ReactElement } from "react";
 
@@ -14,12 +14,7 @@ export type ShareItems = {
     onClick: () => void;
 };
 
-export const PostShareModal = ({
-    shareItems,
-    postLink,
-    zIndex,
-    closeModal,
-}: PostShareModalProps) => {
+export const PostShareModal = ({ shareItems, postLink, zIndex }: PostShareModalProps) => {
     return (
         <motion.div
             initial={{ scale: 0.95 }}
@@ -29,10 +24,7 @@ export const PostShareModal = ({
             className="my-auto h-fit w-full max-w-lg space-y-5 rounded-xl bg-white p-3 dark:bg-zinc-900"
             style={{ zIndex }}
         >
-            <IconX
-                className="size-5 cursor-pointer text-zinc-500 dark:text-white"
-                onClick={closeModal}
-            />
+            <ModalProvider.Close />
 
             {shareItems.map((item) => (
                 <div className={`${item.bgColor} w-fit rounded-3xl p-5 text-white`}>
