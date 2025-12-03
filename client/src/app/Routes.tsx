@@ -1,5 +1,5 @@
-import { ProtectedLayout } from "@/layouts/ProtectedLayout";
-import { Dashboard } from "@/pages/admin/Dashboard";
+import { ProtectedRoute } from "@/components/guards/ProtectedRoute";
+import { AdminDashboard } from "@/pages/admin/AdminDashboard";
 import { Chat } from "@/pages/Chat";
 import { CreatePost } from "@/pages/CreatePost";
 import { Feed } from "@/pages/Feed";
@@ -56,48 +56,57 @@ const RoutesArray: RouteDataType[] = [
         key: "Login",
         path: "/auth/login",
         Page: <Login />,
-        layouts: [{ Component: ProtectedLayout, props: { onlyGuest: true } }],
+        layouts: [{ Component: ProtectedRoute, props: { onlyGuest: true } }],
     },
     {
         key: "Register",
         path: "/auth/register",
         Page: <Register />,
-        layouts: [{ Component: ProtectedLayout, props: { onlyGuest: true } }],
+        layouts: [{ Component: ProtectedRoute, props: { onlyGuest: true } }],
     },
     {
         key: "ForgotPassword",
         path: "/auth/forgot-password",
         Page: <ForgotPassword />,
-        layouts: [{ Component: ProtectedLayout, props: { onlyGuest: true } }],
+        layouts: [{ Component: ProtectedRoute, props: { onlyGuest: true } }],
     },
     {
         key: "Verify",
         path: "/auth/verify",
         Page: <Verify />,
-        layouts: [{ Component: ProtectedLayout }],
+        layouts: [{ Component: ProtectedRoute }],
     },
     {
         key: "NotVerified",
         path: "/not-verified",
         Page: <NotVerified />,
-        layouts: [{ Component: ProtectedLayout }],
-    }, 
+        layouts: [{ Component: ProtectedRoute }],
+    },
     {
         key: "Feed",
         path: "/feed",
         Page: <Feed />,
         layouts: [
             { Component: SidebarLayout, props: { title: "Feed" } },
-            { Component: ProtectedLayout },
+            { Component: ProtectedRoute },
         ],
     },
     {
         key: "AdminDashboard",
         path: "/admin",
-        Page: <Dashboard />,
+        Page: <AdminDashboard />,
         layouts: [
-            { Component: SidebarLayout },
-            { Component: ProtectedLayout, props: { onylyAdmin: true } },
+            { Component: SidebarLayout, props: { orientation: "row", noHeader: true } },
+            { Component: ProtectedRoute, props: { onylyAdmin: true } },
+        ],
+    },
+    {
+        key: "AdminDashboard",
+        path: "/admin/:adminTab",
+        Page: <AdminDashboard />,
+        layouts: [
+            { Component: SidebarLayout, props: { orientation: "row", noHeader: true } },
+            { Component: ProtectedRoute, props: { onylyAdmin: true } },
         ],
     },
     {
@@ -106,7 +115,7 @@ const RoutesArray: RouteDataType[] = [
         Page: <Chat />,
         layouts: [
             { Component: SidebarLayout, props: { noHeader: true, orientation: "row" } },
-            { Component: ProtectedLayout },
+            { Component: ProtectedRoute },
         ],
     },
     {
@@ -115,7 +124,7 @@ const RoutesArray: RouteDataType[] = [
         Page: <Chat />,
         layouts: [
             { Component: SidebarLayout, props: { noHeader: true, orientation: "row" } },
-            { Component: ProtectedLayout },
+            { Component: ProtectedRoute },
         ],
     },
     {
@@ -127,7 +136,7 @@ const RoutesArray: RouteDataType[] = [
                 Component: SidebarLayout,
                 props: { linkBack: "Feed", orientation: "row", title: "Ver Post" },
             },
-            { Component: ProtectedLayout },
+            { Component: ProtectedRoute },
         ],
     },
     {
@@ -136,7 +145,7 @@ const RoutesArray: RouteDataType[] = [
         Page: <Profile />,
         layouts: [
             { Component: SidebarLayout, props: { title: "Perfil" } },
-            { Component: ProtectedLayout },
+            { Component: ProtectedRoute },
         ],
     },
     {
@@ -145,7 +154,7 @@ const RoutesArray: RouteDataType[] = [
         Page: <Profile />,
         layouts: [
             { Component: SidebarLayout, props: { title: "Perfil" } },
-            { Component: ProtectedLayout },
+            { Component: ProtectedRoute },
         ],
     },
     {
@@ -154,7 +163,7 @@ const RoutesArray: RouteDataType[] = [
         Page: <CreatePost />,
         layouts: [
             { Component: SidebarLayout, props: { title: "Criar Post" } },
-            { Component: ProtectedLayout },
+            { Component: ProtectedRoute },
         ],
     },
     {

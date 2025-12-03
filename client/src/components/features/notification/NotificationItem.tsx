@@ -25,7 +25,7 @@ export const NotificationItem = ({ notification }: { notification: NotificationD
                 setPreview(<p>{formatDate(notification.createdAt)}</p>);
                 break;
         }
-    }, [notification]);
+    }, [notification.type]);
 
     return (
         <ul

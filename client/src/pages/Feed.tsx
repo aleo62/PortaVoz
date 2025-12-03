@@ -18,9 +18,7 @@ export const Feed = () => {
     const posts: PostData[] = (feedData?.pages.flatMap((page) => page.posts) as PostData[]) || [];
 
     return (
-        <main
-            className={`xxl:gap-10 grid-cols-0 xxl:px-10 relative mx-auto mt-5 grid w-full max-w-7xl lg:mt-10 lg:grid-cols-[1.8fr_1fr] lg:gap-2 lg:px-1`}
-        >
+        <main className="mx-auto mt-5 w-full max-w-7xl lg:px-10 lg:grid grid-cols-2 gap-15">
             <FeedPosts
                 posts={posts}
                 feedLoading={feedLoading}

@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/Button";
 import { FormInput } from "@/components/ui/FormInput";
-import { ModalDefaultProps } from "@/contexts/ModalContext";
+import { useModal } from "@/contexts/ModalContext";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
-export const ChangePasswordModal = ({ closeModal }: ModalDefaultProps) => {
+export const ChangePasswordModal = () => {
+    const { closeModal } = useModal();
     const [passwordData, setPasswordData] = useState({
         currentPassword: "",
         newPassword: "",
@@ -21,7 +22,6 @@ export const ChangePasswordModal = ({ closeModal }: ModalDefaultProps) => {
             toast.error("As senhas não coincidem!");
             return;
         }
-        // TODO: Implement password change logic
         toast.info("Funcionalidade de alterar senha em desenvolvimento.");
         closeModal();
     };

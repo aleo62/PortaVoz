@@ -1,20 +1,26 @@
 import {
     createCategory,
     deleteCategory,
-    getAllCategories,
+    getCategories,
     updateCategory,
 } from "@/controllers/ReportCategoryController";
-import { createReport } from "@/controllers/ReportController";
+import {
+    createReport,
+    deleteReport,
+    getReports,
+    updateReport,
+} from "@/controllers/ReportController";
+import { authAdmin } from "@/middlewares/auth/authAdmin";
 import { authenticateUser } from "@/middlewares/auth/authUser";
 import { authenticateVerified } from "@/middlewares/auth/authVerified";
-import { authAdmin } from "@/middlewares/auth/authAdmin";
 import { validationError } from "@/middlewares/validation/validationError";
 import { Router } from "express";
 import { body } from "express-validator";
 
 const router = Router();
 
-router.get("/categories", authenticateUser, getAllCategories);
+router.get("/", authenticateUser, authAdmin, getReports);
+router.get("/categories", authenticateUser, getCategories);
 
 router.post(
     "/",
@@ -24,7 +30,9 @@ router.post(
     body("reportedItemType")
         .isIn(["post", "user", "comment"])
         .withMessage("Reported item type must be post, user or comment"),
-    body("reportedItemId").notEmpty().withMessage("Reported item ID is required"),
+    body("reportedItemId")
+        .notEmpty()
+        .withMessage("Reported item ID is required"),
     body("desc")
         .optional()
         .isLength({ max: 500 })
@@ -51,7 +59,10 @@ router.put(
     authenticateUser,
     authAdmin,
     body("title").optional().notEmpty().withMessage("Title cannot be empty"),
-    body("desc").optional().notEmpty().withMessage("Description cannot be empty"),
+    body("desc")
+        .optional()
+        .notEmpty()
+        .withMessage("Description cannot be empty"),
     body("severity")
         .optional()
         .isInt({ min: 1, max: 5 })
@@ -60,6 +71,26 @@ router.put(
     updateCategory
 );
 
-router.delete("/categories/:categoryId", authenticateUser, authAdmin, deleteCategory);
+router.delete(
+    "/categories/:categoryId",
+    authenticateUser,
+    authAdmin,
+    deleteCategory
+);
+
+router.put(
+    "/:reportId",
+    authenticateUser,
+    authAdmin,
+    body("status")
+        .isIn(["pending", "reviewed", "resolved", "dismissed"])
+        .withMessage(
+            "Status must be pending, reviewed, resolved, or dismissed"
+        ),
+    validationError,
+    updateReport
+);
+
+router.delete("/:reportId", authenticateUser, authAdmin, deleteReport);
 
 export default router;

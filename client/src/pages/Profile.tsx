@@ -1,58 +1,61 @@
+import { FeedPosts } from "@/components/features/post/FeedPosts";
+import { ProfileActions } from "@/components/features/profile/ProfileActions";
+import { ProfileTabs } from "@/components/features/profile/ProfileTabs";
+import { Button } from "@/components/ui/Button";
 import { useModal } from "@/contexts/ModalContext";
+import { usePostsByUser } from "@/hooks/posts/usePostsByUser";
+import { useCreateFollow } from "@/hooks/user/useCreateFollow";
+import { useDeleteFollow } from "@/hooks/user/useDeleteFollow";
 import { useUserById } from "@/hooks/user/useUserById";
 import { useStoreUser } from "@/stores/userStore";
 import { ProfileSkeleton } from "@components/ui/ProfileSkeleton";
-import { useParams } from "react-router-dom";
+import { IconSettings } from "@tabler/icons-react";
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const Profile = () => {
     const { openModal } = useModal();
     const { user: userData } = useStoreUser();
     const { userId } = useParams();
+    const navigate = useNavigate();
 
     const requestId = userId || userData?._id;
+    const isOwnProfile = !userId || userId === userData?._id;
+    const [activeTab, setActiveTab] = useState<"all" | "posts" | "reposts">("all");
 
     const { data: user, isLoading: userLoading } = useUserById(requestId);
-    // const {
-    //     data: feedData,
-    //     isLoading: feedLoading,
-    //     fetchNextPage: fetchFeedNextPage,
-    //     hasNextPage: feedHasNextPage,
-    // } = usePostsByUser(requestId!);
+    const {
+        data: feedData,
+        isLoading: feedLoading,
+        fetchNextPage: fetchFeedNextPage,
+        hasNextPage: feedHasNextPage,
+    } = usePostsByUser(requestId!, activeTab!);
 
-    // const posts: UserPostData[] =
-    //     (feedData?.pages.flatMap((page) => page.posts) as UserPostData[]) || [];
+    const posts: any[] = feedData?.pages.flatMap((page) => page.posts) || [];
 
-    // const createFollow = useCreateFollow();
-    // const deleteFollow = useDeleteFollow();
-    // const navigate = useNavigate();
+    const createFollow = useCreateFollow();
+    const deleteFollow = useDeleteFollow();
 
-    // const handleFollow = async () => {
-    //     if (Boolean(user.isFollowing)) {
-    //         user.isFollowing = false;
-    //         user.meta.counters.followers--;
-    //         await deleteFollow.mutateAsync(userId!);
-    //     } else {
-    //         user.isFollowing = true;
-    //         user.meta.counters.followers++;
-    //         await createFollow.mutateAsync(userId!);
-    //     }
-    // };
+    const handleFollow = async () => {
+        if (user?.isFollowing) {
+            await deleteFollow.mutateAsync(requestId!);
+        } else {
+            await createFollow.mutateAsync(requestId!);
+        }
+    };
 
-    // const getChatByUser = useChatByUsers();
-    // const fetchChat = async () => {
-    //     getChatByUser.mutateAsync({ otherUserId: userId! }).then((response) => {
-    //         navigate(`/chat/${response.chatId}`);
-    //     });
-    // };
+    const handleChat = () => {
+        navigate(`/chat`);
+    };
 
-    if (userLoading || !user || (userId && !userId)) {
+    if (userLoading || !user) {
         return <ProfileSkeleton />;
     }
 
     return (
         <>
-            <header className="max-xxl:px-1 relative mx-auto mt-5 h-40 w-full max-w-7xl md:h-75">
-                <figure className="relative mx-auto h-full w-full rounded-3xl bg-zinc-300 shadow-md dark:bg-zinc-800">
+            <header className="max-xxl:px-1 relative mx-auto mt-5 w-full max-w-7xl md:h-75 px-2">
+                <figure className="relative mx-auto h-60 w-full rounded-3xl bg-zinc-300 shadow-md lg:h-78 dark:bg-zinc-800">
                     {user?.banner && (
                         <img
                             src={user.banner}
@@ -61,36 +64,85 @@ export const Profile = () => {
                         />
                     )}
                 </figure>
-                <figure className="absolute top-[112%] left-15 translate-y-[-50%]">
+                <figure className="absolute top-[115%] left-10 translate-y-[-50%]">
                     <img
                         src={user?.image}
                         alt="Foto de perfil"
-                        className="border-body-background h-35 w-35 cursor-pointer rounded-full border-3 object-cover shadow-md lg:h-55 lg:w-55 dark:ring-zinc-900"
+                        className="border-body-background h-45 w-45 cursor-pointer rounded-full border-3 object-cover shadow-md lg:h-55 lg:w-55 dark:ring-zinc-900"
                         onClick={() => openModal("image", { image: user.image })}
                     />
                 </figure>
             </header>
 
-            <main className="mx-auto mt-4 grid w-full max-w-6xl grid-cols-[250px_1fr] space-y-5">
-                <div className="col-start-2 col-end-3">
-                    <h1 className="font-title text-title text-2xl max-lg:text-center lg:text-6xl">
-                        {user.username}
-                    </h1>
-                    <p className="text-subtitle text-lg max-lg:text-center lg:text-xl">
-                        {user.fName} {user.lName}
-                    </p>
-                    {/* <div className="text-subtitle text-md mt-4 flex w-full items-center gap-3 font-medium">
-                        <p>{user.meta.counters.followers} Seguidores</p>
-                        <p>{user.meta.counters.following} Seguindo</p>
-                        <p>
-                            {user.meta.counters.totalReports || 0} Postage
-                            {user.meta.counters.totalReports != 1 ? "ns" : "m"}
+            <main className="mx-auto mt-8 mb-10 w-full max-w-7xl px-4">
+                <div className="ml-[220px] flex items-center justify-between lg:ml-[270px]">
+                    <div>
+                        <h1 className="font-title text-title text-2xl lg:text-4xl">
+                            {user.username}
+                        </h1>
+                        <p className="text-subtitle text-lg">
+                            {user.fName} {user.lName}
                         </p>
-                    </div> */}
+                    </div>
 
-                    {/* <p className="text-title mt-4">{user.about}</p> */}
+                    <div className="flex-shrink-0">
+                        {isOwnProfile ? (
+                            <Button
+                                text="Editar Perfil"
+                                Icon={IconSettings}
+                                styleType="outlined"
+                                size="small"
+                                onClick={() => openModal("settings", {})}
+                            />
+                        ) : (
+                            <ProfileActions
+                                userId={requestId!}
+                                isFollowing={user.isFollowing || false}
+                                onFollow={handleFollow}
+                                onUnfollow={handleFollow}
+                                onChat={handleChat}
+                            />
+                        )}
+                    </div>
                 </div>
+
+                <div className="text-subtitle mt-4 ml-[220px] flex items-center gap-6 text-sm font-medium lg:ml-[270px]">
+                    <p>
+                        <span className="text-title font-semibold">
+                            {user.meta?.counters?.followers || 0}
+                        </span>{" "}
+                        Seguidores
+                    </p>
+                    <p>
+                        <span className="text-title font-semibold">
+                            {user.meta?.counters?.following || 0}
+                        </span>{" "}
+                        Seguindo
+                    </p>
+                    <p>
+                        <span className="text-title font-semibold">
+                            {user.meta?.counters?.totalReports || 0}
+                        </span>{" "}
+                        Posts
+                    </p>
+                </div>
+
+                {user.about && (
+                    <div className="mt-4 ml-[220px] lg:ml-[270px]">
+                        <p className="text-subtitle">{user.about}</p>
+                    </div>
+                )}
             </main>
+
+            <ProfileTabs activeTab={activeTab} onTabChange={setActiveTab} />
+
+            <FeedPosts
+                posts={posts}
+                feedLoading={feedLoading}
+                feedHasNextPage={feedHasNextPage}
+                fetchFeedNextPage={fetchFeedNextPage}
+                grid
+            />
         </>
     );
 };

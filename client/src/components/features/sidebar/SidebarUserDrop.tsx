@@ -1,27 +1,14 @@
-import { dropdownActions } from "@/actions/dropdownActions";
-import { Modals } from "@/contexts/ModalContext";
+import { useDropdownActions } from "@/hooks/useDropdownActions";
 import { Dropdown, DropdownItemProps, DropdownProps } from "@components/ui/Dropdown";
 import { UserDropAuthItems, UserDropItems } from "@constants/drop";
-import { useNavigate } from "react-router-dom";
 
-export const SidebarUserDrop = ({
-    isOpen,
-    orientation,
-    onClose,
-    openModal,
-}: DropdownProps & { openModal: (modalKey: keyof typeof Modals, context?: any) => void }) => {
-    const navigate = useNavigate();
+export const SidebarUserDrop = ({ isOpen, orientation, onClose }: DropdownProps) => {
+    const { handleAction } = useDropdownActions();
 
     const handleItemClick = (item: DropdownItemProps) => {
-        const action = dropdownActions[item.action!];
+        if (!item.action) return;
 
-        if (!action) return;
-
-        action({
-            navigate,
-            openModal,
-            context: {},
-        });
+        handleAction(item.action, {});
     };
 
     return (

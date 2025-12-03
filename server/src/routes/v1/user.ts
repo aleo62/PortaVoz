@@ -8,9 +8,11 @@ import { getPostByUser } from "@/controllers/PostController";
 import {
     createUser,
     deleteUser,
+    editPreferences,
     editUser,
     getRemainingReports,
     getUserById,
+    getUserPreferencesByField,
     getUsers,
     makeUserAdmin,
 } from "@/controllers/UserController";
@@ -108,6 +110,26 @@ router.get(
     }),
     validationError,
     getNotifications
+);
+
+router.get(
+    "/:userId/preferences/:field",
+    authenticateUser,
+    authenticateOwnerOrAdmin(async (req: Request) => {
+        return req.params.userId;
+    }),
+    validationError,
+    getUserPreferencesByField
+);
+
+router.put(
+    "/:userId/preferences",
+    authenticateUser,
+    authenticateOwnerOrAdmin(async (req: Request) => {
+        return req.params.userId;
+    }),
+    validationError,
+    editPreferences
 );
 
 // // POST

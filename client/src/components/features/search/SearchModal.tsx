@@ -1,7 +1,8 @@
-import { IconHash, IconSearch, IconTableRow, IconUser, IconX } from "@tabler/icons-react";
+import { IconHash, IconSearch, IconTableRow, IconUser } from "@tabler/icons-react";
 import { motion } from "framer-motion";
 
 import { ModalDefaultProps } from "@/contexts/ModalContext";
+import { ModalProvider } from "@/contexts/ModalProvider";
 import { usePosts } from "@/hooks/posts/usePosts";
 import { useUsers } from "@/hooks/user/useUsers";
 import { PostData } from "@/types/postDataType";
@@ -11,7 +12,7 @@ import { SpinnerCircular } from "spinners-react";
 import { PostSearchItem } from "./PostSearchItem";
 import { UserSearchItem } from "./UserSearchItem";
 
-export const SearchModal = ({ zIndex, closeModal }: ModalDefaultProps) => {
+export const SearchModal = ({ zIndex }: ModalDefaultProps) => {
     const searchTopics = [
         { id: 1, label: "Denúncias", Icon: IconTableRow },
         { id: 2, label: "Usuários", Icon: IconUser },
@@ -58,12 +59,7 @@ export const SearchModal = ({ zIndex, closeModal }: ModalDefaultProps) => {
                     className="text-title flex-1 border-0 px-2 py-5 text-sm outline-0"
                     onChange={(e) => setSearchInput(e.target.value)}
                 />
-                <span
-                    className="ml-auto cursor-pointer rounded-full bg-zinc-200/60 p-2 hover:bg-zinc-200 dark:bg-zinc-800/60 hover:dark:bg-zinc-800"
-                    onClick={closeModal}
-                >
-                    <IconX className="text-subtitle size-4" />
-                </span>
+                <ModalProvider.Close />
             </header>
             <main className="py-2">
                 <ul className="flex items-center border-b-1 border-zinc-200 px-2 text-zinc-400 lg:px-5 dark:border-zinc-800 dark:text-zinc-600">

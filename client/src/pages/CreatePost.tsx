@@ -83,7 +83,7 @@ export const CreatePost = () => {
     return (
         <main className="mx-auto mt-5 w-full max-w-5xl lg:mt-10 lg:px-10">
             <form className="space-y-10" onSubmit={(e: FormEvent) => handleSubmit(e)}>
-                <Fieldset
+            <Fieldset
                     Icon={IconPhotoFilled}
                     title="Enviar Images"
                     ok={reportForm.images?.length! > 0}

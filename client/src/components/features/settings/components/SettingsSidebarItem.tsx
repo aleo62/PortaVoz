@@ -12,7 +12,7 @@ export const SettingsSidebarItem = ({
     return (
         <li key={item.key}>
             <button
-                className={`text-subtitle flex w-full items-center gap-2 rounded-xl p-3 px-2 transition ${isActive ? "text-title bg-zinc-200 dark:bg-zinc-800" : "hover:text-title hover:bg-zinc-100 dark:hover:bg-zinc-900"}`}
+                className={`flex w-full items-center gap-2 rounded-xl p-3 px-2 transition ${isActive ? "text-title bg-zinc-200 dark:bg-zinc-800" : "hover:text-title text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800/50"}`}
                 onClick={() => onClick(item.key)}
             >
                 <item.Icon className="size-5" />

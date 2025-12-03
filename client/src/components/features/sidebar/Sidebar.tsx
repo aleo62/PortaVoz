@@ -1,9 +1,9 @@
+import { portaVozLogo } from "@/constants/system";
 import { useModal } from "@/contexts/ModalContext";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { useTheme } from "@/hooks/useTheme";
 import { useStoreSidebar } from "@/stores/sidebarStore";
+import { useThemeStore } from "@/stores/themeStore";
 import { useStoreUser } from "@/stores/userStore";
-import { portaVozLogo } from "@constants/data";
 import { SidebarAdminItems, SidebarClientItems, SidebarItems } from "@constants/sidebar";
 import { IconChevronLeft, IconChevronRight, IconSelector } from "@tabler/icons-react";
 import { useState } from "react";
@@ -12,10 +12,9 @@ import { SidebarUserDrop } from "./SidebarUserDrop";
 
 export const Sidebar = () => {
     const { user } = useStoreUser();
-
+    const { theme } = useThemeStore();
     const [isUserOpen, setIsUserOpen] = useState<boolean>(false);
     const { isOpen, toggle } = useStoreSidebar();
-    const { isDarkTheme } = useTheme();
     const isMobile = useIsMobile();
     const { openModal } = useModal();
 
@@ -26,18 +25,18 @@ export const Sidebar = () => {
             className={`max-lg:bg-body-background fixed top-0 left-0 z-[120] h-full flex-shrink-0 transition-all lg:relative ${isMobile && !isOpen && "translate-x-[-120%]"}`}
         >
             <nav
-                className={`relative grid h-full grid-rows-[1.5fr_6fr_2fr] justify-center px-4 py-2 shadow-[0px_4px_10px_-19px_rgba(0,_0,_0,_0.1)] duration-300 `}
+                className={`relative grid h-full grid-rows-[1.5fr_6fr_2fr] justify-center px-4 max-lg:py-4 shadow-[0px_4px_10px_-19px_rgba(0,_0,_0,_0.1)] duration-300`}
             >
-                <span
+                <button
                     className="text-title absolute top-22 left-[100%] z-[1000] translate-x-[-50%] rounded-full bg-white p-2 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800"
                     onClick={toggle}
                 >
                     <IconMenu className="size-4" />
-                </span>
+                </button>
 
                 <figure className="relative flex items-center px-1">
                     <img
-                        src={portaVozLogo(isDarkTheme, true)}
+                        src={portaVozLogo(theme === "dark", true)}
                         alt=""
                         className="absolute max-w-8 rotate-15"
                     />
@@ -56,7 +55,7 @@ export const Sidebar = () => {
                     ))}
                 </div>
 
-                <div className="flex flex-col justify-center space-y-2">
+                <div className="flex flex-col justify-end space-y-2">
                     {user?.claims!.admin &&
                         SidebarAdminItems.map((item, index) => (
                             <SidebarItem
@@ -86,7 +85,6 @@ export const Sidebar = () => {
                             isOpen={isUserOpen}
                             onClose={() => setIsUserOpen(false)}
                             orientation="bottom"
-                            openModal={openModal}
                         />
                         <figure className="relative mx-auto h-11 w-11 overflow-hidden rounded-full">
                             <img

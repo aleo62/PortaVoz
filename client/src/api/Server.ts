@@ -1,5 +1,7 @@
+import { ReportCategoryData } from "@/types/categoryDataType";
 import { FiltersType } from "@/types/filtersDataType";
 import { RequestPostData } from "@/types/postDataType";
+import { ReportData, RequestReportData } from "@/types/reportDataType";
 import { UserData } from "@/types/userDataType";
 import { api } from ".";
 
@@ -18,10 +20,14 @@ export class Server {
         return (await api.get(`/posts/${id}`)).data;
     }
 
-    static async getPostsByUser(userId: string, pageParam: number) {
+    static async getPostsByUser(
+        userId: string,
+        pageParam: number,
+        type: "all" | "posts" | "reposts" = "all",
+    ) {
         return (
             await api.get(`/users/${userId}/posts`, {
-                params: { page: pageParam },
+                params: { page: pageParam, type },
             })
         ).data;
     }
@@ -107,6 +113,19 @@ export class Server {
 
     static async updateUser(userData: FormData, userId: string) {
         return (await api.put(`/users/${userId}`, userData)).data;
+    }
+
+    static async getUserPreferences(userId: string, field: string) {
+        const res = await api.get(`/users/${userId}/preferences/${field}`);
+        return res.data.preferences;
+    }
+
+    static async updateUserPreferences(userId: string, path: string, value: any) {
+        return (await api.put(`/users/${userId}/preferences`, { path, value })).data;
+    }
+
+    static async deleteUser(userId: string) {
+        return (await api.delete(`/users/${userId}`)).data;
     }
 
     /* Follow ENDPOINTS -----------> */
@@ -206,10 +225,6 @@ export class Server {
 
     /* REPORT ENDPOINTS -----------> */
 
-    // static async createCategory(category: string) {
-    //     return api.post(`/posts/${id}/report`, {});
-    // }
-
     static async getReportCategories(type?: string) {
         return (
             await api.get(`/reports/categories`, {
@@ -218,18 +233,13 @@ export class Server {
         ).data;
     }
 
-    static async createReportCategory(data: {
-        title: string;
-        desc: string;
-        severity: number;
-        type?: string;
-    }) {
+    static async createReportCategory(data: Omit<ReportCategoryData, "_id" | "createdAt">) {
         return (await api.post(`/reports/categories`, data)).data;
     }
 
     static async updateReportCategory(
         id: string,
-        data: { title?: string; desc?: string; severity?: number; type?: string },
+        data: Omit<ReportCategoryData, "_id" | "createdAt">,
     ) {
         return (await api.put(`/reports/categories/${id}`, data)).data;
     }
@@ -238,13 +248,24 @@ export class Server {
         return (await api.delete(`/reports/categories/${id}`)).data;
     }
 
-    static async createReport(data: {
-        category: string;
-        reportedItemType: string;
-        reportedItemId: string;
-        desc: string;
-    }) {
+    static async createReport(data: RequestReportData) {
         return (await api.post(`/reports`, data)).data;
+    }
+
+    static async getReports(pageParam: number) {
+        return (
+            await api.get(`/reports`, {
+                params: { page: pageParam },
+            })
+        ).data;
+    }
+
+    static async updateReport(reportId: string, status: ReportData["status"]) {
+        return (await api.put(`/reports/${reportId}`, { status })).data;
+    }
+
+    static async deleteReport(reportId: string) {
+        return (await api.delete(`/reports/${reportId}`)).data;
     }
 
     /* Auth ENDPOINTS -----------> */

@@ -1,43 +1,75 @@
 import { Switch } from "@/components/ui/Switch";
-import { useState } from "react";
+import { useUpdateUserPreferences } from "@/hooks/user/useUpdateUserPreferences";
+import { useUserPreferences } from "@/hooks/user/useUserPreferences";
+import { useEffect, useState } from "react";
 import { SettingsBlock } from "../components/SettingsBlock";
 
 export const NotificationsSettings = () => {
     const [notifications, setNotifications] = useState({
-        posts: true,
-        followers: true,
-        comments: true,
+        receiveVote: true,
+        receiveFollow: true,
+        receiveComment: true,
     });
+    const { data: preferences, isLoading } = useUserPreferences("notifications");
+
+    const updatePreferences = useUpdateUserPreferences();
+    useEffect(() => {
+        if (preferences) {
+            setNotifications({
+                receiveVote: preferences.receiveVote ?? true,
+                receiveFollow: preferences.receiveFollow ?? true,
+                receiveComment: preferences.receiveComment ?? true,
+            });
+        }
+    }, [preferences]);
 
     const toggleNotification = (key: keyof typeof notifications) => {
-        setNotifications((prev) => ({ ...prev, [key]: !prev[key] }));
+        const newValue = !notifications[key];
+
+        setNotifications((prev) => ({ ...prev, [key]: newValue }));
+        updatePreferences.mutate({
+            path: `notifications.${key}`,
+            value: newValue,
+        });
     };
+
+    if (isLoading) {
+        return (
+            <div className="flex flex-col gap-4">
+                <SettingsBlock title="Configurar Notificações   ">
+                    <div className="mt-8 flex flex-col gap-6">
+                        <p className="text-subtitle text-sm">Carregando...</p>
+                    </div>
+                </SettingsBlock>
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col gap-4">
             <SettingsBlock title="Configurar Notificações   ">
                 <div className="mt-8 flex flex-col gap-6">
                     <div className="flex items-center justify-between">
-                        <span className="text-subtitle text-sm font-medium">Posts</span>
+                        <span className="text-subtitle text-sm ">Votes</span>
                         <Switch
-                            checked={notifications.posts}
-                            onChange={() => toggleNotification("posts")}
+                            checked={notifications.receiveVote}
+                            onChange={() => toggleNotification("receiveVote")}
                         />
                     </div>
 
                     <div className="flex items-center justify-between">
-                        <span className="text-subtitle text-sm font-medium">Seguidores</span>
+                        <span className="text-subtitle text-sm ">Seguidores</span>
                         <Switch
-                            checked={notifications.followers}
-                            onChange={() => toggleNotification("followers")}
+                            checked={notifications.receiveFollow}
+                            onChange={() => toggleNotification("receiveFollow")}
                         />
                     </div>
 
                     <div className="flex items-center justify-between">
-                        <span className="text-subtitle text-sm font-medium">Comentários</span>
+                        <span className="text-subtitle text-sm">Comentários</span>
                         <Switch
-                            checked={notifications.comments}
-                            onChange={() => toggleNotification("comments")}
+                            checked={notifications.receiveComment}
+                            onChange={() => toggleNotification("receiveComment")}
                         />
                     </div>
                 </div>

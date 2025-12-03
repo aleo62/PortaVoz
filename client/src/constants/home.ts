@@ -45,3 +45,9 @@ export const Topics = [
         icon: IconSparkles,
     },
 ];
+
+export const NavItems = [
+    { label: "Início", href: "/" },
+    { label: "FAQ", href: "/faq" },
+    { label: "Denúncias", href: "/feed" },
+];

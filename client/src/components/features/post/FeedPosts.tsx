@@ -9,11 +9,13 @@ export const FeedPosts = ({
     feedLoading,
     feedHasNextPage,
     fetchFeedNextPage,
+    grid,
 }: {
     posts: PostData[] | UserPostData[];
     feedLoading: boolean;
     feedHasNextPage: boolean;
     fetchFeedNextPage: () => void;
+    grid?: boolean;
 }) => {
     const { ref, inView } = useInView({});
 
@@ -22,26 +24,25 @@ export const FeedPosts = ({
             fetchFeedNextPage();
         }
     }, [inView]);
+
+    if (!feedLoading && !posts.length) {
+        return (
+            <div className="mx-auto text-center text-zinc-500">
+                <p className="text-lg">Nenhuma Denúncia enviada ainda</p>
+            </div>
+        );
+    }
+
+    if (feedLoading) {
+        return <PostSkeleton />;
+    }
     return (
-        <section className="flex w-full flex-col  items-center gap-5 overflow-x-hidden">
-            {feedLoading && <PostSkeleton />}
+        <section className={`flex flex-col mx-auto gap-4 ${grid && "xxl:grid xxl:px-2 grid-cols-2"}`}>
+            {posts.map((post) => (
+                <Post post={post as PostData} key={post._id} />
+            ))}
 
-            {!feedLoading && !posts.length && (
-                <div className="mx-auto text-center text-zinc-500">
-                    <p className="text-lg">Nenhuma Denúncia enviada ainda</p>
-                    <p className="mt-3 text-5xl">;(</p>
-                </div>
-            )}
-
-            {!feedLoading && posts.length > 0 && (
-                <>
-                    {posts.map((post) => (
-                        <Post post={post as PostData} key={post._id} />
-                    ))}
-
-                    {feedHasNextPage && <div ref={ref}>carregando...</div>}
-                </>
-            )}
+            {feedHasNextPage && <div ref={ref}>carregando...</div>}
         </section>
     );
 };

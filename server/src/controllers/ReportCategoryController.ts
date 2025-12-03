@@ -4,7 +4,7 @@ import { formatError } from "@/utils/formatError";
 import { generateId } from "@/utils/generateId";
 import { Request, Response } from "express";
 
-export const getAllCategories = async (req: Request, res: Response) => {
+export const getCategories = async (req: Request, res: Response) => {
     try {
         const { type } = req.query;
         const filter = type ? { type: { $in: [type, "all"] } } : {};

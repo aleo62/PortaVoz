@@ -9,10 +9,8 @@ import "@/index.css";
 
 const root = createRoot(document.getElementById("root")!);
 
-window.addEventListener("load", () => {
-    root.render(
-        <StrictMode>
-            <App />
-        </StrictMode>,
-    );
-});
+root.render(
+    <StrictMode>
+        <App />
+    </StrictMode>,
+);

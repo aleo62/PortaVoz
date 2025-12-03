@@ -3,7 +3,7 @@ import Favorite from "@/models/Favorite.model";
 import Hashtag from "@/models/Hashtag.model";
 import Post, { PostData } from "@/models/Post.model";
 import Repost from "@/models/Repost.model";
-import User, { UserData } from "@/models/User.model";
+import User, { RequestUserType, UserData } from "@/models/User.model";
 import Vote from "@/models/Vote.model";
 import { generateId } from "@/utils/generateId";
 import { Request } from "express";
@@ -30,8 +30,8 @@ export const decreaseRemainingReports = async (uid: string, isAdmin: boolean) =>
     }
 };
 
-const resolveFilterQuery = async (req: Request) => {
-    const { date, vote, status, search, hashtags } = req.query;
+const resolveFilterQuery = async (query: any, isAdmin: boolean) => {
+    const { date, vote, status, search, hashtags } = query;
 
     const sortFilter: Record<string, 1 | -1> = {};
     const findFilter: Record<string, any> = {};
@@ -49,7 +49,7 @@ const resolveFilterQuery = async (req: Request) => {
     }
     if (status) {
         findFilter.status =
-            !req.user!.isAdmin && status === "oculto"
+            isAdmin && status === "oculto"
                 ? "ativo"
                 : (status as string).toLowerCase();
     }
@@ -114,8 +114,8 @@ const resolvePostResponse = async (
     return { postResponse: postData };
 };
 
-export const getPosts = async (req: Request, page: number, limit: number) => {
-    const { findFilter, sortFilter } = await resolveFilterQuery(req);
+export const getPosts = async (user: RequestUserType, query: any, page: number, limit: number) => {
+    const { findFilter, sortFilter } = await resolveFilterQuery(query, user.isAdmin);
 
     const postData: PostData[] = await Post.find(findFilter)
         .populate("user", "username image")
@@ -128,7 +128,7 @@ export const getPosts = async (req: Request, page: number, limit: number) => {
 
     const { postResponse: response } = await resolvePostResponse(
         postData,
-        req.user!.uid
+        user.uid
     );
 
     return { response, count };

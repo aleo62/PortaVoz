@@ -1,5 +1,4 @@
-import { useTheme } from "@/hooks/useTheme";
-import { portaVozLogo } from "@constants/data";
+import { portaVozLogo } from "@/constants/system";
 import { ReactNode } from "react";
 
 export const AuthPageTemplate = ({
@@ -11,7 +10,6 @@ export const AuthPageTemplate = ({
     title: ReactNode;
     subtitle: ReactNode;
 }) => {
-    const { isDarkTheme } = useTheme();
     return (
         <>
             <div className="relative min-h-screen max-lg:overflow-hidden lg:py-15">
@@ -25,12 +23,7 @@ export const AuthPageTemplate = ({
                     <span className="bg-accent absolute top-10 left-1/2 h-70 w-70 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-12 blur-3xl dark:opacity-20 dark:mix-blend-color"></span>
 
                     <div className="mb-5 flex w-full flex-col items-center justify-center">
-                        <img
-                            src={portaVozLogo(isDarkTheme)}
-                            alt="PortaVoz"
-                            width={120}
-                            className="z-20"
-                        />
+                        <img src={portaVozLogo(true)} alt="PortaVoz" width={120} className="z-20" />
                         <h2 className="font-title text-title mt-3 text-center text-2xl tracking-tighter">
                             {title}
                         </h2>

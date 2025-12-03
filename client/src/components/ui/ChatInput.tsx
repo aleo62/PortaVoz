@@ -10,12 +10,12 @@ type InputChatProps = {
 export const InputChat = ({ handleSend, setInputText, inputText }: InputChatProps) => {
     return (
         <form
-            className="text-title flex h-fit items-center space-x-3 rounded-2xl ring-1 ring-zinc-300 dark:ring-zinc-700 bg-white p-1.5 pl-2 md:pl-3 dark:bg-zinc-900"
+            className="text-title flex h-fit items-center space-x-3 border-t-1 border-zinc-200 dark:border-zinc-800 bg-white p-1.5 pl-2 md:pl-3 dark:bg-zinc-900"
             onSubmit={(e) => handleSend(inputText, e)}
         >
             <input
                 type="text"
-                className="md:text-[16px] w-full rounded-xl p-4 px-5 text-sm outline-none"
+                className="md:text-[14px] w-full rounded-xl p-4 px-5 text-sm outline-none"
                 placeholder="Digite aqui..."
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}

@@ -17,13 +17,12 @@ import { Request, Response } from "express";
 
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { uid } = req.user!;
         const { name } = req.query;
         const page = Number(req.query.page) || 1,
             limit = config.SYSTEM_USERS_PER_PAGE;
 
         const { users, count } = await getUsersService(
-            uid,
+            req.user!,
             (name as string) || "",
             page,
             limit

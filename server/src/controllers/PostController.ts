@@ -17,7 +17,7 @@ export const getAllPosts = async (req: Request, res: Response) => {
     try {
         const page = Number(req.query.page) || 1;
         const limit = config.SYSTEM_POSTS_PER_PAGE;
-        const { response: posts, count } = await getPosts(req, page, limit);
+        const { response: posts, count } = await getPosts(req.user!, req.query, page, limit);
 
         res.status(200).json({
             posts,

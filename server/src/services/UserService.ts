@@ -1,24 +1,26 @@
 import { admin } from "@/firebase";
-import User, { UserData } from "@/models/User.model";
+import User, { RequestUserType, UserData } from "@/models/User.model";
 
 export const getUsersService = async (
-    uid: string,
+    user: RequestUserType,
     name: string,
     page: number,
     limit: number
 ) => {
+    const usersProps: any = user.isAdmin ? {} : { username: 1, fName: 1, lName: 1, image: 1 }; 
+
     const users = await User.find(
         {
-            _id: { $ne: uid },
+            _id: { $ne: user.uid },
             username: { $regex: name, $options: "i" },
         },
-        { username: 1, fName: 1, lName: 1, image: 1 }
+        usersProps
     )
         .skip((page - 1) * limit)
         .limit(limit);
 
     const count = await User.countDocuments({
-        _id: { $ne: uid },
+        _id: { $ne: user.uid },
         username: { $regex: name }, 
     });
 

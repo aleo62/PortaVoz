@@ -1,11 +1,7 @@
-/**
- * Carrega variáveis de ambiente e centraliza configurações da aplicação.
- */
+
 import dotenv from "dotenv";
 
 dotenv.config();
-
-// Objeto de configuração central da aplicação
 const config = {
     PORT: process.env.PORT || 3000,
     NODE_ENV: process.env.NODE_ENV,
@@ -27,6 +23,9 @@ const config = {
     SYSTEM_MAXIMUM_REPORTS: parseInt(process.env.SYSTEM_MAXIMUM_REPORTS || "2"),
     SYSTEM_POSTS_PER_PAGE: parseInt(
         process.env.SYSTEM_POSTS_PER_PAGE || "5"
+    ),
+    SYSTEM_REPORTS_PER_PAGE: parseInt(
+        process.env.SYSTEM_REPORTS_PER_PAGE || "20"
     ),
     SYSTEM_COMMENTS_PER_PAGE: parseInt(
         process.env.SYSTEM_COMMENTS_PER_PAGE || "15"

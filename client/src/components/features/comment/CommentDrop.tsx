@@ -1,5 +1,4 @@
-import { dropdownActions } from "@/actions/dropdownActions";
-import { useModal } from "@/contexts/ModalContext";
+import { useDropdownActions } from "@/hooks/useDropdownActions";
 import { Dropdown, DropdownItemProps, DropdownProps } from "@components/ui/Dropdown";
 import { CommentDropItems, CommentDropOwnerItems } from "@constants/drop";
 
@@ -15,19 +14,14 @@ export const CommentDrop = ({
     isOwner,
     onDeleteComment,
 }: CommentDropProps) => {
-    const { openModal } = useModal();
+    const { handleAction } = useDropdownActions();
 
     const handleItemClick = (item: DropdownItemProps) => {
-        const action = dropdownActions[item.action!];
+        if (!item.action) return;
 
-        if (!action) return;
-
-        action({
-            openModal,
-            context: {
-                type: "comment",
-                onDelete: isOwner ? onDeleteComment : undefined,
-            },
+        handleAction(item.action, {
+            type: "comment",
+            onDelete: isOwner ? onDeleteComment : undefined,
         });
     };
 

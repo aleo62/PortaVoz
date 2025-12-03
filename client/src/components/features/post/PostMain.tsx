@@ -20,6 +20,7 @@ import {
 } from "@tabler/icons-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import type { Swiper as SwiperClass } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { PostActionButton } from "./PostActionButton";
 
@@ -35,6 +36,7 @@ export const PostMain = ({ post, viewMode }: MainPostProps) => {
     const { user } = useStoreUser();
 
     const [imageContain, setImageContain] = useState(false);
+    const [activeIndex, setActiveIndex] = useState(0);
 
     const [isUpvoted, setIsUpvoted] = useState(post.isUpvoted);
     const [isReposted, setIsReposted] = useState(post.isReposted);
@@ -98,9 +100,13 @@ export const PostMain = ({ post, viewMode }: MainPostProps) => {
 
     return (
         <main className="relative px-1 lg:px-2">
-            <Swiper className="h-100 w-full rounded-2xl px-2 md:h-155">
-                {post.images.map((image) => (
-                    <SwiperSlide>
+            <Swiper
+                className="h-120 w-full rounded-2xl px-2 md:h-155"
+                onSwiper={(swiper: SwiperClass) => setActiveIndex(swiper.activeIndex)}
+                onSlideChange={(swiper: SwiperClass) => setActiveIndex(swiper.activeIndex)}
+            >
+                {post.images.map((image, index) => (
+                    <SwiperSlide key={index} className="w-full">
                         <img
                             className={`h-full w-full transition-all duration-300 ease-in-out ${imageContain ? "object-contain" : "object-cover"}`}
                             onClick={() => setImageContain(!imageContain)}
@@ -110,6 +116,25 @@ export const PostMain = ({ post, viewMode }: MainPostProps) => {
                         />
                     </SwiperSlide>
                 ))}
+
+                {post.images.length > 1 && (
+                    <div className="absolute bottom-4 left-1/2 z-10 flex h-6 -translate-x-1/2 items-center gap-2 rounded-full bg-black/20 px-3 backdrop-blur-sm">
+                        {post.images.map((_, index) => (
+                            <div
+                                key={index}
+                                className={`h-2 w-2 rounded-full transition-colors duration-300 ${
+                                    index === activeIndex ? "bg-accent" : "bg-white/20"
+                                }`}
+                            />
+                        ))}
+                    </div>
+                )}
+
+                {post.images.length > 1 && (
+                    <div className="absolute right-4 bottom-4 z-10 flex h-6 items-center rounded-full bg-black/20 px-3 text-xs text-white backdrop-blur-sm">
+                        {activeIndex + 1}/{post.images.length}
+                    </div>
+                )}
             </Swiper>
 
             <div className={`${viewMode ? "px-1 py-3 pb-8" : "px-3 py-6"} space-y-7`}>

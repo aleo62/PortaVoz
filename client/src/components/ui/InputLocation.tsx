@@ -28,11 +28,10 @@ export const InputLocation = ({
         };
 
         fetchLocation();
+        return () => clearTimeout(timeoutRef.current!);
     }, [query]);
 
     const handleChange = (value: string) => {
-        clearTimeout(timeoutRef.current!);
-
         timeoutRef.current = setTimeout(() => {
             if (value.trim() !== "") {
                 setQuery(value);

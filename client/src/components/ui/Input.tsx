@@ -12,7 +12,7 @@ export const Input = ({ Icon, phone, type, className, ...rest }: InputProps) => 
     const isPassword = type === "password";
 
     const baseClassName = clsx(
-        "flex w-full items-center rounded-xl text-[15px] font-normal bg-body-background dark:bg-zinc-800",
+        "flex w-full items-center rounded-xl text-[15px] font-normal bg-zinc-100 dark:bg-zinc-800",
         "transition-[box-shadow,color] duration-300 focus-within:ring-[1.5px]  focus-within:ring-accent focus-within:outline-none",
         " text-zinc-900 ring-1 ring-zinc-300 placeholder-zinc-500 focus:outline-non",
         " dark:text-white dark:ring-zinc-700",

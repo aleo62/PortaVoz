@@ -6,7 +6,7 @@ export interface ReportCategoryData extends Document {
     title: string;
     desc: string;
     severity: number;
-    type: "post" | "comment" | "user" | "all";
+    type: "post" | "comment" | "user";
 }
 
 const ReportCategorySchema: Schema = new Schema(
@@ -42,8 +42,7 @@ const ReportCategorySchema: Schema = new Schema(
         },
         type: {
             type: String,
-            enum: ["post", "comment", "user", "all"],
-            default: "all",
+            enum: ["post", "comment", "user"],
             required: [true, "Type is required"],
         },
     },

@@ -25,7 +25,7 @@ export const SidebarItem = ({
     return (
         <button
             onClick={() => (href ? navigate(href!) : openModal!(modalKey as any, {}))}
-            className={`flex w-full items-center p-[.7rem] ${active ? "text-title bg-white shadow-[0px_2px_10px_-10px_rgba(0,_0,_0,_0.1)] ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800" : "text-zinc-800 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-300 hover:dark:bg-zinc-800 hover:dark:text-zinc-200"} rounded-lg transition-all`}
+            className={`flex w-full items-center p-[.7rem] ${active ? "text-title bg-zinc-200/50 shadow-[0px_2px_10px_-10px_rgba(0,_0,_0,_0.1)] ring-zinc-200 dark:bg-zinc-800 dark:ring-zinc-800" : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 hover:dark:bg-zinc-800/50 hover:dark:text-zinc-200"} rounded-lg transition-all`}
         >
             <Icon className={`size-5.5 stroke-[1.9px]`} />
             <span

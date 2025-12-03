@@ -3,17 +3,13 @@ import { Loader } from "@components/ui/Loader";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-type ProtectedLayoutProps = {
+type ProtectedRouteProps = {
     children: React.ReactNode;
     onlyGuest?: boolean;
     onlyAdmin?: boolean;
 };
 
-export const ProtectedLayout = ({
-    children,
-    onlyGuest = false,
-    onlyAdmin,
-}: ProtectedLayoutProps) => {
+export const ProtectedRoute = ({ children, onlyGuest = false, onlyAdmin }: ProtectedRouteProps) => {
     const { auth, user, isLoadingUser } = useStoreUser();
     const navigate = useNavigate();
     const location = useLocation();

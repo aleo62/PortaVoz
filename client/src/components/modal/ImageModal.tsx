@@ -1,13 +1,9 @@
 import { motion } from "framer-motion";
 
 import { ModalDefaultProps } from "@/contexts/ModalContext";
-import { IconX } from "@tabler/icons-react";
+import { ModalProvider } from "@/contexts/ModalProvider";
 
-export const ImageModal = ({
-    image,
-    zIndex,
-    closeModal,
-}: { image: string } & ModalDefaultProps) => {
+export const ImageModal = ({ image, zIndex }: { image: string } & ModalDefaultProps) => {
     return (
         <motion.div
             initial={{ scale: 0.95 }}
@@ -17,10 +13,7 @@ export const ImageModal = ({
             className="my-auto h-fit"
             style={{ zIndex }}
         >
-            <IconX
-                className={`mb-2 ml-auto text-white dark:text-zinc-900`}
-                onClick={() => closeModal()}
-            ></IconX>
+            <ModalProvider.Close />
             <img
                 className={`w-xl transition-all duration-300 ease-in-out`}
                 src={image as string}

@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from "mongoose";
+    import mongoose, { Document, Schema } from "mongoose";
 
 export interface UserData extends Document {
     _id: string;
@@ -50,6 +50,11 @@ export interface PublicUserData {
             following: number;
         };
     };
+}
+
+export interface RequestUserType {
+    uid: string;
+    isAdmin: boolean;
 }
 
 const UserSchema: Schema = new Schema(

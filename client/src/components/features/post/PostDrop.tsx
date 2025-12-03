@@ -1,5 +1,4 @@
-import { dropdownActions } from "@/actions/dropdownActions";
-import { useModal } from "@/contexts/ModalContext";
+import { useDropdownActions } from "@/hooks/useDropdownActions";
 import { Dropdown, DropdownItemProps, DropdownProps } from "@components/ui/Dropdown";
 import { PostDropItems, PostDropOwnerItems } from "@constants/drop";
 
@@ -9,21 +8,23 @@ type PostDropProps = DropdownProps & {
     onDeletePost: () => void;
 };
 
-export const PostDrop = ({ isOpen, orientation, onClose, isOwner, postId, onDeletePost }: PostDropProps) => {
-    const { openModal } = useModal();
+export const PostDrop = ({
+    isOpen,
+    orientation,
+    onClose,
+    isOwner,
+    postId,
+    onDeletePost,
+}: PostDropProps) => {
+    const { handleAction } = useDropdownActions();
 
     const handleItemClick = (item: DropdownItemProps) => {
-        const action = dropdownActions[item.action!];
+        if (!item.action) return;
 
-        if (!action) return;
-
-        action({
-            openModal,
-            context: {
-                id: postId,
-                type: "post",
-                onDelete: isOwner ? onDeletePost : undefined,
-            },
+        handleAction(item.action, {
+            id: postId,
+            type: "post",
+            onDelete: isOwner ? onDeletePost : undefined,
         });
     };
 

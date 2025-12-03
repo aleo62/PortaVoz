@@ -10,10 +10,11 @@ import { useStoreUser } from "@/stores/userStore";
 import { CommentData } from "@/types/commentDataType";
 import { PostData } from "@/types/postDataType";
 import { formatDate } from "@/utils/functions/formatDate";
-import { IconChevronDown, IconChevronUp, IconX } from "@tabler/icons-react";
+import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { useInView } from "react-intersection-observer";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Comment } from "../comment/Comment";
+import { ModalProvider } from "@/contexts/ModalProvider";
 
 type SearchOverlayProps = ModalDefaultProps & {
     post: PostData;
@@ -22,12 +23,15 @@ type SearchOverlayProps = ModalDefaultProps & {
 export const PostModal = ({ post, zIndex }: SearchOverlayProps) => {
     const isMobile = useIsMobile();
     const { user: userData } = useStoreUser();
-    const { modalOpen, modalKey, closeModal } = useModal();
+    const { modalOpen, modalKey } = useModal();
 
     const [contentHidden, setContentHidden] = useState(false);
     const [commentInput, setCommentInput] = useState("");
 
-    const { data, isLoading, fetchNextPage, hasNextPage } = useComments(post._id, modalOpen && modalKey === "post");
+    const { data, isLoading, fetchNextPage, hasNextPage } = useComments(
+        post._id,
+        modalOpen && modalKey === "post",
+    );
     const comments: CommentData[] = data?.pages.flatMap((page) => page.comments) ?? [];
 
     const createComment = useCreateComment();
@@ -93,12 +97,7 @@ export const PostModal = ({ post, zIndex }: SearchOverlayProps) => {
                         <p className="text-subtitle text-sm">{formatDate(post.createdAt)}</p>
                     </div>
 
-                    <span
-                        className="ml-auto cursor-pointer rounded-full bg-zinc-200/60 p-2 hover:bg-zinc-200 dark:bg-zinc-800/60 hover:dark:bg-zinc-800"
-                        onClick={closeModal}
-                    >
-                        <IconX className="text-subtitle size-4" />
-                    </span>
+                    <ModalProvider.Close/>
                 </header>
 
                 <main
