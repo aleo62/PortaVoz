@@ -39,7 +39,7 @@ export const useDropdownActions = () => {
             openModal("settings", {});
         },
         readChat: (context) => {
-            context.onDelete?.();
+            context.onRead?.();
         },
     };
 
