@@ -3,7 +3,6 @@ import {
     IconChecks,
     IconFlag,
     IconLayoutSidebarRightExpandFilled,
-    IconMarkdown,
     IconSettings,
     IconTrash,
     IconUser,

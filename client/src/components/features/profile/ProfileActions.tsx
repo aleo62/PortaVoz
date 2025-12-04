@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/Button";
 import { Dropdown } from "@/components/ui/Dropdown";
-import { useChatByUsers } from "@/hooks/chat/useChatByUsers";
 import { useDropdownActions } from "@/hooks/useDropdownActions";
 import { IconDots, IconFlag, IconMessage, IconUserMinus, IconUserPlus } from "@tabler/icons-react";
 import { useState } from "react";
