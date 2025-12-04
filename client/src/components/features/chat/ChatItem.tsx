@@ -2,10 +2,10 @@ import { useDeleteChat } from "@/hooks/chat/useDeleteChat";
 import { useReadChatMessages } from "@/hooks/chat/useReadChatMessages";
 import { useStoreUser } from "@/stores/userStore";
 import { ChatData } from "@/types/chatDataType";
+import { formatDate } from "@/utils/functions/formatDate";
 import { IconChevronDown } from "@tabler/icons-react";
 import { useState } from "react";
 import { ChatItemDrop } from "./ChatItemDrop";
-import { formatDate } from "@/utils/functions/formatDate";
 
 export const ChatItem = ({
     chat,
@@ -24,8 +24,10 @@ export const ChatItem = ({
     };
 
     const handleRead = (join?: boolean) => {
-        readMessages.mutateAsync(chat._id);
-        decrementUnreadChatMessages(chat.unreadChatMessages);
+        if (chat.unreadChatMessages > 0) {
+            readMessages.mutateAsync(chat._id);
+            decrementUnreadChatMessages(chat.unreadChatMessages);
+        }
         if (join) joinChat(chat._id);
     };
 
@@ -61,7 +63,11 @@ export const ChatItem = ({
                 </span>
             )}
             <div className="ml-auto flex flex-col items-end justify-center">
-                <p className="text-subtitle text-xs">{formatDate(chat.recentMessage ? chat.recentMessage?.createdAt : chat.createdAt)}</p>
+                <p className="text-subtitle text-xs">
+                    {formatDate(
+                        chat.recentMessage ? chat.recentMessage?.createdAt : chat.createdAt,
+                    )}
+                </p>
                 <IconChevronDown
                     onClick={(e) => {
                         e.stopPropagation();
