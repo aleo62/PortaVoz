@@ -33,12 +33,10 @@ export const FeedPosts = ({
         );
     }
 
-    if (feedLoading) {
-        return <PostSkeleton />;
-    }
     return (
-        <section className={`flex flex-col mx-auto gap-4 ${grid && "xxl:grid xxl:px-2 grid-cols-2"}`}>
-            {posts.map((post) => (
+        <section className={`flex flex-col items-center mx-auto gap-4 ${grid && "xxl:grid xxl:px-2 grid-cols-2"}`}>
+            {feedLoading && <PostSkeleton />}
+            {!feedLoading && posts.map((post) => (
                 <Post post={post as PostData} key={post._id} />
             ))}
 

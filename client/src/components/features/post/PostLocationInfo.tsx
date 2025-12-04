@@ -16,7 +16,7 @@ export const PostLocationInfo = ({
 }: PostLocationInfoProps) => {
     return (
         <>
-            <header className="flex items-start justify-between">
+            <header className="flex items-start justify-between mb-5">
                 <div>
                     <h3 className="text-title font-title mb-2 text-lg">Endereço</h3>
 

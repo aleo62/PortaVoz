@@ -46,6 +46,22 @@ export const sendNotificationToUser = async ({
     }
 };
 
+export const readAllNotificationsService = async (userId: string) => {
+    try {
+        await User.updateOne(
+            { _id: userId },
+            { $set: { "meta.counters.unreadNotifications": 0 } }
+        );
+
+        await Notification.updateMany(
+            { userId },
+            { $set: { read: true } }
+        );
+    } catch (err) {
+        throw err;
+    }
+}
+
 export const getNotificationsService = async (
     userId: string,
     page: number,

@@ -1,7 +1,9 @@
 import { DropdownItemProps } from "@components/ui/Dropdown";
 import {
+    IconChecks,
     IconFlag,
     IconLayoutSidebarRightExpandFilled,
+    IconMarkdown,
     IconSettings,
     IconTrash,
     IconUser,
@@ -27,4 +29,9 @@ export const CommentDropItems: DropdownItemProps[] = [
 ];
 export const CommentDropOwnerItems: DropdownItemProps[] = [
     { label: "Deletar", Icon: IconTrash, alert: true, action: "deletePost" },
+];
+
+export const ChatDropItems: DropdownItemProps[] = [
+    { label: "Marcar como lido", Icon: IconChecks, action: "readChat" },
+    { label: "Deletar", Icon: IconTrash, alert: true, action: "deleteChat" },
 ];

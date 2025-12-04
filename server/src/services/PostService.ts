@@ -12,7 +12,10 @@ import { uploadMultipleImages } from "./ImageService";
 import { fetchUser, verifyRemainingReports } from "./UserService";
 import { validateCompletePost } from "./ValidateService";
 
-export const decreaseRemainingReports = async (uid: string, isAdmin: boolean) => {
+export const decreaseRemainingReports = async (
+    uid: string,
+    isAdmin: boolean
+) => {
     if (!isAdmin) {
         const newDate = new Date();
         newDate.setDate(newDate.getDate() + 7);
@@ -114,8 +117,16 @@ const resolvePostResponse = async (
     return { postResponse: postData };
 };
 
-export const getPosts = async (user: RequestUserType, query: any, page: number, limit: number) => {
-    const { findFilter, sortFilter } = await resolveFilterQuery(query, user.isAdmin);
+export const getPosts = async (
+    user: RequestUserType,
+    query: any,
+    page: number,
+    limit: number
+) => {
+    const { findFilter, sortFilter } = await resolveFilterQuery(
+        query,
+        user.isAdmin
+    );
 
     const postData: PostData[] = await Post.find(findFilter)
         .populate("user", "username image")
@@ -326,6 +337,10 @@ export const createPost = async (req: Request) => {
     const hashtagsId = await findOrCreateMultipleHashtags(
         typeof hashtags === "string" ? [hashtags] : hashtags
     );
+
+    await User.findByIdAndUpdate(uid, {
+        $inc: { postsCount: 1 },
+    });
 
     const newPost = await Post.create({
         _id: generateId(config.SYSTEM_ID_SIZE, "P_"),

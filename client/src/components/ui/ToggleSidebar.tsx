@@ -8,10 +8,10 @@ export const ToggleSidebar = () => {
     return (
         useIsMobile() && (
             <button
-                className={`cursor-pointer rounded-lg bg-zinc-50 p-2 text-zinc-700 ring-1 ring-zinc-200 transition-[color] duration-300 hover:bg-zinc-200 hover:text-zinc-900 dark:bg-zinc-800 dark:text-zinc-300 dark:ring-zinc-700 dark:hover:bg-zinc-900 dark:hover:text-white`}
+                className={`text-title cursor-pointer rounded-lg bg-white p-2 shadow-sm ring-1 dark:ring-zinc-800 ring-zinc-200 transition-all active:bg-zinc-100 dark:bg-zinc-900 active:dark:bg-zinc-800/70`}
                 onClick={toggle}
             >
-                <IconMenu3 className="size-6.5" />
+                <IconMenu3 className="size-6" />
             </button>
         )
     );

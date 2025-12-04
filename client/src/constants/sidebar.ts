@@ -6,14 +6,16 @@ export const SidebarItems = [
         label: "Chat",
         icon: IconMessageCircle,
         href: "/chat",
+        notification: "chat",
     },
 ];
 
 export const SidebarClientItems = [
     {
-        label: "Notificações",
+        label: "Caixa de Entrada",
         icon: IconInbox,
         modalKey: "notification",
+        notification: "inbox",
     },
 ];
 

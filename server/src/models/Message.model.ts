@@ -1,11 +1,11 @@
 import config from "@/config";
-import mongoose, { Document, ObjectId, Schema } from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 
 export interface MessageData extends Document {
-    chatId: ObjectId | string;
-    senderId: ObjectId | string;
+    chatId: string;
+    senderId: string;
     text: string;
-    deleted: Record<string, boolean>
+    deleted: Record<string, boolean>;
 }
 
 const MessageSchema: Schema = new Schema(
@@ -33,10 +33,9 @@ const MessageSchema: Schema = new Schema(
         },
         deleted: {
             type: Map,
-            of: Boolean, 
+            of: Boolean,
             default: {},
-        }
-    
+        },
     },
     { timestamps: true }
 );

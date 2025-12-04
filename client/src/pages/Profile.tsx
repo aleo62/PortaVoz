@@ -3,6 +3,7 @@ import { ProfileActions } from "@/components/features/profile/ProfileActions";
 import { ProfileTabs } from "@/components/features/profile/ProfileTabs";
 import { Button } from "@/components/ui/Button";
 import { useModal } from "@/contexts/ModalContext";
+import { useChatByUsers } from "@/hooks/chat/useChatByUsers";
 import { usePostsByUser } from "@/hooks/posts/usePostsByUser";
 import { useCreateFollow } from "@/hooks/user/useCreateFollow";
 import { useDeleteFollow } from "@/hooks/user/useDeleteFollow";
@@ -35,6 +36,7 @@ export const Profile = () => {
 
     const createFollow = useCreateFollow();
     const deleteFollow = useDeleteFollow();
+    const createChat = useChatByUsers();
 
     const handleFollow = async () => {
         if (user?.isFollowing) {
@@ -44,8 +46,12 @@ export const Profile = () => {
         }
     };
 
-    const handleChat = () => {
-        navigate(`/chat`);
+    const handleChat = async () => {
+        const data = await createChat.mutateAsync({
+            otherUserId: requestId!,
+        });
+        console.log(data);
+        navigate(`/chat`, { state: { chatId: data.chatId } });
     };
 
     if (userLoading || !user) {
@@ -54,7 +60,7 @@ export const Profile = () => {
 
     return (
         <>
-            <header className="max-xxl:px-1 relative mx-auto mt-5 w-full max-w-7xl md:h-75 px-2">
+            <header className="max-xxl:px-1 relative mx-auto mt-5 w-full max-w-7xl px-2 md:h-75">
                 <figure className="relative mx-auto h-60 w-full rounded-3xl bg-zinc-300 shadow-md lg:h-78 dark:bg-zinc-800">
                     {user?.banner && (
                         <img

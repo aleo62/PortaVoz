@@ -3,6 +3,7 @@ import { ToggleSidebar } from "@components/ui/ToggleSidebar";
 import { IconHome } from "@tabler/icons-react";
 import { ReactNode } from "react";
 import { HeaderOptions } from "./SidebarHeaderOptions";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 export const SidebarHeader = ({
     linkBack,
@@ -21,14 +22,14 @@ export const SidebarHeader = ({
             <header
                 className={`w-full overflow-hidden border-b-1 border-zinc-200 bg-white transition dark:border-zinc-800 dark:bg-zinc-900`}
             >
-                <nav className="text-title mx-auto flex max-h-20 w-full items-center gap-6 px-1 py-2 lg:max-h-20 lg:gap-3 lg:px-10">
+                <nav className="text-title mx-auto flex max-h-20 w-full items-center gap-3 px-1 py-2 lg:max-h-20 lg:px-5">
                     <ToggleSidebar />
-                    {!!linkBack && <LinkBack href={linkBack} />}
+                    {!!linkBack && !useIsMobile() && <LinkBack href={linkBack} />}
                     <div className="flex items-center gap-5">
-                        <h3 className="font-title flex items-center gap-2 text-2xl font-light tracking-wide">
+                        <h3 className="font-title flex items-center gap-2 text-2xl tracking-wide">
                             {title || "PortaVoz"}
                         </h3>
-                        <span className="text-subtitle flex items-center gap-2 text-sm">
+                        <span className="text-subtitle flex items-center gap-2 text-sm max-lg:hidden">
                             <IconHome className="size-4" /> <span>{">"}</span> {title}
                         </span>
                     </div>

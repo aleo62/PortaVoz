@@ -96,7 +96,7 @@ const RoutesArray: RouteDataType[] = [
         path: "/admin",
         Page: <AdminDashboard />,
         layouts: [
-            { Component: SidebarLayout, props: { orientation: "row", noHeader: true } },
+            { Component: SidebarLayout, props: { noHeader: true } },
             { Component: ProtectedRoute, props: { onylyAdmin: true } },
         ],
     },
@@ -105,7 +105,7 @@ const RoutesArray: RouteDataType[] = [
         path: "/admin/:adminTab",
         Page: <AdminDashboard />,
         layouts: [
-            { Component: SidebarLayout, props: { orientation: "row", noHeader: true } },
+            { Component: SidebarLayout, props: { noHeader: true } },
             { Component: ProtectedRoute, props: { onylyAdmin: true } },
         ],
     },
@@ -114,7 +114,7 @@ const RoutesArray: RouteDataType[] = [
         path: "/chat",
         Page: <Chat />,
         layouts: [
-            { Component: SidebarLayout, props: { noHeader: true, orientation: "row" } },
+            { Component: SidebarLayout, props: { noHeader: true } },
             { Component: ProtectedRoute },
         ],
     },
@@ -123,7 +123,7 @@ const RoutesArray: RouteDataType[] = [
         path: "/chat/:chatId",
         Page: <Chat />,
         layouts: [
-            { Component: SidebarLayout, props: { noHeader: true, orientation: "row" } },
+            { Component: SidebarLayout, props: { noHeader: true } },
             { Component: ProtectedRoute },
         ],
     },
@@ -134,7 +134,7 @@ const RoutesArray: RouteDataType[] = [
         layouts: [
             {
                 Component: SidebarLayout,
-                props: { linkBack: "Feed", orientation: "row", title: "Ver Post" },
+                props: { linkBack: "Feed", title: "Ver Post" },
             },
             { Component: ProtectedRoute },
         ],

@@ -16,7 +16,7 @@ export const ChatSidebar = ({
 
     return (
         <aside
-            className={` text-title mr-auto h-screen w-full divide-y-1 divide-zinc-200 border-r-1 border-zinc-200 bg-white lg:max-w-89 dark:divide-zinc-800 dark:border-zinc-800 dark:bg-zinc-900`}
+            className={` text-title h-full mr-auto w-full divide-y-1 divide-zinc-200 border-r-1 border-zinc-200 bg-white lg:max-w-89 dark:divide-zinc-800 dark:border-zinc-800 dark:bg-zinc-900`}
         >
             <header className="px-5 py-6">
                 <h1 className="text-title flex items-center space-x-2 text-xl font-medium">

@@ -6,6 +6,7 @@ export interface NotificationData extends Document {
     href: string;
     type: "Comment" | "Vote" | "Follow";
     preview?: string;
+    read: boolean;
 }
 
 const NotificationSchema: Schema = new Schema(
@@ -30,6 +31,10 @@ const NotificationSchema: Schema = new Schema(
         },
         preview: {
             type: String,
+        },
+        read: {
+            type: Boolean,
+            default: false,
         },
     },
     { timestamps: true }

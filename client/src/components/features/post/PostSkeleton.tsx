@@ -4,10 +4,7 @@ export const PostSkeleton = () => {
     );
 
     return [1, 2, 3].map((i) => (
-        <article
-            key={i}
-            className="relative w-full max-w-[620px] rounded-xl bg-white dark:bg-zinc-900"
-        >
+        <article key={i} className="relative w-[620px] rounded-xl bg-white dark:bg-zinc-900">
             <header className="flex items-center gap-3 p-3 py-5 lg:p-5 lg:py-6">
                 <Skeleton className="h-10 w-10 rounded-3xl lg:h-12 lg:w-12" />
                 <div className="flex flex-col gap-2">

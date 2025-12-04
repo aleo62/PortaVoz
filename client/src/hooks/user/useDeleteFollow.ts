@@ -9,8 +9,5 @@ export function useDeleteFollow() {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["posts"] });
         },
-        onError: (error) => {
-            console.error("❌ Erro na mutation:", error);
-        },
     });
 }

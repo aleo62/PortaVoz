@@ -22,13 +22,13 @@ export const Sidebar = () => {
 
     return (
         <aside
-            className={`max-lg:bg-body-background fixed top-0 left-0 z-[120] h-full flex-shrink-0 transition-all lg:relative ${isMobile && !isOpen && "translate-x-[-120%]"}`}
+            className={`max-lg:bg-body-background fixed top-0 left-0 z-[120] h-full flex-shrink-0 transition-all max-lg:border-r-1 max-lg:border-zinc-200 lg:relative max-lg:dark:border-zinc-800 ${isMobile && !isOpen && "translate-x-[-120%]"}`}
         >
             <nav
-                className={`relative grid h-full grid-rows-[1.5fr_6fr_2fr] justify-center px-4 max-lg:py-4 shadow-[0px_4px_10px_-19px_rgba(0,_0,_0,_0.1)] duration-300`}
+                className={`relative grid h-full grid-rows-[1fr_6fr_2fr] justify-center px-4 shadow-[0px_4px_10px_-19px_rgba(0,_0,_0,_0.1)] duration-300 max-lg:py-4`}
             >
                 <button
-                    className="text-title absolute top-22 left-[100%] z-[1000] translate-x-[-50%] rounded-full bg-white p-2 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800"
+                    className="text-title bg-body-background absolute top-22 left-[100%] z-[1000] translate-x-[-50%] rounded-full p-2 ring-1 ring-zinc-200 dark:ring-zinc-800"
                     onClick={toggle}
                 >
                     <IconMenu className="size-4" />
@@ -42,7 +42,7 @@ export const Sidebar = () => {
                     />
                 </figure>
 
-                <div className="space-y-2">
+                <div className="space-y-2 pt-5">
                     {SidebarItems.map((item, index) => (
                         <SidebarItem
                             key={index}
@@ -51,6 +51,7 @@ export const Sidebar = () => {
                             active={location.pathname.includes(item.href)}
                             href={item.href}
                             openModal={openModal as any}
+                            notification={item.notification as any}
                         />
                     ))}
                 </div>
@@ -75,6 +76,7 @@ export const Sidebar = () => {
                             label={item.label}
                             modalKey={item.modalKey}
                             openModal={openModal as any}
+                            notification={item.notification as any}
                         />
                     ))}
 

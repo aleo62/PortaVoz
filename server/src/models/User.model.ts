@@ -1,4 +1,4 @@
-    import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 
 export interface UserData extends Document {
     _id: string;
@@ -14,6 +14,7 @@ export interface UserData extends Document {
             followers: number;
             following: number;
             unreadNotifications: number;
+            unreadChatMessages: number;
             totalReports: number;
         };
         limits: {
@@ -80,6 +81,7 @@ const UserSchema: Schema = new Schema(
                 followers: { type: Number, default: 0 },
                 following: { type: Number, default: 0 },
                 unreadNotifications: { type: Number, default: 0 },
+                unreadChatMessages: { type: Number, default: 0 },
                 totalReports: { type: Number, default: 0 },
             },
             limits: {

@@ -1,5 +1,6 @@
 import { usePostById } from "@/hooks/posts/usePostById";
 import { PostData } from "@/types/postDataType";
+import { PostComments } from "@components/features/post/PostComments";
 import { PostHeader } from "@components/features/post/PostHeader";
 import { PostLocationInfo } from "@components/features/post/PostLocationInfo";
 import { PostMain } from "@components/features/post/PostMain";
@@ -21,12 +22,13 @@ export const PostView = () => {
 
                 <PostMain post={post} viewMode />
             </article>
-            <div className="mt-5 ml-4 w-full max-w-lg">
+            <div className="mt-5 w-full max-w-xl lg:ml-4 lg:max-w-md">
                 <PostLocationInfo
                     latitude={post.location.latitude}
                     longitude={post.location.longitude}
                     address={post.address}
                 />
+                <PostComments post={post} />
             </div>
         </>
     );

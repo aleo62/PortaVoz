@@ -1,5 +1,5 @@
 import config from "@/config";
-import { getNotificationsService } from "@/services/NotificationService";
+import { getNotificationsService, readAllNotificationsService } from "@/services/NotificationService";
 import { formatError } from "@/utils/formatError";
 import { Request, Response } from "express";
 
@@ -22,6 +22,25 @@ export const getNotifications = async (
             hasMore: count > page * limit,
             count,
         });
+    } catch (err) {
+        if (!(err instanceof Error)) throw err;
+
+        const errors = formatError(err.message);
+        res.status(500).json({
+            code: "ServerError",
+            message: "Internal Server Error",
+            errors: errors,
+        });
+    }
+};
+
+export const readAllNotifications = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { uid } = req.user!;
+
+        await readAllNotificationsService(uid);
+      
+        res.status(200).json({ ok: true });
     } catch (err) {
         if (!(err instanceof Error)) throw err;
 

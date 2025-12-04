@@ -5,7 +5,7 @@ import { io, Socket } from "socket.io-client";
 const SocketContext = createContext<Socket | null | undefined>(undefined);
 
 export const SocketProvider = ({ children }: { children: ReactNode }) => {
-    const { user } = useStoreUser();
+    const { user, incrementUnreadChatMessages } = useStoreUser();
     const [socket, setSocket] = useState<Socket | null>(null);
 
     useEffect(() => {
@@ -22,6 +22,11 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
 
         newSocket.emit("register_user", {
             userId: user._id,
+        });
+        const audio = new Audio("/assets/notification.mp3");
+        newSocket.on("unread_message", () => {
+            audio.play();
+            incrementUnreadChatMessages();
         });
 
         setSocket(newSocket);

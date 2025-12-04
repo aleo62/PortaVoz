@@ -1,10 +1,11 @@
-import config from "@/config";
-import mongoose, { Document, ObjectId, Schema } from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 
 export interface ChatData extends Document {
-    _id: ObjectId | string;
+    _id: string;
     participants: string[];
     visible: Map<string, boolean>;
+    unreadCounts: Map<string, number>;
+    recentMessage?: string;
 }
 
 const ChatSchema: Schema = new Schema(
@@ -22,6 +23,16 @@ const ChatSchema: Schema = new Schema(
             type: Map,
             of: Boolean,
             default: {},
+        },
+        unreadCounts: {
+            type: Map,
+            of: Number,
+            default: {},
+        },
+        recentMessage: {
+            type: String,
+            ref: "Message",
+            required: false,
         },
     },
     { timestamps: true }

@@ -6,6 +6,7 @@ export type DropdownActionContext = {
     type?: "post" | "comment" | "user";
     id?: string;
     onDelete?: () => void;
+    onRead?: () => void;
 };
 
 export const useDropdownActions = () => {
@@ -22,6 +23,12 @@ export const useDropdownActions = () => {
         deletePost: (context) => {
             context.onDelete?.();
         },
+        deleteChat: (context) => {
+            context.onDelete?.();
+        },
+        deleteComment: (context) => {
+            context.onDelete?.();
+        },
         logout: () => {
             navigate(RoutesPath("Logout")!);
         },
@@ -30,6 +37,9 @@ export const useDropdownActions = () => {
         },
         settings: () => {
             openModal("settings", {});
+        },
+        readChat: (context) => {
+            context.onDelete?.();
         },
     };
 

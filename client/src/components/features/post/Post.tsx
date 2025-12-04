@@ -8,7 +8,7 @@ export const Post = ({ post }: { post: PostData | UserPostData }) => {
     return (
         <>
             <article
-                className={`w-full rounded-3xl border-1 border-zinc-200 bg-white shadow-[0_0_20px_-20px_rgba(0,0,0,0.1)] transition-all md:max-w-[620px] dark:border-zinc-800 dark:bg-zinc-900`}
+                className={`w-full md:rounded-3xl border-b-1 border-zinc-200 bg-white md:shadow-[0_0_20px_-20px_rgba(0,0,0,0.1)] transition-all md:max-w-[620px] md:border-1 md:border-zinc-200 dark:border-zinc-800 dark:bg-zinc-900`}
             >
                 {(post as UserPostData).kind === "repost" && (
                     <p className="text-subtitle flex items-center gap-2 self-start p-3 px-5">

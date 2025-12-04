@@ -194,6 +194,14 @@ export class Server {
         return res.data;
     }
 
+    static async readChatMessages(chatId: string) {
+        return (await api.put(`/chats/${chatId}/read`)).data;
+    }
+
+    static async deleteChat(chatId: string) {
+        return (await api.delete(`/chats/${chatId}`)).data;
+    }
+
     /* HASHTAGS ENDPOINTS -----------> */
 
     static async getHashtags(pageParam: number) {

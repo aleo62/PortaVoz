@@ -1,9 +1,10 @@
-// Roteador de posts: define endpoint para criação de post
 import {
+    deleteChat,
     getChatById,
     getChatByUsers,
     getChats,
     getMessagesByChatId,
+    readChatMessages,
 } from "@/controllers/ChatController";
 import { authenticateOwnerOrAdmin } from "@/middlewares/auth/authOwnerOrAdmin";
 import { authenticateUser } from "@/middlewares/auth/authUser";
@@ -15,7 +16,6 @@ import { body } from "express-validator";
 
 const router = Router();
 
-// GET - Rota para pegar chats dos users
 router.get(
     "/",
     authenticateUser,
@@ -23,7 +23,7 @@ router.get(
     validationError,
     getChats
 );
-// GET - Rota para pegar chats dos users
+
 router.get(
     "/:chatId/messages",
     authenticateUser,
@@ -36,7 +36,7 @@ router.get(
     validationError,
     getMessagesByChatId
 );
-// GET - Rota para pegar chats peloId
+
 router.get(
     "/:chatId",
     authenticateUser,
@@ -49,7 +49,7 @@ router.get(
     validationError,
     getChatById
 );
-// POST - Rota para pegar o chat com base nos users
+
 router.post(
     "/start",
     authenticateUser,
@@ -60,6 +60,27 @@ router.post(
         .withMessage("otherUserId is required"),
     validationError,
     getChatByUsers
+);
+
+router.delete(
+    "/:chatId",
+    authenticateUser,
+    authenticateVerified,
+    authenticateOwnerOrAdmin(async (req: Request) => {
+        const chat = await Chat.findById(req.params.chatId);
+        if (!chat) throw new Error("Chat does not exist");
+        return chat.participants as string[];
+    }),
+    validationError,
+    deleteChat
+);
+
+router.put(
+    "/:chatId/read",
+    authenticateUser,
+    authenticateVerified,
+    validationError,
+    readChatMessages
 );
 
 export default router;

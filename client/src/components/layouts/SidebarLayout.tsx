@@ -6,7 +6,6 @@ type SidebarLayoutProps = {
     children: React.ReactNode;
     noHeader?: boolean;
     linkBack?: string;
-    orientation: "row" | "col";
     title?: string;
 };
 
@@ -14,13 +13,12 @@ export const SidebarLayout = ({
     children,
     noHeader,
     linkBack,
-    orientation = "col",
     title,
 }: SidebarLayoutProps) => {
     const { openModal } = useModal();
 
     return (
-        <div className="relative flex h-screen overflow-hidden lg:py-4">
+        <div className="relative flex h-screen overflow-hidden lg:py-3">
             <Sidebar />
 
             <section className="flex w-full flex-1 flex-col overflow-hidden bg-white ring-1 ring-zinc-200 lg:mr-3 lg:rounded-xl dark:bg-zinc-900 dark:ring-zinc-800">
@@ -32,11 +30,7 @@ export const SidebarLayout = ({
                 />
 
                 <div
-                    className={`scrollbar-thin overflow-y-auto  dark:scrollbar-thumb-zinc-700 scrollbar-thumb-zinc-400 scrollbar-track-transparent flex flex-1 ${
-                        orientation === "col"
-                            ? "flex-col pb-6"
-                            : "max-lg:flex-col max-lg:min-h-screen lg:flex-row justify-center"
-                    } h-full max-lg:px-1`}
+                    className={`scrollbar-thin dark:scrollbar-thumb-zinc-700 scrollbar-thumb-zinc-400 scrollbar-track-transparent flex h-full flex-1 overflow-y-auto justify-center flex-wrap`}
                 >
                     {children}
                 </div>

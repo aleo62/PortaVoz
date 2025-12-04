@@ -64,7 +64,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 0.2 }}
-                                className="fixed top-0 left-0 z-[201] flex h-full w-full justify-center gap-2 bg-gradient-to-b from-transparent to-black/20 lg:px-3 lg:py-4 dark:to-white/10"
+                                className="fixed top-0 left-0 z-[201] flex h-full w-full justify-center gap-2 bg-black/20 lg:px-3 lg:py-4 dark:bg-black/30"
                                 onClick={(e) => {
                                     if (e.target === e.currentTarget) {
                                         closeModal();

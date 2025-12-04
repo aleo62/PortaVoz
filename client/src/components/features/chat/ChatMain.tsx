@@ -33,6 +33,10 @@ export const ChatMain = ({ currentChat, setCurrentChat }: ChatProps) => {
         if (currentChat?._id) {
             socket?.emit("join_chat", currentChat._id);
         }
+
+        return () => {
+            socket?.emit("leave_chat");
+        };
     }, [currentChat, socket]);
 
     useEffect(() => {

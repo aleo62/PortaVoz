@@ -12,6 +12,7 @@ export type UserData = {
             followers: number;
             following: number;
             unreadNotifications: number;
+            unreadChatMessages: number;
         };
         limits: {
             remainingReports: number;

@@ -7,4 +7,11 @@ export interface ChatData {
             image: string;
         },
     ];
+    unreadChatMessages: number;
+    recentMessage: {
+        text: string;
+        senderId: string;
+        createdAt: Date;
+    };
+    createdAt: Date;
 }

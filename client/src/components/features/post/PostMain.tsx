@@ -106,7 +106,7 @@ export const PostMain = ({ post, viewMode }: MainPostProps) => {
                 onSlideChange={(swiper: SwiperClass) => setActiveIndex(swiper.activeIndex)}
             >
                 {post.images.map((image, index) => (
-                    <SwiperSlide key={index} className="w-full">
+                    <SwiperSlide key={index}>
                         <img
                             className={`h-full w-full transition-all duration-300 ease-in-out ${imageContain ? "object-contain" : "object-cover"}`}
                             onClick={() => setImageContain(!imageContain)}
@@ -137,7 +137,7 @@ export const PostMain = ({ post, viewMode }: MainPostProps) => {
                 )}
             </Swiper>
 
-            <div className={`${viewMode ? "px-1 py-3 pb-8" : "px-3 py-6"} space-y-7`}>
+            <div className={`${viewMode ? "px-1 py-3 pb-8" : "px-1 md:px-3 py-6"} space-y-7`}>
                 <div className={`flex items-center gap-8 text-xs font-semibold lg:text-[.8rem]`}>
                     <PostActionButton
                         Icon={IconArrowBigUp}

@@ -8,7 +8,7 @@ export type DropdownProps = {
 };
 export type DropdownItemProps = {
     label: string;
-    action?: "report" | "deletePost" | "profile" | "settings" | "logout";
+    action?: "report" | "deletePost" | "profile" | "settings" | "logout" | "deleteChat" | "deleteComment" | "readChat";
     Icon?: ElementType;
     alert?: boolean;
     onClick?: () => void;
@@ -74,7 +74,7 @@ export const Dropdown = ({
 };
 
 Dropdown.Block = function DropdownBlock({ children }: { children: ReactNode }) {
-    return <ul className="flex w-45 flex-col p-1 text-sm">{children}</ul>;
+    return <ul className="flex min-w-45 flex-col p-1 text-sm">{children}</ul>;
 };
 
 Dropdown.Item = function DropdownItem({ label, Icon, alert, onClick }: DropdownItemProps) {
