@@ -7,6 +7,7 @@ type SidebarLayoutProps = {
     noHeader?: boolean;
     linkBack?: string;
     title?: string;
+    flex_col?: boolean;
 };
 
 export const SidebarLayout = ({
@@ -14,6 +15,7 @@ export const SidebarLayout = ({
     noHeader,
     linkBack,
     title,
+    flex_col = true,
 }: SidebarLayoutProps) => {
     const { openModal } = useModal();
 
@@ -30,7 +32,7 @@ export const SidebarLayout = ({
                 />
 
                 <div
-                    className={`scrollbar-thin dark:scrollbar-thumb-zinc-700 scrollbar-thumb-zinc-400 scrollbar-track-transparent flex h-full flex-1 overflow-y-auto justify-center flex-wrap`}
+                    className={`scrollbar-thin dark:scrollbar-thumb-zinc-700 scrollbar-thumb-zinc-400 scrollbar-track-transparent flex flex-1 overflow-y-auto ${flex_col ? "flex-col" : "justify-center"}`}
                 >
                     {children}
                 </div>

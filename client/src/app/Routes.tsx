@@ -27,10 +27,10 @@ type RouteDataType = {
         props?: {
             onylyAdmin?: boolean;
             onlyGuest?: boolean;
+            title?: string;
             noHeader?: boolean;
             linkBack?: string;
-            orientation?: "row" | "col";
-            title?: string;
+            flex_col?: boolean;
         };
     }[];
 };
@@ -96,7 +96,7 @@ const RoutesArray: RouteDataType[] = [
         path: "/admin",
         Page: <AdminDashboard />,
         layouts: [
-            { Component: SidebarLayout, props: { noHeader: true } },
+            { Component: SidebarLayout, props: { flex_col: false } },
             { Component: ProtectedRoute, props: { onylyAdmin: true } },
         ],
     },
@@ -105,7 +105,7 @@ const RoutesArray: RouteDataType[] = [
         path: "/admin/:adminTab",
         Page: <AdminDashboard />,
         layouts: [
-            { Component: SidebarLayout, props: { noHeader: true } },
+            { Component: SidebarLayout, props: { flex_col: false } },
             { Component: ProtectedRoute, props: { onylyAdmin: true } },
         ],
     },
@@ -114,7 +114,7 @@ const RoutesArray: RouteDataType[] = [
         path: "/chat",
         Page: <Chat />,
         layouts: [
-            { Component: SidebarLayout, props: { noHeader: true } },
+            { Component: SidebarLayout, props: { noHeader: true, flex_col: false } },
             { Component: ProtectedRoute },
         ],
     },
@@ -123,7 +123,7 @@ const RoutesArray: RouteDataType[] = [
         path: "/chat/:chatId",
         Page: <Chat />,
         layouts: [
-            { Component: SidebarLayout, props: { noHeader: true } },
+            { Component: SidebarLayout, props: { noHeader: true, flex_col: false } },
             { Component: ProtectedRoute },
         ],
     },
@@ -134,7 +134,7 @@ const RoutesArray: RouteDataType[] = [
         layouts: [
             {
                 Component: SidebarLayout,
-                props: { linkBack: "Feed", title: "Ver Post" },
+                props: { linkBack: "Feed", title: "Ver Post", flex_col: false },
             },
             { Component: ProtectedRoute },
         ],
