@@ -61,7 +61,7 @@ jobs:
         run: |
           TIMESTAMP=$(ls -1t release_*.tar.gz | head -n1 | sed 's/release_//; s/.tar.gz//')
           scp -i ~/.ssh/github_actions release_${TIMESTAMP}.tar.gz \
-            ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/portavoz/
+            ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/portavoz/releases/
 
 
       - name: Deploy on server (extract, npm ci, symlink, pm2, cleanup)
