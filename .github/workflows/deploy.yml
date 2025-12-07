@@ -42,7 +42,7 @@ jobs:
         run: |
           TIMESTAMP=$(date -u +"%Y%m%d%H%M%S")
           echo "Creating release: $TIMESTAMP"
-          tar -czf release_${TIMESTAMP}.tar.gz dist package.json package-lock.json
+          tar -czf release_${TIMESTAMP}.tar.gz server/dist server/package.json server/package-lock.json
           ls -lah release_${TIMESTAMP}.tar.gz
 
       - name: Setup SSH key
