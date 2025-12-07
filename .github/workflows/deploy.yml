@@ -9,7 +9,7 @@ env:
   RELEASES_DIR: /home/${{ secrets.EC2_USER }}/portavoz/releases
   CURRENT_DIR:  /home/${{ secrets.EC2_USER }}/portavoz/current
   KEEP_RELEASES: 5
-  PM2_NAME: portavoz
+  PM2_NAME: api
   BUILD_TAR: build.tar.gz
 
 jobs:
