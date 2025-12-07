@@ -2,6 +2,43 @@ import config from "@/config";
 import Community, { CommunityData } from "@/models/Community.model";
 import CommunityMembership from "@/models/CommunityMembership.model";
 import { generateId } from "@/utils/generateId";
+type CommunityWithJoinStatus = ReturnType<CommunityData["toObject"]> & {
+    isJoined: boolean;
+};
+
+const resolveCommunityResponse = async (
+    community: CommunityData,
+    userId?: string
+): Promise<CommunityData | CommunityWithJoinStatus> => {
+    if (!userId) {
+        return community;
+    }
+
+    const membership = await CommunityMembership.findOne({
+        userId,
+        communityId: community._id,
+    });
+
+    return {
+        ...community.toObject(),
+        isJoined: !!membership,
+    };
+};
+
+const resolveCommunitiesResponse = async (
+    communities: CommunityData[],
+    userId?: string
+): Promise<(CommunityData | CommunityWithJoinStatus)[]> => {
+    if (!userId) {
+        return communities;
+    }
+
+    return Promise.all(
+        communities.map((community) =>
+            resolveCommunityResponse(community, userId)
+        )
+    );
+};
 
 export const createCommunityService = async (
     data: Partial<CommunityData>,
@@ -24,7 +61,8 @@ export const createCommunityService = async (
 export const getCommunitiesService = async (
     page: number,
     limit: number,
-    search?: string
+    search?: string,
+    userId?: string
 ) => {
     const query: any = {};
     if (search) {
@@ -38,13 +76,22 @@ export const getCommunitiesService = async (
 
     const count = await Community.countDocuments(query);
 
-    return { communities, count };
+    const communitiesWithJoinStatus = await resolveCommunitiesResponse(
+        communities,
+        userId
+    );
+
+    return { communities: communitiesWithJoinStatus, count };
 };
 
-export const getCommunityByIdService = async (communityId: string) => {
+export const getCommunityByIdService = async (
+    communityId: string,
+    userId?: string
+) => {
     const community = await Community.findById(communityId);
     if (!community) throw new Error("Community not found");
-    return community;
+
+    return await resolveCommunityResponse(community, userId);
 };
 
 export const updateCommunityService = async (

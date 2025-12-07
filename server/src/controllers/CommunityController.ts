@@ -62,11 +62,13 @@ export const getCommunities = async (
         const page = parseInt(req.query.page as string) || 1;
         const limit = parseInt(req.query.limit as string) || 10;
         const search = req.query.search as string;
+        const userId = req.user?.uid;
 
         const { communities, count } = await getCommunitiesService(
             page,
             limit,
-            search
+            search,
+            userId
         );
         res.status(200).json({ communities, count });
     } catch (error: any) {
@@ -80,7 +82,8 @@ export const getCommunityById = async (
     next: NextFunction
 ) => {
     try {
-        const community = await getCommunityByIdService(req.params.id);
+        const userId = req.user?.uid;
+        const community = await getCommunityByIdService(req.params.id, userId);
         res.status(200).json({ community });
     } catch (error: any) {
         next(error);

@@ -2,6 +2,7 @@ import { CommunityDrop } from "@/components/features/community/CommunityDrop";
 import { Button } from "@/components/ui/Button";
 import { useDeleteCommunity } from "@/hooks/community/useDeleteCommunity";
 import { useJoinCommunity } from "@/hooks/community/useJoinCommunity";
+import { useLeaveCommunity } from "@/hooks/community/useLeaveCommunity";
 import { useStoreUser } from "@/stores/userStore";
 import { IconDotsVertical } from "@tabler/icons-react";
 import { useState } from "react";
@@ -15,12 +16,19 @@ export const CommunityHeader = ({ community }: CommunityHeaderProps) => {
     const { user } = useStoreUser();
     const navigate = useNavigate();
     const { mutate: joinCommunity } = useJoinCommunity();
+    const { mutate: leaveCommunity } = useLeaveCommunity();
     const { mutate: deleteCommunity } = useDeleteCommunity();
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const handleJoin = () => {
         joinCommunity(community._id);
         setDropdownOpen(false);
+    };
+
+    const handleLeave = () => {
+        if (confirm("Tem certeza que deseja sair desta comunidade?")) {
+            leaveCommunity(community._id);
+        }
     };
 
     const handleDelete = () => {
@@ -34,6 +42,7 @@ export const CommunityHeader = ({ community }: CommunityHeaderProps) => {
     };
 
     const isOwner = user?._id === community.creatorId || !!user?.claims?.admin;
+    const isJoined = community.isJoined ?? false;
 
     return (
         <header className="mb-6 flex flex-col">
@@ -58,7 +67,16 @@ export const CommunityHeader = ({ community }: CommunityHeaderProps) => {
                 <h1 className="font-title text-title text-4xl font-medium">{community.name}</h1>
 
                 <div className="flex items-center gap-2">
-                    <Button text="Entrar" onClick={handleJoin} />
+                    {isJoined ? (
+                        <button
+                            onClick={handleLeave}
+                            className="rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+                        >
+                            Sair
+                        </button>
+                    ) : (
+                        <Button text="Entrar" onClick={handleJoin} />
+                    )}
                     <div
                         className="relative cursor-pointer rounded-lg p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800"
                         onClick={() => setDropdownOpen(!dropdownOpen)}

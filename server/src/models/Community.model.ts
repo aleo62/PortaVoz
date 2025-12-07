@@ -10,6 +10,7 @@ export interface CommunityData extends Document {
     createdAt: Date;
     updatedAt: Date;
     membersCount: number;
+    idJoined?: boolean;
 }
 
 const CommunitySchema: Schema = new Schema(
