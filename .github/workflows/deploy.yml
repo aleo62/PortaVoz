@@ -26,10 +26,12 @@ jobs:
           node-version: "20"
 
       - name: Install dependencies
+        working-directory: server
         run: |
           npm ci
 
       - name: Build
+        working-directory: server
         run: |
           echo "::group::Build"
           npm run build
@@ -58,7 +60,7 @@ jobs:
           TIMESTAMP=$(ls -1t release_*.tar.gz | head -n1 | sed 's/release_//; s/.tar.gz//')
           scp -i ~/.ssh/github_actions release_${TIMESTAMP}.tar.gz ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ env.RELEASES_DIR }}/
 
-      - name: Deploy on server (extract, npm ci, symlink, pm2, cleanup) 
+      - name: Deploy on server (extract, npm ci, symlink, pm2, cleanup)
         env:
           TIMESTAMP: ${{ steps.pack_build_timestamp.outputs.timestamp || '' }}
         run: |
@@ -93,7 +95,7 @@ jobs:
             if pm2 describe $PM2_NAME >/dev/null 2>&1; then
               pm2 restart $PM2_NAME
             else
-              pm2 start ~/portavoz/current/dist/server.js --name $PM2_NAME
+              pm2 start ~/portavoz/current/server/dist/server.js --name $PM2_NAME
             fi
             # verify process is online (basic)
             sleep 2
