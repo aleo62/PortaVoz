@@ -5,7 +5,7 @@ import { useStoreSidebar } from "@/stores/sidebarStore";
 import { useThemeStore } from "@/stores/themeStore";
 import { useStoreUser } from "@/stores/userStore";
 import { SidebarAdminItems, SidebarClientItems, SidebarItems } from "@constants/sidebar";
-import { IconChevronLeft, IconChevronRight, IconPlus, IconSelector } from "@tabler/icons-react";
+import { IconChevronLeft, IconChevronRight, IconSelector } from "@tabler/icons-react";
 import { useState } from "react";
 import { SidebarItem } from "./SidebarItem";
 import { SidebarUserDrop } from "./SidebarUserDrop";
@@ -79,7 +79,6 @@ export const Sidebar = () => {
                             notification={item.notification as any}
                         />
                     ))}
-                    
 
                     <div
                         className={`mt-2 flex items-center rounded-xl py-2 ${isOpen && "bg-white px-2 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800"} relative w-full transition-all`}

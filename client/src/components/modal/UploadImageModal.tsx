@@ -25,7 +25,7 @@ export const UploadImageModal = ({
     const [zoom, setZoom] = useState(1);
     const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null);
 
-    const onCropComplete = (croppedArea: any, croppedAreaPixels: any) => {
+    const onCropComplete = (_croppedArea: any, croppedAreaPixels: any) => {
         setCroppedAreaPixels(croppedAreaPixels);
     };
 
