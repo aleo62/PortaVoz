@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         working-directory: server
         run: |
-          npm ci
+          npm install
 
       - name: Build
         working-directory: server
@@ -92,7 +92,7 @@ jobs:
           tar -xzf ~/portavoz/releases/$BASENAME -C "$RELEASE_PATH"
 
           echo "Installing production dependencies..."
-          npm ci --omit=dev
+          npm install
 
           OLD_CURRENT=$(readlink -f ~/portavoz/current || true) || true
           echo "Updating current symlink -> $RELEASE_PATH"
