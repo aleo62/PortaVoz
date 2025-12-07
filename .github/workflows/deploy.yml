@@ -38,7 +38,6 @@ jobs:
           echo "::endgroup::"
 
       - name: Pack build (only dist and package files)
-        working-directory: server
         run: |
           TIMESTAMP=$(date -u +"%Y%m%d%H%M%S")
           echo "Creating release: $TIMESTAMP"
