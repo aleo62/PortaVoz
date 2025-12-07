@@ -1,4 +1,4 @@
-type ErrorCodes = "SERVER_ERROR" | "ALREADY_VERIFIED";
+type ErrorCodes = "SERVER_ERROR" | "ALREADY_VERIFIED" | "TOO_MANY_REQUESTS";
 
 export class AppError extends Error {
     status: number;

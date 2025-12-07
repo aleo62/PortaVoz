@@ -18,7 +18,7 @@ export const sendVerificationCode = async (
         user.meta.authCode!.attemptsRemaining! <= 0 &&
         user.meta.authCode!.attemptsResetAt! > now
     ) {
-        throw new AppError("Too many requests, try again later.", 429);
+        throw new AppError("Too many requests, try again later.", 429, "TOO_MANY_REQUESTS", null);
     } else if (user.meta.authCode!.attemptsResetAt! < now) {
         user.meta.authCode!.attemptsRemaining = 3;
     }
