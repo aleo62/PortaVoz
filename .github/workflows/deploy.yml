@@ -60,7 +60,7 @@ jobs:
         working-directory: server
         run: |
           TIMESTAMP=$(ls -1t release_*.tar.gz | head -n1 | sed 's/release_//; s/.tar.gz//')
-          scp -i ~/.ssh/github_actions release_${TIMESTAMP}.tar.gz ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ env.RELEASES_DIR }}/
+          ssh -i ~/.ssh/github_actions -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} PM2_NAME=${{ env.PM2_NAME }} KEEP_RELEASES=${{ env.KEEP_RELEASES }} bash -se <<'REMOTE'
 
       - name: Deploy on server (extract, npm ci, symlink, pm2, cleanup)
         env:
