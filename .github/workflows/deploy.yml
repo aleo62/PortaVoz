@@ -38,10 +38,11 @@ jobs:
           echo "::endgroup::"
 
       - name: Pack build (only dist and package files)
+        working-directory: server
         run: |
           TIMESTAMP=$(date -u +"%Y%m%d%H%M%S")
           echo "Creating release: $TIMESTAMP"
-          tar -czf release_${TIMESTAMP}.tar.gz server/dist server/package.json server/package-lock.json
+          tar -czf release_${TIMESTAMP}.tar.gz dist package.json package-lock.json
           ls -lah release_${TIMESTAMP}.tar.gz
 
       - name: Setup SSH key
@@ -112,7 +113,7 @@ jobs:
             if pm2 describe "$PM2_NAME" >/dev/null 2>&1; then
               pm2 restart "$PM2_NAME"
             else
-              pm2 start ~/portavoz/current/server/dist/server.js --name "$PM2_NAME"
+              pm2 start ~/portavoz/current/dist/server.js --name "$PM2_NAME"
             fi
 
             sleep 2
