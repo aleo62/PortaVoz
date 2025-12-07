@@ -1,3 +1,4 @@
+import { useModal } from "@/contexts/ModalContext";
 import { useDeleteUser } from "@/hooks/user/useDeleteUser";
 import { useUsers } from "@/hooks/user/useUsers";
 import { UserData } from "@/types/userDataType";
@@ -8,6 +9,7 @@ export const AdminUsers = () => {
     const [search, setSearch] = useState("");
     const { data: usersData, isLoading } = useUsers(true);
     const { mutate: deleteUser } = useDeleteUser();
+    const { openModal } = useModal();
 
     const users: Partial<UserData>[] =
         (usersData?.pages.flatMap((page) => page.users) as Partial<UserData>[]) || [];
@@ -25,8 +27,12 @@ export const AdminUsers = () => {
         }
     };
 
+    const handleEdit = (user: Partial<UserData>) => {
+        openModal("adminEditUser", { user });
+    };
+
     return (
-        <div className="flex flex-1 h-fit flex-col gap-4">
+        <div className="flex h-fit flex-1 flex-col gap-4">
             <div className="flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-2 dark:border-zinc-800 dark:bg-zinc-900">
                 <IconSearch className="text-zinc-400" size={20} />
                 <input
@@ -38,7 +44,8 @@ export const AdminUsers = () => {
                 />
             </div>
 
-            <div className="ring-1 rounded-xl ring-zinc-200 dark:ring-zinc-800 overflow-hidden">
+            {/* Desktop Table View */}
+            <div className="hidden overflow-hidden rounded-xl ring-1 ring-zinc-200 md:block dark:ring-zinc-800">
                 <table className="w-full text-left text-sm">
                     <thead className="bg-zinc-50 text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
                         <tr>
@@ -100,6 +107,7 @@ export const AdminUsers = () => {
                                             </button>
 
                                             <button
+                                                onClick={() => handleEdit(user)}
                                                 className="rounded-lg p-2 text-zinc-500 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
                                                 title="Edit user"
                                             >
@@ -112,6 +120,56 @@ export const AdminUsers = () => {
                         )}
                     </tbody>
                 </table>
+            </div>
+
+            <div className="flex flex-col gap-3 md:hidden">
+                {isLoading ? (
+                    <div className="p-4 text-center text-zinc-500">Loading...</div>
+                ) : filteredUsers.length === 0 ? (
+                    <div className="p-4 text-center text-zinc-500">No users found</div>
+                ) : (
+                    filteredUsers.map((user) => (
+                        <div
+                            key={user._id}
+                            className="flex flex-col gap-3 rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900"
+                        >
+                            <div className="flex items-center gap-3">
+                                <img
+                                    src={
+                                        user.image ||
+                                        `https://ui-avatars.com/api/?name=${user.username}`
+                                    }
+                                    alt={user.username}
+                                    className="h-10 w-10 rounded-full object-cover"
+                                />
+                                <div>
+                                    <div className="font-medium text-zinc-900 dark:text-zinc-100">
+                                        {user.fName}
+                                    </div>
+                                    <div className="text-xs text-zinc-500">{user.username}</div>
+                                </div>
+                            </div>
+                            <div className="text-sm text-zinc-600 dark:text-zinc-400">
+                                {user.email}
+                            </div>
+                            <div className="flex items-center gap-2 border-t border-zinc-100 pt-3 dark:border-zinc-800">
+                                <button
+                                    onClick={() => user._id && handleDelete(user._id)}
+                                    className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
+                                >
+                                    <IconTrash size={18} />
+                                    Delete
+                                </button>
+                                <button
+                                    onClick={() => handleEdit(user)}
+                                    className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-zinc-500 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                                >
+                                    Edit
+                                </button>
+                            </div>
+                        </div>
+                    ))
+                )}
             </div>
         </div>
     );

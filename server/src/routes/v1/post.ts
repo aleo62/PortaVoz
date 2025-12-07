@@ -14,20 +14,19 @@ import {
     publishDraftById,
 } from "@/controllers/DraftController";
 import {
-    createFavorite,
-    deleteFavorite,
-} from "@/controllers/FavoriteController";
-import {
     createNewPost,
     deletePost,
     getAllPosts,
+    getCommunityPosts,
     getPostById,
     updatePost,
 } from "@/controllers/PostController";
 import { createRepost, deleteRepost } from "@/controllers/RepostController";
+import { createSave, deleteSave } from "@/controllers/SaveController";
 import { createUpvote, deleteUpvote } from "@/controllers/VoteController";
 import upload from "@/lib/multer";
 import { authenticateOwnerOrAdmin } from "@/middlewares/auth/authOwnerOrAdmin";
+import { authenticateOwnerOrAdminOrMod } from "@/middlewares/auth/authOwnerOrAdminOrMod";
 import { authenticateUser } from "@/middlewares/auth/authUser";
 import { authenticateVerified } from "@/middlewares/auth/authVerified";
 import { validatePost } from "@/middlewares/validation/validatePost";
@@ -42,6 +41,12 @@ const router = Router();
 
 router.get("/", authenticateUser, validationError, getAllPosts);
 router.get("/:postId", authenticateUser, validationError, getPostById);
+router.get(
+    "/community/:communityId",
+    authenticateUser,
+    validationError,
+    getCommunityPosts
+);
 
 router.post(
     "/",
@@ -146,7 +151,7 @@ router.post(
 router.delete(
     "/comments/:commentId",
     authenticateUser,
-    authenticateOwnerOrAdmin(async (req: Request) => {
+    authenticateOwnerOrAdminOrMod(async (req: Request) => {
         const comment = await Comment.findById(req.params.commentId);
         if (!comment) throw new Error("Comment does not exist");
         return comment?.user as string;
@@ -159,7 +164,7 @@ router.delete(
     "/comments/parent/:parentId",
     authenticateUser,
     authenticateVerified,
-    authenticateOwnerOrAdmin(async (req: Request) => {
+    authenticateOwnerOrAdminOrMod(async (req: Request) => {
         const post = await Post.findById(req.params.parentId);
         return post?.user as string;
     }),
@@ -232,25 +237,25 @@ router.delete(
 );
 
 router.post(
-    "/:postId/favorite",
+    "/:postId/save",
     authenticateUser,
     authenticateVerified,
     validatePost(async (req: Request) => {
         return req.params.postId;
     }),
     validationError,
-    createFavorite
+    createSave
 );
 
 router.delete(
-    "/:postId/favorite",
+    "/:postId/save",
     authenticateUser,
     authenticateVerified,
     validatePost(async (req: Request) => {
         return req.params.postId;
     }),
     validationError,
-    deleteFavorite
+    deleteSave
 );
 
 router.post(

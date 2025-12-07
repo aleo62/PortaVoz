@@ -1,12 +1,12 @@
 import mongoose, { Document, ObjectId, Schema } from "mongoose";
 
-export interface FavoriteData extends Document {
+export interface SaveData extends Document {
     _id: ObjectId | string;
     post: string;
     userId: string;
 }
 
-const FavoriteSchema: Schema = new Schema(
+const SaveSchema: Schema = new Schema(
     {
         _id: {
             type: String,
@@ -24,5 +24,5 @@ const FavoriteSchema: Schema = new Schema(
     { timestamps: true }
 );
 
-const Favorite = mongoose.model<FavoriteData>("Favorite", FavoriteSchema);
-export default Favorite;
+const Save = mongoose.model<SaveData>("Save", SaveSchema);
+export default Save;

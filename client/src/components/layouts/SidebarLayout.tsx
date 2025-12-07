@@ -23,7 +23,7 @@ export const SidebarLayout = ({
         <div className="relative flex h-screen overflow-hidden lg:py-3">
             <Sidebar />
 
-            <section className="flex w-full flex-1 flex-col overflow-hidden bg-white ring-1 ring-zinc-200 lg:mr-3 lg:rounded-xl dark:bg-zinc-900 dark:ring-zinc-800">
+            <section className="flex w-full flex-1 flex-col overflow-hidden bg-white ring-1 ring-zinc-200 lg:mr-3 lg:rounded-lg dark:bg-zinc-900 dark:ring-zinc-800">
                 <SidebarHeader
                     linkBack={linkBack}
                     noHeader={noHeader}
@@ -32,7 +32,7 @@ export const SidebarLayout = ({
                 />
 
                 <div
-                    className={`scrollbar-thin dark:scrollbar-thumb-zinc-700 scrollbar-thumb-zinc-400 scrollbar-track-transparent flex flex-1 overflow-y-auto ${flex_col ? "flex-col" : "justify-center"}`}
+                    className={`scrollbar-thin dark:scrollbar-thumb-zinc-700 scrollbar-thumb-zinc-400 scrollbar-track-transparent flex flex-1 overflow-y-auto ${flex_col ? "flex-col lg:pb-6 lg:px-10" : "justify-center max-lg:flex-col max-lg:h-full"}`}
                 >
                     {children}
                 </div>

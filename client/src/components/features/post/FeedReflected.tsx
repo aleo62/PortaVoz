@@ -1,6 +1,5 @@
 import { usePosts } from "@/hooks/posts/usePosts";
 import { PostData } from "@/types/postDataType";
-import { IconDotsVertical } from "@tabler/icons-react";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { PostReflected } from "./PostReflected";
@@ -13,11 +12,8 @@ export const FeedReflected = () => {
         (reflectedData?.pages.flatMap((page) => page.posts) as PostData[]) || [];
 
     return (
-        <section className="sticky w-full max-w-85 hidden h-fit gap-3 space-y-1 rounded-2xl lg:block ">
-            <div className="xxl:px-4 mb-3 flex items-center justify-between px-3 py-4">
-                <h2 className="text-title text-lg">Repercutidos</h2>
-                <IconDotsVertical className="mr-2 size-4" />
-            </div>
+        <section className="h-fit w-full space-y-5 rounded-2xl">
+            <h2 className="font-title text-title tracking-wide">Repercutidos</h2>
 
             {reflectedLoading && <PostReflectedSkeleton />}
 
@@ -31,12 +27,12 @@ export const FeedReflected = () => {
                 <Swiper
                     modules={[Navigation]}
                     spaceBetween={10}
-                    slidesPerView="auto"
-                    className="animate-fade-in xxl:!px-4 !px-3"
-                    direction={"vertical"}
+                    slidesPerView={"auto"}
+                    className="!h-fit !w-full"
+                    direction="vertical"
                 >
                     {reflectedPosts.map((post) => (
-                        <SwiperSlide key={post._id} className="">
+                        <SwiperSlide key={post._id} className="!w-full">
                             <PostReflected post={post} />
                         </SwiperSlide>
                     ))}

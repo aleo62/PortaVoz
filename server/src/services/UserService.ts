@@ -7,7 +7,9 @@ export const getUsersService = async (
     page: number,
     limit: number
 ) => {
-    const usersProps: any = user.isAdmin ? {} : { username: 1, fName: 1, lName: 1, image: 1 }; 
+    const usersProps: any = user.isAdmin
+        ? {}
+        : { username: 1, fName: 1, lName: 1, image: 1 };
 
     const users = await User.find(
         {
@@ -21,7 +23,7 @@ export const getUsersService = async (
 
     const count = await User.countDocuments({
         _id: { $ne: user.uid },
-        username: { $regex: name }, 
+        username: { $regex: name },
     });
 
     return { count, users };
@@ -117,6 +119,11 @@ export const createUserService = async (
 };
 
 export const deleteUserService = async (userId: string) => {
+    const user = await User.findById(userId);
+    if (user!.role === "superadmin") {
+        throw new Error("Not allowed to delete superadmin");
+    }
+
     await User.deleteOne({ _id: userId });
     await admin.auth().deleteUser(userId);
 };
@@ -186,5 +193,23 @@ export const updateUserPreferenceService = async (
 };
 
 export const makeUserAdminService = async (userId: string) => {
-    await admin.auth().setCustomUserClaims(userId, { admin: true });
+    await User.updateOne({ _id: userId }, { $set: { role: "admin" } });
+    await admin.auth().setCustomUserClaims(userId, { admin: true, mod: true });
+};
+
+export const makeUserModeratorService = async (userId: string) => {
+    await User.updateOne({ _id: userId }, { $set: { role: "moderator" } });
+    await admin.auth().setCustomUserClaims(userId, { mod: true });
+};
+
+export const removeAdminRoleService = async (userId: string) => {
+    await User.updateOne({ _id: userId }, { $set: { role: "user" } });
+    await admin
+        .auth()
+        .setCustomUserClaims(userId, { admin: false, mod: false });
+};
+
+export const removeModeratorRoleService = async (userId: string) => {
+    await User.updateOne({ _id: userId }, { $set: { role: "user" } });
+    await admin.auth().setCustomUserClaims(userId, { mod: false });
 };

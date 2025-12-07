@@ -20,6 +20,14 @@ export interface PostData extends Document {
     repostsCount: number;
     status: "ativo" | "resolvido" | "oculto";
     isUpvoted?: boolean;
+    communityIds?: ObjectId[];
+    visibility: "global" | "communities" | "both";
+    type: "regular" | "movement";
+    voting?: {
+        options: { text: string; votes: number }[];
+        totalVotes: number;
+        voters: string[];
+    };
 }
 
 const LocationSchema: Schema = new Schema({
@@ -114,6 +122,27 @@ const PostSchema: Schema = new Schema(
                 message: ["{VALUE} is not supported"],
             },
             default: "ativo",
+        },
+        communityIds: [{ type: Schema.Types.ObjectId, ref: "Community" }],
+        visibility: {
+            type: String,
+            enum: ["global", "communities", "both"],
+            default: "global",
+        },
+        type: {
+            type: String,
+            enum: ["regular", "movement"],
+            default: "regular",
+        },
+        voting: {
+            options: [
+                {
+                    text: String,
+                    votes: { type: Number, default: 0 },
+                },
+            ],
+            totalVotes: { type: Number, default: 0 },
+            voters: [{ type: String, ref: "User" }],
         },
     },
     { timestamps: true }

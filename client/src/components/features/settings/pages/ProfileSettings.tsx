@@ -124,9 +124,6 @@ export const ProfileSettings = () => {
                         </button>
                     </div>
                 </div>
-                <div className="absolute right-0 -bottom-10">
-                    <Button text="Editar perfil" styleType="outlined" onClick={handleEditProfile} />
-                </div>
             </div>
 
             <SettingsBlock
@@ -146,9 +143,7 @@ export const ProfileSettings = () => {
                         <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
                             Usuário
                         </span>
-                        <p className="text-zinc-900 dark:text-zinc-100">
-                            @{displayData?.username}
-                        </p>
+                        <p className="text-zinc-900 dark:text-zinc-100">@{displayData?.username}</p>
                     </div>
                     <div>
                         <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
@@ -160,6 +155,12 @@ export const ProfileSettings = () => {
                     </div>
                 </div>
             </SettingsBlock>
+            <Button
+                styleType="outlined"
+                className="mt-5 ml-auto"
+                onClick={handleEditProfile}
+                text="Editar Perfil"
+            />
 
             {hasChanges && (
                 <SaveConfirmationBar

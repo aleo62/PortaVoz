@@ -1,0 +1,118 @@
+name: CI/CD - Build & Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  RELEASES_DIR: /home/${{ secrets.EC2_USER }}/portavoz/releases
+  CURRENT_DIR:  /home/${{ secrets.EC2_USER }}/portavoz/current
+  KEEP_RELEASES: 5
+  PM2_NAME: portavoz
+  BUILD_TAR: build.tar.gz
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: |
+          npm ci
+
+      - name: Build
+        run: |
+          echo "::group::Build"
+          npm run build
+          echo "::endgroup::"
+
+      - name: Pack build (only dist and package files)
+        run: |
+          TIMESTAMP=$(date -u +"%Y%m%d%H%M%S")
+          echo "Creating release: $TIMESTAMP"
+          tar -czf release_${TIMESTAMP}.tar.gz dist public package.json package-lock.json
+          ls -lah release_${TIMESTAMP}.tar.gz
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/github_actions
+          chmod 600 ~/.ssh/github_actions
+
+      - name: Add EC2 to known hosts
+        run: |
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts || true
+          cat ~/.ssh/known_hosts
+
+      - name: Upload release to EC2
+        run: |
+          TIMESTAMP=$(ls -1t release_*.tar.gz | head -n1 | sed 's/release_//; s/.tar.gz//')
+          scp -i ~/.ssh/github_actions release_${TIMESTAMP}.tar.gz ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ env.RELEASES_DIR }}/
+
+      - name: Deploy on server (extract, npm ci, symlink, pm2, cleanup) 
+        env:
+          TIMESTAMP: ${{ steps.pack_build_timestamp.outputs.timestamp || '' }}
+        run: |
+          # use a single ssh session to run the remote deploy script
+          TIMESTAMP=$(ls -1t release_*.tar.gz | head -n1 | sed 's/release_//; s/.tar.gz//')
+          echo "Deploying release: $TIMESTAMP"
+          ssh -i ~/.ssh/github_actions -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} bash -se <<'REMOTE'
+            set -euo pipefail
+            TIMESTAMP_FILE=$(ls -1t ~/portavoz/releases/release_*.tar.gz | head -n1)
+            if [ -z "$TIMESTAMP_FILE" ]; then
+              echo "No release tarball found in releases dir"
+              exit 1
+            fi
+            # compute release dir path
+            BASENAME=$(basename "$TIMESTAMP_FILE") # release_YYYYMMDDHHMMSS.tar.gz
+            RELNAME=${BASENAME%.tar.gz}           # release_YYYYMMDDHHMMSS
+            RELEASE_PATH=~/portavoz/releases/$RELNAME
+            echo "Creating release dir: $RELEASE_PATH"
+            mkdir -p "$RELEASE_PATH"
+            cd "$RELEASE_PATH"
+            echo "Extracting tarball..."
+            tar -xzf ~/portavoz/releases/$BASENAME -C "$RELEASE_PATH"
+            # install production deps inside the release (uses package.json sent with build)
+            echo "Installing production dependencies..."
+            npm ci --omit=dev
+            # atomically update "current" symlink
+            OLD_CURRENT=$(readlink -f ~/portavoz/current || true) || true
+            echo "Updating current symlink -> $RELEASE_PATH"
+            ln -sfn "$RELEASE_PATH" ~/portavoz/current
+            # restart app (pm2)
+            echo "Restarting pm2 process '${PM2_NAME:-portavoz}'..."
+            if pm2 describe $PM2_NAME >/dev/null 2>&1; then
+              pm2 restart $PM2_NAME
+            else
+              pm2 start ~/portavoz/current/dist/server.js --name $PM2_NAME
+            fi
+            # verify process is online (basic)
+            sleep 2
+            if ! pm2 ping >/dev/null 2>&1; then
+              echo "pm2 not responding; reverting symlink"
+              if [ -n "$OLD_CURRENT" ]; then
+                ln -sfn "$OLD_CURRENT" ~/portavoz/current
+                pm2 restart $PM2_NAME || true
+              fi
+              echo "Deployment failed"
+              exit 1
+            fi
+            # cleanup old releases - keep last N
+            KEEP=${KEEP_RELEASES:-5}
+            echo "Cleaning old releases, keeping $KEEP"
+            cd ~/portavoz/releases
+            ls -1dt release_* | tail -n +$((KEEP+1)) | xargs -r rm -rf
+            echo "Deployment finished successfully"
+          REMOTE
+
+      - name: Done
+        run: echo "Deployment job finished"

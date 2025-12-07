@@ -1,8 +1,8 @@
+import { PopularCommunities } from "@/components/features/community/PopularCommunities";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { PostData } from "@/types/postDataType";
 import { FeedPosts } from "@components/features/post/FeedPosts";
 import { FeedReflected } from "@components/features/post/FeedReflected";
-import { ButtonCreatePost } from "@components/ui/ButtonCreatePost";
 import { usePosts } from "@hooks/posts/usePosts";
 
 export const Feed = () => {
@@ -26,9 +26,16 @@ export const Feed = () => {
                 fetchFeedNextPage={fetchFeedNextPage}
             />
 
-            <ButtonCreatePost />
+            <aside className="scrollbar-thin dark:scrollbar-thumb-zinc-700 scrollbar-thumb-zinc-400 scrollbar-track-transparent sticky top-10 hidden w-80 flex-col gap-6 lg:flex">
+                {!isMobile && <FeedReflected />}
 
-            {!isMobile && <FeedReflected />}
+                <div className="flex flex-col gap-4 rounded-2xl bg-zinc-50 dark:bg-zinc-900">
+                    <h3 className="font-title text-zinc-900 dark:text-white">
+                        Comunidades Populares
+                    </h3>
+                    <PopularCommunities />
+                </div>
+            </aside>
         </main>
     );
 };

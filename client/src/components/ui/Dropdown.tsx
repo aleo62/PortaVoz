@@ -61,7 +61,7 @@ export const Dropdown = ({
                             y: orientation === "top" ? -20 : 20,
                         }}
                         transition={{ duration: 0.15 }}
-                        className={`text-subtitle absolute z-100 bg-white dark:bg-zinc-900 ${orientation === "bottom" ? "bottom-full mb-2" : "top-full mt-2"} right-0 grid w-fit gap-2 rounded-xl font-normal ring-[.7px] ring-zinc-200 dark:ring-zinc-800`}
+                        className={`text-subtitle absolute z-100 bg-white dark:bg-zinc-900 ${orientation === "bottom" ? "bottom-full mb-2" : "top-full mt-2"} right-2 grid w-fit gap-2 rounded-xl font-normal ring-[.7px] ring-zinc-200 dark:ring-zinc-800`}
                     >
                         <nav className="divide-y-1 divide-zinc-200 py-2 dark:divide-zinc-800">
                             {children}

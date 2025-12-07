@@ -7,6 +7,7 @@ export interface UserData extends Document {
     fName: string;
     lName: string;
     image: string;
+    role: "superadmin" | "admin" | "moderator" | "user";
     about?: string;
     banner?: string;
     meta: {
@@ -43,6 +44,7 @@ export interface PublicUserData {
     fName: string;
     lName: string;
     image: string;
+    role: "superadmin" | "admin" | "moderator" | "user";
     about?: string;
     banner?: string;
     meta: {
@@ -56,6 +58,10 @@ export interface PublicUserData {
 export interface RequestUserType {
     uid: string;
     isAdmin: boolean;
+    isMod: boolean;
+    role?: "superadmin" | "admin" | "moderator" | "user";
+    email: string;
+    isVerified: boolean;
 }
 
 const UserSchema: Schema = new Schema(
@@ -69,6 +75,11 @@ const UserSchema: Schema = new Schema(
         email: { type: String, required: true },
         fName: { type: String, required: true },
         lName: { type: String, required: true },
+        role: {
+            type: String,
+            enum: ["superadmin", "admin", "moderator", "user"],
+            default: "user",
+        },
         image: {
             type: String,
             default:

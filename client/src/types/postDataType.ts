@@ -16,7 +16,7 @@ export interface PostData {
     status: "ativo" | "resolvido" | "oculto";
     isUpvoted: boolean;
     isReposted: boolean;
-    isFavorited: boolean;
+    isSaved: boolean;
     createdAt: string;
 }
 
@@ -35,7 +35,7 @@ export type UserPostData = PostData & {
     repostId: string;
     repostedAt: string;
     repostedBy: PublicUser;
-}
+};
 
 type LocationData = {
     latitude: number;

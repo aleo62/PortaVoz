@@ -5,7 +5,7 @@ import { useStoreSidebar } from "@/stores/sidebarStore";
 import { useThemeStore } from "@/stores/themeStore";
 import { useStoreUser } from "@/stores/userStore";
 import { SidebarAdminItems, SidebarClientItems, SidebarItems } from "@constants/sidebar";
-import { IconChevronLeft, IconChevronRight, IconSelector } from "@tabler/icons-react";
+import { IconChevronLeft, IconChevronRight, IconPlus, IconSelector } from "@tabler/icons-react";
 import { useState } from "react";
 import { SidebarItem } from "./SidebarItem";
 import { SidebarUserDrop } from "./SidebarUserDrop";
@@ -22,7 +22,7 @@ export const Sidebar = () => {
 
     return (
         <aside
-            className={`max-lg:bg-body-background fixed top-0 left-0 z-[120] h-full flex-shrink-0 transition-all max-lg:border-r-1 max-lg:border-zinc-200 lg:relative max-lg:dark:border-zinc-800 ${isMobile && !isOpen && "translate-x-[-120%]"}`}
+            className={`max-lg:bg-body-background fixed top-0 left-0 z-[120] h-full flex-shrink-0 border-zinc-200 transition-all max-lg:border-r-1 lg:relative dark:border-zinc-800 ${isMobile && !isOpen && "translate-x-[-120%]"}`}
         >
             <nav
                 className={`relative grid h-full grid-rows-[1fr_6fr_2fr] justify-center px-4 shadow-[0px_4px_10px_-19px_rgba(0,_0,_0,_0.1)] duration-300 max-lg:py-4`}
@@ -79,6 +79,7 @@ export const Sidebar = () => {
                             notification={item.notification as any}
                         />
                     ))}
+                    
 
                     <div
                         className={`mt-2 flex items-center rounded-xl py-2 ${isOpen && "bg-white px-2 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800"} relative w-full transition-all`}

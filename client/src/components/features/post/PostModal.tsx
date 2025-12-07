@@ -108,7 +108,7 @@ export const PostModal = ({ post, zIndex }: SearchOverlayProps) => {
                 </main>
                 <div className="flex flex-1 flex-col overflow-hidden">
                     <h3 className="mb-3 flex items-center justify-between gap-2 text-sm dark:text-zinc-500">
-                        <p>Comentários</p>
+                        <p className="font-title font-medium">Comentários ({post.commentsCount})</p>
                         <button
                             className="text-accent flex items-center text-xs"
                             onClick={() => setContentHidden((prev) => !prev)}

@@ -27,14 +27,14 @@ export const FeedPosts = ({
 
     if (!feedLoading && !posts.length) {
         return (
-            <div className="mx-auto text-center text-zinc-500">
-                <p className="text-lg">Nenhuma Denúncia enviada ainda</p>
+            <div className="mx-auto text-center text-zinc-500 mt-5">
+                <p className="text-md">Nenhum Post aqui</p>
             </div>
         );
     }
 
     return (
-        <section className={`flex flex-col items-center mx-auto gap-4 ${grid && "xxl:grid xxl:px-2 grid-cols-2"}`}>
+        <section className={`flex flex-col items-center w-full mx-auto md:mt-5 md:gap-4 max-lg:divide-y-[.7px] divide-zinc-200 dark:divide-zinc-800 ${grid && "xxl:grid xxl:px-2 grid-cols-2"}`}>
             {feedLoading && <PostSkeleton />}
             {!feedLoading && posts.map((post) => (
                 <Post post={post as PostData} key={post._id} />

@@ -2,12 +2,12 @@ import {
     createUpvoteService,
     deleteUpvoteService,
 } from "@/services/VoteService";
-import { formatError } from "@/utils/formatError";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
 export const createUpvote = async (
     req: Request,
-    res: Response
+    res: Response,
+    next: NextFunction
 ): Promise<void> => {
     try {
         const { uid } = req.user!;
@@ -17,21 +17,14 @@ export const createUpvote = async (
 
         res.status(201).json({ ok: true });
     } catch (err) {
-        if (!(err instanceof Error)) throw err;
-
-        const errors = formatError(err.message);
-
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: errors,
-        });
+        next(err);
     }
 };
 
 export const deleteUpvote = async (
     req: Request,
-    res: Response
+    res: Response,
+    next: NextFunction
 ): Promise<void> => {
     try {
         const { uid } = req.user!;
@@ -41,14 +34,6 @@ export const deleteUpvote = async (
 
         res.status(200).json({ ok: true });
     } catch (err) {
-        if (!(err instanceof Error)) throw err;
-
-        const errors = formatError(err.message);
-
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: errors,
-        });
+        next(err);
     }
 };

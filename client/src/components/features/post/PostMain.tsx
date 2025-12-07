@@ -1,8 +1,8 @@
 import { useModal } from "@/contexts/ModalContext";
-import { useCreateFavorite } from "@/hooks/favorite/useCreateFavorite";
-import { useDeleteFavorite } from "@/hooks/favorite/useDeleteFavorite";
 import { useCreateRepost } from "@/hooks/repost/useCreateRepost";
 import { useDeleteRepost } from "@/hooks/repost/useDeleteRepost";
+import { useCreateSave } from "@/hooks/save/useCreateSave";
+import { useDeleteSave } from "@/hooks/save/useDeleteSave";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useCreateVote } from "@/hooks/vote/useCreateVote";
 import { useDeleteVote } from "@/hooks/vote/useDeleteVote";
@@ -40,7 +40,7 @@ export const PostMain = ({ post, viewMode }: MainPostProps) => {
 
     const [isUpvoted, setIsUpvoted] = useState(post.isUpvoted);
     const [isReposted, setIsReposted] = useState(post.isReposted);
-    const [isFavorited, setIsFavorited] = useState(post.isFavorited);
+    const [isSaved, setIsSaved] = useState(post.isSaved);
 
     const createVote = useCreateVote();
     const deleteVote = useDeleteVote();
@@ -76,17 +76,17 @@ export const PostMain = ({ post, viewMode }: MainPostProps) => {
         await createRepost.mutate(post._id);
     };
 
-    const createFavorite = useCreateFavorite();
-    const deleteFavorite = useDeleteFavorite();
+    const createSave = useCreateSave();
+    const deleteSave = useDeleteSave();
 
-    const removeFavorite = async () => {
-        setIsFavorited(false);
-        await deleteFavorite.mutate(post._id);
+    const removeSave = async () => {
+        setIsSaved(false);
+        await deleteSave.mutate(post._id);
     };
 
-    const addFavorite = async () => {
-        setIsFavorited(true);
-        await createFavorite.mutate(post._id);
+    const addSave = async () => {
+        setIsSaved(true);
+        await createSave.mutate(post._id);
     };
 
     const limitDescription = isMobile ? 30 : 45;
@@ -137,8 +137,10 @@ export const PostMain = ({ post, viewMode }: MainPostProps) => {
                 )}
             </Swiper>
 
-            <div className={`${viewMode ? "px-1 py-3 pb-8" : "px-1 md:px-3 py-6"} space-y-7`}>
-                <div className={`flex items-center gap-8 text-xs font-semibold lg:text-[.8rem]`}>
+            <div className={`${viewMode ? "px-1 py-3 pb-8" : "px-1 py-6 md:px-3"} space-y-7`}>
+                <div
+                    className={`flex items-center gap-5 text-xs font-semibold lg:gap-8 lg:text-[.8rem]`}
+                >
                     <PostActionButton
                         Icon={IconArrowBigUp}
                         IconActive={IconArrowBigUpFilled}
@@ -172,8 +174,8 @@ export const PostMain = ({ post, viewMode }: MainPostProps) => {
                         <PostActionButton
                             Icon={IconBookmark}
                             IconActive={IconBookmarkFilled}
-                            onClick={() => (isFavorited ? removeFavorite() : addFavorite())}
-                            isActive={isFavorited}
+                            onClick={() => (isSaved ? removeSave() : addSave())}
+                            isActive={isSaved}
                             classActive="text-blue-500 dark:text-blue-600"
                         />
                         <PostActionButton

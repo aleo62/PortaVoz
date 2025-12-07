@@ -221,14 +221,19 @@ export class Server {
         return await api.delete(`/posts/${id}/repost`);
     }
 
-    /* FAVORITE ENDPOINTS -----------> */
+    /* SAVE ENDPOINTS -----------> */
 
-    static async createFavorite(id: string) {
-        return api.post(`/posts/${id}/favorite`, {});
+    static async getSaves(userId: string, pageParam: number) {
+        const { data } = await api.get(`/users/${userId}/saves?page=${pageParam}`);
+        return data;
     }
 
-    static async deleteFavorite(id: string) {
-        return await api.delete(`/posts/${id}/favorite`);
+    static async createSave(userId: string, postId: string) {
+        return api.post(`/users/${userId}/saves/${postId}`, {});
+    }
+
+    static async deleteSave(userId: string, postId: string) {
+        return await api.delete(`/users/${userId}/saves/${postId}`);
     }
 
     /* REPORT ENDPOINTS -----------> */
@@ -296,4 +301,69 @@ export class Server {
     //         )
     //     ).data;
     // }
+    static async promoteToAdmin(userId: string) {
+        return (await api.put(`/users/${userId}/promote/admin`)).data;
+    }
+
+    static async promoteToModerator(userId: string) {
+        return (await api.put(`/users/${userId}/promote/moderator`)).data;
+    }
+
+    static async demoteFromAdmin(userId: string) {
+        return (await api.put(`/users/${userId}/demote/admin`)).data;
+    }
+
+    static async demoteFromModerator(userId: string) {
+        return (await api.put(`/users/${userId}/demote/moderator`)).data;
+    }
+
+    /* COMMUNITY ENDPOINTS -----------> */
+
+    static async createCommunity(data: any) {
+        return (await api.post(`/communities`, data)).data;
+    }
+
+    static async getCommunities(page: number, limit: number, search?: string) {
+        return (
+            await api.get(`/communities`, {
+                params: { page, limit, search },
+            })
+        ).data;
+    }
+
+    static async getCommunityById(id: string) {
+        return (await api.get(`/communities/${id}`)).data;
+    }
+
+    static async updateCommunity(id: string, data: any) {
+        return (await api.put(`/communities/${id}`, data)).data;
+    }
+
+    static async deleteCommunity(id: string) {
+        return (await api.delete(`/communities/${id}`)).data;
+    }
+
+    static async joinCommunity(id: string) {
+        return (await api.post(`/communities/${id}/join`)).data;
+    }
+
+    static async leaveCommunity(id: string) {
+        return (await api.post(`/communities/${id}/leave`)).data;
+    }
+
+    static async getCommunityPosts(communityId: string, page: number) {
+        return (
+            await api.get(`/posts/community/${communityId}`, {
+                params: { page },
+            })
+        ).data;
+    }
+
+    static async getCommunityMembers(communityId: string, page: number) {
+        return (
+            await api.get(`/communities/${communityId}/members`, {
+                params: { page },
+            })
+        ).data;
+    }
 }

@@ -1,10 +1,13 @@
 import config from "@/config";
 import ReportCategory from "@/models/ReportCategory.model";
-import { formatError } from "@/utils/formatError";
 import { generateId } from "@/utils/generateId";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
-export const getCategories = async (req: Request, res: Response) => {
+export const getCategories = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     try {
         const { type } = req.query;
         const filter = type ? { type: { $in: [type, "all"] } } : {};
@@ -13,16 +16,15 @@ export const getCategories = async (req: Request, res: Response) => {
         });
         res.status(200).json({ categories });
     } catch (err) {
-        const message = err instanceof Error ? err.message : "Unknown error";
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: formatError(message),
-        });
+        next(err);
     }
 };
 
-export const createCategory = async (req: Request, res: Response) => {
+export const createCategory = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     try {
         const { title, desc, severity, type } = req.body;
         const newCategory = await ReportCategory.create({
@@ -37,16 +39,15 @@ export const createCategory = async (req: Request, res: Response) => {
             category: newCategory,
         });
     } catch (err) {
-        const message = err instanceof Error ? err.message : "Unknown error";
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: formatError(message),
-        });
+        next(err);
     }
 };
 
-export const updateCategory = async (req: Request, res: Response) => {
+export const updateCategory = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     try {
         const { id } = req.params;
         const updatedCategory = await ReportCategory.findByIdAndUpdate(
@@ -63,16 +64,15 @@ export const updateCategory = async (req: Request, res: Response) => {
             category: updatedCategory,
         });
     } catch (err) {
-        const message = err instanceof Error ? err.message : "Unknown error";
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: formatError(message),
-        });
+        next(err);
     }
 };
 
-export const deleteCategory = async (req: Request, res: Response) => {
+export const deleteCategory = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     try {
         const { id } = req.params;
         const deletedCategory = await ReportCategory.findByIdAndDelete(id);
@@ -82,11 +82,6 @@ export const deleteCategory = async (req: Request, res: Response) => {
         }
         res.status(200).json({ message: "Category deleted" });
     } catch (err) {
-        const message = err instanceof Error ? err.message : "Unknown error";
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: formatError(message),
-        });
+        next(err);
     }
 };

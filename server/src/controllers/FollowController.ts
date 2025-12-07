@@ -2,38 +2,34 @@ import Follow from "@/models/Follow.model";
 import User, { UserData } from "@/models/User.model";
 import { followService, getFollowingService } from "@/services/FollowService";
 import { fetchUser } from "@/services/UserService";
-import { formatError } from "@/utils/formatError";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
 export const getFollowing = async (
     req: Request,
-    res: Response
+    res: Response,
+    next: NextFunction
 ): Promise<void> => {
     try {
         const { followingId } = req.params;
         const { uid: followerId } = req.user!;
 
-        const { isFollowing } = await getFollowingService(followingId, followerId);
+        const { isFollowing } = await getFollowingService(
+            followingId,
+            followerId
+        );
 
         res.status(200).json({
             isFollowing,
         });
     } catch (err) {
-        if (!(err instanceof Error)) throw err;
-
-        const errors = formatError(err.message);
-
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: errors,
-        });
+        next(err);
     }
 };
 
 export const followUser = async (
     req: Request,
-    res: Response
+    res: Response,
+    next: NextFunction
 ): Promise<void> => {
     try {
         const { followingId } = req.params;
@@ -42,21 +38,14 @@ export const followUser = async (
 
         await res.status(201).json({ ok: true });
     } catch (err) {
-        if (!(err instanceof Error)) throw err;
-
-        const errors = formatError(err.message);
-
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: errors,
-        });
+        next(err);
     }
 };
 
 export const unfollowUser = async (
     req: Request,
-    res: Response
+    res: Response,
+    next: NextFunction
 ): Promise<void> => {
     try {
         if (!req.params) throw new Error("No UnfollowId provided.");
@@ -85,11 +74,6 @@ export const unfollowUser = async (
 
         res.status(200).json({ ok: true });
     } catch (err) {
-        if (!(err instanceof Error)) throw err;
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: err.message,
-        });
+        next(err);
     }
 };

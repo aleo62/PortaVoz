@@ -1,6 +1,8 @@
 import { ProtectedRoute } from "@/components/guards/ProtectedRoute";
 import { AdminDashboard } from "@/pages/admin/AdminDashboard";
 import { Chat } from "@/pages/Chat";
+import Communities from "@/pages/Communities";
+import Community from "@/pages/Community";
 import { CreatePost } from "@/pages/CreatePost";
 import { Feed } from "@/pages/Feed";
 import { ForgotPassword } from "@/pages/ForgotPassword";
@@ -9,8 +11,11 @@ import { Logout } from "@/pages/Logout";
 import { NotFound } from "@/pages/NotFound";
 import { NotVerified } from "@/pages/NotVerified";
 import { PostView } from "@/pages/PostView";
+import { PrivacyPolicy } from "@/pages/PrivacyPolicy";
 import { Profile } from "@/pages/Profile";
 import { Register } from "@/pages/Register";
+import { Saves } from "@/pages/Saves";
+import { TermsOfService } from "@/pages/TermsOfService";
 import { Verify } from "@/pages/Verify";
 import { LandingLayout } from "@components/layouts/LandingLayout";
 import { SidebarLayout } from "@components/layouts/SidebarLayout";
@@ -96,7 +101,7 @@ const RoutesArray: RouteDataType[] = [
         path: "/admin",
         Page: <AdminDashboard />,
         layouts: [
-            { Component: SidebarLayout, props: { flex_col: false } },
+            { Component: SidebarLayout, props: { flex_col: false, noHeader: true } },
             { Component: ProtectedRoute, props: { onylyAdmin: true } },
         ],
     },
@@ -105,7 +110,7 @@ const RoutesArray: RouteDataType[] = [
         path: "/admin/:adminTab",
         Page: <AdminDashboard />,
         layouts: [
-            { Component: SidebarLayout, props: { flex_col: false } },
+            { Component: SidebarLayout, props: { flex_col: false, noHeader: true } },
             { Component: ProtectedRoute, props: { onylyAdmin: true } },
         ],
     },
@@ -163,6 +168,45 @@ const RoutesArray: RouteDataType[] = [
         Page: <CreatePost />,
         layouts: [
             { Component: SidebarLayout, props: { title: "Criar Post" } },
+            { Component: ProtectedRoute },
+        ],
+    },
+    {
+        key: "Saves",
+        path: "/saves",
+        Page: <Saves />,
+        layouts: [
+            { Component: SidebarLayout, props: { title: "Salvos" } },
+            { Component: ProtectedRoute },
+        ],
+    },
+    {
+        key: "PrivacyPolicy",
+        path: "/privacy-policy",
+        Page: <PrivacyPolicy />,
+        layouts: [{ Component: LandingLayout }],
+    },
+    {
+        key: "TermsOfService",
+        path: "/terms-of-service",
+        Page: <TermsOfService />,
+        layouts: [{ Component: LandingLayout }],
+    },
+    {
+        key: "Communities",
+        path: "/communities",
+        Page: <Communities />,
+        layouts: [
+            { Component: SidebarLayout, props: { title: "Comunidades", flex_col: false } },
+            { Component: ProtectedRoute },
+        ],
+    },
+    {
+        key: "Community",
+        path: "/communities/:id",
+        Page: <Community />,
+        layouts: [
+            { Component: SidebarLayout, props: { title: "Comunidade" } },
             { Component: ProtectedRoute },
         ],
     },

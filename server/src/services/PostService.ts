@@ -1,8 +1,8 @@
 import config from "@/config";
-import Favorite from "@/models/Favorite.model";
 import Hashtag from "@/models/Hashtag.model";
 import Post, { PostData } from "@/models/Post.model";
 import Repost from "@/models/Repost.model";
+import Save from "@/models/Save.model";
 import User, { RequestUserType, UserData } from "@/models/User.model";
 import Vote from "@/models/Vote.model";
 import { generateId } from "@/utils/generateId";
@@ -82,7 +82,7 @@ const resolvePostResponse = async (
             userId,
         });
 
-        const isFavorited = await Favorite.exists({
+        const isSaved = await Save.exists({
             post: normalized._id,
             userId,
         });
@@ -98,7 +98,7 @@ const resolvePostResponse = async (
             ...normalized,
             isUpvoted: !!isUpvoted,
             isReposted: !!isReposted,
-            isFavorited: !!isFavorited,
+            isSaved: !!isSaved,
         };
     };
 
@@ -352,7 +352,50 @@ export const createPost = async (req: Request) => {
         location,
         address,
         status,
+        communityIds: req.body.communityIds,
+        visibility: req.body.visibility,
+        type: req.body.type,
+        voting: req.body.voting,
     });
 
     return { newPost };
+};
+
+export const getPostsByIds = async (postIds: string[], uid: string) => {
+    const postData = await Post.find({ _id: { $in: postIds } })
+        .populate("user", "username image")
+        .populate("hashtags", "content")
+        .lean();
+
+    const { postResponse: response } = await resolvePostResponse(postData, uid);
+
+    return { response };
+};
+
+export const getCommunityPostsService = async (
+    communityId: string,
+    page: number,
+    limit: number,
+    userId: string
+) => {
+    const findFilter = {
+        communityIds: communityId,
+        status: "ativo",
+    };
+
+    const postData = await Post.find(findFilter)
+        .populate("user", "username image")
+        .populate("hashtags", "content")
+        .sort({ createdAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit);
+
+    const count = await Post.countDocuments(findFilter);
+
+    const { postResponse: response } = await resolvePostResponse(
+        postData,
+        userId
+    );
+
+    return { response, count };
 };

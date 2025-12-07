@@ -1,15 +1,17 @@
+import { AdminEditUserModal } from "@/components/features/admin/AdminEditUserModal";
+import { CreateCommunityModal } from "@/components/features/community/CreateCommunityModal";
 import { NotificationModal } from "@/components/features/notification/NotificationModal";
 import { LocationModal } from "@/components/features/post/LocationModal";
 import { PostModal } from "@/components/features/post/PostModal";
 import { PostShareModal } from "@/components/features/post/PostShareModal";
 import { ReportModal } from "@/components/features/report/ReportModal";
+import { UpdateReportStatusModal } from "@/components/features/report/UpdateReportStatusModal";
 import { SearchModal } from "@/components/features/search/SearchModal";
 import { SettingsModal } from "@/components/features/settings/SettingsModal";
 import { ChangePasswordModal } from "@/components/features/settings/components/ChangePasswordModal";
 import { EditProfileModal } from "@/components/features/settings/components/EditProfileModal";
 import { ImageModal } from "@/components/modal/ImageModal";
 import { UploadImageModal } from "@/components/modal/UploadImageModal";
-import { UpdateReportStatusModal } from "@/components/features/report/UpdateReportStatusModal";
 import { IconX } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ReactNode, useState } from "react";
@@ -28,6 +30,8 @@ export const Modals = {
     changePassword: ChangePasswordModal,
     editProfile: EditProfileModal,
     updateReportStatus: UpdateReportStatusModal,
+    adminEditUser: AdminEditUserModal,
+    createCommunity: CreateCommunityModal,
 };
 
 type OpenModalType = {
@@ -71,11 +75,10 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
                                     }
                                 }}
                             >
-                                <Modal {...(props as any)} zIndex={200 + index} closeModal={closeModal} />
+                                <Modal {...(props as any)} zIndex={200 + index} />
                             </motion.div>
                         );
                     })}
-                
             </AnimatePresence>
             {children}
         </ModalContext.Provider>
@@ -86,7 +89,7 @@ ModalProvider.Close = function ModalClose() {
     const { closeModal } = useModal();
     return (
         <button
-            className="ml-auto cursor-pointer rounded-xl ring-1 ring-zinc-200 p-2 dark:ring-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800/50"
+            className="ml-auto cursor-pointer rounded-xl p-2 ring-1 ring-zinc-200 hover:bg-zinc-100 dark:ring-zinc-800 dark:hover:bg-zinc-800/50"
             onClick={closeModal}
         >
             <IconX className="text-subtitle size-5" />

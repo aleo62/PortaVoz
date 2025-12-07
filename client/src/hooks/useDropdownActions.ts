@@ -3,7 +3,7 @@ import { useModal } from "@/contexts/ModalContext";
 import { useNavigate } from "react-router-dom";
 
 export type DropdownActionContext = {
-    type?: "post" | "comment" | "user";
+    type?: "post" | "comment" | "user" | "community";
     id?: string;
     onDelete?: () => void;
     onRead?: () => void;

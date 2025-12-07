@@ -1,11 +1,14 @@
 import config from "@/config";
 import Report from "@/models/Report.model";
 import { getReportsService, ReportListType } from "@/services/ReportService";
-import { formatError } from "@/utils/formatError";
 import { generateId } from "@/utils/generateId";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
-export const getReports = async (req: Request, res: Response) => {
+export const getReports = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     try {
         const page = Number(req.query.page) || 1;
         const limit = config.SYSTEM_REPORTS_PER_PAGE;
@@ -20,16 +23,15 @@ export const getReports = async (req: Request, res: Response) => {
             count,
         });
     } catch (err) {
-        const message = err instanceof Error ? err.message : "Unknown error";
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: formatError(message),
-        });
+        next(err);
     }
 };
 
-export const createReport = async (req: Request, res: Response) => {
+export const createReport = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     try {
         const { category, reportedItemType, reportedItemId, desc } = req.body;
         const userId = req.user!.uid;
@@ -48,16 +50,15 @@ export const createReport = async (req: Request, res: Response) => {
             report: newReport,
         });
     } catch (err) {
-        const message = err instanceof Error ? err.message : "Unknown error";
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: formatError(message),
-        });
+        next(err);
     }
 };
 
-export const updateReport = async (req: Request, res: Response) => {
+export const updateReport = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     try {
         const { reportId } = req.params;
         const { status } = req.body;
@@ -79,16 +80,15 @@ export const updateReport = async (req: Request, res: Response) => {
             report,
         });
     } catch (err) {
-        const message = err instanceof Error ? err.message : "Unknown error";
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: formatError(message),
-        });
+        next(err);
     }
 };
 
-export const deleteReport = async (req: Request, res: Response) => {
+export const deleteReport = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     try {
         const { reportId } = req.params;
 
@@ -105,11 +105,6 @@ export const deleteReport = async (req: Request, res: Response) => {
             message: "Report deleted successfully",
         });
     } catch (err) {
-        const message = err instanceof Error ? err.message : "Unknown error";
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: formatError(message),
-        });
+        next(err);
     }
 };

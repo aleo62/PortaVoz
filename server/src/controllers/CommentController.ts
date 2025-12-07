@@ -4,13 +4,13 @@ import Post from "@/models/Post.model";
 import Vote from "@/models/Vote.model";
 import { deleteByParentId } from "@/services/CommentService";
 import { sendNotificationToUser } from "@/services/NotificationService";
-import { formatError } from "@/utils/formatError";
 import { generateId } from "@/utils/generateId";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
 export const getCommentsById = async (
     req: Request,
-    res: Response
+    res: Response,
+    next: NextFunction
 ): Promise<void> => {
     try {
         if (!req.user) throw new Error("No User provided");
@@ -46,21 +46,14 @@ export const getCommentsById = async (
             hasMore: count > page * limit,
         });
     } catch (err) {
-        if (!(err instanceof Error)) throw err;
-
-        const errors = formatError(err.message);
-
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: errors,
-        });
+        next(err);
     }
 };
 
 export const createComment = async (
     req: Request,
-    res: Response
+    res: Response,
+    next: NextFunction
 ): Promise<void> => {
     try {
         let parentDoc, parentType, parentHref;
@@ -117,21 +110,14 @@ export const createComment = async (
             data: newComment,
         });
     } catch (err) {
-        if (!(err instanceof Error)) throw err;
-
-        const errors = formatError(err.message);
-
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: errors,
-        });
+        next(err);
     }
 };
 
 export const deleteComment = async (
     req: Request,
-    res: Response
+    res: Response,
+    next: NextFunction
 ): Promise<void> => {
     try {
         if (!req.params.commentId) throw new Error("Comment ID not informed");
@@ -157,19 +143,15 @@ export const deleteComment = async (
 
         res.status(200).json({ message: "Comment deleted", data: commentData });
     } catch (err) {
-        if (!(err instanceof Error)) throw err;
-
-        const errors = formatError(err.message);
-
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: errors,
-        });
+        next(err);
     }
 };
 
-export const deleteCommentByParentId = async (req: Request, res: Response) => {
+export const deleteCommentByParentId = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     try {
         const parentId = req.params.parentId;
 
@@ -181,22 +163,14 @@ export const deleteCommentByParentId = async (req: Request, res: Response) => {
             message: `All comments children of ${parentId} deleted`,
         });
     } catch (err) {
-        if (!(err instanceof Error)) throw err;
-
-        const errors = formatError(err.message);
-
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: errors,
-        });
+        next(err);
     }
 };
-
-/**
- * PUT - Controller responsável por atualizar um comentario.
- */
-export const updateComment = async (req: Request, res: Response) => {
+export const updateComment = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     try {
         const commentId = req.params.commentId;
         const updatedInfo = req.body;
@@ -217,14 +191,6 @@ export const updateComment = async (req: Request, res: Response) => {
             data: commentData,
         });
     } catch (err) {
-        if (!(err instanceof Error)) throw err;
-
-        const errors = formatError(err.message);
-
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: errors,
-        });
+        next(err);
     }
 };

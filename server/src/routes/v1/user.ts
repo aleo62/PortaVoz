@@ -5,9 +5,12 @@ import {
 } from "@/controllers/FollowController";
 import { getNotifications } from "@/controllers/NotificationController";
 import { getPostByUser } from "@/controllers/PostController";
+import { createSave, deleteSave, getSaves } from "@/controllers/SaveController";
 import {
     createUser,
     deleteUser,
+    demoteFromAdmin,
+    demoteFromModerator,
     editPreferences,
     editUser,
     getRemainingReports,
@@ -15,10 +18,13 @@ import {
     getUserPreferencesByField,
     getUsers,
     makeUserAdmin,
+    promoteToAdmin,
+    promoteToModerator,
 } from "@/controllers/UserController";
 import upload from "@/lib/multer";
 import { authAdmin } from "@/middlewares/auth/authAdmin";
 import { authenticateOwnerOrAdmin } from "@/middlewares/auth/authOwnerOrAdmin";
+import { authSuperAdmin } from "@/middlewares/auth/authSuperAdmin";
 import { authenticateUser } from "@/middlewares/auth/authUser";
 import { validationError } from "@/middlewares/validation/validationError";
 import { Request, Router } from "express";
@@ -35,7 +41,6 @@ router.post(
     body("fName").trim().notEmpty().withMessage("fName is required"),
     body("lName").trim().notEmpty().withMessage("lName is required"),
     body("image").optional().isURL().withMessage("image must be an URL"),
-    validationError,
     createUser
 );
 
@@ -154,6 +159,64 @@ router.put(
     authAdmin,
     validationError,
     makeUserAdmin
+);
+
+router.get(
+    "/:userId/saves",
+    authenticateUser,
+    authenticateOwnerOrAdmin(async (req: Request) => {
+        return req.params.userId;
+    }),
+    validationError,
+    getSaves
+);
+
+router.post(
+    "/:userId/saves/:postId",
+    authenticateUser,
+    authenticateOwnerOrAdmin(async (req: Request) => {
+        return req.params.userId;
+    }),
+    validationError,
+    createSave
+);
+
+router.delete(
+    "/:userId/saves/:postId",
+    authenticateUser,
+    authenticateOwnerOrAdmin(async (req: Request) => {
+        return req.params.userId;
+    }),
+    validationError,
+    deleteSave
+);
+
+router.put(
+    "/:userId/promote/admin",
+    authenticateUser,
+    authSuperAdmin,
+    promoteToAdmin
+);
+
+router.put(
+    "/:userId/promote/moderator",
+    authenticateUser,
+    authAdmin,
+    promoteToModerator
+);
+
+router.put(
+    "/:userId/demote/admin",
+    authenticateUser,
+    authSuperAdmin,
+    demoteFromAdmin
+);
+
+router.put(
+    "/:userId/demote/moderator",
+    authenticateUser,
+    authAdmin,
+    demoteFromModerator
 );
 
 export default router;

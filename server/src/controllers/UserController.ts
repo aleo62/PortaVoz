@@ -10,12 +10,19 @@ import {
     getUserByIdService,
     getUsersService,
     makeUserAdminService,
+    makeUserModeratorService,
+    removeAdminRoleService,
+    removeModeratorRoleService,
     updateUserPreferenceService,
     verifyRemainingReports,
 } from "@/services/UserService";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
-export const getUsers = async (req: Request, res: Response): Promise<void> => {
+export const getUsers = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> => {
     try {
         const { name } = req.query;
         const page = Number(req.query.page) || 1,
@@ -30,18 +37,14 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
 
         res.status(200).json({ users, hasMore: count > page * limit, count });
     } catch (err) {
-        if (!(err instanceof Error)) throw err;
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: err.message,
-        });
+        next(err);
     }
 };
 
 export const getUserById = async (
     req: Request,
-    res: Response
+    res: Response,
+    next: NextFunction
 ): Promise<void> => {
     try {
         const { uid } = req.user!;
@@ -50,18 +53,14 @@ export const getUserById = async (
 
         res.status(200).json({ user });
     } catch (err) {
-        if (!(err instanceof Error)) throw err;
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: err.message,
-        });
+        next(err);
     }
 };
 
 export const getRemainingReports = async (
     req: Request,
-    res: Response
+    res: Response,
+    next: NextFunction
 ): Promise<void> => {
     try {
         const { canReport, remaining, resetAt } = await verifyRemainingReports(
@@ -74,18 +73,14 @@ export const getRemainingReports = async (
             resetAt,
         });
     } catch (err) {
-        if (!(err instanceof Error)) throw err;
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: err.message,
-        });
+        next(err);
     }
 };
 
 export const createUser = async (
     req: Request,
-    res: Response
+    res: Response,
+    next: NextFunction
 ): Promise<void> => {
     try {
         const { uid, email } = req.user!;
@@ -93,37 +88,35 @@ export const createUser = async (
 
         res.status(200).json({ user });
     } catch (err) {
-        if (!(err instanceof Error)) throw err;
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: err.message,
-        });
+        next(err);
     }
 };
 
 export const deleteUser = async (
     req: Request,
-    res: Response
+    res: Response,
+    next: NextFunction
 ): Promise<void> => {
     try {
         const { userId } = req.params;
         await deleteUserService(userId);
         res.status(200).json({ ok: true });
     } catch (err) {
-        if (!(err instanceof Error)) throw err;
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: err.message,
-        });
+        next(err);
     }
 };
 
-export const editUser = async (req: Request, res: Response): Promise<void> => {
+export const editUser = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> => {
     try {
-        const { uid } = req.user!;
-        const currentData = await fetchUser(uid);
+        const currentData = await fetchUser(req.params.userId);
+        if (currentData!.role === "superadmin") {
+            res.status(400).json({ message: "Not allowed to edit superadmin" });
+            return;
+        }
         let newImage, newBanner;
 
         const files = req.files as {
@@ -152,6 +145,9 @@ export const editUser = async (req: Request, res: Response): Promise<void> => {
             about: req.body.about ?? currentData.about,
             image: newImage ?? currentData.image,
             banner: newBanner ?? currentData.banner,
+            "meta.limits": req.body.limits
+                ? JSON.parse(req.body.limits)
+                : currentData.meta.limits,
         };
 
         const user = await User.findByIdAndUpdate(req.params.userId, newData, {
@@ -160,36 +156,28 @@ export const editUser = async (req: Request, res: Response): Promise<void> => {
 
         res.status(200).json({ user });
     } catch (err) {
-        if (!(err instanceof Error)) throw err;
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: err.message,
-        });
+        next(err);
     }
 };
 
 export const getUserPreferences = async (
     req: Request,
-    res: Response
+    res: Response,
+    next: NextFunction
 ): Promise<void> => {
     try {
         const { userId } = req.params;
         const preferences = await getPreferencesByUser(userId);
         res.status(200).json({ preferences });
     } catch (err) {
-        if (!(err instanceof Error)) throw err;
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: err.message,
-        });
+        next(err);
     }
 };
 
 export const getUserPreferencesByField = async (
     req: Request,
-    res: Response
+    res: Response,
+    next: NextFunction
 ): Promise<void> => {
     try {
         const { userId, field } = req.params;
@@ -200,18 +188,14 @@ export const getUserPreferencesByField = async (
         const preferences = await getPreferencesByField(userId, field);
         res.status(200).json({ preferences });
     } catch (err) {
-        if (!(err instanceof Error)) throw err;
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: err.message,
-        });
+        next(err);
     }
 };
 
 export const editPreferences = async (
     req: Request,
-    res: Response
+    res: Response,
+    next: NextFunction
 ): Promise<void> => {
     try {
         const { userId } = req.params;
@@ -228,29 +212,76 @@ export const editPreferences = async (
 
         res.status(200).json({ ok: true, value });
     } catch (err) {
-        if (!(err instanceof Error)) throw err;
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: err.message,
-        });
+        next(err);
     }
 };
 
 export const makeUserAdmin = async (
     req: Request,
-    res: Response
+    res: Response,
+    next: NextFunction
 ): Promise<void> => {
     try {
         const { userId } = req.params;
         await makeUserAdminService(userId);
         res.status(200).json({ ok: true });
     } catch (err) {
-        if (!(err instanceof Error)) throw err;
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: err.message,
-        });
+        next(err);
+    }
+};
+
+export const promoteToAdmin = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> => {
+    try {
+        const { userId } = req.params;
+        await makeUserAdminService(userId);
+        res.status(200).json({ ok: true });
+    } catch (err) {
+        next(err);
+    }
+};
+
+export const promoteToModerator = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> => {
+    try {
+        const { userId } = req.params;
+        await makeUserModeratorService(userId);
+        res.status(200).json({ ok: true });
+    } catch (err) {
+        next(err);
+    }
+};
+
+export const demoteFromAdmin = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> => {
+    try {
+        const { userId } = req.params;
+        await removeAdminRoleService(userId);
+        res.status(200).json({ ok: true });
+    } catch (err) {
+        next(err);
+    }
+};
+
+export const demoteFromModerator = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> => {
+    try {
+        const { userId } = req.params;
+        await removeModeratorRoleService(userId);
+        res.status(200).json({ ok: true });
+    } catch (err) {
+        next(err);
     }
 };

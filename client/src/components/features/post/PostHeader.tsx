@@ -57,7 +57,9 @@ export const PostHeader = ({ post, viewMode }: HeaderPostProps) => {
                         setOptionsDropOpen(false);
                     }}
                     postId={post._id}
-                    isOwner={post.user._id == user?._id || !!user?.claims!.admin}
+                    isOwner={
+                        post.user._id == user?._id || !!user?.claims!.admin || !!user?.claims!.mod
+                    }
                     onDeletePost={() => handleDeletePost()}
                 />
             </div>

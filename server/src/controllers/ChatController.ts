@@ -7,10 +7,14 @@ import {
     getMessagesByChatIdService,
     readChatMessagesService,
 } from "@/services/ChatService";
-import { formatError } from "@/utils/formatError";
 import { Request, Response } from "express";
+import { NextFunction } from "express-serve-static-core";
 
-export const getChats = async (req: Request, res: Response): Promise<void> => {
+export const getChats = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> => {
     try {
         if (!req.user) throw new Error("No User provided");
         const { uid } = req.user;
@@ -22,21 +26,14 @@ export const getChats = async (req: Request, res: Response): Promise<void> => {
 
         res.status(200).json(result);
     } catch (err) {
-        if (!(err instanceof Error)) throw err;
-
-        const errors = formatError(err.message);
-
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: errors,
-        });
+        next(err);
     }
 };
 
 export const getChatById = async (
     req: Request,
-    res: Response
+    res: Response,
+    next: NextFunction
 ): Promise<void> => {
     try {
         if (!req.user) throw new Error("No User provided");
@@ -46,21 +43,14 @@ export const getChatById = async (
 
         res.status(200).json({ chat });
     } catch (err) {
-        if (!(err instanceof Error)) throw err;
-
-        const errors = formatError(err.message);
-
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: errors,
-        });
+        next(err);
     }
 };
 
 export const getMessagesByChatId = async (
     req: Request,
-    res: Response
+    res: Response,
+    next: NextFunction
 ): Promise<void> => {
     try {
         if (!req.user) throw new Error("No User provided");
@@ -75,21 +65,14 @@ export const getMessagesByChatId = async (
 
         res.status(200).json(result);
     } catch (err) {
-        if (!(err instanceof Error)) throw err;
-
-        const errors = formatError(err.message);
-
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: errors,
-        });
+        next(err);
     }
 };
 
 export const getChatByUsers = async (
     req: Request,
-    res: Response
+    res: Response,
+    next: NextFunction
 ): Promise<void> => {
     try {
         if (!req.user) throw new Error("No User provided");
@@ -101,21 +84,14 @@ export const getChatByUsers = async (
             chatId,
         });
     } catch (err) {
-        if (!(err instanceof Error)) throw err;
-
-        const errors = formatError(err.message);
-
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: errors,
-        });
+        next(err);
     }
 };
 
 export const deleteChat = async (
     req: Request,
-    res: Response
+    res: Response,
+    next: NextFunction
 ): Promise<void> => {
     try {
         if (!req.user) throw new Error("No User provided");
@@ -126,21 +102,14 @@ export const deleteChat = async (
             message: "Chat deleted successfully",
         });
     } catch (err) {
-        if (!(err instanceof Error)) throw err;
-
-        const errors = formatError(err.message);
-
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: errors,
-        });
+        next(err);
     }
 };
 
 export const readChatMessages = async (
     req: Request,
-    res: Response
+    res: Response,
+    next: NextFunction
 ): Promise<void> => {
     try {
         if (!req.user) throw new Error("No User provided");
@@ -152,14 +121,6 @@ export const readChatMessages = async (
             message: "Messages marked as read",
         });
     } catch (err) {
-        if (!(err instanceof Error)) throw err;
-
-        const errors = formatError(err.message);
-
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: errors,
-        });
+        next(err);
     }
 };

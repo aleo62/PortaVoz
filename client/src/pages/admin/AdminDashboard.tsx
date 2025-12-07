@@ -23,7 +23,7 @@ export const AdminDashboard = () => {
     return (
         <>
             <AdminSidebar />
-            <main className="flex-1 space-y-7 px-1 py-8 lg:px-10">
+            <main className="flex-1 space-y-7 px-1 py-3 lg:py-5 lg:px-10 h-full">
                 <AdminHeader
                     title={AdminTabs[(adminTab as keyof typeof AdminTabs) || "users"].title}
                     description={

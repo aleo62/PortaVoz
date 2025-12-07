@@ -1,4 +1,11 @@
-import { IconInbox, IconMessageCircle, IconSmartHome, IconUserHexagon } from "@tabler/icons-react";
+import {
+    IconBookmark,
+    IconInbox,
+    IconMessageCircle,
+    IconSmartHome,
+    IconUserHexagon,
+    IconUsers,
+} from "@tabler/icons-react";
 
 export const SidebarItems = [
     { label: "Início", icon: IconSmartHome, href: "/feed" },
@@ -8,6 +15,8 @@ export const SidebarItems = [
         href: "/chat",
         notification: "chat",
     },
+    { label: "Comunidades", icon: IconUsers, href: "/communities" },
+    { label: "Salvos", icon: IconBookmark, href: "/saves" },
 ];
 
 export const SidebarClientItems = [

@@ -19,6 +19,7 @@ export const authenticateUser = async (
         req.user = {
             uid: decodedToken.uid,
             isAdmin: decodedToken.admin === true,
+            isMod: decodedToken.mod === true,
             email: decodedToken.email!,
             isVerified: decodedToken.email_verified ?? false,
         };

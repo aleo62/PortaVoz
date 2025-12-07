@@ -32,8 +32,6 @@ export const Comment = ({
     const { data: repliesData, hasNextPage } = useComments(comment._id, repliesOpen);
 
     const replies = repliesData?.pages.flatMap((page) => page.comments) ?? [];
-
-    // VOTE MANAGEMENT
     const createVote = useCreateVote();
     const deleteVote = useDeleteVote();
 
@@ -91,8 +89,8 @@ export const Comment = ({
                         <span className="text-xs text-zinc-500 dark:text-zinc-400">{date}</span>
                         <div className="relative ml-auto">
                             <IconDotsVertical
-                                className="text-subtitle size-3.5"
-                                onClick={() => setOptionsContainerOpen(true)}
+                                className="text-subtitle size-3.5 cursor-pointer"
+                                onClick={() => optionsContainerOpen ? setOptionsContainerOpen(false) : setOptionsContainerOpen(true)}
                             />
                             <CommentDrop
                                 isOpen={optionsContainerOpen}

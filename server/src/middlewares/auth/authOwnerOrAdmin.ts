@@ -22,10 +22,10 @@ export const authenticateOwnerOrAdmin = (
                     !userId.includes(ownerData._id as string) &&
                     !req?.user?.isAdmin
                 )
-                    throw new Error("User not allowed");
+                    throw new Error("Access denied.");
             } else {
                 if (userId !== ownerData._id && !req.user.isAdmin)
-                    throw new Error("User not allowed");
+                    throw new Error("Access denied.");
             }
 
             next();

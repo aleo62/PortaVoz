@@ -1,5 +1,5 @@
 import { PostData } from "@/types/postDataType";
-import { IconArrowBigUp, IconMessageDots } from "@tabler/icons-react";
+import { IconArrowBigUp, IconMessage } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 
 export const PostReflected = ({ post }: { post: PostData }) => {
@@ -8,29 +8,25 @@ export const PostReflected = ({ post }: { post: PostData }) => {
     return (
         <article
             onClick={() => navigate(`/post/${post._id}`)}
-            className="flex w-full cursor-pointer items-center justify-between gap-4 rounded-xl p-1"
+            className="relative h-45 w-75 cursor-pointer overflow-hidden rounded-xl"
         >
-            <div className="">
-                <h3 className="lg:text-md text-title font-title mb-0.5 truncate text-[1.01rem] max-w-25">
-                    {post.title}
-                </h3>
-                <p className="text-subtitle line-clamp-2 max-w-45 text-xs">{post.desc}</p>
-
-                <div className="text-subtitle mt-4 flex items-center gap-3 text-xs">
-                    <span className="flex items-center gap-1">
-                        <IconArrowBigUp className="size-4.5" /> {post.upvotesCount}
+            <img
+                src={post.images?.[0] as string}
+                className="absolute inset-0 h-full w-full object-cover"
+                alt=""
+            />
+            <div className="absolute inset-0 flex h-full flex-col justify-end gap-1 group bg-gradient-to-b from-transparent to-black/50 to-100% p-4 px-3 text-white transition-all duration-300 hover:to-65%">
+                <h3 className="font-title">{post.title}</h3>
+                <p className="text-xs">{post.desc}</p>
+                <div className="gap-2 mt-2 h-0 overflow-hidden flex group-hover:h-6 transition-all duration-300">
+                    <span className="flex items-center gap-2 text-xs">
+                        <IconArrowBigUp className="size-5" /> {post.upvotesCount}
                     </span>
-                    <span className="flex items-center gap-1">
-                        <IconMessageDots className="size-4.5" /> {post.commentsCount}
+                    <span className="flex items-center gap-2 text-xs">
+                        <IconMessage className="size-5" /> {post.commentsCount}
                     </span>
                 </div>
             </div>
-
-            <img
-                src={post.images?.[0] as string}
-                className="h-25 w-25 rounded-xl object-cover lg:h-25 lg:w-25"
-                alt=""
-            />
         </article>
     );
 };

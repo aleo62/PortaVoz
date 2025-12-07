@@ -1,11 +1,14 @@
 import config from "@/config";
-import { getNotificationsService, readAllNotificationsService } from "@/services/NotificationService";
-import { formatError } from "@/utils/formatError";
-import { Request, Response } from "express";
+import {
+    getNotificationsService,
+    readAllNotificationsService,
+} from "@/services/NotificationService";
+import { NextFunction, Request, Response } from "express";
 
 export const getNotifications = async (
     req: Request,
-    res: Response
+    res: Response,
+    next: NextFunction
 ): Promise<void> => {
     try {
         const page = Number(req.query.page) || 1,
@@ -23,32 +26,22 @@ export const getNotifications = async (
             count,
         });
     } catch (err) {
-        if (!(err instanceof Error)) throw err;
-
-        const errors = formatError(err.message);
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: errors,
-        });
+        next(err);
     }
 };
 
-export const readAllNotifications = async (req: Request, res: Response): Promise<void> => {
+export const readAllNotifications = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> => {
     try {
         const { uid } = req.user!;
 
         await readAllNotificationsService(uid);
-      
+
         res.status(200).json({ ok: true });
     } catch (err) {
-        if (!(err instanceof Error)) throw err;
-
-        const errors = formatError(err.message);
-        res.status(500).json({
-            code: "ServerError",
-            message: "Internal Server Error",
-            errors: errors,
-        });
+        next(err);
     }
 };

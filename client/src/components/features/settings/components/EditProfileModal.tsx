@@ -36,7 +36,7 @@ export const EditProfileModal = ({
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
-            className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl dark:bg-zinc-900"
+            className="w-full max-w-lg rounded-2xl h-fit my-auto bg-white p-6 shadow-xl dark:bg-zinc-900"
             style={{ zIndex }}
             onClick={(e) => e.stopPropagation()}
         >

@@ -61,7 +61,7 @@ export const Profile = () => {
     return (
         <>
             <header className="max-xxl:px-1 relative mx-auto mt-5 w-full max-w-7xl px-2 md:h-75">
-                <figure className="relative mx-auto h-60 w-full rounded-3xl bg-zinc-300 shadow-md lg:h-78 dark:bg-zinc-800">
+                <figure className="relative mx-auto h-40 w-full rounded-3xl bg-zinc-300 shadow-md lg:h-78 dark:bg-zinc-800">
                     {user?.banner && (
                         <img
                             src={user.banner}
@@ -70,23 +70,23 @@ export const Profile = () => {
                         />
                     )}
                 </figure>
-                <figure className="absolute top-[115%] left-10 translate-y-[-50%]">
+                <figure className="absolute top-[100%] left-10 translate-y-[-50%] lg:top-[115%]">
                     <img
                         src={user?.image}
                         alt="Foto de perfil"
-                        className="border-body-background h-45 w-45 cursor-pointer rounded-full border-3 object-cover shadow-md lg:h-55 lg:w-55 dark:ring-zinc-900"
+                        className="border-body-background h-35 w-35 cursor-pointer rounded-full border-3 object-cover shadow-md lg:h-55 lg:w-55 dark:ring-zinc-900"
                         onClick={() => openModal("image", { image: user.image })}
                     />
                 </figure>
             </header>
 
-            <main className="mx-auto mt-8 mb-10 w-full max-w-7xl px-4">
-                <div className="ml-[220px] flex items-center justify-between lg:ml-[270px]">
+            <main className="mx-auto mt-20 mb-10 w-full max-w-7xl px-4 lg:mt-8">
+                <div className="flex justify-between gap-2 max-lg:flex-col lg:ml-[270px] lg:items-center">
                     <div>
                         <h1 className="font-title text-title text-2xl lg:text-4xl">
                             {user.username}
                         </h1>
-                        <p className="text-subtitle text-lg">
+                        <p className="text-subtitle text-md lg:text-lg">
                             {user.fName} {user.lName}
                         </p>
                     </div>
@@ -112,7 +112,7 @@ export const Profile = () => {
                     </div>
                 </div>
 
-                <div className="text-subtitle mt-4 ml-[220px] flex items-center gap-6 text-sm font-medium lg:ml-[270px]">
+                <div className="text-subtitle mt-4 flex items-center gap-6 text-sm font-medium lg:ml-[270px]">
                     <p>
                         <span className="text-title font-semibold">
                             {user.meta?.counters?.followers || 0}
@@ -134,7 +134,7 @@ export const Profile = () => {
                 </div>
 
                 {user.about && (
-                    <div className="mt-4 ml-[220px] lg:ml-[270px]">
+                    <div className="mt-4 max-lg:text-sm lg:ml-[270px]">
                         <p className="text-subtitle">{user.about}</p>
                     </div>
                 )}
@@ -142,13 +142,15 @@ export const Profile = () => {
 
             <ProfileTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
-            <FeedPosts
-                posts={posts}
-                feedLoading={feedLoading}
-                feedHasNextPage={feedHasNextPage}
-                fetchFeedNextPage={fetchFeedNextPage}
-                grid
-            />
+            <div className="mx-auto w-full max-w-7xl ">
+                <FeedPosts
+                    posts={posts}
+                    feedLoading={feedLoading}
+                    feedHasNextPage={feedHasNextPage}
+                    fetchFeedNextPage={fetchFeedNextPage}
+                    grid
+                />
+            </div>
         </>
     );
 };

@@ -25,7 +25,7 @@ const styleTypeClass = {
         "bg-accent text-white hover:translate-y-[-2px] shadow-[inset_0px_0px_20px_2px_rgba(255,_255,_255,_0.1)] ring-2 ring-accent",
     secondary: "bg-secondary text-accent dark:text-stone-200 hover:bg-secondary-lighter",
     outlined:
-        "ring-[.8px] ring-zinc-300 shadow-sm text-zinc-600 dark:ring-zinc-600 dark:text-zinc-300 hover:bg-zinc-800/5 dark:hover:bg-zinc-200/10",
+        "ring-[.8px] ring-zinc-200 shadow-sm text-zinc-600 dark:ring-zinc-800 dark:text-zinc-300 hover:bg-zinc-800/5 dark:hover:bg-zinc-200/10",
 };
 
 export const Button = ({

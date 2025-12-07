@@ -18,6 +18,7 @@ import limit from "@/lib/express_rate_limit";
 import { connectToDatabase, disconnectFromDatabase } from "@/lib/mongoose";
 import routerV1 from "@/routes/v1";
 import { setupSocket } from "./realtime";
+import { errorHandler } from "./middlewares/handlers/errorHandler";
 
 /**
  * SERVER
@@ -64,19 +65,14 @@ app.use(
 );
 app.use(limit);
 
-/**
- * SOCKET
- */
 setupSocket(io);
 
-/**
- * LISTEN
- */
 (async () => {
     try {
-        app.use("/api/v1/", routerV1);
-        console.clear();
         await connectToDatabase();
+
+        app.use("/api/v1/", routerV1);
+        app.use(errorHandler);
 
         server.listen(config.PORT, () => {
             console.log(
@@ -86,6 +82,7 @@ setupSocket(io);
                 )
             );
         });
+
     } catch (error) {
         console.log("Failed to start serrver", error);
 
@@ -95,9 +92,6 @@ setupSocket(io);
     }
 })();
 
-/**
- * SHUTDOWN
- */
 const handleShutdown = async () => {
     try {
         await disconnectFromDatabase();

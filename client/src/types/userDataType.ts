@@ -22,6 +22,7 @@ export type UserData = {
     };
     claims?: Record<string, any>;
     isVerified?: boolean;
+    role?: "user" | "admin" | "moderator";
 };
 
 export type PublicUser = {
