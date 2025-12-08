@@ -4,6 +4,7 @@ import { NotificationModal } from "@/components/features/notification/Notificati
 import { LocationModal } from "@/components/features/post/LocationModal";
 import { PostModal } from "@/components/features/post/PostModal";
 import { PostShareModal } from "@/components/features/post/PostShareModal";
+import { SelectCommunityModal } from "@/components/features/post/SelectCommunityModal";
 import { ReportModal } from "@/components/features/report/ReportModal";
 import { UpdateReportStatusModal } from "@/components/features/report/UpdateReportStatusModal";
 import { SearchModal } from "@/components/features/search/SearchModal";
@@ -32,6 +33,7 @@ export const Modals = {
     updateReportStatus: UpdateReportStatusModal,
     adminEditUser: AdminEditUserModal,
     createCommunity: CreateCommunityModal,
+    selectCommunity: SelectCommunityModal,
 };
 
 type OpenModalType = {

@@ -1,4 +1,7 @@
 import { RoutesPath } from "@/app/Routes";
+import { useModal } from "@/contexts/ModalContext";
+import { useUserCommunities } from "@/hooks/community/useUserCommunities";
+import { useStoreUser } from "@/stores/userStore";
 import { DropdownFiles } from "@/components/ui/DropdownFiles";
 import { Fieldset } from "@/components/ui/Fieldset";
 import { File, PreviewImage } from "@/components/ui/File";
@@ -20,7 +23,11 @@ import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const CreatePost = () => {
+    const createPost = useCreatePost();
     const navigate = useNavigate();
+    const { openModal } = useModal();
+    const { user } = useStoreUser();
+    const { data: communitiesData } = useUserCommunities(user?._id);
     const [reportForm, setReportForm] = useState<Partial<RequestPostData>>({});
 
     const [previewHashtag, setPreviewHashtag] = useState<string>("");
@@ -29,43 +36,31 @@ export const CreatePost = () => {
     const { errorToast } = useToast();
 
     const onUploadImage = (file: File) => {
-        try {
-            const url = URL.createObjectURL(file);
-            setPreviewImages((prev) => [
-                ...prev,
-                { url, name: file.name, size: file.size, isLoading: true },
-            ]);
-            setReportForm((prev) => ({
-                ...prev,
-                images: [...((prev as RequestPostData).images || []), file],
-            }));
+        const url = URL.createObjectURL(file);
+        setPreviewImages((prev) => [
+            ...prev,
+            { url, name: file.name, size: file.size, isLoading: true },
+        ]);
+        setReportForm((prev) => ({
+            ...prev,
+            images: [...((prev as RequestPostData).images || []), file],
+        }));
 
-            setTimeout(() => {
-                setPreviewImages((prev) =>
-                    prev.map((image) =>
-                        image.url === url ? { ...image, isLoading: false } : image,
-                    ),
-                );
-            }, 2000);
-        } catch (err) {
-            throw err;
-        }
+        setTimeout(() => {
+            setPreviewImages((prev) =>
+                prev.map((image) => (image.url === url ? { ...image, isLoading: false } : image)),
+            );
+        }, 2000);
     };
 
-    const createPost = useCreatePost();
-    const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault();
+    const myCommunities = communitiesData?.pages.flatMap((page) => page.communities) || [];
 
-        const result = postSchema.safeParse(reportForm);
-
-        if (!result.success) {
-            errorToast("Preencha todos os campos corretamente.");
-            return;
-        }
+    const handlePostSubmission = async (data: RequestPostData) => {
         try {
             const { status } = await createPost.mutateAsync({
-                formData: reportForm as RequestPostData,
+                formData: data,
             });
+            console.log(data);
 
             if (status === 201) {
                 navigate(RoutesPath("Feed")!);
@@ -80,13 +75,39 @@ export const CreatePost = () => {
         }
     };
 
+    const handleSubmit = async (e: FormEvent) => {
+        e.preventDefault();
+
+        const result = postSchema.safeParse(reportForm);
+
+        if (!result.success) {
+            errorToast("Preencha todos os campos corretamente.");
+            return;
+        }
+
+        console.log(myCommunities);
+        if (myCommunities.length > 0) {
+            openModal("selectCommunity", {
+                onConfirm: (data: { communityIds: string[]; visibility: "global" | "communities" | "both" }) => {
+                    handlePostSubmission({
+                        ...(reportForm as RequestPostData),
+                        ...data
+                    });
+                },
+                myCommunities,
+            });
+        } else {
+            handlePostSubmission(reportForm as RequestPostData);
+        }
+    };
+
     return (
-        <main className="mx-auto mt-5 w-full max-w-5xl lg:mt-10 lg:px-10">
+        <main className="mx-auto mt-5 w-full max-w-5xl lg:mt-10 lg:px-10 px-1">
             <form className="space-y-10" onSubmit={(e: FormEvent) => handleSubmit(e)}>
-            <Fieldset
+                <Fieldset
                     Icon={IconPhotoFilled}
                     title="Enviar Images"
-                    ok={reportForm.images?.length! > 0}
+                    ok={(reportForm.images?.length ?? 0) > 0}
                 >
                     <div className="space-y-5 p-3 lg:p-5">
                         <DropdownFiles onUpload={onUploadImage} />
@@ -145,11 +166,11 @@ export const CreatePost = () => {
                     <div className="grid gap-4 p-3 lg:grid-cols-2 lg:p-5">
                         <InputLocation
                             reportForm={reportForm as RequestPostData}
-                            setReportForm={setReportForm!}
+                            setReportForm={setReportForm}
                         />
                         <PostMap
-                            latitude={reportForm.location?.latitude! || -22.725}
-                            longitude={reportForm.location?.longitude! || -47.6476}
+                            latitude={reportForm.location?.latitude ?? -22.725}
+                            longitude={reportForm.location?.longitude ?? -47.6476}
                         />
                     </div>
                 </Fieldset>
@@ -157,7 +178,7 @@ export const CreatePost = () => {
                 <Fieldset
                     Icon={IconTagFilled}
                     title="Hashtags"
-                    ok={reportForm.hashtags?.length! > 0}
+                    ok={(reportForm.hashtags?.length ?? 0) > 0}
                 >
                     <div className="space-y-7 p-3 lg:p-5">
                         <div className="flex items-center gap-2">

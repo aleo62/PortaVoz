@@ -8,7 +8,7 @@ export const PostReflected = ({ post }: { post: PostData }) => {
     return (
         <article
             onClick={() => navigate(`/post/${post._id}`)}
-            className="relative h-45 w-75 cursor-pointer overflow-hidden rounded-xl"
+            className="relative w-full h-45 max-w-75 cursor-pointer overflow-hidden rounded-xl"
         >
             <img
                 src={post.images?.[0] as string}

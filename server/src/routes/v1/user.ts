@@ -1,3 +1,4 @@
+import { getUserCommunities } from "@/controllers/CommunityController";
 import {
     followUser,
     getFollowing,
@@ -17,7 +18,6 @@ import {
     getUserById,
     getUserPreferencesByField,
     getUsers,
-    makeUserAdmin,
     promoteToAdmin,
     promoteToModerator,
 } from "@/controllers/UserController";
@@ -76,6 +76,13 @@ router.put(
 );
 
 router.get("/:userId/posts", authenticateUser, validationError, getPostByUser);
+router.get(
+    "/:userId/communities",
+    authenticateUser,
+    validationError,
+    getUserCommunities
+);
+
 router.get(
     "/:userId/remaining-reports",
     authenticateUser,
@@ -152,14 +159,6 @@ router.put(
 //     validationError,
 //     verifyCode
 // );
-
-router.put(
-    "/:userId/admin",
-    authenticateUser,
-    authAdmin,
-    validationError,
-    makeUserAdmin
-);
 
 router.get(
     "/:userId/saves",

@@ -4,6 +4,7 @@ import {
     getCommunitiesService,
     getCommunityByIdService,
     getCommunityMembersService,
+    getUserCommunitiesService,
     joinCommunityService,
     leaveCommunityService,
     updateCommunityService,
@@ -14,7 +15,7 @@ import { NextFunction, Request, Response } from "express";
 export const createCommunity = async (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
 ) => {
     try {
         const files = req.files as {
@@ -26,14 +27,14 @@ export const createCommunity = async (
         if (files?.image?.[0]) {
             imageUrl = await uploadImage(
                 files.image[0].path,
-                "communities_images"
+                "communities_images",
             );
         }
 
         if (files?.banner?.[0]) {
             bannerUrl = await uploadImage(
                 files.banner[0].path,
-                "communities_banners"
+                "communities_banners",
             );
         }
 
@@ -45,7 +46,7 @@ export const createCommunity = async (
 
         const community = await createCommunityService(
             communityData,
-            req.user!.uid
+            req.user!.uid,
         );
         res.status(201).json({ community });
     } catch (error: any) {
@@ -56,7 +57,7 @@ export const createCommunity = async (
 export const getCommunities = async (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
 ) => {
     try {
         const page = parseInt(req.query.page as string) || 1;
@@ -68,7 +69,7 @@ export const getCommunities = async (
             page,
             limit,
             search,
-            userId
+            userId,
         );
         res.status(200).json({ communities, count });
     } catch (error: any) {
@@ -79,7 +80,7 @@ export const getCommunities = async (
 export const getCommunityById = async (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
 ) => {
     try {
         const userId = req.user?.uid;
@@ -93,7 +94,7 @@ export const getCommunityById = async (
 export const updateCommunity = async (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
 ) => {
     try {
         const community = await updateCommunityService(req.params.id, req.body);
@@ -106,7 +107,7 @@ export const updateCommunity = async (
 export const deleteCommunity = async (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
 ) => {
     try {
         await deleteCommunityService(req.params.id);
@@ -119,7 +120,7 @@ export const deleteCommunity = async (
 export const joinCommunity = async (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
 ) => {
     try {
         const result = await joinCommunityService(req.user!.uid, req.params.id);
@@ -132,12 +133,12 @@ export const joinCommunity = async (
 export const leaveCommunity = async (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
 ) => {
     try {
         const result = await leaveCommunityService(
             req.user!.uid,
-            req.params.id
+            req.params.id,
         );
         res.status(200).json(result);
     } catch (error: any) {
@@ -148,7 +149,7 @@ export const leaveCommunity = async (
 export const getCommunityMembers = async (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
 ) => {
     try {
         const page = parseInt(req.query.page as string) || 1;
@@ -156,9 +157,30 @@ export const getCommunityMembers = async (
         const { members, count } = await getCommunityMembersService(
             req.params.id,
             page,
-            limit
+            limit,
         );
         res.status(200).json({ members, count });
+    } catch (error: any) {
+        next(error);
+    }
+};
+
+export const getUserCommunities = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    try {
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = parseInt(req.query.limit as string) || 10;
+        const userId = req.params.userId;
+
+        const { communities, count } = await getUserCommunitiesService(
+            userId,
+            page,
+            limit,
+        );
+        res.status(200).json({ communities, count });
     } catch (error: any) {
         next(error);
     }

@@ -8,7 +8,7 @@ type CommunityWithJoinStatus = ReturnType<CommunityData["toObject"]> & {
 
 const resolveCommunityResponse = async (
     community: CommunityData,
-    userId?: string
+    userId?: string,
 ): Promise<CommunityData | CommunityWithJoinStatus> => {
     if (!userId) {
         return community;
@@ -27,7 +27,7 @@ const resolveCommunityResponse = async (
 
 const resolveCommunitiesResponse = async (
     communities: CommunityData[],
-    userId?: string
+    userId?: string,
 ): Promise<(CommunityData | CommunityWithJoinStatus)[]> => {
     if (!userId) {
         return communities;
@@ -35,14 +35,14 @@ const resolveCommunitiesResponse = async (
 
     return Promise.all(
         communities.map((community) =>
-            resolveCommunityResponse(community, userId)
-        )
+            resolveCommunityResponse(community, userId),
+        ),
     );
 };
 
 export const createCommunityService = async (
     data: Partial<CommunityData>,
-    userId: string
+    userId: string,
 ) => {
     const community = await Community.create({
         _id: generateId(config.SYSTEM_ID_SIZE, "CM_"),
@@ -62,7 +62,7 @@ export const getCommunitiesService = async (
     page: number,
     limit: number,
     search?: string,
-    userId?: string
+    userId?: string,
 ) => {
     const query: any = {};
     if (search) {
@@ -78,7 +78,7 @@ export const getCommunitiesService = async (
 
     const communitiesWithJoinStatus = await resolveCommunitiesResponse(
         communities,
-        userId
+        userId,
     );
 
     return { communities: communitiesWithJoinStatus, count };
@@ -86,7 +86,7 @@ export const getCommunitiesService = async (
 
 export const getCommunityByIdService = async (
     communityId: string,
-    userId?: string
+    userId?: string,
 ) => {
     const community = await Community.findById(communityId);
     if (!community) throw new Error("Community not found");
@@ -96,7 +96,7 @@ export const getCommunityByIdService = async (
 
 export const updateCommunityService = async (
     communityId: string,
-    data: Partial<CommunityData>
+    data: Partial<CommunityData>,
 ) => {
     const community = await Community.findByIdAndUpdate(communityId, data, {
         new: true,
@@ -114,7 +114,7 @@ export const deleteCommunityService = async (communityId: string) => {
 
 export const joinCommunityService = async (
     userId: string,
-    communityId: string
+    communityId: string,
 ) => {
     const community = await Community.findById(communityId);
     if (!community) throw new Error("Community not found");
@@ -139,7 +139,7 @@ export const joinCommunityService = async (
 
 export const leaveCommunityService = async (
     userId: string,
-    communityId: string
+    communityId: string,
 ) => {
     const membership = await CommunityMembership.findOneAndDelete({
         userId,
@@ -157,7 +157,7 @@ export const leaveCommunityService = async (
 export const getCommunityMembersService = async (
     communityId: string,
     page: number,
-    limit: number
+    limit: number,
 ) => {
     const members = await CommunityMembership.find({ communityId })
         .skip((page - 1) * limit)
@@ -167,4 +167,26 @@ export const getCommunityMembersService = async (
     const count = await CommunityMembership.countDocuments({ communityId });
 
     return { members, count };
+};
+
+export const getUserCommunitiesService = async (
+    userId: string,
+    page: number,
+    limit: number,
+) => {
+    const memberships = await CommunityMembership.find({ userId })
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .populate("communityId");
+
+    const count = await CommunityMembership.countDocuments({ userId });
+
+    const communities = memberships
+        .filter((m: any) => m.communityId)
+        .map((m: any) => ({
+            ...m.communityId.toObject(),
+            isJoined: true,
+        }));
+
+    return { communities, count };
 };

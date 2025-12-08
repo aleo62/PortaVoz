@@ -51,6 +51,16 @@ export class Server {
             });
         }
 
+        if (reportForm.communityIds && reportForm.communityIds.length > 0) {
+            reportForm.communityIds.forEach((community) => {
+                formData.append(`communityIds`, community);
+            });
+        }
+
+        if (reportForm.visibility !== undefined) {
+            formData.append("visibility", reportForm.visibility);
+        }
+
         return api.post(`/posts`, formData);
     }
 
@@ -327,6 +337,14 @@ export class Server {
         return (
             await api.get(`/communities`, {
                 params: { page, limit, search },
+            })
+        ).data;
+    }
+
+    static async getUserCommunities(userId: string, page: number) {
+        return (
+            await api.get(`/users/${userId}/communities`, {
+                params: { page },
             })
         ).data;
     }

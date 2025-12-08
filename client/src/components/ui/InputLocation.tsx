@@ -1,5 +1,5 @@
 import { RequestPostData } from "@/types/postDataType";
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { FormInput } from "./FormInput";
 
 export const InputLocation = ({
@@ -11,35 +11,31 @@ export const InputLocation = ({
 }) => {
     const [suggestions, setSuggestions] = useState<any[]>([]);
     const [query, setQuery] = useState("");
-    const timeoutRef = useRef<NodeJS.Timeout>(null);
 
-    useEffect(() => {
-        const fetchLocation = async () => {
-            const queryFormatada = encodeURIComponent(query).replace(/%20/g, "+");
-            const url = `https://nominatim.openstreetmap.org/search?q=${queryFormatada}%20Piracicaba%20S%C3%A3o%20Paulo%20Brasil&format=json&addressdetails=1&limit=10`;
-            try {
-                const response = await fetch(url);
-                if (!response.ok) throw new Error(`Response status: ${response.status}`);
-                const result = await response.json();
-                setSuggestions(result);
-            } catch (err) {
-                console.error(err);
-            }
-        };
-
-        fetchLocation();
-        return () => clearTimeout(timeoutRef.current!);
-    }, [query]);
-
-    const handleChange = (value: string) => {
-        timeoutRef.current = setTimeout(() => {
-            if (value.trim() !== "") {
-                setQuery(value);
-            } else {
-                setSuggestions([]);
-            }
-        }, 500);
+    const fetchLocation = async () => {
+        const queryFormatada = encodeURIComponent(query).replace(/%20/g, "+");
+        const url = `https://nominatim.openstreetmap.org/search?q=${queryFormatada}%20Piracicaba%20S%C3%A3o%20Paulo%20Brasil&format=json&addressdetails=1&limit=10`;
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`Response status: ${response.status}`);
+            const result = await response.json();
+            setSuggestions(result);
+        } catch (err) {
+            console.error(err);
+        }
     };
+    useEffect(() => {
+        if (query.trim() === "") {
+            setSuggestions([]);
+            return;
+        }
+
+        const timeout = setTimeout(() => {
+            fetchLocation();
+        }, 500);
+
+        return () => clearTimeout(timeout);
+    }, [query]);
 
     const handleClickLocation = (suggestion: any) => {
         setReportForm({
@@ -60,8 +56,8 @@ export const InputLocation = ({
                     inputProps={{
                         type: "text",
                         placeholder: "Ex: Rua Alberto Breglia, Água Branca",
-                        onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                            handleChange(e.target.value),
+                        onChange: (e: ChangeEvent<HTMLInputElement>) =>
+                            setQuery(e.target.value),
                     }}
                 />
 

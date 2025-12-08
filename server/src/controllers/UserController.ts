@@ -113,7 +113,7 @@ export const editUser = async (
 ): Promise<void> => {
     try {
         const currentData = await fetchUser(req.params.userId);
-        if (currentData!.role === "superadmin") {
+        if (currentData!.role === "superadmin" && req.user!.uid !== currentData._id) {
             res.status(400).json({ message: "Not allowed to edit superadmin" });
             return;
         }
@@ -216,19 +216,7 @@ export const editPreferences = async (
     }
 };
 
-export const makeUserAdmin = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-): Promise<void> => {
-    try {
-        const { userId } = req.params;
-        await makeUserAdminService(userId);
-        res.status(200).json({ ok: true });
-    } catch (err) {
-        next(err);
-    }
-};
+
 
 export const promoteToAdmin = async (
     req: Request,

@@ -21,7 +21,7 @@ router.post(
         { name: "image", maxCount: 1 },
         { name: "banner", maxCount: 1 },
     ]),
-    createCommunity
+    createCommunity,
 );
 router.get("/", authenticateUser, getCommunities);
 router.get("/:id", authenticateUser, getCommunityById);

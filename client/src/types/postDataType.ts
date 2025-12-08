@@ -18,6 +18,8 @@ export interface PostData {
     isReposted: boolean;
     isSaved: boolean;
     createdAt: string;
+    communityIds?: string[];
+    visibility?: "global" | "communities" | "both";
 }
 
 export interface RequestPostData {
@@ -27,6 +29,8 @@ export interface RequestPostData {
     hashtags: string[];
     location: LocationData;
     address: string;
+    communityIds?: string[];
+    visibility?: "global" | "communities" | "both";
 }
 
 export type UserPostData = PostData & {
@@ -57,4 +61,6 @@ export const postSchema = z.object({
         longitude: z.number(),
     }),
     hashtags: z.array(z.string()).min(1),
+    communities: z.array(z.string()).optional(),
+    postToFeed: z.boolean().optional(),
 });

@@ -123,7 +123,7 @@ const PostSchema: Schema = new Schema(
             },
             default: "ativo",
         },
-        communityIds: [{ type: Schema.Types.ObjectId, ref: "Community" }],
+        communityIds: [{ type: String, ref: "Community" }],
         visibility: {
             type: String,
             enum: ["global", "communities", "both"],
