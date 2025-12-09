@@ -55,7 +55,7 @@ export const ChatItem = ({
             />
             <div>
                 <p className="text-md text-title font-medium">{chat.participants[0]?.username}</p>
-                <p className="text-subtitle text-xs">{chat.recentMessage?.text}</p>
+                <p className="text-subtitle text-xs truncate w-30">{chat.recentMessage?.text}</p>
             </div>
             {chat.unreadChatMessages > 0 && (
                 <span className="absolute top-3 right-3 z-10 rounded-full bg-red-500 px-2 py-1 text-xs text-white">

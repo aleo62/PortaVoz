@@ -60,11 +60,11 @@ export const CommunityCard = ({ community }: CommunityCardProps) => {
                 </div>
                 <div className="flex items-start justify-between gap-2">
                     <div className="flex-1">
-                        <h3 className="mb-1 text-lg font-bold text-zinc-900 dark:text-zinc-100">
+                        <h3 className="mb-1 text-lg font-title text-title">
                             {community.name}
                         </h3>
-                        <p className="line-clamp-2 text-sm text-zinc-500 dark:text-zinc-400">
-                            {community.description} • {community.membersCount} membros
+                        <p className="line-clamp-2 text-sm text-subtitle">
+                            {community.membersCount} membros
                         </p>
                     </div>
                     <div
