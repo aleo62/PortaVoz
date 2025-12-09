@@ -15,13 +15,14 @@ import {
     removeModeratorRoleService,
     updateUserPreferenceService,
     verifyRemainingReports,
+    revokeUserSessionsService,
 } from "@/services/UserService";
 import { NextFunction, Request, Response } from "express";
 
 export const getUsers = async (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
 ): Promise<void> => {
     try {
         const { name } = req.query;
@@ -32,7 +33,7 @@ export const getUsers = async (
             req.user!,
             (name as string) || "",
             page,
-            limit
+            limit,
         );
 
         res.status(200).json({ users, hasMore: count > page * limit, count });
@@ -44,7 +45,7 @@ export const getUsers = async (
 export const getUserById = async (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
 ): Promise<void> => {
     try {
         const { uid } = req.user!;
@@ -60,12 +61,12 @@ export const getUserById = async (
 export const getRemainingReports = async (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
 ): Promise<void> => {
     try {
         const { canReport, remaining, resetAt } = await verifyRemainingReports(
             req.params.userId,
-            req.user!.isAdmin
+            req.user!.isAdmin,
         );
         res.status(200).json({
             canReport,
@@ -80,7 +81,7 @@ export const getRemainingReports = async (
 export const createUser = async (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
 ): Promise<void> => {
     try {
         const { uid, email } = req.user!;
@@ -95,7 +96,7 @@ export const createUser = async (
 export const deleteUser = async (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
 ): Promise<void> => {
     try {
         const { userId } = req.params;
@@ -106,14 +107,31 @@ export const deleteUser = async (
     }
 };
 
+export const revokeUserSessions = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> => {
+    try {
+        const { userId } = req.params;
+        await revokeUserSessionsService(userId);
+        res.status(200).json({ ok: true });
+    } catch (err) {
+        next(err);
+    }
+};
+
 export const editUser = async (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
 ): Promise<void> => {
     try {
         const currentData = await fetchUser(req.params.userId);
-        if (currentData!.role === "superadmin" && req.user!.uid !== currentData._id) {
+        if (
+            currentData!.role === "superadmin" &&
+            req.user!.uid !== currentData._id
+        ) {
             res.status(400).json({ message: "Not allowed to edit superadmin" });
             return;
         }
@@ -126,7 +144,7 @@ export const editUser = async (
             newImage = await updateImage(
                 files.image[0].path,
                 currentData.image,
-                "users_image"
+                "users_image",
             );
         }
 
@@ -134,7 +152,7 @@ export const editUser = async (
             newBanner = await updateImage(
                 files.banner[0].path,
                 currentData.banner!,
-                "banners_image"
+                "banners_image",
             );
         }
 
@@ -163,7 +181,7 @@ export const editUser = async (
 export const getUserPreferences = async (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
 ): Promise<void> => {
     try {
         const { userId } = req.params;
@@ -177,7 +195,7 @@ export const getUserPreferences = async (
 export const getUserPreferencesByField = async (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
 ): Promise<void> => {
     try {
         const { userId, field } = req.params;
@@ -195,7 +213,7 @@ export const getUserPreferencesByField = async (
 export const editPreferences = async (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
 ): Promise<void> => {
     try {
         const { userId } = req.params;
@@ -216,12 +234,10 @@ export const editPreferences = async (
     }
 };
 
-
-
 export const promoteToAdmin = async (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
 ): Promise<void> => {
     try {
         const { userId } = req.params;
@@ -235,7 +251,7 @@ export const promoteToAdmin = async (
 export const promoteToModerator = async (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
 ): Promise<void> => {
     try {
         const { userId } = req.params;
@@ -249,7 +265,7 @@ export const promoteToModerator = async (
 export const demoteFromAdmin = async (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
 ): Promise<void> => {
     try {
         const { userId } = req.params;
@@ -263,7 +279,7 @@ export const demoteFromAdmin = async (
 export const demoteFromModerator = async (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
 ): Promise<void> => {
     try {
         const { userId } = req.params;

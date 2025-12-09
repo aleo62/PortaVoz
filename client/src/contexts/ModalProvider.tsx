@@ -10,7 +10,9 @@ import { UpdateReportStatusModal } from "@/components/features/report/UpdateRepo
 import { SearchModal } from "@/components/features/search/SearchModal";
 import { SettingsModal } from "@/components/features/settings/SettingsModal";
 import { ChangePasswordModal } from "@/components/features/settings/components/ChangePasswordModal";
+import { DeleteAccountModal } from "@/components/features/settings/components/DeleteAccountModal";
 import { EditProfileModal } from "@/components/features/settings/components/EditProfileModal";
+import { ConfirmationModal } from "@/components/modal/ConfirmationModal";
 import { ImageModal } from "@/components/modal/ImageModal";
 import { UploadImageModal } from "@/components/modal/UploadImageModal";
 import { IconX } from "@tabler/icons-react";
@@ -30,10 +32,12 @@ export const Modals = {
     uploadImage: UploadImageModal,
     changePassword: ChangePasswordModal,
     editProfile: EditProfileModal,
+    deleteAccount: DeleteAccountModal,
     updateReportStatus: UpdateReportStatusModal,
     adminEditUser: AdminEditUserModal,
     createCommunity: CreateCommunityModal,
     selectCommunity: SelectCommunityModal,
+    confirmation: ConfirmationModal,
 };
 
 type OpenModalType = {

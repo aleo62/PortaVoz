@@ -10,9 +10,9 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
     return (
         <QueryClientProvider client={queryClient}>
             <SocketProvider>
-                <ModalProvider>
-                    <ToastProvider>{children}</ToastProvider>
-                </ModalProvider>
+                <ToastProvider>
+                    <ModalProvider>{children}</ModalProvider>
+                </ToastProvider>
             </SocketProvider>
         </QueryClientProvider>
     );

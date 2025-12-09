@@ -23,6 +23,7 @@ import { useNavigate } from "react-router-dom";
 import type { Swiper as SwiperClass } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { PostActionButton } from "./PostActionButton";
+import { limitText } from "@/utils/functions/limitText";
 
 type MainPostProps = {
     post: PostData;
@@ -89,15 +90,6 @@ export const PostMain = ({ post, viewMode }: MainPostProps) => {
         await createSave.mutate(post._id);
     };
 
-    const limitDescription = isMobile ? 30 : 45;
-    const postDescription =
-        !viewMode && post.desc.split(" ").length > limitDescription
-            ? post.desc
-                  .split(" ")
-                  .filter((_, index) => index < limitDescription)
-                  .join(" ") + "..."
-            : post.desc;
-
     return (
         <main className="relative px-1 lg:px-2">
             <Swiper
@@ -160,15 +152,14 @@ export const PostMain = ({ post, viewMode }: MainPostProps) => {
                         </>
                     )}
 
-                    {user?._id! !== post.user._id && (
-                        <PostActionButton
-                            Icon={IconRepeat}
-                            onClick={() => (isReposted ? removeRepost() : addRepost())}
-                            isActive={isReposted}
-                            classActive="text-green-500 dark:text-green-600"
-                            count={post.repostsCount}
-                        />
-                    )}
+                    <PostActionButton
+                        Icon={IconRepeat}
+                        onClick={() => (isReposted ? removeRepost() : addRepost())}
+                        isActive={isReposted || user?._id === post.user._id}
+                        disabled={user?._id === post.user._id}
+                        classActive="text-green-500 dark:text-green-600"
+                        count={post.repostsCount}
+                    />
 
                     <div className="ml-auto flex items-center gap-3">
                         <PostActionButton
@@ -217,7 +208,7 @@ export const PostMain = ({ post, viewMode }: MainPostProps) => {
                     </h2>
 
                     <p className="mb-2 w-full text-[.8rem] wrap-break-word text-zinc-800 lg:text-sm dark:text-zinc-300">
-                        {postDescription}
+                        {limitText(post.desc, isMobile ? 150 : 200)}
                     </p>
 
                     <p className="flex items-center gap-1 text-sm">
