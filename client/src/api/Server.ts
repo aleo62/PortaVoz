@@ -158,7 +158,26 @@ export class Server {
     }
 
     static async deleteFollow(followingId: string) {
-        return await api.delete(`/users/${followingId}/unfollow`);
+        return api.delete(`/users/${followingId}/unfollow`);
+    }
+
+    static async getFollowers(userId: string, page: number) {
+        return (
+            await api.get(`/users/${userId}/followers`, {
+                params: {
+                    page: page,
+                },
+            })
+        ).data;
+    }
+    static async getFollowing(userId: string, page: number) {
+        return (
+            await api.get(`/users/${userId}/following2`, {
+                params: {
+                    page: page,
+                },
+            })
+        ).data;
     }
 
     /* VALIDATOR ENDPOINTS -----------> */

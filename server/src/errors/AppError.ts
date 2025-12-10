@@ -1,10 +1,23 @@
-type ErrorCodes = "SERVER_ERROR" | "ALREADY_VERIFIED" | "TOO_MANY_REQUESTS" | "INVALID_FORM" | "USER_NO_REMAINING_REPORTS";
+type ErrorCodes =
+    | "SERVER_ERROR"
+    | "ALREADY_VERIFIED"
+    | "TOO_MANY_REQUESTS"
+    | "INVALID_FORM"
+    | "USER_NO_REMAINING_REPORTS"
+    | "FILE_EXCEDED_LIMIT"
+    | "FILE_INVALID_FORMAT"
+    | "FILE_REQUIRED";
 
 export class AppError extends Error {
     status: number;
     code: ErrorCodes;
     details: any;
-    constructor(message: string, status: number, code: ErrorCodes, details: any) {
+    constructor(
+        message: string,
+        status: number,
+        code: ErrorCodes,
+        details: any
+    ) {
         super(message);
         this.status = status;
         this.code = code;

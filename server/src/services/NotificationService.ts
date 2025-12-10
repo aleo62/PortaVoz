@@ -11,7 +11,6 @@ export const sendNotificationToUser = async ({
 }: Partial<NotificationData>) => {
     try {
         const userData = await fetchUser(userId as string);
-        if (!userData) throw new Error("User does not exists.");
         if (userId === sender) return;
 
         const { notifications } = userData.meta.preferences || {

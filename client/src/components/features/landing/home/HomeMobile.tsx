@@ -41,9 +41,11 @@ export const Mobile = () => {
                         </AnimatedSubtitle>
                     </div>
 
-                    <button className="ml-auto flex items-center gap-5 rounded-xl border-none bg-white p-5 py-2 text-lg font-semibold text-zinc-900 transition hover:bg-zinc-200 active:scale-95">
-                        Instalar <IconDownload />
-                    </button>
+                    <a href="https://github.com/aleo62/PortaVoz/releases/download/1.0.0/PortaVoz.apk">
+                        <button className="ml-auto flex items-center gap-5 rounded-xl border-none bg-white p-5 py-2 text-lg font-semibold text-zinc-900 transition hover:bg-zinc-200 active:scale-95">
+                            Instalar <IconDownload />
+                        </button>
+                    </a>
                 </div>
             </div>
         </section>

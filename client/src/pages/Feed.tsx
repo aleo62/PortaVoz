@@ -1,4 +1,4 @@
-import { PopularCommunities } from "@/components/features/community/PopularCommunities";
+import { useCommunities } from "@/hooks/community/useCommunities";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { PostData } from "@/types/postDataType";
 import { FeedPosts } from "@components/features/post/FeedPosts";
@@ -7,6 +7,8 @@ import { usePosts } from "@hooks/posts/usePosts";
 import { IconX } from "@tabler/icons-react";
 import { useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { CommunityData } from "@/types/communityDataType";
+import { CommunityList } from "@/components/features/community/CommunityList";
 
 export const Feed = () => {
     const isMobile = useIsMobile();
@@ -14,6 +16,8 @@ export const Feed = () => {
     const [searchParams] = useSearchParams();
 
     const hashtag = searchParams.get("hashtag") || undefined;
+    const { data } = useCommunities("", "desc");
+    const communities: CommunityData[] = data?.pages.flatMap((page) => page.communities).slice(0, 5) as CommunityData[] || [];
 
     const filters = useMemo(() => {
         return {
@@ -40,8 +44,10 @@ export const Feed = () => {
     return (
         <>
             {hashtag && (
-                <div className="flex items-center justify-between gap-2  max-w-7xl mx-auto w-full lg:px-8 my-10">
-                    <h3 className="text-title font-title text-2xl">Filtrado por: <span className="text-accent">#{hashtag}</span></h3>
+                <div className="mx-auto my-10 flex w-full max-w-7xl items-center justify-between gap-2 lg:px-8">
+                    <h3 className="text-title font-title text-2xl">
+                        Filtrado por: <span className="text-accent">#{hashtag}</span>
+                    </h3>
 
                     <IconX onClick={clearHashtagFilter} size={18} />
                 </div>
@@ -62,7 +68,7 @@ export const Feed = () => {
                             <h3 className="font-title text-zinc-900 dark:text-white">
                                 Comunidades Populares
                             </h3>
-                            <PopularCommunities />
+                            <CommunityList communities={communities}/>
                         </div>
                     </aside>
                 )}

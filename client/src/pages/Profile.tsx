@@ -1,4 +1,5 @@
 import { FeedPosts } from "@/components/features/post/FeedPosts";
+import { FollowItem } from "@/components/features/profile/FollowItem";
 import { ProfileActions } from "@/components/features/profile/ProfileActions";
 import { ProfileTabs } from "@/components/features/profile/ProfileTabs";
 import { Button } from "@/components/ui/Button";
@@ -7,15 +8,18 @@ import { useChatByUsers } from "@/hooks/chat/useChatByUsers";
 import { usePostsByUser } from "@/hooks/posts/usePostsByUser";
 import { useCreateFollow } from "@/hooks/user/useCreateFollow";
 import { useDeleteFollow } from "@/hooks/user/useDeleteFollow";
+import { useFollowers } from "@/hooks/user/useFollowers";
+import { useFollowing } from "@/hooks/user/useFollowing";
 import { useUserById } from "@/hooks/user/useUserById";
 import { useStoreUser } from "@/stores/userStore";
+import { UserData } from "@/types/userDataType";
 import { ProfileSkeleton } from "@components/ui/ProfileSkeleton";
 import { IconSettings } from "@tabler/icons-react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 export const Profile = () => {
-    const { openModal } = useModal();
+    const { openModal, modalKey } = useModal();
     const { user: userData } = useStoreUser();
     const { userId } = useParams();
     const navigate = useNavigate();
@@ -39,20 +43,28 @@ export const Profile = () => {
     const createChat = useChatByUsers();
 
     const handleFollow = async () => {
-        if (user?.isFollowing) {
-            await deleteFollow.mutateAsync(requestId!);
-        } else {
-            await createFollow.mutateAsync(requestId!);
-        }
+        await createFollow.mutateAsync(requestId!);
+    };
+    const handleUnfollow = async () => {
+        await deleteFollow.mutateAsync(requestId!);
     };
 
     const handleChat = async () => {
         const data = await createChat.mutateAsync({
             otherUserId: requestId!,
         });
-        console.log(data);
         navigate(`/chat`, { state: { chatId: data.chatId } });
     };
+
+    const { data: followersData, isLoading: followersLoading } = useFollowers(requestId!, true);
+    const followers: UserData[] =
+        (followersData?.pages.flatMap((page) => page.users) as UserData[]) || [];
+    const { data: followingData,  isLoading: followingLoading } = useFollowing(requestId!, true);
+    const following: UserData[] =
+        (followingData?.pages.flatMap((page) => page.users) as UserData[]) || [];
+
+    console.log(following);
+    console.log(followers);
 
     if (userLoading || !user) {
         return <ProfileSkeleton />;
@@ -60,17 +72,17 @@ export const Profile = () => {
 
     return (
         <>
-            <header className="relative mx-auto lg:mt-5 w-full max-w-7xl  md:h-75">
-                <figure className="relative mx-auto aspect-3/1 lg:aspect-4/1 w-full lg:rounded-3xl bg-zinc-300 shadow-md  dark:bg-zinc-800">
+            <header className="relative mx-auto w-full max-w-7xl md:h-75 lg:mt-5">
+                <figure className="relative mx-auto aspect-3/1 w-full bg-zinc-300 shadow-md lg:aspect-4/1 lg:rounded-3xl dark:bg-zinc-800">
                     {user?.banner && (
                         <img
                             src={user.banner}
                             alt="Banner"
-                            className="h-full w-full lg:rounded-3xl object-cover"
+                            className="h-full w-full object-cover lg:rounded-3xl"
                         />
                     )}
                 </figure>
-                <figure className="absolute top-[100%] max-lg:left-1/2 max-lg:-translate-x-1/2 lg:left-10 translate-y-[-50%] lg:top-[115%]">
+                <figure className="absolute top-[100%] translate-y-[-50%] max-lg:left-1/2 max-lg:-translate-x-1/2 lg:top-[115%] lg:left-10">
                     <img
                         src={user?.image}
                         alt="Foto de perfil"
@@ -81,7 +93,7 @@ export const Profile = () => {
             </header>
 
             <main className="mx-auto mt-20 mb-10 w-full max-w-7xl px-4 lg:mt-8">
-                <div className="flex justify-between gap-2  lg:ml-[270px] lg:items-center">
+                <div className="flex justify-between gap-2 lg:ml-[270px] lg:items-center">
                     <div>
                         <h1 className="font-title text-title text-2xl lg:text-4xl">
                             {user.username}
@@ -103,9 +115,9 @@ export const Profile = () => {
                         ) : (
                             <ProfileActions
                                 userId={requestId!}
-                                isFollowing={user.isFollowing || false}
+                                isFollowing={user.isFollowing}
                                 onFollow={handleFollow}
-                                onUnfollow={handleFollow}
+                                onUnfollow={handleUnfollow}
                                 onChat={handleChat}
                             />
                         )}
@@ -113,14 +125,34 @@ export const Profile = () => {
                 </div>
 
                 <div className="text-subtitle mt-4 flex items-center gap-6 text-sm font-medium lg:ml-[270px]">
-                    <p>
+                    <p
+                        onClick={() =>
+                            openModal("list", {
+                                title: "Seguidores",
+                                items: followers,
+                                loading: followersLoading,
+         
+                            })
+                        }
+                        className="cursor-pointer"
+                    >
                         <span className="text-title font-semibold">
                             {user.meta?.counters?.followers || 0}
                         </span>{" "}
                         Seguidores
                     </p>
-                    <p>
-                        <span className="text-title font-semibold">
+                    <p
+                        onClick={() =>
+                            openModal("list", {
+                                title: "Seguindo",
+                                items: following,
+                                loading: followingLoading,
+            
+                            })
+                        }
+                        className="cursor-pointer"
+                    >
+                        <span className="text-title font-semibold ">
                             {user.meta?.counters?.following || 0}
                         </span>{" "}
                         Seguindo
@@ -142,7 +174,7 @@ export const Profile = () => {
 
             <ProfileTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
-            <div className="mx-auto w-full max-w-7xl ">
+            <div className="mx-auto w-full max-w-7xl">
                 <FeedPosts
                     posts={posts}
                     feedLoading={feedLoading}

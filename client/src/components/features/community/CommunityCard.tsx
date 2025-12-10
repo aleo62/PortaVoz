@@ -34,7 +34,7 @@ export const CommunityCard = ({ community }: CommunityCardProps) => {
     return (
         <div
             onClick={() => navigate(`/communities/${community._id}`)}
-            className="group relative flex cursor-pointer flex-col overflow-hidden rounded-2xl ring-1 ring-zinc-200 transition-all dark:ring-zinc-800"
+            className="group relative flex w-full cursor-pointer flex-col overflow-hidden rounded-2xl ring-1 ring-zinc-200 transition-all dark:ring-zinc-800"
         >
             <div className="h-24 w-full bg-zinc-100 dark:bg-zinc-800">
                 {community.banner && (

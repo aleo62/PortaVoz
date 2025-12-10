@@ -1,15 +1,16 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 export interface FollowData extends Document {
-    userId: string;
+    following: string;
     follower: string;
 }
 
 const FollowSchema: Schema = new Schema(
     {
-        userId: {
+        following: {
             type: String,
-            required: [true, "User Id is required"],
+            ref: "User",
+            required: [true],
         },
         follower: {
             type: String,

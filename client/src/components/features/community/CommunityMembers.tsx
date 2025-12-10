@@ -10,8 +10,7 @@ export const CommunityMembers = ({ communityId }: CommunityMembersProps) => {
     const members = data?.pages.flatMap((page) => page.members) || [];
 
     return (
-        <div className="flex flex-col gap-4">
-            <h3 className="text-lg font-title text-title">Membros</h3>
+        <>
             <div className="flex flex-col gap-3">
                 {members.map((member: any) => (
                     <Link
@@ -44,6 +43,6 @@ export const CommunityMembers = ({ communityId }: CommunityMembersProps) => {
                     Load more
                 </button>
             )}
-        </div>
+        </>
     );
 };

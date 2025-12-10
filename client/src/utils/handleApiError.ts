@@ -21,6 +21,7 @@ const normalizeDetails = (details: any): string | undefined => {
 };
 
 export const formatApiError = (err: any, fallback = "Erro inesperado.") => {
+    console.log(err);
     const payload: ApiErrorPayload | undefined = err?.response?.data;
     const code = payload?.code;
     const message = payload?.message;
@@ -37,6 +38,8 @@ export const formatApiError = (err: any, fallback = "Erro inesperado.") => {
             return `Muitas requisições. Tente novamente em instantes.`;
         case "ALREADY_VERIFIED":
             return `Conta já verificada.`;
+        case "FILE_EXCEDED_LIMIT":
+            return `Arquivo de imagem muito grande`
         default:
             return defaultMessage;
     }

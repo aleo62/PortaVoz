@@ -12,6 +12,7 @@ export const InputLocation = ({
     const [suggestions, setSuggestions] = useState<any[]>([]);
     const [query, setQuery] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [hasSelected, setHasSelected] = useState(false);
 
     const fetchLocation = async () => {
         const queryFormatada = encodeURIComponent(query).replace(/%20/g, "+");
@@ -30,6 +31,8 @@ export const InputLocation = ({
     };
 
     useEffect(() => {
+        if(hasSelected) return;
+
         if (query.trim() === "") {
             setSuggestions([]);
             return;
@@ -55,6 +58,7 @@ export const InputLocation = ({
             `${suggestion.address.suburb}${suggestion.address.road ? ", " + suggestion.address.road : ""}`,
         );
         setSuggestions([]);
+        setHasSelected(true);
     };
 
     const filteredSuggestions = useMemo(
@@ -68,18 +72,18 @@ export const InputLocation = ({
         <div className="relative h-fit">
             <FormInput
                 label="Endereço"
-                className="relative z-10"
+                className="relative z-30"
                 inputProps={{
                     type: "text",
                     placeholder: "Ex: Rua Alberto Breglia, Água Branca",
                     value: query,
-                    onChange: (e: ChangeEvent<HTMLInputElement>) => setQuery(e.target.value),
+                    onChange: (e: ChangeEvent<HTMLInputElement>) => {setQuery(e.target.value), setHasSelected(false)},
                     autoComplete: "off",
                 }}
             />
 
             {shouldShowDropdown && (
-                <div className="absolute top-[calc(100%-10px)] right-0 left-0 z-0 overflow-hidden rounded-b-xl border border-zinc-200 bg-white py-4 shadow-lg dark:border-zinc-800 dark:bg-zinc-900">
+                <div className="absolute top-[calc(100%-10px)] right-0 left-0 z-20 overflow-hidden rounded-b-xl border border-zinc-200 bg-white py-4 shadow-lg dark:border-zinc-800 dark:bg-zinc-900">
                     <div className="scrollbar-thin scrollbar-thumb-zinc-200 scrollbar-track-transparent dark:scrollbar-thumb-zinc-700 max-h-60 overflow-auto">
                         {isLoading && (
                             <div className="text-subtitle px-4 py-3 text-sm">

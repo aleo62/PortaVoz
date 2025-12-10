@@ -74,7 +74,7 @@ export const getUserByIdService = async (userId: string, uid: string) => {
                         $match: {
                             $expr: {
                                 $and: [
-                                    { $eq: ["$userId", "$$targetUser"] },
+                                    { $eq: ["$following", "$$targetUser"] },
                                     { $eq: ["$follower", uid] },
                                 ],
                             },

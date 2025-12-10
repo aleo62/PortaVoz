@@ -1,10 +1,13 @@
 import Follow from "@/models/Follow.model";
-import User, { UserData } from "@/models/User.model";
-import { followService, getFollowingService } from "@/services/FollowService";
-import { fetchUser } from "@/services/UserService";
+import User from "@/models/User.model";
+import {
+    followService,
+    getIsFollowingService,
+    unfollowService,
+} from "@/services/FollowService";
 import { NextFunction, Request, Response } from "express";
 
-export const getFollowing = async (
+export const getIsFollowing = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -13,7 +16,7 @@ export const getFollowing = async (
         const { followingId } = req.params;
         const { uid: followerId } = req.user!;
 
-        const { isFollowing } = await getFollowingService(
+        const { isFollowing } = await getIsFollowingService(
             followingId,
             followerId
         );
@@ -48,31 +51,98 @@ export const unfollowUser = async (
     next: NextFunction
 ): Promise<void> => {
     try {
-        if (!req.params) throw new Error("No UnfollowId provided.");
+        const { unfollowId } = req.params;
+        const { uid: followerId } = req.user!;
 
-        if (!req.user) throw new Error("No User provided.");
-        const { uid } = req.user;
-        const userData = (await fetchUser(uid)) as UserData;
+        await unfollowService(unfollowId, followerId);
 
-        const unfollowData = await fetchUser(req.params.unfollowId);
-        if (!unfollowData) throw new Error("Unfollow User does not exists.");
+        await res.status(201).json({ ok: true });
+    } catch (err) {
+        next(err);
+    }
+};
 
-        const unfollow = await Follow.findOneAndDelete({
-            userId: unfollowData._id,
-            follower: userData._id,
+export const getFollowers = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> => {
+    try {
+        const { userId } = req.params;
+        const { name } = req.query;
+
+        const page = Number(req.query.page) || 1;
+        const limit = 20;
+
+        const filter = { following: userId };
+
+        const count = await Follow.countDocuments(filter);
+
+        const follows = await Follow.find(filter)
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .populate({
+                path: "follower",
+                select: "username fName lName image",
+                match: name
+                    ? { username: { $regex: name, $options: "i" } }
+                    : {},
+            });
+
+        const users = follows
+            .map((f: any) => f.follower)
+            .filter((u: any) => u !== null);
+
+        res.status(200).json({
+            users,
+            hasMore: count > page * limit,
+            count,
+            page,
+            limit,
         });
-        if (!unfollow) throw new Error("Not following this User.");
+    } catch (err) {
+        next(err);
+    }
+};
 
-        await User.updateOne(
-            { _id: req.user.uid },
-            { $inc: { "meta.counters.following": -1 } }
-        );
-        await User.updateOne(
-            { _id: unfollowData._id },
-            { $inc: { "meta.counters.followers": -1 } }
-        );
+export const getFollowing = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> => {
+    try {
+        const { userId } = req.params;
+        const { name } = req.query;
 
-        res.status(200).json({ ok: true });
+        const page = Number(req.query.page) || 1;
+        const limit = 20;
+
+        const filter = { follower: userId };
+
+        const count = await Follow.countDocuments(filter);
+
+        const follows = await Follow.find(filter)
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .populate({
+                path: "following",
+                select: "username fName lName image meta.counters.postsCount",
+                match: name
+                    ? { username: { $regex: name, $options: "i" } }
+                    : {},
+            });
+
+        const users = follows
+            .map((f: any) => f.following)
+            .filter((u:any) => u !== null);
+
+        res.status(200).json({
+            users,
+            hasMore: count > page * limit,
+            count,
+            page,
+            limit,
+        });
     } catch (err) {
         next(err);
     }

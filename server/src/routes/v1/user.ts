@@ -1,7 +1,9 @@
 import { getUserCommunities } from "@/controllers/CommunityController";
 import {
     followUser,
+    getFollowers,
     getFollowing,
+    getIsFollowing,
     unfollowUser,
 } from "@/controllers/FollowController";
 import { getNotifications } from "@/controllers/NotificationController";
@@ -36,13 +38,16 @@ const router = Router();
 router.get("/", authenticateUser, validationError, getUsers);
 router.get("/:userId", authenticateUser, validationError, getUserById);
 
+router.get("/:userId/followers", getFollowers);
+router.get("/:userId/following2", getFollowing);
+
 router.post(
     "/auth/",
     authenticateUser,
     body("fName").trim().notEmpty().withMessage("fName is required"),
     body("lName").trim().notEmpty().withMessage("lName is required"),
     body("image").optional().isURL().withMessage("image must be an URL"),
-    createUser,
+    createUser
 );
 
 router.delete(
@@ -52,7 +57,7 @@ router.delete(
         return req.params.userId;
     }),
     validationError,
-    deleteUser,
+    deleteUser
 );
 
 router.post(
@@ -62,7 +67,7 @@ router.post(
         return req.params.userId;
     }),
     validationError,
-    revokeUserSessions,
+    revokeUserSessions
 );
 
 router.put(
@@ -83,7 +88,7 @@ router.put(
     body("fName").optional().trim().notEmpty().withMessage("fName is required"),
     body("lName").optional().trim().notEmpty().withMessage("lName is required"),
     validationError,
-    editUser,
+    editUser
 );
 
 router.get("/:userId/posts", authenticateUser, validationError, getPostByUser);
@@ -91,7 +96,7 @@ router.get(
     "/:userId/communities",
     authenticateUser,
     validationError,
-    getUserCommunities,
+    getUserCommunities
 );
 
 router.get(
@@ -101,28 +106,28 @@ router.get(
         return req.params.userId;
     }),
     validationError,
-    getRemainingReports,
+    getRemainingReports
 );
 
 router.get(
     "/:followingId/following",
     authenticateUser,
     validationError,
-    getFollowing,
+    getIsFollowing
 );
 
 router.post(
     "/:followingId/follow",
     authenticateUser,
     validationError,
-    followUser,
+    followUser
 );
 
 router.delete(
     "/:unfollowId/unfollow",
     authenticateUser,
     validationError,
-    unfollowUser,
+    unfollowUser
 );
 
 router.get(
@@ -132,7 +137,7 @@ router.get(
         return req.params.userId;
     }),
     validationError,
-    getNotifications,
+    getNotifications
 );
 
 router.get(
@@ -142,7 +147,7 @@ router.get(
         return req.params.userId;
     }),
     validationError,
-    getUserPreferencesByField,
+    getUserPreferencesByField
 );
 
 router.put(
@@ -152,7 +157,7 @@ router.put(
         return req.params.userId;
     }),
     validationError,
-    editPreferences,
+    editPreferences
 );
 
 // // POST
@@ -178,7 +183,7 @@ router.get(
         return req.params.userId;
     }),
     validationError,
-    getSaves,
+    getSaves
 );
 
 router.post(
@@ -188,7 +193,7 @@ router.post(
         return req.params.userId;
     }),
     validationError,
-    createSave,
+    createSave
 );
 
 router.delete(
@@ -198,35 +203,35 @@ router.delete(
         return req.params.userId;
     }),
     validationError,
-    deleteSave,
+    deleteSave
 );
 
 router.put(
     "/:userId/promote/admin",
     authenticateUser,
     authSuperAdmin,
-    promoteToAdmin,
+    promoteToAdmin
 );
 
 router.put(
     "/:userId/promote/moderator",
     authenticateUser,
     authAdmin,
-    promoteToModerator,
+    promoteToModerator
 );
 
 router.put(
     "/:userId/demote/admin",
     authenticateUser,
     authSuperAdmin,
-    demoteFromAdmin,
+    demoteFromAdmin
 );
 
 router.put(
     "/:userId/demote/moderator",
     authenticateUser,
     authAdmin,
-    demoteFromModerator,
+    demoteFromModerator
 );
 
 export default router;

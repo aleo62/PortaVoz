@@ -18,7 +18,7 @@ const modifiyQuantityFollowing = async (
     );
 };
 
-export const getFollowingService = async (
+export const getIsFollowingService = async (
     followingId: string,
     followerId: string
 ) => {
@@ -35,14 +35,14 @@ export const followService = async (
     followerId: string
 ) => {
     const followExists = await Follow.exists({
-        userId: followingId,
+        following: followingId,
         follower: followerId,
     });
     if (followExists || followerId === followingId)
         throw new Error("Already following.");
 
     await Follow.create({
-        userId: followingId,
+        following: followingId,
         follower: followerId,
     });
     await modifiyQuantityFollowing(followingId, followerId, 1);
@@ -61,17 +61,17 @@ export const unfollowService = async (
     followerId: string
 ) => {
     const followExists = await Follow.exists({
-        userId: followingId,
+        following: followingId,
         follower: followerId,
     });
-    if (followExists || followerId === followingId)
-        throw new Error("Already following.");
+    if (!followExists || followerId === followingId)
+        throw new Error("Not following.");
 
-    await Follow.create({
-        userId: followingId,
+    await Follow.deleteOne({
+        following: followingId,
         follower: followerId,
     });
-    await modifiyQuantityFollowing(followingId, followerId, 1);
+    await modifiyQuantityFollowing(followingId, followerId, -1);
 
     await sendNotificationToUser({
         userId: followingId,
@@ -81,3 +81,8 @@ export const unfollowService = async (
         preview: undefined,
     });
 };
+
+interface FollowsResult {
+    count: number;
+    users: any[];
+}

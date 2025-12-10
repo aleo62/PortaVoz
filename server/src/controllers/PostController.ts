@@ -1,6 +1,7 @@
 import config from "@/config";
 import Hashtag from "@/models/Hashtag.model";
 import Post from "@/models/Post.model";
+import User from "@/models/User.model";
 import { deleteByParentId } from "@/services/CommentService";
 import { deleteImage, uploadImage } from "@/services/ImageService";
 import {
@@ -106,8 +107,12 @@ export const deletePost = async (
                     })
             )
         );
+
         await deleteByParentId(postId);
         await postData.deleteOne();
+        await User.findByIdAndUpdate(req.user!.uid, {
+            $inc: { "meta.counters.postsCount": -1 },
+        });
 
         res.status(200).json({ message: "Post deleted", data: postData });
     } catch (err) {

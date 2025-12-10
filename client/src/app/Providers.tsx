@@ -1,5 +1,5 @@
 import { ModalProvider } from "@/contexts/ModalProvider";
-import { ToastProvider } from "@/contexts/ToastContext";
+import { ToastProvider } from "@/contexts/ToastProvider";
 import { SocketProvider } from "@/contexts/SocketContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";

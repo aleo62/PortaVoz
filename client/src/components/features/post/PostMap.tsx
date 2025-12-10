@@ -1,5 +1,5 @@
 import L from "leaflet";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 
 const customIcon = new L.Icon({
     iconUrl: `https://res.cloudinary.com/di5bma0gm/image/upload/v1759595925/location_xqieu7.png`,
@@ -8,6 +8,12 @@ const customIcon = new L.Icon({
     iconAnchor: [16, 32],
 });
 
+const ChangeView = ({ center }: { center: [number, number] }) => {
+    const map = useMap();
+    map.setView(center);
+    return null;
+};
+
 export function PostMap({ latitude, longitude }: { latitude: number; longitude: number }) {
     return (
         <MapContainer
@@ -15,7 +21,10 @@ export function PostMap({ latitude, longitude }: { latitude: number; longitude: 
             zoom={15}
             style={{ height: "250px", width: "100%", borderRadius: "10px", zIndex: 1 }}
         >
+            <ChangeView center={[latitude, longitude]} />
+
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+
             <Marker position={[latitude, longitude]} icon={customIcon}>
                 <Popup>Localização da denúncia</Popup>
             </Marker>

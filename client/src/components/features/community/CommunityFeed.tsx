@@ -8,7 +8,7 @@ interface CommunityFeedProps {
 
 export const CommunityFeed = ({ communities, isLoading }: CommunityFeedProps) => {
     return (
-        <section className="flex w-full max-w-2xl flex-col gap-5 py-5">
+        <section className="flex w-full mx-auto items-center justify-center max-w-2xl flex-col gap-5 py-5">
             {isLoading ? (
                 <CommunitySkeleton />
             ) : (

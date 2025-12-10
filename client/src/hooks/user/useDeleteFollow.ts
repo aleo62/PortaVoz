@@ -6,8 +6,10 @@ export function useDeleteFollow() {
 
     return useMutation({
         mutationFn: (followingId: string) => Server.deleteFollow(followingId),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["posts"] });
+        onSuccess: (_, followingId) => {
+            queryClient.invalidateQueries({
+                queryKey: ["user", followingId],
+            });
         },
     });
 }

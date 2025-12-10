@@ -20,6 +20,7 @@ import { IconX } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ReactNode, useRef, useState } from "react";
 import { ModalContext, ModalContextType, useModal } from "./ModalContext";
+import { ListModal } from "@/components/features/profile/FollowList";
 
 export const Modals = {
     report: ReportModal,
@@ -40,6 +41,7 @@ export const Modals = {
     selectCommunity: SelectCommunityModal,
     confirmation: ConfirmationModal,
     reportLimit: ReportLimitModal,
+    list: ListModal
 };
 
 type OpenModalType = {
