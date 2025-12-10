@@ -11,7 +11,7 @@ export const CommunityMembers = ({ communityId }: CommunityMembersProps) => {
 
     return (
         <div className="flex flex-col gap-4">
-            <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">Members</h3>
+            <h3 className="text-lg font-title text-title">Membros</h3>
             <div className="flex flex-col gap-3">
                 {members.map((member: any) => (
                     <Link

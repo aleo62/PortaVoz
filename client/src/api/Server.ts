@@ -9,9 +9,17 @@ export class Server {
     /* POSTS ENDPOINTS -----------> */
 
     static async getAllPosts(filters: Partial<FiltersType>, pageParam: number) {
+        const { tags, ...rest } = filters;
+        const params = {
+            page: pageParam,
+            ...rest,
+            ...(tags ? { hashtags: tags } : {}),
+        };
+
         return (
             await api.get(`/posts`, {
-                params: { page: pageParam, ...filters },
+                params,
+                paramsSerializer: { indexes: null },
             })
         ).data;
     }
@@ -214,9 +222,9 @@ export class Server {
 
     /* HASHTAGS ENDPOINTS -----------> */
 
-    static async getHashtags(pageParam: number) {
+    static async getHashtags(pageParam: number, search?: string) {
         const res = await api.get(`/hashtags`, {
-            params: { page: pageParam },
+            params: { page: pageParam, q: search },
         });
         return res.data;
     }
@@ -333,10 +341,16 @@ export class Server {
         return (await api.post(`/communities`, data)).data;
     }
 
-    static async getCommunities(page: number, limit: number, search?: string) {
+    static async getCommunities(
+        page: number,
+        limit: number,
+        search?: string,
+        members?: "desc" | "asc",
+        date?: "desc" | "asc",
+    ) {
         return (
             await api.get(`/communities`, {
-                params: { page, limit, search },
+                params: { page, limit, search, members, date },
             })
         ).data;
     }

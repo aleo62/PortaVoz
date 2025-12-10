@@ -10,14 +10,13 @@ export const Saves = () => {
     const saves = (data?.pages.flatMap((page) => page.saves) as PostData[]) || [];
 
     return (
-        <>
-
+        <section className="mx-auto mt-5 w-full max-w-7xl">
             <FeedPosts
                 posts={saves}
                 feedLoading={isLoading}
                 feedHasNextPage={hasNextPage}
                 fetchFeedNextPage={fetchNextPage}
             />
-        </>
+        </section>
     );
 };

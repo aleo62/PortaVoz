@@ -24,3 +24,31 @@ export const findOrCreateMultipleHashtags = async (hashtags: Array<string>) => {
 
     return response;
 };
+
+export const listHashtags = async ({
+    search,
+    page = 1,
+    limit = 20,
+}: {
+    search?: string;
+    page?: number;
+    limit?: number;
+}) => {
+    const safeLimit = Math.min(Math.max(limit, 1), 50);
+    const skip = (Math.max(page, 1) - 1) * safeLimit;
+
+    const filter = search
+        ? {
+              content: { $regex: search, $options: "i" },
+          }
+        : {};
+
+    const hashtags = await Hashtag.find(filter)
+        .sort({ usageCount: -1, createdAt: -1 })
+        .skip(skip)
+        .limit(safeLimit);
+
+    const total = await Hashtag.countDocuments(filter);
+
+    return { hashtags, total, page, limit: safeLimit };
+};

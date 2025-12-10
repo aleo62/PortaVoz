@@ -9,6 +9,8 @@ import { formatDate } from "@/utils/functions/formatDate";
 import { IconChevronDown, IconChevronUp, IconDotsVertical, IconThumbUp } from "@tabler/icons-react";
 import { useRef, useState } from "react";
 import { CommentDrop } from "./CommentDrop";
+import { Link } from "react-router-dom";
+import { useModal } from "@/contexts/ModalContext";
 
 export const Comment = ({
     comment,
@@ -23,6 +25,7 @@ export const Comment = ({
     const [isUpvoted, setIsUpvoted] = useState(comment.isUpvoted);
     const [optionsContainerOpen, setOptionsContainerOpen] = useState(false);
     const [replyInputOpen, setReplyInputOpen] = useState(false);
+    const { closeModal } = useModal();
     const inputRef = useRef<HTMLInputElement>(null);
 
     const { user: userData } = useStoreUser();
@@ -50,8 +53,6 @@ export const Comment = ({
 
         await createVote.mutate(comment._id);
     };
-
-    // REPLIES MANAGEMENT
     const deleteComment = useDeleteComment();
 
     const handleDeleteComment = async (id: string) => {
@@ -73,13 +74,13 @@ export const Comment = ({
     return (
         <>
             <div className="flex w-full items-start gap-3">
-                <header className="gap-1">
+                <Link className="gap-1" to={`/profile/${comment.user._id}`} onClick={closeModal}>
                     <img
                         src={comment.user.image}
                         className="h-9 w-9 rounded-full object-cover"
                         alt="User photo"
                     />
-                </header>
+                </Link>
 
                 <main className="flex-1 pt-[.5rem]">
                     <div className="flex items-center gap-2">

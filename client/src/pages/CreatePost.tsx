@@ -1,13 +1,14 @@
 import { RoutesPath } from "@/app/Routes";
-import { useModal } from "@/contexts/ModalContext";
-import { useUserCommunities } from "@/hooks/community/useUserCommunities";
-import { useStoreUser } from "@/stores/userStore";
 import { DropdownFiles } from "@/components/ui/DropdownFiles";
 import { Fieldset } from "@/components/ui/Fieldset";
 import { File, PreviewImage } from "@/components/ui/File";
+import { useModal } from "@/contexts/ModalContext";
 import { useToast } from "@/contexts/ToastContext";
+import { useUserCommunities } from "@/hooks/community/useUserCommunities";
 import { useCreatePost } from "@/hooks/posts/useCreatePost";
+import { useStoreUser } from "@/stores/userStore";
 import { postSchema, RequestPostData } from "@/types/postDataType";
+import { formatApiError } from "@/utils/handleApiError";
 import { PostMap } from "@components/features/post/PostMap";
 import { Button } from "@components/ui/Button";
 import { FormInput } from "@components/ui/FormInput";
@@ -26,7 +27,7 @@ export const CreatePost = () => {
     const createPost = useCreatePost();
     const navigate = useNavigate();
     const { openModal } = useModal();
-    const { user } = useStoreUser();
+    const { user, updateUser } = useStoreUser();
     const { data: communitiesData } = useUserCommunities(user?._id);
     const [reportForm, setReportForm] = useState<Partial<RequestPostData>>({});
 
@@ -34,6 +35,8 @@ export const CreatePost = () => {
     const [previewImages, setPreviewImages] = useState<PreviewImage[]>([]);
 
     const { errorToast } = useToast();
+    const remainingReports = user?.meta?.limits?.remainingReports ?? 0;
+    const reportsResetAt = user?.meta?.limits?.reportsResetAt;
 
     const onUploadImage = (file: File) => {
         const url = URL.createObjectURL(file);
@@ -60,18 +63,24 @@ export const CreatePost = () => {
             const { status } = await createPost.mutateAsync({
                 formData: data,
             });
-            console.log(data);
 
             if (status === 201) {
+                if (user?.meta?.limits) {
+                    const nextRemaining = Math.max(0, (user.meta.limits.remainingReports ?? 0) - 1);
+                    updateUser({
+                        meta: {
+                            ...user.meta,
+                            limits: {
+                                ...user.meta.limits,
+                                remainingReports: nextRemaining,
+                            },
+                        },
+                    });
+                }
                 navigate(RoutesPath("Feed")!);
             }
         } catch (error: any) {
-            const msg =
-                error?.response?.data?.errors ??
-                error?.response?.data?.message ??
-                "Erro inesperado no servidor.";
-
-            errorToast(msg);
+            errorToast(formatApiError(error, "Erro inesperado no servidor."));
         }
     };
 
@@ -85,13 +94,23 @@ export const CreatePost = () => {
             return;
         }
 
-        console.log(myCommunities);
+        if (remainingReports <= 0) {
+            openModal("reportLimit", {
+                remainingReports,
+                resetAt: reportsResetAt,
+            });
+            return;
+        }
+
         if (myCommunities.length > 0) {
             openModal("selectCommunity", {
-                onConfirm: (data: { communityIds: string[]; visibility: "global" | "communities" | "both" }) => {
+                onConfirm: (data: {
+                    communityIds: string[];
+                    visibility: "global" | "communities" | "both";
+                }) => {
                     handlePostSubmission({
                         ...(reportForm as RequestPostData),
-                        ...data
+                        ...data,
                     });
                 },
                 myCommunities,
@@ -102,7 +121,7 @@ export const CreatePost = () => {
     };
 
     return (
-        <main className="mx-auto mt-5 w-full max-w-5xl lg:mt-10 lg:px-10 px-1">
+        <main className="mx-auto mt-5 w-full max-w-5xl px-1 lg:mt-10 lg:px-10">
             <form className="space-y-10" onSubmit={(e: FormEvent) => handleSubmit(e)}>
                 <Fieldset
                     Icon={IconPhotoFilled}

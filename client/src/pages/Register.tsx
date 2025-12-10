@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 
 import { Button } from "@components/ui/Button";
-import { Widgets } from "@components/ui/Widgets";
 
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { validateEmail, validateName, validatePassword } from "@/utils/functions/validations";
 import { FormInput } from "@components/ui/FormInput";
 
+import { FacebookButton } from "@/components/ui/FacebookButton";
 import { portaVozLogo } from "@/constants/system";
 import { useToast } from "@/contexts/ToastContext";
 import { registerUserEmailAndPassword } from "@/firebase/firebaseFunctions";
@@ -91,7 +91,7 @@ export const Register = () => {
 
                 <div className="flex h-full flex-7 flex-col justify-center p-0 xl:p-7">
                     <form
-                        className="relative z-10 w-full max-w-[650px] space-y-6 self-center px-3 py-10 md:rounded-3xl md:px-5 md:py-7 lg:space-y-10 lg:px-13 lg:py-0"
+                        className="relative z-10 w-full max-w-[650px] space-y-6 self-center px-2 py-10 md:rounded-3xl md:px-5 md:py-7 lg:space-y-10 lg:py-0"
                         onSubmit={handleRegister}
                     >
                         <h2 className="text-title font-title text-3xl lg:text-5xl">
@@ -181,20 +181,11 @@ export const Register = () => {
                             isLoading={isLoading}
                         />
                     </form>
-                    <DivideLine label="Ou Entre Com" />
+                    <DivideLine className="my-5 max-w-[650px] mx-auto" label="Ou Entre Com" />
 
-                    <div className="flex flex-col gap-3 md:grid md:grid-cols-2 mb-3">
+                    <div className="md:px-5 mx-auto mb-3 flex w-full max-w-[650px] flex-col gap-3 px-3 md:grid md:grid-cols-2">
                         <GoogleButton />
-                        <Widgets>
-                            <img
-                                src={
-                                    "https://res.cloudinary.com/di5bma0gm/image/upload/v1759595924/facebook_ry41ii.png"
-                                }
-                                alt=""
-                                width={isMobile ? 20 : 25}
-                            />
-                            <p className="text-sm">Entrar com FaceBook</p>
-                        </Widgets>
+                        <FacebookButton />
                     </div>
 
                     <div className="grid justify-center">

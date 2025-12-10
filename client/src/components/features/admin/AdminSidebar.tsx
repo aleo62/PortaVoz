@@ -78,7 +78,7 @@ export const AdminSidebar = () => {
     }
 
     return (
-        <aside className="flex w-full justify-between border-zinc-200 bg-white p-4 py-6 max-lg:border-b lg:h-full lg:w-64 lg:flex-col lg:border-r dark:border-zinc-800 dark:bg-zinc-900">
+        <aside className="flex w-full sticky top-0 justify-between border-zinc-200 bg-white p-4 py-6 max-lg:border-b lg:h-full lg:w-64 lg:flex-col lg:border-r dark:border-zinc-800 dark:bg-zinc-900">
             <nav className="flex gap-2 lg:flex-col">
                 <NavLinks />
             </nav>

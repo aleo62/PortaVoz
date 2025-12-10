@@ -8,6 +8,7 @@ import { useCreateVote } from "@/hooks/vote/useCreateVote";
 import { useDeleteVote } from "@/hooks/vote/useDeleteVote";
 import { useStoreUser } from "@/stores/userStore";
 import { PostData } from "@/types/postDataType";
+import { limitText } from "@/utils/functions/limitText";
 import {
     IconArrowBigUp,
     IconArrowBigUpFilled,
@@ -23,7 +24,6 @@ import { useNavigate } from "react-router-dom";
 import type { Swiper as SwiperClass } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { PostActionButton } from "./PostActionButton";
-import { limitText } from "@/utils/functions/limitText";
 
 type MainPostProps = {
     post: PostData;
@@ -211,12 +211,25 @@ export const PostMain = ({ post, viewMode }: MainPostProps) => {
                         {limitText(post.desc, isMobile ? 150 : 200)}
                     </p>
 
-                    <p className="flex items-center gap-1 text-sm">
-                        {post.hashtags.map((hashtag, key) => (
-                            <span key={key} className="text-accent before:content-['#']">
-                                {hashtag.content}
-                            </span>
-                        ))}
+                    <p className="flex flex-wrap items-center gap-2 text-sm">
+                        {post.hashtags.map((hashtag: any, key) => {
+                            const label =
+                                typeof hashtag === "string"
+                                    ? hashtag
+                                    : (hashtag.content ?? hashtag._id ?? "");
+                            return (
+                                <button
+                                    key={key}
+                                    type="button"
+                                    onClick={() =>
+                                        navigate(`/feed?hashtag=${encodeURIComponent(label)}`)
+                                    }
+                                    className="rounded-full px-3 py-1 text-xs font-medium text-blue-600 ring-1 ring-blue-100 transition hover:bg-blue-100  dark:text-blue-200 dark:ring-blue-800/70 dark:hover:bg-blue-800/40"
+                                >
+                                    #{label}
+                                </button>
+                            );
+                        })}
                     </p>
                 </div>
             </div>

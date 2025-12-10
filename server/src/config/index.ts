@@ -22,23 +22,24 @@ const config = {
     SYSTEM_ID_SIZE: parseInt(process.env.SYSTEM_ID_SIZE || "20"),
     SYSTEM_MAXIMUM_REPORTS: parseInt(process.env.SYSTEM_MAXIMUM_REPORTS || "2"),
     SYSTEM_POSTS_PER_PAGE: parseInt(
-        process.env.SYSTEM_POSTS_PER_PAGE || "5"
+        process.env.SYSTEM_POSTS_PER_PAGE ?? "5"
     ),
     SYSTEM_REPORTS_PER_PAGE: parseInt(
-        process.env.SYSTEM_REPORTS_PER_PAGE || "20"
+        process.env.SYSTEM_REPORTS_PER_PAGE ?? "20"
     ),
     SYSTEM_COMMENTS_PER_PAGE: parseInt(
-        process.env.SYSTEM_COMMENTS_PER_PAGE || "15"
+        process.env.SYSTEM_COMMENTS_PER_PAGE ?? "15"
     ),
     SYSTEM_MESSAGES_PER_PAGE: parseInt(
-        process.env.SYSTEM_MESSAGES_PER_PAGE || "50"
+        process.env.SYSTEM_MESSAGES_PER_PAGE ?? "50"
     ),
     SYSTEM_USERS_PER_PAGE: parseInt(
-        process.env.SYSTEM_MESSAGES_PER_PAGE || "20"
+        process.env.SYSTEM_MESSAGES_PER_PAGE ?? "20"
     ),
     SYSTEM_CODE_VERIFICATION_LENGTH: parseInt(
-        process.env.SYSTEM_CODE_VERIFICATION_LENGTH || "4"
+        process.env.SYSTEM_CODE_VERIFICATION_LENGTH ?? "4"
     ),
+    SYSTEM_USING_AI: process.env.SYSTEM_USING_AI === "1",
     GEMINI_API_KEY: process.env.GEMINI_API_KEY,
     GMAIL_HOST: process.env.GMAIL_HOST,
     GMAIL_USER: process.env.GMAIL_USER,

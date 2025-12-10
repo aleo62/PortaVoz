@@ -18,8 +18,6 @@ const Community = () => {
         fetchNextPage,
     } = useCommunityPosts(id || "");
 
-    if (!id) return <Communities />;
-
     if (isCommunityLoading) {
         return (
             <div className="flex h-full w-full items-center justify-center pt-20">
@@ -40,36 +38,45 @@ const Community = () => {
     const posts = postsData?.pages.flatMap((page) => page.posts) || [];
 
     return (
-        <main className="mx-auto mt-5 w-full max-w-7xl">
-            <CommunityHeader community={community} />
-            <div className="mt-6 flex gap-8 max-lg:flex-col-reverse">
-                <div className="flex-1">
-                    <FeedPosts
-                        posts={posts}
-                        feedLoading={isPostsLoading}
-                        feedHasNextPage={hasNextPage}
-                        fetchFeedNextPage={fetchNextPage}
-                    />
-                </div>
-                <div className="flex w-80 flex-col gap-4">
-                    <div className="rounded-2xl p-5 ring-1 ring-zinc-200 dark:ring-zinc-800">
-                        <h3 className="text-title">Sobre</h3>
-                        <p className="text-subtitle mb-4 text-sm">{community.description}</p>
-                        <span className="text-title flex items-center gap-2 text-sm">
-                            <IconCalendar /> Criado em {community.createdAt}
-                        </span>
-                        <span className="text-title flex items-center gap-2 text-sm">
-                            <IconUser /> {community.membersCount} membros
-                        </span>
-                        <span className="text-title flex items-center gap-2 text-sm">
-                            <IconWorld /> Comunidade {community.isPrivate ? "privada" : "pública"}
-                        </span>
-                    </div>
-                    <div className="rounded-2xl p-5 ring-1 ring-zinc-200 dark:ring-zinc-800">
-                        <CommunityMembers communityId={community._id} />
-                    </div>
-                </div>
-            </div>
+        <main className="mx-auto h-fit mt-5 w-full max-w-7xl">
+            {!id && <Communities />}
+
+            {id && (
+                <>
+                    <CommunityHeader community={community} />
+                    <div className="mt-6 flex gap-8 max-lg:flex-col-reverse">
+                        <div className="flex-1">
+                            <FeedPosts
+                                posts={posts}
+                                feedLoading={isPostsLoading}
+                                feedHasNextPage={hasNextPage}
+                                fetchFeedNextPage={fetchNextPage}
+                            />
+                        </div>
+                        <div className="flex w-80 flex-col gap-4">
+                            <div className="rounded-2xl p-5 ring-1 ring-zinc-200 dark:ring-zinc-800">
+                                <h3 className="text-title font-title text-lg">Sobre</h3>
+                                <p className="text-subtitle mb-4 text-sm">
+                                    {community.description}
+                                </p>
+                                <span className="text-title flex items-center gap-2 text-sm">
+                                    <IconCalendar /> Criado em {community.createdAt}
+                                </span>
+                                <span className="text-title flex items-center gap-2 text-sm">
+                                    <IconUser /> {community.membersCount} membros
+                                </span>
+                                <span className="text-title flex items-center gap-2 text-sm">
+                                    <IconWorld /> Comunidade{" "}
+                                    {community.isPrivate ? "privada" : "pública"}
+                                </span>
+                            </div>
+                            <div className="rounded-2xl p-5 ring-1 ring-zinc-200 dark:ring-zinc-800">
+                                <CommunityMembers communityId={community._id} />
+                            </div>
+                        </div>
+                    </div>{" "}
+                </>
+            )}
         </main>
     );
 };

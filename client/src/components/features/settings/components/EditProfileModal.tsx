@@ -14,11 +14,7 @@ type EditProfileModalProps = ModalDefaultProps & {
     onConfirm: (data: { fName: string; lName: string; username: string; about: string }) => void;
 };
 
-export const EditProfileModal = ({
-    zIndex,
-    initialData,
-    onConfirm,
-}: EditProfileModalProps) => {
+export const EditProfileModal = ({ zIndex, initialData, onConfirm }: EditProfileModalProps) => {
     const { closeModal } = useModal();
     const [formData, setFormData] = useState(initialData);
 
@@ -36,13 +32,15 @@ export const EditProfileModal = ({
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
-            className="w-full max-w-lg rounded-2xl h-fit my-auto bg-white p-6 shadow-xl dark:bg-zinc-900"
+            className="my-auto h-fit w-full max-w-[97%] rounded-2xl bg-white shadow-xl lg:max-w-lg dark:bg-zinc-900"
             style={{ zIndex }}
             onClick={(e) => e.stopPropagation()}
         >
-            <h2 className="text-title mb-4 text-xl font-bold">Editar Perfil</h2>
+            <h2 className="text-title font-title mb-4 border-b border-zinc-200 dark:border-zinc-800 py-4 px-5 text-2xl">
+                Editar Perfil
+            </h2>
 
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 py-4 px-5">
                 <FormInput
                     label="Nome"
                     inputProps={{
@@ -88,7 +86,7 @@ export const EditProfileModal = ({
                 </div>
             </div>
 
-            <div className="mt-6 flex justify-end gap-2">
+            <div className="mt-6 pb-4 px-5 flex justify-end gap-2">
                 <Button text="Cancelar" styleType="outlined" onClick={closeModal} />
                 <Button text="Confirmar" onClick={handleSubmit} />
             </div>

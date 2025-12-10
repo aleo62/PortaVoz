@@ -2,16 +2,16 @@ import { useCommunities } from "@/hooks/community/useCommunities";
 import { Link } from "react-router-dom";
 
 export const PopularCommunities = () => {
-    const { data } = useCommunities();
+    const { data } = useCommunities("", "desc");
     const communities = data?.pages.flatMap((page) => page.communities).slice(0, 5) || [];
 
     return (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 ">
             {communities.map((community) => (
                 <Link
                     to={`/communities/${community._id}`}
                     key={community._id}
-                    className="flex items-center gap-3 rounded-xl p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                    className="flex items-center gap-3 rounded-xl p-2 "
                 >
                     <img
                         src={

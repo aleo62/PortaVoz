@@ -4,7 +4,7 @@ import { ModalDefaultProps, useModal } from "@/contexts/ModalContext";
 import { ModalProvider } from "@/contexts/ModalProvider";
 import { getCroppedImg } from "@/utils/cropImage";
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Cropper from "react-easy-crop";
 
 type UploadImageModalProps = ModalDefaultProps & {
@@ -29,6 +29,12 @@ export const UploadImageModal = ({
         setCroppedAreaPixels(croppedAreaPixels);
     };
 
+    useEffect(() => {
+        setImageSrc(null);
+        setCrop({ x: 0, y: 0 });
+        setZoom(1);
+    }, [title, aspect]);
+
     const handleFileSelect = (file: File) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
@@ -39,11 +45,14 @@ export const UploadImageModal = ({
 
     const handleUpload = async () => {
         if (imageSrc && croppedAreaPixels) {
-            const croppedImage = await getCroppedImg(imageSrc, croppedAreaPixels);
-            if (croppedImage) {
-                onUpload(croppedImage);
-                closeModal();
-            }
+            const blob = await getCroppedImg(imageSrc, croppedAreaPixels);
+
+            const uniqueFile = new File([blob!], `img-${Date.now()}.png`, {
+                type: blob!.type,
+            });
+
+            onUpload(uniqueFile);
+            closeModal();
         }
     };
 

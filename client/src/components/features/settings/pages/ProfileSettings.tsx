@@ -40,10 +40,26 @@ export const ProfileSettings = () => {
             onConfirm: (data: any) => setStagedData(data),
         });
     };
+    const handleBannerClick = () => {
+        openModal("uploadImage", {
+            title: "Alterar banner",
+            aspect: 3 / 1,
+            onUpload: (file: File) => {
+                const preview = URL.createObjectURL(file);
+                setStagedImages((prev) => ({ ...prev, banner: { file, preview } }));
+            },
+        });
+    };
 
-    const handleImageUpload = (type: "image" | "banner", file: File) => {
-        const preview = URL.createObjectURL(file);
-        setStagedImages((prev) => ({ ...prev, [type]: { file, preview } }));
+    const handleImageClick = () => {
+        openModal("uploadImage", {
+            title: "Alterar foto de perfil",
+            aspect: 1,
+            onUpload: (file: File) => {
+                const preview = URL.createObjectURL(file);
+                setStagedImages((prev) => ({ ...prev, image: { file, preview } }));
+            },
+        });
     };
 
     const handleSave = () => {
@@ -84,7 +100,7 @@ export const ProfileSettings = () => {
     return (
         <>
             <div className="relative mb-16">
-                <figure className="relative h-40 w-full rounded-xl bg-zinc-300 shadow-sm dark:bg-zinc-800">
+                <figure className="relative aspect-3/1 lg:aspect-4/1 w-full rounded-xl bg-zinc-300 shadow-sm dark:bg-zinc-800">
                     {bannerSrc && (
                         <img
                             src={bannerSrc}
@@ -94,12 +110,7 @@ export const ProfileSettings = () => {
                     )}
                     <button
                         className="absolute top-3 right-3 rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
-                        onClick={() =>
-                            openModal("uploadImage", {
-                                title: "Alterar banner",
-                                onUpload: (file: File) => handleImageUpload("banner", file),
-                            })
-                        }
+                        onClick={handleBannerClick}
                     >
                         <IconPencil className="h-5 w-5" />
                     </button>
@@ -109,16 +120,11 @@ export const ProfileSettings = () => {
                         <img
                             src={imageSrc}
                             alt="Foto de perfil"
-                            className="h-24 w-24 rounded-full border-4 border-white object-cover shadow-md dark:border-zinc-900"
+                            className="h-24 w-24 rounded-full border-1 border-white object-cover shadow-md dark:border-zinc-900"
                         />
                         <button
-                            className="bg-primary-500 hover:bg-primary-600 absolute right-0 bottom-0 rounded-full p-1.5 text-white shadow-sm transition-colors"
-                            onClick={() =>
-                                openModal("uploadImage", {
-                                    title: "Alterar foto de perfil",
-                                    onUpload: (file: File) => handleImageUpload("image", file),
-                                })
-                            }
+                            className="bg-primary-500 hover:bg-primary-600 text-title absolute right-0 bottom-0 rounded-full bg-white p-1.5 shadow-sm transition-colors dark:bg-zinc-900"
+                            onClick={handleImageClick}
                         >
                             <IconCamera className="h-4 w-4" />
                         </button>

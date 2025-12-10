@@ -60,17 +60,17 @@ export const Profile = () => {
 
     return (
         <>
-            <header className="max-xxl:px-1 relative mx-auto mt-5 w-full max-w-7xl px-2 md:h-75">
-                <figure className="relative mx-auto h-40 w-full rounded-3xl bg-zinc-300 shadow-md lg:h-78 dark:bg-zinc-800">
+            <header className="relative mx-auto lg:mt-5 w-full max-w-7xl  md:h-75">
+                <figure className="relative mx-auto aspect-3/1 lg:aspect-4/1 w-full lg:rounded-3xl bg-zinc-300 shadow-md  dark:bg-zinc-800">
                     {user?.banner && (
                         <img
                             src={user.banner}
                             alt="Banner"
-                            className="h-full w-full rounded-3xl object-cover"
+                            className="h-full w-full lg:rounded-3xl object-cover"
                         />
                     )}
                 </figure>
-                <figure className="absolute top-[100%] left-10 translate-y-[-50%] lg:top-[115%]">
+                <figure className="absolute top-[100%] max-lg:left-1/2 max-lg:-translate-x-1/2 lg:left-10 translate-y-[-50%] lg:top-[115%]">
                     <img
                         src={user?.image}
                         alt="Foto de perfil"
@@ -81,7 +81,7 @@ export const Profile = () => {
             </header>
 
             <main className="mx-auto mt-20 mb-10 w-full max-w-7xl px-4 lg:mt-8">
-                <div className="flex justify-between gap-2 max-lg:flex-col lg:ml-[270px] lg:items-center">
+                <div className="flex justify-between gap-2  lg:ml-[270px] lg:items-center">
                     <div>
                         <h1 className="font-title text-title text-2xl lg:text-4xl">
                             {user.username}
@@ -127,7 +127,7 @@ export const Profile = () => {
                     </p>
                     <p>
                         <span className="text-title font-semibold">
-                            {user.meta?.counters?.totalReports || 0}
+                            {user.meta?.counters?.postsCount || 0}
                         </span>{" "}
                         Posts
                     </p>

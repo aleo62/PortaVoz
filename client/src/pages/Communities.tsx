@@ -1,11 +1,11 @@
-import { CommunityList } from "@/components/features/community/CommunityList";
+import { CommunityFeed } from "@/components/features/community/CommunityFeed";
 import { Button } from "@/components/ui/Button";
 import { useModal } from "@/contexts/ModalContext";
 import { useCommunities } from "@/hooks/community/useCommunities";
 import { IconPlus } from "@tabler/icons-react";
 
 const Communities = () => {
-    const { data } = useCommunities();
+    const { data, isLoading } = useCommunities();
     const { openModal } = useModal();
 
     const handleCreateClick = () => {
@@ -15,8 +15,8 @@ const Communities = () => {
     const communities = data?.pages.flatMap((page) => page.communities) || [];
 
     return (
-        <main className="mx-auto h-full w-full max-w-7xl grid-cols-[2fr_auto] lg:grid lg:px-8">
-            <CommunityList communities={communities} />
+        <main className="mx-auto flex-1 w-full max-w-7xl max-lg:flex flex-col lg:grid-cols-[2fr_auto] lg:grid lg:px-8">
+            <CommunityFeed communities={communities} isLoading={isLoading} />
 
             <aside className="flex items-center justify-between">
                 <Button

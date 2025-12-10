@@ -35,7 +35,7 @@ export const FeedPosts = ({
 
     return (
         <section
-            className={`mx-automd:gap-4 flex w-full flex-col items-center space-y-4 divide-zinc-200 max-lg:divide-y-[.7px] dark:divide-zinc-800 ${grid && "xxl:grid xxl:px-2 grid-cols-2"}`}
+            className={`mx-automd:gap-4 flex w-full flex-col items-center gap-4 divide-zinc-200 max-lg:divide-y-[.7px] dark:divide-zinc-800 ${grid && "xxl:grid xxl:px-2 grid-cols-2"}`}
         >
             {feedLoading && <PostSkeleton />}
             {!feedLoading && posts.map((post) => <Post post={post as PostData} key={post._id} />)}

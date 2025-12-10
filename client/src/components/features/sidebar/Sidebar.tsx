@@ -12,6 +12,7 @@ import { SidebarUserDrop } from "./SidebarUserDrop";
 
 export const Sidebar = () => {
     const { user } = useStoreUser();
+    const [imageLoaded, setImageLoaded] = useState(false);
     const { theme } = useThemeStore();
     const [isUserOpen, setIsUserOpen] = useState<boolean>(false);
     const { isOpen, toggle } = useStoreSidebar();
@@ -88,11 +89,15 @@ export const Sidebar = () => {
                             onClose={() => setIsUserOpen(false)}
                             orientation="bottom"
                         />
-                        <figure className="relative mx-auto h-11 w-11 overflow-hidden rounded-full">
+                        <figure className="relative mx-auto h-11 w-11 overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800">
+                            {!imageLoaded && (
+                                <div className="absolute inset-0 animate-pulse bg-zinc-300 dark:bg-zinc-700" />
+                            )}
                             <img
                                 src={user?.image}
-                                className="absolute ml-auto h-full w-full object-cover"
+                                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${imageLoaded ? "opacity-100" : "opacity-0"}`}
                                 alt=""
+                                onLoad={() => setImageLoaded(true)}
                             />
                         </figure>
 

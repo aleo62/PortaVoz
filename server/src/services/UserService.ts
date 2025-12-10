@@ -5,18 +5,24 @@ export const getUsersService = async (
     user: RequestUserType,
     name: string,
     page: number,
-    limit: number,
+    limit: number
 ) => {
     const usersProps: any = user.isAdmin
         ? {}
-        : { username: 1, fName: 1, lName: 1, image: 1 };
+        : {
+              username: 1,
+              fName: 1,
+              lName: 1,
+              image: 1,
+              "meta.counters.postsCount": 1,
+          };
 
     const users = await User.find(
         {
             _id: { $ne: user.uid },
             username: { $regex: name, $options: "i" },
         },
-        usersProps,
+        usersProps
     )
         .skip((page - 1) * limit)
         .limit(limit);
@@ -45,6 +51,7 @@ export const getUserByIdService = async (userId: string, uid: string) => {
                           about: 1,
                           "meta.counters.following": 1,
                           "meta.counters.followers": 1,
+                          "meta.counters.postsCount": 1,
                       }
                     : {
                           username: 1,
@@ -98,7 +105,7 @@ export const getUserByIdService = async (userId: string, uid: string) => {
 export const createUserService = async (
     uid: string,
     email: string,
-    body: any,
+    body: any
 ) => {
     let user;
     const exists = await User.findById(uid);
@@ -141,7 +148,7 @@ export const fetchUser = async (uid: string): Promise<UserData> => {
 
 export const verifyRemainingReports = async (
     userId: string,
-    isAdmin: boolean,
+    isAdmin: boolean
 ) => {
     const user = await fetchUser(userId);
 
@@ -162,7 +169,7 @@ export const verifyRemainingReports = async (
                     "meta.limits.remainingReports": 2,
                     "meta.limits.reportsResetAt": newDate,
                 },
-            },
+            }
         );
 
         return { canReport: true, remaining, resetAt };
@@ -177,7 +184,7 @@ export const getPreferencesByUser = async (userId: string) => {
 
 export const getPreferencesByField = async (
     userId: string,
-    field: "notifications",
+    field: "notifications"
 ) => {
     const user = await fetchUser(userId);
     return user.meta.preferences[field];
@@ -186,12 +193,12 @@ export const getPreferencesByField = async (
 export const updateUserPreferenceService = async (
     userId: string,
     path: string,
-    value: any,
+    value: any
 ) => {
     const updatePath = `meta.preferences.${path}`;
     const result = await User.updateOne(
         { _id: userId },
-        { $set: { [updatePath]: value } },
+        { $set: { [updatePath]: value } }
     );
     return result;
 };

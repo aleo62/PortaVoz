@@ -62,17 +62,23 @@ export const getCommunitiesService = async (
     page: number,
     limit: number,
     search?: string,
+    date?: string,
+    members?: string,
     userId?: string,
 ) => {
     const query: any = {};
+    const sortFilter: Record<string, -1 | 1> = {};
+
     if (search) {
         query.name = { $regex: search, $options: "i" };
     }
+    if (date) sortFilter.createdAt = date === "asc" ? 1 : -1;
+    if (members) sortFilter.membersCount = members === "asc" ? 1 : -1;
 
     const communities = await Community.find(query)
         .skip((page - 1) * limit)
         .limit(limit)
-        .sort({ membersCount: -1 });
+        .sort(sortFilter);
 
     const count = await Community.countDocuments(query);
 

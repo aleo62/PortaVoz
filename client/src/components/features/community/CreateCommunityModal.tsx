@@ -25,13 +25,16 @@ export const CreateCommunityModal = () => {
         if (image) formData.append("image", image);
         if (banner) formData.append("banner", banner);
 
+        console.log(image)
+        console.log(banner)
+
         createCommunity(formData, {
             onSuccess: () => {
                 closeModal();
             },
         });
+    
     };
-
     const handleBannerClick = () => {
         openModal("uploadImage", {
             title: "Enviar Banner",
@@ -54,7 +57,7 @@ export const CreateCommunityModal = () => {
             onClick={(e) => e.stopPropagation()}
         >
             <div className="flex items-center justify-between border-b border-zinc-200 p-4 dark:border-zinc-800">
-                <h2 className="text-xl font-bold text-zinc-900 dark:text-white">
+                <h2 className="text-xl text-title font-title">
                     Criar Comunidade
                 </h2>
                 <ModalProvider.Close />
@@ -79,7 +82,7 @@ export const CreateCommunityModal = () => {
                     )}
                 </div>
 
-                <div className="-mt-16 ml-4">
+                <div className="mt-16 ml-4">
                     <div
                         className="relative flex h-24 w-24 cursor-pointer items-center justify-center overflow-hidden rounded-2xl border-4 border-white bg-zinc-100 shadow-sm transition-colors hover:bg-zinc-200 dark:border-zinc-900 dark:bg-zinc-800 dark:hover:bg-zinc-700"
                         onClick={handleImageClick}
@@ -119,4 +122,4 @@ export const CreateCommunityModal = () => {
             </div>
         </div>
     );
-};
+}

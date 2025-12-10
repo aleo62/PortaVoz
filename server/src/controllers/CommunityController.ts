@@ -18,9 +18,12 @@ export const createCommunity = async (
     next: NextFunction,
 ) => {
     try {
+        
         const files = req.files as {
             [fieldname: string]: Express.Multer.File[];
         };
+        console.log("ARQUIVO IMAGE:", files?.image?.[0]?.originalname);
+        console.log("ARQUIVO BANNER:", files?.banner?.[0]?.originalname);
 
         let imageUrl, bannerUrl;
 
@@ -63,12 +66,16 @@ export const getCommunities = async (
         const page = parseInt(req.query.page as string) || 1;
         const limit = parseInt(req.query.limit as string) || 10;
         const search = req.query.search as string;
+        const members = req.query.members as "desc" | "asc";
+        const date = req.query.date as "desc" | "asc";
         const userId = req.user?.uid;
 
         const { communities, count } = await getCommunitiesService(
             page,
             limit,
             search,
+            members,
+            date,
             userId,
         );
         res.status(200).json({ communities, count });

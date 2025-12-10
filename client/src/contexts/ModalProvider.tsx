@@ -4,6 +4,7 @@ import { NotificationModal } from "@/components/features/notification/Notificati
 import { LocationModal } from "@/components/features/post/LocationModal";
 import { PostModal } from "@/components/features/post/PostModal";
 import { PostShareModal } from "@/components/features/post/PostShareModal";
+import { ReportLimitModal } from "@/components/features/post/ReportLimitModal";
 import { SelectCommunityModal } from "@/components/features/post/SelectCommunityModal";
 import { ReportModal } from "@/components/features/report/ReportModal";
 import { UpdateReportStatusModal } from "@/components/features/report/UpdateReportStatusModal";
@@ -17,7 +18,7 @@ import { ImageModal } from "@/components/modal/ImageModal";
 import { UploadImageModal } from "@/components/modal/UploadImageModal";
 import { IconX } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ReactNode, useState } from "react";
+import { ReactNode, useRef, useState } from "react";
 import { ModalContext, ModalContextType, useModal } from "./ModalContext";
 
 export const Modals = {
@@ -38,6 +39,7 @@ export const Modals = {
     createCommunity: CreateCommunityModal,
     selectCommunity: SelectCommunityModal,
     confirmation: ConfirmationModal,
+    reportLimit: ReportLimitModal,
 };
 
 type OpenModalType = {
@@ -48,6 +50,7 @@ type OpenModalType = {
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
     const [openModals, setOpenModals] = useState<OpenModalType[]>([]);
     const [modalKey, setModalKey] = useState<ModalContextType["modalKey"]>();
+    const overlayClickRef = useRef(false);
 
     const openModal: ModalContextType["openModal"] = (modalKey, props) => {
         setModalKey(modalKey);
@@ -74,11 +77,15 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 0.2 }}
-                                className="fixed top-0 left-0 z-[201] flex h-full w-full justify-center gap-2 bg-black/20 lg:px-3 lg:py-4 dark:bg-black/30"
+                                className="fixed top-0 left-0 z-[201] flex h-full w-full justify-center gap-2 bg-black/20 lg:px-3 lg:py-4 dark:bg-black/40"
+                                onMouseDown={(e) => {
+                                    overlayClickRef.current = e.target === e.currentTarget;
+                                }}
                                 onClick={(e) => {
-                                    if (e.target === e.currentTarget) {
+                                    if (overlayClickRef.current && e.target === e.currentTarget) {
                                         closeModal();
                                     }
+                                    overlayClickRef.current = false;
                                 }}
                             >
                                 <Modal {...(props as any)} zIndex={200 + index} />

@@ -1,55 +1,53 @@
 export const ProfileSkeleton = () => {
     return (
-        <div className="w-full">
-            <section className="mx-auto w-full max-w-4xl rounded-2xl bg-white pb-9 shadow-[0px_4px_55px_-19px_rgba(0,_0,_0,_0.1)] lg:rounded-3xl lg:p-2 lg:pb-10 dark:bg-zinc-900">
-                <header>
-                    {/* Banner + avatar area */}
-                    <div className="text-title relative h-full w-full">
-                        {/* Banner placeholder */}
-                        <div className="h-40 w-full animate-pulse rounded-t-2xl bg-stone-300 md:h-60 dark:bg-zinc-800"></div>
+        <>
+            <header className="max-xxl:px-1 relative mx-auto mt-5 w-full max-w-7xl px-2 md:h-75">
+                <div className="relative mx-auto h-40 w-full animate-pulse rounded-3xl bg-zinc-200 shadow-md lg:h-78 dark:bg-zinc-800"></div>
+                <div className="border-body-background absolute top-[100%] left-10 h-35 w-35 translate-y-[-50%] animate-pulse rounded-full border-3 bg-zinc-200 shadow-md lg:top-[115%] lg:h-55 lg:w-55 dark:border-zinc-900 dark:bg-zinc-800"></div>
+            </header>
 
-                        {/* Avatar placeholder positioned responsively */}
-                        <div className="absolute top-[50%] left-[50%] h-32 w-32 translate-x-[-50%] animate-pulse rounded-full bg-stone-300 ring-3 ring-white lg:left-5 lg:h-40 lg:w-40 lg:translate-x-0 dark:bg-zinc-800 dark:ring-zinc-900"></div>
+            <main className="mx-auto mt-20 mb-10 w-full max-w-7xl px-4 lg:mt-8">
+                <div className="flex justify-between gap-2 max-lg:flex-col lg:ml-[270px] lg:items-center">
+                    <div>
+                        <div className="h-8 w-48 animate-pulse rounded bg-zinc-200 lg:h-10 lg:w-64 dark:bg-zinc-800"></div>
+                        <div className="mt-2 h-5 w-32 animate-pulse rounded bg-zinc-200 lg:h-6 lg:w-40 dark:bg-zinc-800"></div>
                     </div>
 
-                    {/* Name / subtitle / action */}
-                    <div className="text-title mt-14 mb-4 flex w-full flex-col justify-between gap-3 px-2 text-center lg:mt-15 lg:flex-row lg:items-center lg:px-8 lg:text-start">
-                        <div className="w-full lg:w-auto">
-                            {/* Name placeholder */}
-                            <div className="mx-auto h-7 w-48 animate-pulse rounded bg-stone-300 lg:mx-0 dark:bg-zinc-800"></div>
-
-                            {/* Subtitle placeholder */}
-                            <div className="mx-auto mt-2 h-4 w-36 animate-pulse rounded bg-stone-200 lg:mx-0 dark:bg-zinc-800"></div>
-                        </div>
-
-                        <div className="flex justify-center lg:justify-end">
-                            {/* Button placeholder */}
-                            <div className="h-9 w-28 animate-pulse rounded-full bg-stone-200 dark:bg-zinc-800"></div>
-                        </div>
+                    <div className="flex-shrink-0 pt-4 lg:pt-0">
+                        <div className="h-9 w-32 animate-pulse rounded-full bg-zinc-200 dark:bg-zinc-800"></div>
                     </div>
+                </div>
 
-                    {/* Stats placeholders */}
-                    <div className="text-title mb-5 flex items-center justify-center divide-x-1 divide-zinc-300 px-2 text-sm lg:justify-start lg:divide-zinc-700 lg:px-8">
-                        <div className="pr-4">
-                            <div className="h-4 w-24 animate-pulse rounded bg-stone-200 dark:bg-zinc-800"></div>
-                        </div>
-                        <div className="pl-4">
-                            <div className="h-4 w-24 animate-pulse rounded bg-stone-200 dark:bg-zinc-800"></div>
-                        </div>
-                    </div>
+                <div className="mt-4 flex items-center gap-6 lg:ml-[270px]">
+                    <div className="h-5 w-24 animate-pulse rounded bg-zinc-200 dark:bg-zinc-800"></div>
+                    <div className="h-5 w-24 animate-pulse rounded bg-zinc-200 dark:bg-zinc-800"></div>
+                    <div className="h-5 w-24 animate-pulse rounded bg-zinc-200 dark:bg-zinc-800"></div>
+                </div>
 
-                    {/* About section placeholder */}
-                    <div className="mt-12 px-5 lg:px-8">
-                        <div className="h-6 w-40 animate-pulse rounded bg-stone-300 dark:bg-zinc-800"></div>
+                <div className="mt-4 space-y-2 lg:ml-[270px]">
+                    <div className="h-4 w-full animate-pulse rounded bg-zinc-200 dark:bg-zinc-800"></div>
+                    <div className="h-4 w-5/6 animate-pulse rounded bg-zinc-200 dark:bg-zinc-800"></div>
+                </div>
+            </main>
 
-                        <div className="mt-3 space-y-2">
-                            <div className="h-3 w-full animate-pulse rounded bg-stone-200 dark:bg-zinc-800"></div>
-                            <div className="h-3 w-5/6 animate-pulse rounded bg-stone-200 dark:bg-zinc-800"></div>
-                            <div className="h-3 w-3/4 animate-pulse rounded bg-stone-200 dark:bg-zinc-800"></div>
+            <div className="mb-8 border-b border-zinc-200 dark:border-zinc-800">
+                <div className="mx-auto flex max-w-6xl items-center justify-center gap-0">
+                    {[1, 2, 3].map((i) => (
+                        <div key={i} className="flex flex-1 items-center justify-center py-4">
+                            <div className="h-5 w-20 animate-pulse rounded bg-zinc-200 dark:bg-zinc-800"></div>
                         </div>
-                    </div>
-                </header>
-            </section>
-        </div>
+                    ))}
+                </div>
+            </div>
+
+            <div className="mx-auto grid w-full max-w-7xl grid-cols-3 gap-1 md:gap-4">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                    <div
+                        key={i}
+                        className="aspect-square w-full animate-pulse rounded-xl bg-zinc-200 dark:bg-zinc-800"
+                    />
+                ))}
+            </div>
+        </>
     );
 };

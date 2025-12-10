@@ -22,7 +22,7 @@ export const ChatMessage = ({
     return (
         <div
             key={message._id}
-            className={`${!ownMessage ? "bg-accent text-white" : "text-title ml-auto bg-body-background"} ${!ownNext ? `${ownMessage ? "rounded-t-xl rounded-bl-xl" : "rounded-t-xl rounded-br-xl"}` : "rounded-xl"} relative flex w-fit justify-between p-3 px-5 pr-11 pb-4`}
+            className={`${!ownMessage ? "bg-accent text-white" : "text-title ml-auto bg-body-background"} ${!ownNext ? `${ownMessage ? "rounded-t-xl rounded-bl-xl" : "rounded-t-xl rounded-br-xl"}` : "rounded-xl"} relative lgmax-w-sm max-w-xs  flex w-fit justify-between p-3 px-5 pr-11 pb-4`}
         >
             <p className="md:text-md w-fit text-sm">{message.text}</p>
 

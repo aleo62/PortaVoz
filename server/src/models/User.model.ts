@@ -16,7 +16,7 @@ export interface UserData extends Document {
             following: number;
             unreadNotifications: number;
             unreadChatMessages: number;
-            totalReports: number;
+            postsCount: number;
         };
         limits: {
             remainingReports: number;
@@ -93,7 +93,7 @@ const UserSchema: Schema = new Schema(
                 following: { type: Number, default: 0 },
                 unreadNotifications: { type: Number, default: 0 },
                 unreadChatMessages: { type: Number, default: 0 },
-                totalReports: { type: Number, default: 0 },
+                postsCount: { type: Number, default: 0 },
             },
             limits: {
                 remainingReports: { type: Number, default: 2 },

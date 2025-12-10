@@ -16,7 +16,7 @@ export interface CommunityData extends Document {
 const CommunitySchema: Schema = new Schema(
     {
         _id: { type: String, required: true },
-        name: { type: String, required: true, unique: true },
+        name: { type: String, required: true },
         description: { type: String, required: true },
         image: { type: String },
         banner: { type: String },

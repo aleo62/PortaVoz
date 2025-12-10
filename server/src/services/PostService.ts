@@ -1,4 +1,5 @@
 import config from "@/config";
+import { AppError } from "@/errors/AppError";
 import Hashtag from "@/models/Hashtag.model";
 import Post, { PostData } from "@/models/Post.model";
 import Repost from "@/models/Repost.model";
@@ -11,7 +12,6 @@ import { findOrCreateMultipleHashtags } from "./HashtagService";
 import { uploadMultipleImages } from "./ImageService";
 import { fetchUser, verifyRemainingReports } from "./UserService";
 import { validateCompletePost } from "./ValidateService";
-import { AppError } from "@/errors/AppError";
 
 export const decreaseRemainingReports = async (
     uid: string,
@@ -316,43 +316,61 @@ export const getPostsByUserService = async (
 
 export const createPost = async (req: Request) => {
     const { uid, isAdmin } = req.user!;
-    const { title, desc, hashtags, location, address, communityIds, visibility } =
-        req.body as PostData;
+    const {
+        title,
+        desc,
+        hashtags,
+        location,
+        address,
+        communityIds,
+        visibility,
+    } = req.body as PostData;
     const files = req.files as Express.Multer.File[];
-    if (!files || !files.length) throw new AppError("Images are required", 400, "INVALID_FORM", "Imagens são obrigatórias");
+    if (!files || !files.length)
+        throw new AppError(
+            "Images are required",
+            400,
+            "INVALID_FORM",
+            "Imagens são obrigatórias"
+        );
 
-    console.log("1");
     const { canReport } = await verifyRemainingReports(uid, isAdmin);
-    console.log("2")
-    if (!canReport) throw new AppError("User has no remaining reports", 400, "USER_NO_REMAINING_REPORTS", "Usuário sem relatos restantes");
+    if (!canReport)
+        throw new AppError(
+            "User has no remaining reports",
+            400,
+            "USER_NO_REMAINING_REPORTS",
+            "Usuário sem relatos restantes"
+        );
 
-    console.log("3")
-    const finalValidation = await validateCompletePost(req.body, files);
-    if (!finalValidation.valid) {
-        const errorMessage =
-            finalValidation.errors && finalValidation.errors.length
-                ? finalValidation.errors.join(" | ")
-                : "Invalid post";
-        throw new AppError("Post Invalid", 400, "INVALID_FORM", errorMessage);
+    if (config.SYSTEM_USING_AI) {
+        const finalValidation = await validateCompletePost(req.body, files);
+
+        if (!finalValidation.valid) {
+            const errorMessage =
+                finalValidation.errors && finalValidation.errors.length
+                    ? finalValidation.errors.join(" | ")
+                    : "Invalid post";
+            throw new AppError(
+                "Post Invalid",
+                400,
+                "INVALID_FORM",
+                errorMessage
+            );
+        }
     }
 
-    console.log("4")
     const images = await uploadMultipleImages(files, "posts_images");
-
-    console.log("5")
     const hashtagsId = await findOrCreateMultipleHashtags(
         typeof hashtags === "string" ? [hashtags] : hashtags
     );
+    const communitys =
+        typeof communityIds === "string" ? [communityIds] : communityIds;
 
-    const communitys = typeof communityIds === "string" ? [communityIds] : communityIds;
-
-    console.log("6")
     await User.findByIdAndUpdate(uid, {
-        $inc: { postsCount: 1 },
+        $inc: { "meta.counters.postsCount": 1 },
     });
-    
-    console.log("7")
-    console.log(req.body);
+
     const newPost = await Post.create({
         _id: generateId(config.SYSTEM_ID_SIZE, "P_"),
         user: uid,
@@ -365,9 +383,7 @@ export const createPost = async (req: Request) => {
         communityIds: communitys,
         visibility: visibility,
     });
-    
-    
-    console.log("7")
+
     return { newPost };
 };
 

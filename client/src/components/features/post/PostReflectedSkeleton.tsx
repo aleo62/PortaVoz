@@ -1,21 +1,12 @@
 export const PostReflectedSkeleton = () => {
     return (
-        <div className="py-2">
-            <div className="flex w-full animate-pulse items-center gap-2 rounded-xl  p-2 ">
-                <div className="flex h-28 flex-col justify-between p-3 lg:h-30">
-                    <div>
-                        <div className="h-4 w-3/4 rounded bg-zinc-200 dark:bg-zinc-700"></div>
-                        <div className="mt-2 h-3 w-full rounded bg-zinc-200 dark:bg-zinc-700"></div>
-                        <div className="mt-1 h-3 w-2/3 rounded bg-zinc-200 dark:bg-zinc-700"></div>
-                    </div>
-
-                    <div className="mt-4 flex items-center gap-3">
-                        <div className="h-3 w-10 rounded bg-zinc-200 dark:bg-zinc-700"></div>
-                        <div className="h-3 w-12 rounded bg-zinc-200 dark:bg-zinc-700"></div>
-                    </div>
+        <div className="relative h-45 w-full max-w-75 animate-pulse overflow-hidden rounded-xl bg-zinc-200 dark:bg-zinc-800">
+            <div className="absolute inset-0 flex h-full flex-col justify-end gap-2 p-4 px-3">
+                <div className="h-5 w-3/4 rounded bg-zinc-300 dark:bg-zinc-700"></div>
+                <div className="space-y-1">
+                    <div className="h-3 w-full rounded bg-zinc-300 dark:bg-zinc-700"></div>
+                    <div className="h-3 w-2/3 rounded bg-zinc-300 dark:bg-zinc-700"></div>
                 </div>
-
-                <div className="ml-auto h-28 w-28 rounded-xl bg-zinc-200 lg:h-30 lg:w-30 dark:bg-zinc-700"></div>
             </div>
         </div>
     );
