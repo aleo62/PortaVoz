@@ -1,5 +1,4 @@
 import { FeedPosts } from "@/components/features/post/FeedPosts";
-import { FollowItem } from "@/components/features/profile/FollowItem";
 import { ProfileActions } from "@/components/features/profile/ProfileActions";
 import { ProfileTabs } from "@/components/features/profile/ProfileTabs";
 import { Button } from "@/components/ui/Button";
@@ -19,7 +18,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 export const Profile = () => {
-    const { openModal, modalKey } = useModal();
+    const { openModal } = useModal();
     const { user: userData } = useStoreUser();
     const { userId } = useParams();
     const navigate = useNavigate();
@@ -59,7 +58,7 @@ export const Profile = () => {
     const { data: followersData, isLoading: followersLoading } = useFollowers(requestId!, true);
     const followers: UserData[] =
         (followersData?.pages.flatMap((page) => page.users) as UserData[]) || [];
-    const { data: followingData,  isLoading: followingLoading } = useFollowing(requestId!, true);
+    const { data: followingData, isLoading: followingLoading } = useFollowing(requestId!, true);
     const following: UserData[] =
         (followingData?.pages.flatMap((page) => page.users) as UserData[]) || [];
 
@@ -131,7 +130,6 @@ export const Profile = () => {
                                 title: "Seguidores",
                                 items: followers,
                                 loading: followersLoading,
-         
                             })
                         }
                         className="cursor-pointer"
@@ -147,12 +145,11 @@ export const Profile = () => {
                                 title: "Seguindo",
                                 items: following,
                                 loading: followingLoading,
-            
                             })
                         }
                         className="cursor-pointer"
                     >
-                        <span className="text-title font-semibold ">
+                        <span className="text-title font-semibold">
                             {user.meta?.counters?.following || 0}
                         </span>{" "}
                         Seguindo
